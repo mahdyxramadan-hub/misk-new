@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Misk - Daily v14 - Neon Sport Login</title>
+<title>Misk - Daily v15 - Barcode Live Scanner FIXED</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://unpkg.com/@zxing/library@0.20.0/umd/index.min.js"></script>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
@@ -141,11 +141,18 @@ button:active{transform:scale(.98)}
 .lockBtn{font-size:20px !important;padding:18px !important;margin:10px 0 !important}
 .lockBtn.done{background:#00a651 !important}
 .lockBtn:disabled{opacity:.6}
-.netWarn{background:#ffe6e6;border:1px solid #dc3545;color:#dc3545;padding:10px;border-radius:12px;font-size:14px;font-weight:bold;margin:8px 0;display:none}
+.netWarn{background:#ffe6e6;border:1px solid
+ #dc3545;color:#dc3545;padding:10px;border-radius:12px;font-size:14px;font-weight:bold;margin:8px 0;display:none}
 @media(max-width:600px){
   .bg-slide{width:78vw;height:42vh;max-height:300px}
   #loginPage{max-width:400px}
 }
+
+/* FIX live scanner */
+.scanFrame{position:relative;width:100%;border-radius:12px;overflow:hidden;background:#000}
+.scanBox{position:absolute;left:50%;top:50%;width:82%;height:110px;transform:translate(-50%,-50%);border:3px solid #00ff00;border-radius:12px;box-shadow:0 0 0 999px rgba(0,0,0,.35);pointer-events:none}
+.scanLine{position:absolute;left:0;right:0;height:3px;background:#00ff00;animation:scanMove 1.6s ease-in-out infinite alternate}
+@keyframes scanMove{from{top:0}to{top:calc(100% - 3px)}}
 </style>
 </head>
 <body>
@@ -266,11 +273,12 @@ button:active{transform:scale(.98)}
 <div id="scanModal" style="position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10000;display:none;align-items:center;justify-content:center;padding:12px;flex-direction:column">
   <div style="background:#fff;color:#111;border-radius:16px;padding:14px;width:100%;max-width:420px;text-align:center">
     <h3 style="margin:0 0 8px">📷 صوّب على الباركود</h3>
-    <video id="scanVideo" style="width:100%;border-radius:12px;background:#000" playsinline muted></video>
-    <p id="scanMsg" style="font-size:13px;color:#007bff">جاري تشغيل الكاميرا...</p>
+    <div class="scanFrame"><video id="scanVideo" style="width:100%;border-radius:12px;background:#000" playsinline muted></video><div class="scanBox"><div class="scanLine"></div></div></div>
+    <p id="scanMsg" style="font-size:13px;color:#007bff">جاري تشغيل الكاميرا... قرب الباركود وخليه جوه المربع الاخضر</p>
+    <button onclick="scanFromPhoto()" style="background:#ff7b00">🖼️ صوّر صورة للباركود بدل الكاميرا الحية</button>
     <button onclick="closeScanner()" style="background:#dc3545">✖️ اقفل الاسكانر</button>
   </div>
-</div>
+</div></div>
 <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden">
 <input type="file" id="photoInput" accept="image/*" capture="environment" class="hidden">
 <input type="file" id="photoGalleryInput" accept="image/*" class="hidden">
@@ -293,7 +301,8 @@ button:active{transform:scale(.98)}
 <div id="lockNetWarn" class="netWarn">⚠️ مفيش نت عندك - الرسالة متحفظة - اول ما النت يرجع ابعتها</div>
 <p id="lockStatus" style="font-size:14px;line-height:1.8"></p>
 <button id="btnSendGroup" class="lockBtn" onclick="sendToGroup()" style="background:#25D366">📲 ارسال للواتساب - الجروب</button>
-<button id="btnSendFollower" class="lockBtn" onclick="sendToFollower()" style="background:#007bff">👤 ارسال للمتابع</button>
+<button id="btnSendFollow
+er" class="lockBtn" onclick="sendToFollower()" style="background:#007bff">👤 ارسال للمتابع</button>
 <p style="font-size:12px;color:#666">لازم تدوس على الزرارين الاتنين - مفيش الغاء - الشاشة هتفضل مقفولة لحد ما الاتنين يبقوا تم</p>
 <div id="lockConfirmBox" style="display:none;background:#fff7e6;border:1px solid #ff7b00;border-radius:12px;padding:12px;margin-top:8px">
 <p id="lockConfirmText" style="font-weight:bold;margin:0 0 8px"></p>
@@ -442,7 +451,8 @@ async function sendToGroup(){
 }
 async function sendToFollower(){
   let j=allJobs.find(function(x){return x.id==lockJobId;}); if(!j) return;
-  let ph=getFollowerPhone(); if(!ph){ alert('سجل رقم المتابع'); document.getElementById('followerPhone').focus(); return; }
+  let ph=getFollowerPhone(); if(!ph){ alert('سجل رقم المتابع'); documen
+t.getElementById('followerPhone').focus(); return; }
   let ok=await doShare(j,'follower'); if(!ok) return;
   lockPendingType='follower';
   document.getElementById('lockConfirmText').innerText='بعت الرسالة للمتابع - ' + ph + ' ؟';
@@ -634,7 +644,8 @@ show.forEach(j=>{
   let upDownBadge = j.up_down ? '<span class="badge">'+esc(j.up_down)+'</span>' : '<span class="badge" style="background:#ffe6e6;border-color:#dc3545;color:#dc3545">⚠️ ناقص Up/Down</span>';
   let groupBadge = j.report_group ? '<span class="badge badge-group">👥 '+esc(j.report_group)+'</span>' : '';
   html+='<div class="job '+(isFullyDone(j)?'done':'')+' '+(j.status==='تأجيل'?'problem':'')+' '+(isArch?'arch':'')+'">'
-  +'<h3>'+esc(j.customer_name||'بدون اسم')+' '+(isFullyDone(j)?'<span class="badge">✅ تم</span>':'')+' '+updBadge+' '+emptyBadge+' '+photosBadge+' '+upDownBadge+' '+groupBadge+' '+(isArch?'<span class="badge badge-arch">📦 '+esc(dispDate)+'</span>':'')+'</h3>'
+  +'<h3>'+esc(j.customer_name||'بدون اسم')+' '+(isFullyDone(j)?'<span class="badge">✅ 
+تم</span>':'')+' '+updBadge+' '+emptyBadge+' '+photosBadge+' '+upDownBadge+' '+groupBadge+' '+(isArch?'<span class="badge badge-arch">📦 '+esc(dispDate)+'</span>':'')+'</h3>'
   +'<div class="meta"><b>تاريخ الشيت:</b> '+esc(dispDate)+' • <b>SN:</b> <span dir="ltr">'+esc(j.serial||'لسه')+'</span> • <b>Tel:</b> <span dir="ltr">'+esc(j.landline||j.order_no||'')+'</span><br>'
   +'<b>العنوان:</b> '+esc(j.address||'')+'<br>'
   +'<b>الجهاز:</b> '+esc(j.device_type||'')+' • <b>العرض:</b> '+esc(j.offer_name||'')+'<br>'
@@ -779,15 +790,14 @@ function exportArchive(){
   XLSX.utils.book_append_sheet(wb,ws,'ورقة1');
   XLSX.writeFile(wb,'misk_archive_'+(d||'all')+'.xlsx');
 }
-let scanReader=null;
-async function openCamera(jobId){
-  currentJobId=jobId;
-  let ci=document.getElementById('cameraInput');
-  ci.value='';
-  ci.click();
-}
+let scanReader=null; let scanActive=false;
+async function openCamera(jobId){ currentJobId=jobId; openLiveScanner(jobId); }
 async function openScanner(){ openCamera(currentJobId); }
-function closeScanner(){ try{ if(scanReader) scanReader.reset(); }catch(e){} try{ let v=document.getElementById('scanVideo'); if(v.srcObject){ v.srcObject.getTracks().forEach(t=>t.stop()); v.srcObject=null; } }catch(e){} document.getElementById('scanModal').style.display='none'; }
+async function openLiveScanner(jobId){ currentJobId=jobId; document.getElementById('scanModal').style.display='flex'; document.getElementById('scanMsg').innerText='جاري تشغيل الكاميرا...'; try{ if(!window.ZXing){ throw new Error('no zxing'); } if(scanReader){ try{ scanReader.reset(); }catch(e){} } scanReader=new ZXing.BrowserMultiFormatReader(); scanActive=true; let devices=[]; try{ devices=await ZXing.BrowserCodeReader.listVideoInputDevices(); }catch(e){} let deviceId=null; if(devices && devices.length){ let back=null; for(let i=0;i<devices.length;i++){ if(/back|rear|environment/i.test(devices[i].label||'')){ back=devices[i]; break; } } deviceId=back?back.deviceId:devices[devices.length-1].deviceId; } await scanReader.decodeFromVideoDevice(deviceId,'scanVideo',function(result,err){ if(!scanActive) return; if(result){ onBarcodeFound(result.getText()); } }); document.getElementById('scanMsg').innerText='الكاميرا شغالة - صوّب على الباركود وخليه جوه المربع'; }catch(e){ document.getElementById('scanMsg').innerText='الكاميرا الحية مشتغلتش - دوس صوّر صورة'; } }
+function onBarcodeFound(txt){ if(!scanActive) return; scanActive=false; try{ if(scanReader) scanReader.reset(); }catch(e){} try{ let v=document.getElementById('scanVideo'); if(v && v.srcObject){ v.srcObject.getTracks().forEach(function(tr){tr.stop();}); v.srcObject=null; } }catch(e){} document.getElementById('scanModal').style.display='none'; let inp=document.getElementById('s'+currentJ
+obId); if(inp) inp.value=txt; alert('تم قراءة: '+txt+'\nدوس حفظ'); }
+function closeScanner(){ scanActive=false; try{ if(scanReader) scanReader.reset(); }catch(e){} try{ let v=document.getElementById('scanVideo'); if(v.srcObject){ v.srcObject.getTracks().forEach(function(tr){tr.stop();}); v.srcObject=null; } }catch(e){} document.getElementById('scanModal').style.display='none'; }
+function scanFromPhoto(){ closeScanner(); let ci=document.getElementById('cameraInput'); ci.value=''; ci.click(); }
 document.getElementById('cameraInput').addEventListener('change', async function(e){
   let file=e.target.files[0]; if(!file) return; e.target.value='';
   try{
