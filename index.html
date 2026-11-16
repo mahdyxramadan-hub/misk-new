@@ -464,7 +464,203 @@ async function login(){
   const p=document.getElementById('pass').value.trim();
   const res=await supabaseClient.from('technicians').select('*');
   if(res.error||!res.data){document.getElementById('loginMsg').innerText='اسم او باسورد غلط';return;}
- function showMore(){ visibleCount+=50; renderJobs(); }
+ window.addEventListener('DOMContentLoaded', ()=>{
+  try{
+    let saved = localStorage.getItem('misk_user');
+    if(saved){
+      currentUser = JSON.parse(saved);
+      document.getElementById('loginPage').classList.add('hidden');
+      document.getElementById('appPage').classList.remove('hidden');
+      document.getElementById('welcome').innerText='اهلا '+currentUser.name;
+      document.getElementById('techInfo').innerText=currentUser.role==='admin'?'انت الادمن - شايف كل الشغل':'تليفونك: '+(currentUser.phone||'');
+      if(currentUser.role==='admin'){ document.getElementById('adminAdd').classList.remove('hidden'); document.getElementById('archiveNav').style.display='block'; }
+      restoreFollower();
+      loadJobs();
+    }
+  }catch(e){}
+});
+function normPhone(p){ let s=String(p||'').replace(/\D/g,''); if(!s) return ''; if(s.length===10 && s.startsWith('1')) s='0'+s; if(s.length===9) s='0'+s; return s; }
+function cleanUsername(s){
+  let x=String(s||'').toLowerCase().trim();
+  x=x.replace(/[\s_\-\.]+/g,'');
+  x=x.replace(/^3/,'a');
+  if(x.includes('basr')||x.includes('abas')||x.includes('elbas')) x='mohamedelbasry';
+  if(x.includes('afif')||x.includes('afy')) x='afify';
+  return x;
+}
+async function login(){
+  const u=document.getElementById('user').value.trim();
+  const p=document.getElementById('pass').value.trim();
+  const res=await supabaseClient.from('technicians').select('*');
+  if(res.error||!res.data){document.getElementById('loginMsg').innerText='اسم او باسورد غلط';return;}
+  const cleanInput=cleanUsername(u);
+  const found=res.data.find(t=>cleanUsername(t.username)===cleanInput && String(t.password).trim()===p);
+  if(!found){document.getElementById('loginMsg').innerText='اسم او باسورد غلط';return;}
+  currentUser=found; localStorage.setItem('misk_user', JSON.stringify(found));
+  document.body.classList.add('logging-in');
+  setTimeout(()=>{
+    document.body.classList.remove('logging-in');
+    document.getElementById('loginPage').classList.add('hidden'); document.getElementById('appPage').classList.remove('hidden');
+    document.getElementById('welcome').innerText='اهلا '+found.name;
+    document.getElementById('techInfo').innerText=found.role==='admin'?'انت الادمن - شايف كل الشغل':'تليفونك: '+(found.phone||'');
+    if(found.role==='admin'){ document.getElementById('adminAdd').classList.remove('hidden'); document.getElementById('archiveNav').style.display='block'; }
+    restoreFollower();
+    loadJobs();
+  },800);
+}
+async function logout(){
+  try { await supabaseClient.auth.signOut(); } catch(e) {}
+  localStorage.clear();
+  sessionStorage.clear();
+  document.cookie.split(";").forEach(function(c) {
+    document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+  });
+  window.location.href = "/";
+}
+function esc(v){ return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function showTab(f,el){ if(lockJobId){ alert('لازم تخلص الارسال الاول - الشاشة مقفولة'); return; } currentFilter=f; visibleCount=50; document.querySelectorAll('.bottomNav div').forEach(function(d){d.classList.remove('active');}); if(el) el.classList.add('active'); if(f==='archive'){ document.getElementById('archiveFilter').classList.remove('hidden'); loadArchive(); } else { document.getElementById('archiveFilter').classList.add('hidden'); renderJobs(); } }
+function onSearch(){ visibleCount=50; renderJobs(); }
+async function fetchAll(table){
+  let data=[]; let from=0;
+  while(true){
+    let res = await supabaseClient.from(table).select('*').order('created_at',{ascending:false}).range(from,from+999);
+    if(res.error) throw res.error;
+    let chunk=res.data;
+    if(!chunk || !chunk.length) break;
+    data=data.concat(chunk);
+    if(chunk.length<1000) break;
+    from+=1000;
+    if(from>20000) break;
+  }
+  return data;
+}
+async function loadTechCount(){
+  try{
+    const res = await supabaseClient.from('technicians').select('*');
+    if(res.error) return;
+    const techs = res.data || [];
+    let el=document.getElementById('techCount'); if(el) el.innerText = techs.length;
+    let list=document.getElementById('techList'); if(list) list.innerHTML = techs.map((t,i)=>(i+1)+'. '+(t.name||t.username)+' - '+(t.role||'')).join('<br>');
+  }catch(e){}
+}
+async function loadJobs(){
+let data=[];
+try{ data=await fetchAll('jobs'); }catch(e){ alert(e.message); }
+if(currentUser.role!=='admin'){
+  const myName=String(currentUser.name||'').trim().toLowerCase(); const myPhone=normPhone(currentUser.phone||'');
+  data=data.filter(j=>{ const tn=String(j.tech_name||'').trim().toLowerCase(); const tp=normPhone(j.tech_phone||''); return tn===myName || (myPhone && tp && tp===myPhone); });
+}
+allJobs=data; visibleCount=50; renderJobs(); checkLockAfterLoad();
+if(currentUser.role==='admin'){ loadTechCount(); }
+}
+async function loadArchive(){
+  if(currentUser.role!=='admin'){ alert('الأرشيف للادمن بس'); return; }
+  document.getElementById('jobsList').innerHTML='<div class="card">جاري تحميل الأرشيف...</div>';
+  try{ archiveJobs=await fetchAll('jobs_archive'); }catch(e){ document.getElementById('jobsList').innerHTML='<div class="card">لسه معملتش جدول الأرشيف - نفذ الـ SQL بتاع jobs_archive في Supabase الأول</div>'; return; }
+  let dates=[];
+  archiveJobs.forEach(function(j){ let d=getArchiveDisplayDate(j); if(d && dates.indexOf(d)===-1) dates.push(d); });
+  dates.sort().reverse();
+  let sel=document.getElementById('archiveDate');
+  let opts='<option value="">كل الأيام - '+archiveJobs.length+' اوردر</option>';
+  dates.forEach(function(d){
+    let dayJobs=archiveJobs.filter(function(x){return getArchiveDisplayDate(x)===d;});
+    let done=dayJobs.filter(function(x){return !!x.serial;}).length;
+    let upd=dayJobs.filter(function(x){return isUpdated(x);}).length;
+    let empty=dayJobs.filter(function(x){return isEmptyJob(x);}).length;
+    opts+='<option value="'+d+'">'+d+' - '+dayJobs.length+' اوردر - تم '+done+' - ابديت '+upd+' - فاضي '+empty+'</option>';
+  });
+  sel.innerHTML=opts;
+  renderArchiveSheets();
+  renderJobs();
+}
+function renderArchiveSheets(){
+  let wrap=document.getElementById('archiveSheetsList');
+  if(!wrap) return;
+  let dates=[];
+  archiveJobs.forEach(function(j){ let d=getArchiveDisplayDate(j); if(d && dates.indexOf(d)===-1) dates.push(d); });
+  dates.sort().reverse();
+  if(!dates.length){ wrap.innerHTML=''; return; }
+  let html='<b style="font-size:13px">📂 شيتات الارشيف - دوس على اي شيت:</b><br>';
+  dates.forEach(function(d){ html+='<span class="sheetCard" onclick="openArchiveDay(\''+esc(d)+'\')">📄 شيت '+esc(d)+'</span>'; });
+  wrap.innerHTML=html;
+}
+function openArchiveDay(d){ document.getElementById('archiveDate').value=d; renderJobs(); document.getElementById('jobsList').scrollIntoView({behavior:'smooth'}); }
+function exportOneDay(d){ document.getElementById('archiveDate').value=d; exportArchive(); }
+function photoBtnHtml(j, type, label, isArch){
+  let url=j[type]||'';
+  if(isArch){
+    if(!url) return '<div class="photoWrap"><button class="photoBtn" disabled>❌ '+label+'</button></div>';
+    return '<div class="photoWrap"><button class="photoBtn done" onclick="viewPhoto(\''+esc(url)+'\')">✅ '+label+'</button><img class="photoThumb" src="'+esc(url)+'" onclick="viewPhoto(\''+esc(url)+'\')"></div>';
+  }
+  if(url) return '<div class="photoWrap"><button class="photoBtn done" onclick="openPhoto('+j.id+',\''+type+'\')">✅ '+label+' - صور تاني</button><img class="photoThumb" src="'+esc(url)+'" onclick="viewPhoto(\''+esc(url)+'\')"><button class="smallBtn" style="background:#dc3545" onclick="deletePhoto('+j.id+',\''+type+'\')">🗑️ مسح الصورة</button></div>';
+  return '<div class="photoWrap"><button class="photoBtn missing" onclick="openPhoto('+j.id+',\''+type+'\')">📷 '+label+' *</button></div>';
+}
+function renderJobs(){
+let isArch = currentFilter==='archive';
+let base = isArch ? archiveJobs : allJobs;
+let data=base.slice();
+let qtxt=(document.getElementById('searchInput') ? document.getElementById('searchInput').value : '').trim().toLowerCase();
+if(qtxt){ data=data.filter(j=> String(j.customer_name||'').toLowerCase().includes(qtxt) || String(j.serial||'').toLowerCase().includes(qtxt) || String(j.landline||'').includes(qtxt) || String(j.order_no||'').includes(qtxt)); }
+if(isArch){
+  let d=document.getElementById('archiveDate').value;
+  if(d) data=data.filter(function(j){return getArchiveDisplayDate(j)===d;});
+} else {
+  if(currentFilter==='pending') data=data.filter(j=>!j.serial);
+  if(currentFilter==='problem') data=data.filter(j=> j.status==='تأجيل' || j.up_down==='Down');
+}
+let done=allJobs.filter(j=>isFullyDone(j)).length;
+let pending=allJobs.filter(j=>!j.serial).length;
+let problem=allJobs.filter(j=> j.status==='تأجيل' || j.up_down==='Down').length;
+document.getElementById('cDone').innerText=done; document.getElementById('cPending').innerText=pending; document.getElementById('cProblem').innerText=problem;
+if(isArch){
+  let aDone=data.filter(function(j){return !!j.serial;}).length;
+  let aUpd=data.filter(function(j){return isUpdated(j);}).length;
+  let aEmpty=data.filter(function(j){return isEmptyJob(j);}).length;
+  document.getElementById('aDone').innerText=aDone;
+  document.getElementById('aUpdated').innerText=aUpd;
+  document.getElementById('aEmpty').innerText=aEmpty;
+  let selD=document.getElementById('archiveDate').value || 'كل الأيام';
+  document.getElementById('archiveSummary').innerText='اليوم: '+selD+' - الاجمالي: '+data.length+' - تم: '+aDone+' - ابديت: '+aUpd+' - فاضي: '+aEmpty;
+}
+filteredJobs=data;
+const list=document.getElementById('jobsList');
+if(!data.length){list.innerHTML='<div class="card" style="text-align:center">مفيش شغل هنا - جرب بحث تاني</div>'; document.getElementById('loadMoreWrap').innerHTML=''; return;}
+let show=data.slice(0, visibleCount);
+let html='<p style="font-size:13px;color:#8aa3c7">'+(isArch?'أرشيف: ':'')+'عدد الاوردرات: '+data.length+' من '+base.length+' - ظاهر منهم '+show.length+'</p>';
+show.forEach(j=>{
+  const isAdmin=currentUser.role==='admin';
+  const disabled = isFullyDone(j) && !isAdmin ? 'disabled' : '';
+  let dispDate = isArch ? getArchiveDisplayDate(j) : (j.date||'');
+  let updBadge = (!j.serial && isUpdated(j)) ? '<span class="badge badge-upd">🔄 ابديت</span>' : '';
+  let emptyBadge = (!j.serial && isEmptyJob(j)) ? '<span class="badge" style="background:#f3e8ff;border-color:#9333ea;color:#9333ea">⚪ فاضي</span>' : '';
+  let photosBadge = hasAllPhotos(j) ? '<span class="badge">📷 3/3</span>' : '<span class="badge" style="background:#ffe6e6;border-color:#dc3545;color:#dc3545">📷 '+(3-missingPhotos(j).length)+'/3</span>';
+  let upDownBadge = j.up_down ? '<span class="badge">'+esc(j.up_down)+'</span>' : '<span class="badge" style="background:#ffe6e6;border-color:#dc3545;color:#dc3545">⚠️ ناقص Up/Down</span>';
+  let groupBadge = j.report_group ? '<span class="badge badge-group">👥 '+esc(j.report_group)+'</span>' : '';
+  html+='<div class="job '+(isFullyDone(j)?'done':'')+' '+(j.status==='تأجيل'?'problem':'')+' '+(isArch?'arch':'')+'">'
+  +'<h3>'+esc(j.customer_name||'بدون اسم')+' '+(isFullyDone(j)?'<span class="badge">✅ تم</span>':'')+' '+updBadge+' '+emptyBadge+' '+photosBadge+' '+upDownBadge+' '+groupBadge+' '+(isArch?'<span class="badge badge-arch">📦 '+esc(dispDate)+'</span>':'')+'</h3>'
+  +'<div class="meta"><b>تاريخ الشيت:</b> '+esc(dispDate)+' • <b>SN:</b> <span dir="ltr">'+esc(j.serial||'لسه')+'</span> • <b>Tel:</b> <span dir="ltr">'+esc(j.landline||j.order_no||'')+'</span><br>'
+  +'<b>العنوان:</b> '+esc(j.address||'')+'<br>'
+  +'<b>الجهاز:</b> '+esc(j.device_type||'')+' • <b>العرض:</b> '+esc(j.offer_name||'')+'<br>'
+  +'<b>الجروب:</b> '+esc(j.report_group||'مش متحدد - ارفع بالاسم الصح')+' • <b>الحالة:</b> '+esc(j.status||'جديد')+' • <b>الخط:</b> '+(j.up_down?esc(j.up_down):'لسه')+'</div>';
+  html+='<div style="margin-top:8px"><b style="font-size:11px;color:#333">📷 الصور الاجبارية - 3 صور:</b><div class="row" style="margin-top:4px">'
+  +photoBtnHtml(j,'photo_front','وش الجهاز',isArch)
+  +photoBtnHtml(j,'photo_back','ضهر الجهاز',isArch)
+  +photoBtnHtml(j,'photo_receipt','الايصال + البطاقة',isArch)
+  +'</div></div>';
+  if(!isArch){
+    html+='<input id="s'+j.id+'" class="serial" value="'+esc(j.serial||'')+'" placeholder="اضافة سيريال" '+disabled+'>'
+    +'<div class="row"><button class="camBtn" onclick="openCamera('+j.id+')" '+(isFullyDone(j)&&!isAdmin?'disabled':'')+'>📷 صور الباركود</button>'
+    +'<button class="saveBtn" onclick="saveSerial('+j.id+')" '+(isFullyDone(j)&&!isAdmin?'disabled':'')+'>💾 حفظ</button></div>'
+    +'<button class="upDownBtn '+(j.up_down?'done':'')+'" onclick="openUpDown('+j.id+',\''+esc(j.customer_name)+'\')"> '+(j.up_down?'تغيير: '+esc(j.up_down):'⬆️ Up / ⬇️ Down *')+'</button>';
+  }
+  html+='</div>';
+});
+list.innerHTML=html;
+if(data.length > visibleCount){
+  document.getElementById('loadMoreWrap').innerHTML='<button onclick="showMore()" style="background:#00a651">عرض المزيد - باقي '+(data.length-visibleCount)+' اوردر</button>';
+} else { document.getElementById('loadMoreWrap').innerHTML=''; }
+}
+function showMore(){ visibleCount+=50; renderJobs(); }
 function viewPhoto(url){ document.getElementById('photoModalImg').src=url; document.getElementById('photoModal').style.display='flex'; }
 async function openPhoto(jobId, type){
   currentPhotoJobId=jobId; currentPhotoType=type; photoBlob=null;
