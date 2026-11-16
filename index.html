@@ -784,7 +784,6 @@ function exportArchive(){
 }
 let scanReader=null; let scanActive=false;
 async function openCamera(jobId){ currentJobId=jobId; openLiveScanner(jobId); }
-// === الاسكانر المتعدل - بيفضل يحاول 60 ثانية مش بيخرج بعد ثانية ===
 async function openLiveScanner(jobId){
 if(scanActive) return;
 currentJobId=jobId;
@@ -962,3 +961,5 @@ async function uploadSheetFast(){
   goHome(); loadJobs();
 }
 </script></body></html>
+
+    
