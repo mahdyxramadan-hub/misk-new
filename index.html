@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Misk - Daily v12-FIXED - G2 G3 G4 Group Auto</title>
+<title>Misk - Daily v13-LOGOUT-FIX - G2 G3 G4 Group Auto</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://unpkg.com/@zxing/library@0.20.0/umd/index.min.js"></script>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
@@ -432,7 +432,15 @@ async function login(){
     loadJobs();
   },800);
 }
-function logout(){ localStorage.removeItem('misk_user'); location.reload(); }
+async function logout(){
+  try { await supabaseClient.auth.signOut(); } catch(e) {}
+  localStorage.clear();
+  sessionStorage.clear();
+  document.cookie.split(";").forEach(function(c) {
+    document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+  });
+  window.location.href = "/";
+}
 function esc(v){ return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function showTab(f,el){ if(lockJobId){ alert('لازم تخلص الارسال الاول - الشاشة مقفولة'); return; } currentFilter=f; visibleCount=50; document.querySelectorAll('.bottomNav div').forEach(function(d){d.classList.remove('active');}); if(el) el.classList.add('active'); if(f==='archive'){ document.getElementById('archiveFilter').classList.remove('hidden'); loadArchive(); } else { document.getElementById('archiveFilter').classList.add('hidden'); renderJobs(); } }
 function onSearch(){ visibleCount=50; renderJobs(); }
