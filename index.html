@@ -168,29 +168,21 @@ button:active{transform:scale(.98)}
 <p style="color:#8aa3c7;font-size:13px">مرحباً! سجل الدخول للوصول إلى لوحة الفني</p>
 <input id="user" placeholder="اسم المستخدم"><input id="pass" type="password" placeholder="الباسورد">
 <button onclick="login()">تسجيل الدخول</button><p id="loginMsg" style="color:#ff8a8a"></p>
-
-<!-- v14 - 4 Circles Neon Sport -->
 <div class="login-stats">
 <div class="login-stat" onclick="showAzkar()"><div class="login-circle c-purple">📖</div><b>اذكار الصباح والمساء</b><small id="azkarText">سبحان الله وبحمده</small></div>
 <div class="login-stat"><div class="login-circle c-blue" style="font-size:28px">1</div><b>عنصر فارغ</b><small>هنملاه بعدين - رقم 1</small></div>
 <div class="login-stat"><div class="login-circle c-yellow"><div class="clockText"><span id="loginClock">--:--</span><br><span id="loginWeather" style="font-size:10px;font-weight:normal">☀️ جاري...</span></div></div><b>الساعة وحالة الجو</b><small id="loginDate">--</small></div>
 <div class="login-stat"><div class="login-circle c-green" style="font-size:28px">2</div><b>عنصر فارغ</b><small>هنملاه بعدين - رقم 2</small></div>
 </div>
-
-<!-- Companies Marquee -->
 <div class="companies-wrap">
 <div class="companies-title">🏢 شركات تم التعامل معها</div>
 <div class="marquee"><span>CLOUD</span><span>DATA</span><span>TECH</span><span>STC</span><span>SABIC</span><span>ARAMCO</span><span>MISK</span><span>CLOUD</span><span>DATA</span><span>TECH</span><span>STC</span><span>SABIC</span><span>ARAMCO</span></div>
 </div>
-
-<!-- Map + Live Location -->
 <div class="map-box">
 <b>🗺️ المهام - الخريطة</b>
 <div class="map-frame"><div class="map-pin">📍</div><div class="map-loc" id="mapLocText">📍 موقعك الحالي: جاري تحديد الموقع... - اضغط لايف لوكيشن</div></div>
 <p style="font-size:11px;color:#8aa3c7;margin:6px 0 0">مراجعة تقرير الصباح • منذ 10 دقائق<br>تحديث حالة المشروع • منذ 30 دقيقة</p>
 </div>
-
-<!-- Attendance + Live Location -->
 <div class="login-bottom">
 <button class="btn-attend" onclick="doAttendance()">🕐 الحضور والانصراف<br><span id="attendTime" style="font-size:11px;font-weight:normal">--:--:--</span></button>
 <button class="btn-live" onclick="getLiveLocation()">📍 لايف لوكيشن<br><span style="font-size:11px;font-weight:normal">من موقع الفني</span></button>
@@ -301,7 +293,7 @@ button:active{transform:scale(.98)}
 </div>
 </div></div>
 <script>
-// === v14 LOGIN EXTRAS - CLOCK / WEATHER / AZKAR / MAP / ATTENDANCE ===
+// === v14 LOGIN EXTRAS ===
 let azkarList=['سبحان الله وبحمده','لا إله إلا الله وحده لا شريك له','أستغفر الله العظيم','اللهم صل على محمد','أعوذ بكلمات الله التامات','سبحان الله العظيم','الحمد لله رب العالمين','لا حول ولا قوة إلا بالله'];
 let azkarIdx=0;
 function showAzkar(){ azkarIdx=(azkarIdx+1)%azkarList.length; let el=document.getElementById('azkarText'); if(el) el.innerText=azkarList[azkarIdx]; }
@@ -312,7 +304,6 @@ async function loadWeather(lat,lon){ try{ let r=await fetch('https://api.open-me
 loadWeather();
 function getLiveLocation(){ let el=document.getElementById('mapLocText'); if(el) el.innerText='📍 جاري تحديد موقعك...'; if(!navigator.geolocation){ alert('المتصفح مش بيدعم تحديد الموقع'); return; } navigator.geolocation.getCurrentPosition(function(pos){ let lat=pos.coords.latitude.toFixed(5); let lon=pos.coords.longitude.toFixed(5); if(el) el.innerText='📍 موقعك الحالي: '+lat+' , '+lon+' - لايف ✅'; loadWeather(lat,lon); }, function(){ if(el) el.innerText='📍 مش قادر احدد موقعك - افتح الـ GPS'; }, {enableHighAccuracy:true}); }
 function doAttendance(){ let now=new Date(); let t=now.toLocaleTimeString('ar-EG'); let k='misk_attend_'+now.toDateString(); let prev=localStorage.getItem(k); if(!prev){ localStorage.setItem(k,'in:'+t); alert('✅ تم تسجيل الحضور: '+t); } else if(prev.indexOf('out:')===-1){ localStorage.setItem(k,prev+' | out:'+t); alert('✅ تم تسجيل الانصراف: '+t); } else { alert('انت سجلت حضور وانصراف النهاردة خلاص\n'+localStorage.getItem(k)); } }
-
 const SUPABASE_URL="https://wpbjdxjozibqcoyrmxlc.supabase.co";
 const SUPABASE_KEY="sb_publishable_EpBDoKSZQ6OMZA3wHKd8vg_9_ocCNnm";
 const supabaseClient=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
@@ -461,7 +452,7 @@ function confirmSendNo(){
   alert('تمام - الاوردر لسه مقفول - لازم تبعت عشان تكمل');
   updateLockUI();
 }
-window.addEventListener('DOMContentLoaded', ()=>{
+  window.addEventListener('DOMContentLoaded', ()=>{
   try{
     let saved = localStorage.getItem('misk_user');
     if(saved){
@@ -781,33 +772,49 @@ function exportArchive(){
 }
 let scanReader=null; let scanActive=false;
 async function openCamera(jobId){ currentJobId=jobId; openLiveScanner(jobId); }
+// === FIXED SCANNER - ZXing HIGH-RES + TRY_HARDER - زي Manatee ===
 async function openLiveScanner(jobId){
 if(scanActive) return;
 currentJobId=jobId;
 scanActive=true;
+let stream=null; let v=null; let btn=null; let reader=null;
+function cleanup(){
+  scanActive=false;
+  try{ if(reader) reader.reset(); }catch(e){}
+  try{ if(stream) stream.getTracks().forEach(t=>t.stop()); }catch(e){}
+  try{ if(v) v.remove(); }catch(e){}
+  try{ if(btn) btn.remove(); }catch(e){}
+}
 try{
-let stream=await navigator.mediaDevices.getUserMedia
-  ({video:{facingMode:'environment'}});
-let v=document.createElement('video');
+stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment', width:{ideal:1920}, height:{ideal:1080}}});
+v=document.createElement('video');
 v.srcObject=stream;
+v.setAttribute('playsinline',true);
+v.setAttribute('muted',true);
 v.play();
 document.body.appendChild(v);
 v.style.cssText='position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:9999;background:#000';
-let btn=document.createElement('button');
+btn=document.createElement('button');
 btn.textContent='✕ إغلاق';
 btn.style.cssText='position:fixed;top:15px;right:15px;z-index:10000;padding:12px 18px;font-size:18px;background:#ff3b30;color:#fff;border:0;border-radius:10px';
 document.body.appendChild(btn);
-btn.onclick=()=>{stream.getTracks().forEach(t=>t.stop()); v.remove(); btn.remove(); };
-let det=new BarcodeDetector({formats:['code_128','code_39','ean_13','ean_8','upc_a','qr_code']});
-let scan=setInterval(async()=>{
-try{let codes=await det.detect(v);
-if(codes.length){
-document.getElementById('barcode').value=codes[0].rawValue;
-clearInterval(scan); btn.click();
-  }
-}catch(e){}
-},500);
-}catch(e){ scanActive=false; }
+btn.onclick=()=>{ cleanup(); };
+// ZXing - اقوى محاولة قراءة
+reader=new ZXing.BrowserMultiFormatReader();
+let hints=new Map();
+hints.set(ZXing.DecodeHintType.TRY_HARDER, true);
+hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS, [ZXing.BarcodeFormat.CODE_128, ZXing.BarcodeFormat.CODE_39, ZXing.BarcodeFormat.EAN_13, ZXing.BarcodeFormat.EAN_8, ZXing.BarcodeFormat.UPC_A, ZXing.BarcodeFormat.QR_CODE, ZXing.BarcodeFormat.CODE_93, ZXing.BarcodeFormat.ITF]);
+reader.hints=hints;
+let result=await reader.decodeFromVideoDevice(null, v);
+let txt=result.getText().trim();
+let inp=document.getElementById('s'+jobId);
+if(inp) inp.value=txt;
+cleanup();
+alert('تم قراءة: '+txt+'\nدوس حفظ');
+}catch(e){
+  cleanup();
+  if(String(e).indexOf('NotFound')===-1) alert('معرفتش اقرا - قرب التليفون 15 سم وثبت ايدك 2 ثانية');
+}
 }
 async function openScanner(){ openCamera(currentJobId); }
 function closeScanner(){ try{ if(scanReader) scanReader.reset(); }catch(e){} try{ let v=document.getElementById('scanVideo'); if(v.srcObject){ v.srcObject.getTracks().forEach(t=>t.stop()); v.srcObject=null; } }catch(e){} document.getElementById('scanModal').style.display='none'; }
@@ -824,6 +831,8 @@ document.getElementById('cameraInput').addEventListener('change', async function
   try{
     let url=URL.createObjectURL(file);
     let reader=new ZXing.BrowserMultiFormatReader();
+    let hints2=new Map(); hints2.set(ZXing.DecodeHintType.TRY_HARDER, true);
+    reader.hints=hints2;
     let result=await reader.decodeFromImageUrl(url);
     document.getElementById('s'+currentJobId).value=result.getText();
     alert('تم قراءة: '+result.getText()+'\nدوس حفظ');
