@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Misk - Daily v13-LOGOUT-FIX - G2 G3 G4 Group Auto</title>
+<title>Misk - Daily v14 - Neon Sport Login</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://unpkg.com/@zxing/library@0.20.0/umd/index.min.js"></script>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
@@ -12,7 +12,8 @@ html,body{overflow-x:hidden !important;max-width:100vw;width:100%}
 body{margin:0;background:#000;color:#fff;padding:0 8px 90px}
 a{color:#4db8ff}
 .top{display:none !important}
-.logo{width:320px;max-width:90%;height:auto;border-radius:0;border:none;box-shadow:none;background:transparent;transition:all .8s ease;animation:khadda 1.2s ease-out}
+/* === v14 - LOGO BIG NEON === */
+.logo{width:420px;max-width:96%;height:auto;border-radius:0;border:none;background:transparent;transition:all .8s ease;animation:khadda 1.2s ease-out;filter:drop-shadow(0 0 25px rgba(147,51,234,.8)) drop-shadow(0 0 45px rgba(0,198,255,.6))}
 @keyframes khadda{0%{transform:scale(.1);opacity:0;filter:blur(15px)}40%{transform:scale(1.4);opacity:1;filter:blur(0)}60%{transform:scale(1.15) rotate(-2deg)}80%{transform:scale(1.05) rotate(2deg)}100%{transform:scale(1) rotate(0)}}
 body.logging-in .top .logo{opacity:0;transform:scale(1.3);filter:blur(10px)}
 body.logging-in .top{opacity:0;transform:scale(1.1);transition:all .8s ease}
@@ -24,13 +25,39 @@ input::placeholder{color:#7a90b5}
 button{background:#007bff;color:#fff;border:0;font-weight:bold;cursor:pointer}
 button:active{transform:scale(.98)}
 .hidden{display:none}
-#loginPage{max-width:320px;margin:6px auto;background:rgba(10,21,48,.95);border:1px solid #00c6ff;border-radius:18px;padding:14px 14px 12px;box-shadow:0 0 20px rgba(0,198,255,.2);text-align:center}
+/* === v14 LOGIN PAGE - NEON SPORT === */
+#loginPage{max-width:430px;margin:6px auto;background:rgba(10,21,48,.95);border:1px solid #00c6ff;border-radius:18px;padding:14px 14px 12px;box-shadow:0 0 20px rgba(0,198,255,.2);text-align:center}
 #loginPage h2{font-size:17px !important}
 #loginPage p{font-size:12px !important}
 #loginPage input{padding:10px !important;font-size:14px !important}
 #loginPage button{padding:11px !important;font-size:16px !important}
 #loginPage input{background:#fff;color:#111;border:1px solid #cfe3ff;text-align:center}
 #loginPage button{background:#00a651;font-size:18px;padding:15px}
+.login-logo-wrap{text-align:center;margin:2px 0 8px}
+.login-logo-wrap .logo{width:380px;max-width:100%;display:block;margin:0 auto}
+.login-subtitle{color:#cfe3ff;font-size:13px;margin:4px 0 10px}
+/* 4 circles on login */
+.login-stats{display:flex;gap:8px;margin:14px 0;flex-wrap:nowrap}
+.login-stat{flex:1;background:#071126;border:1px solid #1b2f5a;border-radius:16px;padding:10px 4px;text-align:center;min-width:0;cursor:pointer}
+.login-stat b{display:block;font-size:11px;line-height:1.4;margin-top:6px}
+.login-stat small{color:#8aa3c7;font-size:10px;display:block;line-height:1.4}
+.login-circle{width:62px;height:62px;border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;background:#071126}
+.login-stat .clockText{font-size:13px;font-weight:900;line-height:1.2}
+.companies-wrap{margin:12px 0;background:#071126;border:1px solid #9333ea;border-radius:14px;padding:10px 0;overflow:hidden}
+.companies-title{font-size:13px;font-weight:bold;color:#fff;margin-bottom:8px}
+.marquee{display:flex;gap:14px;white-space:nowrap;animation:marq 18s linear infinite;width:max-content}
+.marquee span{background:#0a1530;border:1px solid #00c6ff;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:bold;color:#cfe3ff}
+@keyframes marq{0%{transform:translateX(0)}100%{transform:translateX(50%)}}
+.map-box{margin:12px 0;background:#071126;border:1px solid #00c6ff;border-radius:16px;padding:10px;text-align:right}
+.map-box b{font-size:13px}
+.map-frame{height:130px;border-radius:12px;margin-top:8px;background:#0a1530;border:1px solid #1b2f5a;position:relative;overflow:hidden;background-image:linear-gradient(45deg,rgba(0,198,255,.08) 25%,transparent 25%),linear-gradient(-45deg,rgba(147,51,234,.08) 25%,transparent 25%);background-size:28px 28px;display:flex;align-items:center;justify-content:center}
+.map-pin{font-size:36px;filter:drop-shadow(0 0 12px #ff00ff);animation:pinPulse 1.6s infinite}
+@keyframes pinPulse{0%{transform:scale(1)}50%{transform:scale(1.18)}100%{transform:scale(1)}}
+.map-loc{position:absolute;bottom:8px;right:8px;left:8px;background:rgba(0,0,0,.7);border-radius:10px;padding:6px;font-size:11px;text-align:center;color:#cfe3ff}
+.login-bottom{display:flex;gap:8px;margin-top:10px}
+.login-bottom button{flex:1;font-size:13px !important;padding:12px 6px !important}
+.btn-attend{background:#00a651 !important;border:1px solid #22c55e !important;box-shadow:0 0 14px rgba(34,197,94,.5)}
+.btn-live{background:#0a1530 !important;border:1px solid #ff00ff !important;box-shadow:0 0 14px rgba(255,0,255,.35)}
 .stats{display:flex;gap:10px;margin:12px 0}
 .stat{flex:1;background:#0a1530;border:1px solid #1b2f5a;border-radius:18px;padding:12px 6px;text-align:center;min-width:0}
 .circle{width:72px;height:72px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;background:#071126}
@@ -55,6 +82,8 @@ button:active{transform:scale(.98)}
   .circle{width:58px;height:58px;font-size:20px}
   .stat b{font-size:11px}
   .stat small{font-size:10px}
+  .login-logo-wrap .logo{width:320px}
+  .login-circle{width:54px;height:54px;font-size:18px}
 }
 .job{background:#fff;color:#111;border-radius:12px;padding:10px;margin-bottom:0;border-right:4px solid #007bff;display:flex;flex-direction:column;min-width:0;overflow-wrap:break-word;word-break:break-word}
 .job.done{border-right-color:#22c55e}
@@ -115,7 +144,7 @@ button:active{transform:scale(.98)}
 .netWarn{background:#ffe6e6;border:1px solid #dc3545;color:#dc3545;padding:10px;border-radius:12px;font-size:14px;font-weight:bold;margin:8px 0;display:none}
 @media(max-width:600px){
   .bg-slide{width:78vw;height:42vh;max-height:300px}
-  #loginPage{max-width:300px}
+  #loginPage{max-width:400px}
 }
 </style>
 </head>
@@ -131,10 +160,42 @@ button:active{transform:scale(.98)}
 <p>SERVER • CCTV • ELECTRONICS</p>
 </div>
 <div id="loginPage">
+<div class="login-logo-wrap">
+<img class="logo" src="misk-logo.png" alt="MISK">
+<div class="login-subtitle">SERVER • CCTV • ELECTRONICS</div>
+</div>
 <h2 style="margin:4px 0">MISK - تسجيل دخول</h2>
 <p style="color:#8aa3c7;font-size:13px">مرحباً! سجل الدخول للوصول إلى لوحة الفني</p>
 <input id="user" placeholder="اسم المستخدم"><input id="pass" type="password" placeholder="الباسورد">
-<button onclick="login()">تسجيل الدخول</button><p id="loginMsg" style="color:#ff8a8a"></p></div>
+<button onclick="login()">تسجيل الدخول</button><p id="loginMsg" style="color:#ff8a8a"></p>
+
+<!-- v14 - 4 Circles Neon Sport -->
+<div class="login-stats">
+<div class="login-stat" onclick="showAzkar()"><div class="login-circle c-purple">📖</div><b>اذكار الصباح والمساء</b><small id="azkarText">سبحان الله وبحمده</small></div>
+<div class="login-stat"><div class="login-circle c-blue" style="font-size:28px">1</div><b>عنصر فارغ</b><small>هنملاه بعدين - رقم 1</small></div>
+<div class="login-stat"><div class="login-circle c-yellow"><div class="clockText"><span id="loginClock">--:--</span><br><span id="loginWeather" style="font-size:10px;font-weight:normal">☀️ جاري...</span></div></div><b>الساعة وحالة الجو</b><small id="loginDate">--</small></div>
+<div class="login-stat"><div class="login-circle c-green" style="font-size:28px">2</div><b>عنصر فارغ</b><small>هنملاه بعدين - رقم 2</small></div>
+</div>
+
+<!-- Companies Marquee -->
+<div class="companies-wrap">
+<div class="companies-title">🏢 شركات تم التعامل معها</div>
+<div class="marquee"><span>CLOUD</span><span>DATA</span><span>TECH</span><span>STC</span><span>SABIC</span><span>ARAMCO</span><span>MISK</span><span>CLOUD</span><span>DATA</span><span>TECH</span><span>STC</span><span>SABIC</span><span>ARAMCO</span></div>
+</div>
+
+<!-- Map + Live Location -->
+<div class="map-box">
+<b>🗺️ المهام - الخريطة</b>
+<div class="map-frame"><div class="map-pin">📍</div><div class="map-loc" id="mapLocText">📍 موقعك الحالي: جاري تحديد الموقع... - اضغط لايف لوكيشن</div></div>
+<p style="font-size:11px;color:#8aa3c7;margin:6px 0 0">مراجعة تقرير الصباح • منذ 10 دقائق<br>تحديث حالة المشروع • منذ 30 دقيقة</p>
+</div>
+
+<!-- Attendance + Live Location -->
+<div class="login-bottom">
+<button class="btn-attend" onclick="doAttendance()">🕐 الحضور والانصراف<br><span id="attendTime" style="font-size:11px;font-weight:normal">--:--:--</span></button>
+<button class="btn-live" onclick="getLiveLocation()">📍 لايف لوكيشن<br><span style="font-size:11px;font-weight:normal">من موقع الفني</span></button>
+</div>
+</div>
 <div id="appPage" class="hidden">
 <div class="card"><h2 id="welcome" style="margin:0"></h2><div id="techInfo" style="font-size:14px;color:#8aa3c7"></div><button onclick="logout()" style="background:#333;margin-top:10px">خروج</button></div>
 <div id="followerCard" class="card">
@@ -240,6 +301,18 @@ button:active{transform:scale(.98)}
 </div>
 </div></div>
 <script>
+// === v14 LOGIN EXTRAS - CLOCK / WEATHER / AZKAR / MAP / ATTENDANCE ===
+let azkarList=['سبحان الله وبحمده','لا إله إلا الله وحده لا شريك له','أستغفر الله العظيم','اللهم صل على محمد','أعوذ بكلمات الله التامات','سبحان الله العظيم','الحمد لله رب العالمين','لا حول ولا قوة إلا بالله'];
+let azkarIdx=0;
+function showAzkar(){ azkarIdx=(azkarIdx+1)%azkarList.length; let el=document.getElementById('azkarText'); if(el) el.innerText=azkarList[azkarIdx]; }
+setInterval(showAzkar,4000);
+function tickLoginClock(){ let d=new Date(); let h=String(d.getHours()).padStart(2,'0'); let m=String(d.getMinutes()).padStart(2,'0'); let s=String(d.getSeconds()).padStart(2,'0'); let c=document.getElementById('loginClock'); if(c) c.innerText=h+':'+m; let a=document.getElementById('attendTime'); if(a) a.innerText=h+':'+m+':'+s; let dt=document.getElementById('loginDate'); if(dt) dt.innerText=d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear(); }
+setInterval(tickLoginClock,1000); tickLoginClock();
+async function loadWeather(lat,lon){ try{ let r=await fetch('https://api.open-meteo.com/v1/forecast?latitude='+(lat||30.0444)+'&longitude='+(lon||31.2357)+'&current=temperature_2m,weather_code&timezone=auto'); let j=await r.json(); let t=Math.round(j.current.temperature_2m); let code=j.current.weather_code; let icon=code===0?'☀️':code<3?'🌤️':'☁️'; let el=document.getElementById('loginWeather'); if(el) el.innerText=icon+' '+t+'°'; }catch(e){ let el=document.getElementById('loginWeather'); if(el) el.innerText='☀️ --°'; } }
+loadWeather();
+function getLiveLocation(){ let el=document.getElementById('mapLocText'); if(el) el.innerText='📍 جاري تحديد موقعك...'; if(!navigator.geolocation){ alert('المتصفح مش بيدعم تحديد الموقع'); return; } navigator.geolocation.getCurrentPosition(function(pos){ let lat=pos.coords.latitude.toFixed(5); let lon=pos.coords.longitude.toFixed(5); if(el) el.innerText='📍 موقعك الحالي: '+lat+' , '+lon+' - لايف ✅'; loadWeather(lat,lon); }, function(){ if(el) el.innerText='📍 مش قادر احدد موقعك - افتح الـ GPS'; }, {enableHighAccuracy:true}); }
+function doAttendance(){ let now=new Date(); let t=now.toLocaleTimeString('ar-EG'); let k='misk_attend_'+now.toDateString(); let prev=localStorage.getItem(k); if(!prev){ localStorage.setItem(k,'in:'+t); alert('✅ تم تسجيل الحضور: '+t); } else if(prev.indexOf('out:')===-1){ localStorage.setItem(k,prev+' | out:'+t); alert('✅ تم تسجيل الانصراف: '+t); } else { alert('انت سجلت حضور وانصراف النهاردة خلاص\n'+localStorage.getItem(k)); } }
+
 const SUPABASE_URL="https://wpbjdxjozibqcoyrmxlc.supabase.co";
 const SUPABASE_KEY="sb_publishable_EpBDoKSZQ6OMZA3wHKd8vg_9_ocCNnm";
 const supabaseClient=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
