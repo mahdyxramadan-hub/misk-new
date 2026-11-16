@@ -807,6 +807,7 @@ clearInterval(scan); btn.click();
   }
 }catch(e){}
 },500);
+}catch(e){ scanActive=false; }
 }
 async function openScanner(){ openCamera(currentJobId); }
 function closeScanner(){ try{ if(scanReader) scanReader.reset(); }catch(e){} try{ let v=document.getElementById('scanVideo'); if(v.srcObject){ v.srcObject.getTracks().forEach(t=>t.stop()); v.srcObject=null; } }catch(e){} document.getElementById('scanModal').style.display='none'; }
