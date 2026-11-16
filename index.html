@@ -24,7 +24,11 @@ input::placeholder{color:#7a90b5}
 button{background:#007bff;color:#fff;border:0;font-weight:bold;cursor:pointer}
 button:active{transform:scale(.98)}
 .hidden{display:none}
-#loginPage{max-width:420px;margin:10px auto;background:rgba(10,21,48,.88);border:1px solid #00c6ff;border-radius:24px;padding:20px;box-shadow:0 0 30px rgba(0,198,255,.25);text-align:center}
+#loginPage{max-width:320px;margin:6px auto;background:rgba(10,21,48,.95);border:1px solid #00c6ff;border-radius:18px;padding:14px 14px 12px;box-shadow:0 0 20px rgba(0,198,255,.2);text-align:center}
+#loginPage h2{font-size:17px !important}
+#loginPage p{font-size:12px !important}
+#loginPage input{padding:10px !important;font-size:14px !important}
+#loginPage button{padding:11px !important;font-size:16px !important}
 #loginPage input{background:#fff;color:#111;border:1px solid #cfe3ff;text-align:center}
 #loginPage button{background:#00a651;font-size:18px;padding:15px}
 .stats{display:flex;gap:10px;margin:12px 0}
@@ -92,10 +96,10 @@ button:active{transform:scale(.98)}
 .photoThumb{width:100%;height:90px;object-fit:contain;background:#f0f0f0;border-radius:8px;border:2px solid #00a651;margin-top:4px;cursor:pointer}
 .photoWrap{flex:1;text-align:center;min-width:0}
 .smallBtn{padding:4px !important;font-size:10px !important;margin:4px 0 0 !important}
-.bg-slideshow{position:fixed;inset:0;z-index:-1}
-.bg-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1s ease}
-.bg-slide.active{opacity:1}
-.bg-overlay{position:fixed;inset:0;background:rgba(4,10,26,.45);z-index:-1}
+.bg-slideshow{position:fixed;inset:0;z-index:-1;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.bg-slide{position:absolute;width:62vw;max-width:520px;height:58vh;max-height:420px;background-size:contain;background-repeat:no-repeat;background-position:center;opacity:0;transition:opacity 1s ease;border-radius:18px;filter:blur(1px)}
+.bg-slide.active{opacity:.55}
+.bg-overlay{position:fixed;inset:0;background:rgba(4,10,26,.78);z-index:-1}
 #photoCamModal,#scanModal,#upDownModal,#photoModal{position:fixed !important;inset:0 !important;left:0 !important;right:0 !important;top:0 !important;bottom:0 !important;display:none;align-items:center !important;justify-content:center !important;padding:12px !important;box-sizing:border-box;margin:0 !important;transform:none !important}
 #photoCamModal > div,#scanModal > div,#upDownModal .box{width:100% !important;max-width:420px !important;margin:0 auto !important;max-height:92vh;overflow-y:auto;position:relative;left:auto !important;right:auto !important;transform:none !important}
 #photoVideo,#scanVideo{width:100% !important;max-height:55vh;object-fit:cover;display:block}
@@ -109,6 +113,10 @@ button:active{transform:scale(.98)}
 .lockBtn.done{background:#00a651 !important}
 .lockBtn:disabled{opacity:.6}
 .netWarn{background:#ffe6e6;border:1px solid #dc3545;color:#dc3545;padding:10px;border-radius:12px;font-size:14px;font-weight:bold;margin:8px 0;display:none}
+@media(max-width:600px){
+  .bg-slide{width:78vw;height:42vh;max-height:300px}
+  #loginPage{max-width:300px}
+}
 </style>
 </head>
 <body>
@@ -294,14 +302,12 @@ function clearFollowerPhone(){ document.getElementById('followerPhone').value=''
 function restoreFollower(){ try{ let f=localStorage.getItem('misk_follower'); if(f) document.getElementById('followerPhone').value=f; }catch(e){} }
 function getSendState(id){ try{ return JSON.parse(localStorage.getItem('misk_sent_'+id)||'{"group":false,"follower":false}'); }catch(e){ return {group:false,follower:false}; } }
 function setSendState(id,st){ try{ localStorage.setItem('misk_sent_'+id, JSON.stringify(st)); }catch(e){} }
-// ===== الرسالة الثابتة - 5 سطور بس بالترتيب ده - للجروب و للمتابع =====
 function buildReportText(j){
   let tel = String(j.landline || j.order_no || '').trim();
   let mob = String(j.mobile || '').trim();
   let name = String(j.customer_name || '').trim();
   let serial = String(j.serial || '').trim();
   let updown = String(j.up_down || '').trim();
-  // الترتيب المطلوب: Tel / Mobile / الاسم / السيريال / Up
   return [tel, mob, name, serial, updown].filter(function(s){return String(s||'').trim()!=='';}).join('\n');
 }
 async function fetchPhotoFiles(j){
@@ -339,7 +345,6 @@ async function doShare(j, target){
   try{
     if(navigator.share){
       let data={title:'Misk Report', text:text};
-      // لازم الـ 3 صور + النص في رسالة واحدة
       if(files.length===3 && navigator.canShare && navigator.canShare({files:files})) data.files=files;
       else if(files.length && navigator.canShare && navigator.canShare({files:files})) data.files=files;
       await navigator.share(data);
@@ -573,7 +578,6 @@ if(data.length > visibleCount){
 }
 function showMore(){ visibleCount+=50; renderJobs(); }
 function viewPhoto(url){ document.getElementById('photoModalImg').src=url; document.getElementById('photoModal').style.display='flex'; }
-// ===== FIX النهائي: كاميرا او استوديو - من غير setTimeout و من غير input جديد =====
 async function openPhoto(jobId, type){
   currentPhotoJobId=jobId; currentPhotoType=type; photoBlob=null;
   let label=photoLabels()[type]||type;
@@ -584,18 +588,15 @@ async function openPhoto(jobId, type){
 function stopPhotoStream(){ try{ if(photoStream){ photoStream.getTracks().forEach(function(t){t.stop();}); photoStream=null; } }catch(e){} }
 function closePhotoCam(){ document.getElementById('photoCamModal').style.display='none'; photoBlob=null; }
 function capturePhoto(){
-  // كاميرا - input ثابت فيه capture
   document.getElementById('photoCamModal').style.display='none';
   let inp=document.getElementById('photoInput'); inp.value=''; inp.click();
 }
 function openPhotoFile(){
-  // استوديو - input ثابت من غير capture خالص - كده الاندرويد هيفتح الاستوديو مش الكاميرا
   document.getElementById('photoCamModal').style.display='none';
   let inp=document.getElementById('photoGalleryInput'); inp.value=''; inp.click();
 }
 function retakePhoto(){ let inp=document.getElementById('photoInput'); inp.value=''; inp.click(); }
 async function confirmPhoto(){ if(photoBlob) await uploadPhotoBlob(photoBlob); }
-// ضغط الصورة عشان متبقاش باهتة ولا تقيلة - 1600px جودة 0.85
 async function compressImage(file){
   try{
     if(!file.type || file.type.indexOf('image/')!==0) return file;
