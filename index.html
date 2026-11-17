@@ -84,7 +84,6 @@ button:disabled{opacity:.55}
   .login-logo-wrap .logo{width:320px}
   .login-circle{width:54px;height:54px;font-size:18px}
 }
-/* ===== الكروت - لونين بس: اخضر غامق + ابيض ===== */
 .job{background:#fff;color:#0a3d24;border-radius:20px;padding:0;margin-bottom:0;border:2px solid #0a5c36;display:flex;flex-direction:column;min-width:0;overflow-wrap:break-word;word-break:break-word;overflow:hidden}
 .job.done{border-color:#0a5c36}
 .job.problem{border-color:#0a5c36}
@@ -96,7 +95,6 @@ button:disabled{opacity:.55}
 .serial:disabled{background:#f2f2f2;color:#333;border-color:#0a5c36}
 .row{display:flex;gap:6px;flex-wrap:wrap;padding:0 10px}
 .row button{flex:1;min-width:0}
-/* ===== الزراير - كبسولة زي الواتساب ===== */
 .job button{border-radius:999px !important;padding:13px 10px !important;font-size:13px !important;font-weight:900 !important;border:2px solid #0a5c36 !important}
 .camBtn{background:#fff !important;color:#0a5c36 !important}
 .manateeBtn{background:#fff !important;color:#0a5c36 !important}
@@ -133,13 +131,13 @@ button:disabled{opacity:.55}
 .sheetCard b{font-size:14px}
 .sheetCard span{display:none}
 #archiveSheetsList{margin-top:8px}
-.photoBtn{padding:10px !important;font-size:11px;background:#fff !important;color:#0a5c36 !important;border:2px solid #0a5c36 !important;border-radius:999px !important}
-.photoBtn.done{background:#0a5c36 !important;color:#fff !important;border-color:#0a5c36 !important}
+.photoBtn{padding:8px 4px !important;font-size:11px !important;background:#fff !important;color:#0a5c36 !important;border:2px solid #0a5c36 !important;border-radius:12px !important;white-space:nowrap}
+.photoBtn.done{background:#0a5c36 !important;color:#fff !important}
 .photoBtn.missing{background:#fff !important;color:#0a5c36 !important}
 .photoBtn.uploading{background:#fff !important;color:#0a5c36 !important}
 .photoThumb{width:100%;height:90px;object-fit:contain;background:#f0f0f0;border-radius:8px;border:2px solid #0a5c36;margin-top:4px;cursor:pointer}
 .photoWrap{flex:1;text-align:center;min-width:0}
-.smallBtn{padding:4px !important;font-size:10px !important;margin:4px 0 0 !important;border-radius:999px !important}
+.smallBtn{background:#fff !important;color:#dc3545 !important;border:1px solid #dc3545 !important;border-radius:999px !important;padding:4px !important;font-size:11px !important;margin:4px 0 0 !important}
 #photoCamModal,#upDownModal,#recipientModal,#statusModal,#photoModal{position:fixed !important;inset:0 !important;left:0 !important;right:0 !important;top:0 !important;bottom:0 !important;display:none;align-items:center !important;justify-content:center !important;padding:12px !important;box-sizing:border-box;margin:0 !important;transform:none !important}
 #photoCamModal > div,#upDownModal .box,#recipientModal .box,#statusModal .box{width:100% !important;max-width:420px !important;margin:0 auto !important;max-height:92vh;overflow-y:auto;position:relative;left:auto !important;right:auto !important;transform:none !important}
 #photoModal img{margin:0 auto}
@@ -289,7 +287,6 @@ function getArchiveDisplayDate(j){ return getSheetDate(j); }
 function goHome(){ currentFilter='all'; visibleCount=50; document.getElementById('archiveFilter').classList.add('hidden'); document.querySelectorAll('.bottomNav div').forEach(function(d){d.classList.remove('active');}); let hb=document.querySelector('.bottomNav div'); if(hb) hb.classList.add('active'); }
 function fixTel(t){ let s=String(t||'').trim(); if(!s) return ''; if(s.indexOf('-')>-1 && s.startsWith('3-')) s='0'+s.replace('-',''); s=s.replace(/\D/g,''); if(s.length===8) s='0'+s; if(s.length===9 && s.startsWith('3')) s='0'+s; return s; }
 function fixMobile(m){ let s=String(m||'').replace(/\D/g,'').trim(); if(!s) return ''; if(s.length===10 && s.startsWith('1')) s='0'+s; return s; }
-// ===== تصنيف الدواير - FIX: تم التسليم = كامل بس، ومشكلة = حالة الزيارة بس =====
 function isProblemJob(j){ let s=String(j.status||''); if(s==='تأجيل' || s==='تاجيل' || s==='لم يتم الرد' || s==='رفض الزيارة') return true; return false; }
 function isDoneJob(j){ return isFullyDone(j); }
 function isPendingJob(j){ return !isDoneJob(j) && !isProblemJob(j); }
@@ -365,7 +362,16 @@ async function loadArchive(){ if(currentUser.role!=='admin'){ alert('الأرش�
 function renderArchiveSheets(){ let wrap=document.getElementById('archiveSheetsList'); if(!wrap) return; let dates=[]; archiveJobs.forEach(function(j){ let d=getArchiveDisplayDate(j); if(d && dates.indexOf(d)===-1) dates.push(d); }); dates.sort().reverse(); if(!dates.length){ wrap.innerHTML=''; return; } let html='<b style="font-size:13px">📂 شيتات الارشيف - دوس على اي شيت:</b><br>'; dates.forEach(function(d){ html+='<span class="sheetCard" onclick="openArchiveDay(\''+esc(d)+'\')">📄 شيت '+esc(d)+'</span>'; }); wrap.innerHTML=html; }
 function openArchiveDay(d){ document.getElementById('archiveDate').value=d; renderJobs(); document.getElementById('jobsList').scrollIntoView({behavior:'smooth'}); }
 function exportOneDay(d){ document.getElementById('archiveDate').value=d; exportArchive(); }
-function photoBtnHtml(j, type, label, isArch){ let url=j[type]||''; if(isArch){ if(!url) return '<div class="photoWrap"><button class="photoBtn" disabled>❌ '+label+'</button></div>'; return '<div class="photoWrap"><button class="photoBtn done" onclick="viewPhoto(\''+esc(url)+'\')">✅ '+label+'</button><img class="photoThumb" src="'+esc(url)+'" onclick="viewPhoto(\''+esc(url)+'\')"></div>'; } if(url) return '<div class="photoWrap"><button class="photoBtn done" onclick="openPhoto('+j.id+',\''+type+'\')">✅ '+label+' - صور تاني</button><img class="photoThumb" src="'+esc(url)+'" onclick="viewPhoto(\''+esc(url)+'\')"><button class="smallBtn" style="background:#dc3545" onclick="deletePhoto('+j.id+',\''+type+'\')">🗑️ مسح الصورة</button></div>'; if(isUploadingPhoto && pendingPhotoSnapshot && pendingPhotoSnapshot.jobId==j.id && pendingPhotoSnapshot.type==type) return '<div class="photoWrap"><button class="photoBtn uploading" disabled>⏳ جاري الرفع... '+label+'</button></div>'; return '<div class="photoWrap"><button class="photoBtn missing" onclick="openPhoto('+j.id+',\''+type+'\')">📷 '+label+' *</button></div>'; }
+function photoBtnHtml(j, type, label, isArch){
+  let url=j[type]||'';
+  if(isArch){
+    if(!url) return '<div class="photoWrap"><div style="font-size:11px;font-weight:bold;color:#0a5c36;padding:6px">'+label+'</div><div style="height:90px;background:#f0f0f0;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px">❌</div></div>';
+    return '<div class="photoWrap"><div style="font-size:11px;font-weight:bold;color:#0a5c36;padding:6px">'+label+'</div><img class="photoThumb" src="'+esc(url)+'" onclick="viewPhoto(\''+esc(url)+'\')"></div>';
+  }
+  if(url) return '<div class="photoWrap"><div style="font-size:11px;font-weight:bold;color:#0a5c36;padding:6px">✅ '+label+'</div><img class="photoThumb" src="'+esc(url)+'" onclick="viewPhoto(\''+esc(url)+'\')"><button class="smallBtn" onclick="deletePhoto('+j.id+',\''+type+'\')">🗑️ مسح</button></div>';
+  if(isUploadingPhoto && pendingPhotoSnapshot && pendingPhotoSnapshot.jobId==j.id && pendingPhotoSnapshot.type==type) return '<div class="photoWrap"><div style="font-size:11px;font-weight:bold;color:#0a5c36;padding:6px">'+label+'</div><div style="height:90px;background:#f0f0f0;border-radius:8px;display:flex;align-items:center;justify-content:center">⏳ جاري الرفع...</div></div>';
+  return '<div class="photoWrap"><button class="photoBtn missing" onclick="openPhoto('+j.id+',\''+type+'\')">📷 '+label+'</button></div>';
+}
 function renderJobs(){
 let isArch = currentFilter==='archive'; let base = isArch ? archiveJobs : allJobs; let data=base.slice(); let qtxt=(document.getElementById('searchInput') ? document.getElementById('searchInput').value : '').trim().toLowerCase(); if(qtxt){ data=data.filter(j=> String(j.customer_name||'').toLowerCase().includes(qtxt) || String(j.serial||'').toLowerCase().includes(qtxt) || String(j.landline||'').includes(qtxt) || String(j.order_no||'').includes(qtxt)); }
 if(isArch){ let d=document.getElementById('archiveDate').value; if(d) data=data.filter(function(j){return getArchiveDisplayDate(j)===d;}); } else {
