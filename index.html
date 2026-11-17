@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Misk - Daily v17</title>
+<title>Misk - Daily v18</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://unpkg.com/@zxing/library@0.20.0/umd/index.min.js"></script>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
@@ -12,8 +12,8 @@ html,body{overflow-x:hidden !important;max-width:100vw;width:100%}
 body{margin:0;background:#000;color:#fff;padding:0 8px 90px}
 a{color:#4db8ff}
 .top{display:none !important}
-/* ===== اللوجو الجديد - مدمج مع ألوان الأبلكيشن ===== */
-.logo{width:420px;max-width:96%;height:auto;border:none;border-radius:24px;background:transparent;transition:all .8s ease;animation:khadda 1.2s ease-out;mix-blend-mode:screen;filter:drop-shadow(0 0 25px rgba(147,51,234,.8)) drop-shadow(0 0 45px rgba(0,198,255,.6));-webkit-mask-image:radial-gradient(ellipse at center, black 72%, transparent 98%);mask-image:radial-gradient(ellipse at center, black 72%, transparent 98%)}
+/* ===== اللوجو - متصلح - هيظهر أكيد ===== */
+.logo{width:420px;max-width:96%;height:auto;display:block;border:none;border-radius:20px;background:transparent;transition:all .8s ease;animation:khadda 1.2s ease-out;filter:drop-shadow(0 0 18px rgba(147,51,234,.9)) drop-shadow(0 0 30px rgba(0,198,255,.6))}
 @keyframes khadda{0%{transform:scale(.1);opacity:0;filter:blur(15px)}40%{transform:scale(1.4);opacity:1;filter:blur(0)}60%{transform:scale(1.15) rotate(-2deg)}80%{transform:scale(1.05) rotate(2deg)}100%{transform:scale(1) rotate(0)}}
 body.logging-in .top .logo{opacity:0;transform:scale(1.3);filter:blur(10px)}
 body.logging-in .top{opacity:0;transform:scale(1.1);transition:all .8s ease}
@@ -33,7 +33,7 @@ button:disabled{opacity:.55}
 #loginPage button{padding:11px !important;font-size:16px !important}
 #loginPage input{background:#fff;color:#111;border:1px solid #cfe3ff;text-align:center}
 #loginPage button{background:#00a651;font-size:18px;padding:15px}
-.login-logo-wrap{text-align:center;margin:2px 0 8px;background:radial-gradient(circle, rgba(147,51,234,.25) 0%, rgba(0,198,255,.12) 45%, transparent 70%);border-radius:24px;padding:10px 0}
+.login-logo-wrap{text-align:center;margin:2px 0 8px;background:radial-gradient(circle, rgba(147,51,234,.22) 0%, rgba(0,198,255,.10) 45%, transparent 70%);border-radius:20px;padding:10px 0;border:1px solid rgba(147,51,234,.4)}
 .login-logo-wrap .logo{width:380px;max-width:100%;display:block;margin:0 auto}
 .login-subtitle{color:#cfe3ff;font-size:13px;margin:4px 0 10px}
 .login-stats{display:flex;gap:8px;margin:14px 0;flex-wrap:nowrap}
@@ -165,9 +165,9 @@ button:disabled{opacity:.55}
 </style>
 </head>
 <body>
-<div class="top"><img class="logo" src="misk-logo.png" alt="MISK"><p>SERVER • CCTV • ELECTRONICS</p></div>
+<div class="top"><img class="logo" src="misk-logo.png?v=18" alt="MISK" onerror="this.src='misk-logo.png'"><p>SERVER • CCTV • ELECTRONICS</p></div>
 <div id="loginPage">
-<div class="login-logo-wrap"><img class="logo" src="misk-logo.png" alt="MISK"><div class="login-subtitle">SERVER • CCTV • ELECTRONICS</div></div>
+<div class="login-logo-wrap"><img class="logo" src="misk-logo.png?v=18" alt="MISK" onerror="this.style.display='none'"><div class="login-subtitle">SERVER • CCTV • ELECTRONICS</div></div>
 <h2 style="margin:4px 0">MISK - تسجيل دخول</h2>
 <p style="color:#8aa3c7;font-size:13px">مرحباً! سجل الدخول للوصول إلى لوحة الفني</p>
 <input id="user" placeholder="اسم المستخدم"><input id="pass" type="password" placeholder="الباسورد">
@@ -271,7 +271,7 @@ button:disabled{opacity:.55}
 </div>
 <button onclick="closeLockBack()" style="background:#333;font-size:18px !important;padding:14px !important;margin-top:14px !important">⬅️ رجوع - هبعت بعدين</button>
 </div></div>
-<div id="istighfarOverlay"><div class="istBox"><div style="font-size:42px">🤲</div><h2 style="color:#fff;margin:8px 0">أستغفر الله العظيم</h2><p style="color:#cfe3ff;line-height:1.8">أستغفر الله العظيم الذي لا إله إلا هو الحي القيوم وأتوب إليه<br><span id="istCount" style="font-size:28px;font-weight:900;color:#22c55e">10</span></p><p style="color:#8aa3c7;font-size:12px">ثواني ونكمل...</p></div></div>
+<div id="istighfarOverlay"><div class="istBox"><div style="font-size:42px">🤲</div><h2 id="istTitle" style="color:#fff;margin:8px 0">أستغفر الله العظيم</h2><p id="istText" style="color:#cfe3ff;line-height:1.8">أستغفر الله العظيم الذي لا إله إلا هو الحي القيوم وأتوب إليه<br><span id="istCount" style="font-size:28px;font-weight:900;color:#22c55e">10</span></p><p style="color:#8aa3c7;font-size:12px">ثواني ونكمل...</p></div></div>
 <div id="azkarModal"><div class="box"><h3 style="margin:0 0 10px">📖 الأذكار وحصن المسلم</h3><div id="azkarFull" style="line-height:2;font-size:15px"></div><button onclick="closeAzkar()" style="background:#333">✖️ اقفل</button></div></div>
 <div id="passModal"><div class="box"><h3 style="margin:0 0 8px">🔐 تريد تغيير الباسورد؟</h3><p style="font-size:14px;line-height:1.7">لو حابب تغير الباسورد بتاعك، اكتب الجديد هنا. لو مش حابب دوس تخطي.</p><input id="newPassInput" type="password" placeholder="الباسورد الجديد"><button onclick="doChangePass()" style="background:#00a651">✅ تغيير الباسورد</button><button onclick="closePassModal()" style="background:#333">⏭️ تخطي - مش عايز أغير</button></div></div>
 <script>
@@ -285,7 +285,18 @@ function applyZoom(){ document.body.style.zoom=currentZoom+'%'; }
 function zoomIn(){ currentZoom=Math.min(200,currentZoom+10); applyZoom(); }
 function zoomOut(){ currentZoom=Math.max(50,currentZoom-10); applyZoom(); }
 function resetZoom(){ currentZoom=100; applyZoom(); }
-function showIstighfar(){ let ov=document.getElementById('istighfarOverlay'); ov.style.display='flex'; let c=10; let el=document.getElementById('istCount'); el.innerText=c; let iv=setInterval(function(){ c--; el.innerText=c; if(c<=0){ clearInterval(iv); ov.style.display='none'; } },1000); }
+/* ===== الاستغفار - بيتغير كل مرة ===== */
+let istighfarList=[
+ {t:'أستغفر الله العظيم', d:'أستغفر الله العظيم الذي لا إله إلا هو الحي القيوم وأتوب إليه'},
+ {t:'أستغفر الله', d:'أستغفر الله وأتوب إليه، أستغفر الله العظيم'},
+ {t:'اللهم اغفر لي', d:'اللهم اغفر لي ذنبي كله، دقه وجله، أوله وآخره، علانيته وسره'},
+ {t:'رب اغفر لي وتب علي', d:'رب اغفر لي وتب علي إنك أنت التواب الرحيم'},
+ {t:'سبحان الله وبحمده', d:'سبحان الله وبحمده، أستغفر الله وأتوب إليه'},
+ {t:'لا إله إلا أنت سبحانك', d:'لا إله إلا أنت سبحانك إني كنت من الظالمين'},
+ {t:'اللهم إنك عفو', d:'اللهم إنك عفو تحب العفو فاعف عني'},
+ {t:'أستغفرك ربي', d:'أستغفرك ربي من كل ذنب وأتوب إليك'}
+];
+function showIstighfar(){ let idx=0; try{ idx=parseInt(localStorage.getItem('misk_ist_idx')||'0'); }catch(e){ idx=0; } let item=istighfarList[idx % istighfarList.length]; try{ localStorage.setItem('misk_ist_idx', String((idx+1)%istighfarList.length)); }catch(e){} document.getElementById('istTitle').innerText=item.t; document.getElementById('istText').innerHTML=item.d+'<br><span id="istCount" style="font-size:28px;font-weight:900;color:#22c55e">10</span>'; let ov=document.getElementById('istighfarOverlay'); ov.style.display='flex'; let c=10; let el=document.getElementById('istCount'); el.innerText=c; let iv=setInterval(function(){ c--; el.innerText=c; if(c<=0){ clearInterval(iv); ov.style.display='none'; } },1000); }
 function askChangePass(){ if(!currentUser || currentUser.role==='admin') return; document.getElementById('passModal').style.display='flex'; }
 function closePassModal(){ document.getElementById('passModal').style.display='none'; }
 async function doChangePass(){ let np=document.getElementById('newPassInput').value.trim(); if(!np || np.length<3){ alert('اكتب باسورد جديد 3 حروف على الأقل'); return; } let r=await supabaseClient.from('technicians').update({password:np}).eq('id',currentUser.id); if(r.error){ alert(r.error.message); return; } currentUser.password=np; try{ localStorage.setItem('misk_user',JSON.stringify(currentUser)); }catch(e){} alert('✅ تم تغيير الباسورد'); closePassModal(); }
