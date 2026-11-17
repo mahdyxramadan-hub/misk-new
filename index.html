@@ -159,7 +159,7 @@ button:active{transform:scale(.98)}
 <div class="card"><h2 id="welcome" style="margin:0"></h2><div id="techInfo" style="font-size:14px;color:#8aa3c7"></div><button onclick="logout()" style="background:#333;margin-top:10px">خروج</button></div>
 <div id="followerCard" class="card">
 <h3 style="margin:0 0 6px">👤 رقم المتابع بتاع النهاردة - اجباري</h3>
-<p style="font-size:12px;color:#8aa3c7;margin:0 0 6px">الفني بيكتب الرقم بايده، من غيره مفيش حفظ - الجروب بيتحدد اوتوماتيك من G2 / G3 / G4 في الشيت، الفني مش بيختار حاجة</p>
+<p style="font-size:12px;color:#8aa3c7;margin:0 0 6px">الفني بيكتب الرقم بايده، من غيره مفيش حفظ ولا ارسال - الجروب بيتحدد اوتوماتيك من G2 / G3 / G4 في الشيت، الفني مش بيختار حاجة</p>
 <input id="followerPhone" placeholder="010xxxxxxxxx" inputmode="numeric" oninput="saveFollowerPhone()">
 <div class="row"><button onclick="clearFollowerPhone()" style="background:#dc3545">🗑️ مسح رقم المتابع</button></div>
 <p id="followerMsg" style="font-size:13px;color:#ff8a8a;margin:4px 0 0"></p>
@@ -200,7 +200,7 @@ button:active{transform:scale(.98)}
 <button onclick="exportArchive()" style="background:#00a651">⬇️ تحميل اليوم المختار اكسيل - 18 عمود</button>
 </div>
 <div class="searchBox"><span>🔍</span><input id="searchInput" placeholder="بحث عن مهمة / رقم تسلسلي ..." oninput="onSearch()"></div>
-<div class="hint">صور الـ 3 صور الاول: وش الجهاز + ضهر الجهاز + الايصال والبطاقة. وبعدين سيريال + Up / Down، والاوردر مش هيتقفل غير وهما الـ 5 موجودين. وبعد الحفظ لازم تبعت للجروب بتاع الاوردر ده + للمتابع.</div>
+<div class="hint">صور الـ 3 صور الاول: وش الجهاز + ضهر الجهاز + الايصال والبطاقة. وبعدين سيريال + Up / Down، والاوردر مش هيتقفل غير وهما الـ 5 موجودين. وبعد الحفظ لازم تبعت للجروب + المتابع بزرار واحد.</div>
 <div id="jobsList"></div>
 <div id="loadMoreWrap"></div>
 </div>
@@ -230,12 +230,11 @@ button:active{transform:scale(.98)}
 <p id="lockCustomer" style="font-weight:bold"></p>
 <div id="lockNetWarn" class="netWarn">⚠️ مفيش نت عندك - الرسالة متحفظة - اول ما النت يرجع ابعتها</div>
 <p id="lockStatus" style="font-size:14px;line-height:1.8"></p>
-<button id="btnSendGroup" class="lockBtn" onclick="sendToGroup()" style="background:#25D366">📲 ارسال للواتساب - الجروب</button>
-<button id="btnSendFollower" class="lockBtn" onclick="sendToFollower()" style="background:#007bff">👤 ارسال للمتابع</button>
-<p style="font-size:12px;color:#666">لازم تدوس على الزرارين الاتنين - مفيش الغاء - الشاشة هتفضل مقفولة لحد ما الاتنين يبقوا تم</p>
+<button id="btnSendBoth" class="lockBtn" onclick="sendToBoth()" style="background:#25D366">📲 ارسال للجروب + المتابع - زرار واحد</button>
+<p style="font-size:12px;color:#666">زرار واحد بيبعت للجهتين - لو رقم المتابع مش مكتوب مش هيبعت خالص</p>
 <div id="lockConfirmBox" style="display:none;background:#fff7e6;border:1px solid #ff7b00;border-radius:12px;padding:12px;margin-top:8px">
 <p id="lockConfirmText" style="font-weight:bold;margin:0 0 8px"></p>
-<div class="row"><button onclick="confirmSendYes()" style="background:#00a651">✅ ايوه بعت</button><button onclick="confirmSendNo()" style="background:#dc3545">❌ لا لسه</button></div>
+<div class="row"><button onclick="confirmSendYes()" style="background:#00a651">✅ ايوه بعت للجهتين</button><button onclick="confirmSendNo()" style="background:#dc3545">❌ لا لسه</button></div>
 </div>
 </div></div>
 <script>
@@ -279,14 +278,33 @@ function getSendState(id){ try{ return JSON.parse(localStorage.getItem('misk_sen
 function setSendState(id,st){ try{ localStorage.setItem('misk_sent_'+id, JSON.stringify(st)); }catch(e){} }
 function buildReportText(j){ let tel = String(j.landline || j.order_no || '').trim(); let mob = String(j.mobile || '').trim(); let name = String(j.customer_name || '').trim(); let serial = String(j.serial || '').trim(); let updown = String(j.up_down || '').trim(); return [tel, mob, name, serial, updown].filter(function(s){return String(s||'').trim()!=='';}).join('\n'); }
 async function fetchPhotoFiles(j){ let files=[]; let arr=[['photo_front','وش.jpg'],['photo_back','ضهر.jpg'],['photo_receipt','ايصال.jpg']]; for(let a of arr){ let url=j[a[0]]; if(!url) continue; try{ let r=await fetch(url); let b=await r.blob(); files.push(new File([b], a[1], {type: b.type || 'image/jpeg'})); }catch(e){} } return files; }
-function updateLockUI(){ let st=getSendState(lockJobId); let j=allJobs.find(function(x){return x.id==lockJobId;}); document.getElementById('lockCustomer').innerText = j ? (j.customer_name||'') + ' - ' + (j.serial||'') + ' - ' + (j.report_group||'') : ''; document.getElementById('lockStatus').innerHTML = '1. ارسال للواتساب - ' + (j?j.report_group:'') + ': ' + (st.group ? '✅ تم' : '❌ لسه متبعتش') + '<br>2. ارسال للمتابع: ' + (st.follower ? '✅ تم' : '❌ لسه متبعتش'); let bg=document.getElementById('btnSendGroup'); bg.innerText = st.group ? '✅ تم - ارسال للواتساب' : '📲 ارسال للواتساب - ' + (j?j.report_group:'الجروب'); bg.classList.toggle('done', st.group); bg.disabled = st.group; let bf=document.getElementById('btnSendFollower'); bf.innerText = st.follower ? '✅ تم - ارسال للمتابع' : '👤 ارسال للمتابع'; bf.classList.toggle('done', st.follower); bf.disabled = st.follower; let net=document.getElementById('lockNetWarn'); net.style.display = navigator.onLine ? 'none' : 'block'; if(st.group && st.follower){ setTimeout(function(){ document.getElementById('sendLockModal').style.display='none'; lockJobId=null; loadJobs(); }, 600); } }
+function updateLockUI(){ let st=getSendState(lockJobId); let j=allJobs.find(function(x){return x.id==lockJobId;}); document.getElementById('lockCustomer').innerText = j ? (j.customer_name||'') + ' - ' + (j.serial||'') + ' - ' + (j.report_group||'') : ''; document.getElementById('lockStatus').innerHTML = 'الجروب: ' + (j?j.report_group:'') + ' - ' + (st.group ? '✅ تم' : '❌ لسه') + '<br>المتابع: ' + getFollowerPhone() + ' - ' + (st.follower ? '✅ تم' : '❌ لسه'); let b=document.getElementById('btnSendBoth'); let done=(st.group && st.follower); b.innerText = done ? '✅ تم - بعت للجهتين' : '📲 ارسال للجروب + المتابع - زرار واحد'; b.classList.toggle('done', done); b.disabled = done; let net=document.getElementById('lockNetWarn'); net.style.display = navigator.onLine ? 'none' : 'block'; if(done){ setTimeout(function(){ document.getElementById('sendLockModal').style.display='none'; lockJobId=null; loadJobs(); }, 600); } }
 function showLockForJob(id){ lockJobId=id; lockPendingType=null; document.getElementById('lockConfirmBox').style.display='none'; document.getElementById('sendLockModal').style.display='flex'; updateLockUI(); }
 function checkLockAfterLoad(){ try{ let last=localStorage.getItem('misk_locked_job'); if(last){ let id=Number(last); let j=allJobs.find(function(x){return x.id==id;}); if(j && isFullyDone(j)){ let st=getSendState(id); if(!st.group || !st.follower){ showLockForJob(id); } } } }catch(e){} }
 async function doShare(j, target){ if(!navigator.onLine){ document.getElementById('lockNetWarn').style.display='block'; alert('مفيش نت عندك - الرسالة متحفظة - اول ما النت يرجع ابعتها'); return false; } let text=buildReportText(j); let files=await fetchPhotoFiles(j); try{ if(navigator.share){ let data={title:'Misk Report', text:text}; if(files.length && navigator.canShare && navigator.canShare({files:files})) data.files=files; await navigator.share(data); return true; } }catch(e){ if(String(e).indexOf('Abort')>-1) return false; } if(target==='follower'){ let ph=getFollowerPhone(); let intl=ph; if(intl.startsWith('0')) intl='20'+intl.slice(1); window.open('https://wa.me/'+intl+'?text='+encodeURIComponent(text), '_blank'); return true; } alert('اختار الواتساب من قايمة المشاركة واختار الجروب: ' + (j.report_group||'') + '\nالرسالة:\n' + text); return false; }
-async function sendToGroup(){ let j=allJobs.find(function(x){return x.id==lockJobId;}); if(!j) return; if(!j.report_group){ alert('الاوردر ده ملوش جروب - ارفع الشيت تاني بالاسم الصح'); return; } let ok=await doShare(j,'group'); if(!ok) return; lockPendingType='group'; document.getElementById('lockConfirmText').innerText='بعت الرسالة للجروب - ' + j.report_group + ' ؟'; document.getElementById('lockConfirmBox').style.display='block'; }
-async function sendToFollower(){ let j=allJobs.find(function(x){return x.id==lockJobId;}); if(!j) return; let ph=getFollowerPhone(); if(!ph){ alert('سجل رقم المتابع'); document.getElementById('followerPhone').focus(); return; } let ok=await doShare(j,'follower'); if(!ok) return; lockPendingType='follower'; document.getElementById('lockConfirmText').innerText='بعت الرسالة للمتابع - ' + ph + ' ؟'; document.getElementById('lockConfirmBox').style.display='block'; }
-function confirmSendYes(){ if(!lockPendingType) return; let st=getSendState(lockJobId); st[lockPendingType]=true; setSendState(lockJobId, st); document.getElementById('lockConfirmBox').style.display='none'; lockPendingType=null; let st2=getSendState(lockJobId); if(st2.group && st2.follower){ try{ localStorage.removeItem('misk_locked_job'); }catch(e){} } updateLockUI(); }
-function confirmSendNo(){ document.getElementById('lockConfirmBox').style.display='none'; lockPendingType=null; alert('تمام - الاوردر لسه مقفول - لازم تبعت عشان تكمل'); updateLockUI(); }
+// ===== زرار واحد بيبعت للجهتين - لو المتابع مش مكتوب بيقف كله =====
+async function sendToBoth(){
+  let j=allJobs.find(function(x){return x.id==lockJobId;}); if(!j) return;
+  let ph=getFollowerPhone();
+  if(!ph){
+    alert('⛔ ادخل رقم المتابع الاول\nمش هينفع نبعت لا للجروب ولا للمتابع من غيره');
+    document.getElementById('followerMsg').innerText='⛔ ادخل رقم المتابع الاول - الارسال واقف كله';
+    document.getElementById('followerPhone').focus();
+    document.getElementById('followerPhone').scrollIntoView({behavior:'smooth'});
+    return;
+  }
+  if(!j.report_group){ alert('الاوردر ده ملوش جروب - ارفع الشيت تاني بالاسم الصح'); return; }
+  // 1 - ابعت للجروب
+  let ok1=await doShare(j,'group'); if(!ok1) return;
+  alert('✅ اتبعت للجروب - دلوقتي هيفتح المتابع - دوس ارسال عنده');
+  // 2 - ابعت للمتابع على طول
+  let ok2=await doShare(j,'follower'); if(!ok2) return;
+  lockPendingType='both';
+  document.getElementById('lockConfirmText').innerText='بعت للجروب - '+j.report_group+' - وللمتابع - '+ph+' ؟';
+  document.getElementById('lockConfirmBox').style.display='block';
+}
+function confirmSendYes(){ if(!lockPendingType) return; let st=getSendState(lockJobId); st.group=true; st.follower=true; setSendState(lockJobId, st); document.getElementById('lockConfirmBox').style.display='none'; lockPendingType=null; try{ localStorage.removeItem('misk_locked_job'); }catch(e){} updateLockUI(); }
+function confirmSendNo(){ document.getElementById('lockConfirmBox').style.display='none'; lockPendingType=null; alert('تمام - الاوردر لسه مقفول - لازم تبعت للجهتين'); updateLockUI(); }
 window.addEventListener('DOMContentLoaded', ()=>{ try{ let saved = localStorage.getItem('misk_user'); if(saved){ currentUser = JSON.parse(saved); document.getElementById('loginPage').classList.add('hidden'); document.getElementById('appPage').classList.remove('hidden'); document.getElementById('welcome').innerText='اهلا '+currentUser.name; document.getElementById('techInfo').innerText=currentUser.role==='admin'?'انت الادمن - شايف كل الشغل':'تليفونك: '+(currentUser.phone||''); if(currentUser.role==='admin'){ document.getElementById('adminAdd').classList.remove('hidden'); document.getElementById('archiveNav').style.display='block'; } restoreFollower(); loadJobs(); } }catch(e){} });
 function normPhone(p){ let s=String(p||'').replace(/\D/g,''); if(!s) return ''; if(s.length===10 && s.startsWith('1')) s='0'+s; if(s.length===9) s='0'+s; return s; }
 function cleanUsername(s){ let x=String(s||'').toLowerCase().trim(); x=x.replace(/[\s_\-\.]+/g,''); x=x.replace(/^3/,'a'); if(x.includes('basr')||x.includes('abas')||x.includes('elbas')) x='mohamedelbasry'; if(x.includes('afif')||x.includes('afy')) x='afify'; return x; }
@@ -328,12 +346,8 @@ function exportArchive(){ let d=document.getElementById('archiveDate').value; le
 // ===== Manatee - بيفتح البرنامج أوتوماتيك =====
 function openManatee(jobId){
   currentJobId=jobId;
-  // حاول تفتح التطبيق لو متسطب عند الفني
   window.location.href='intent://scan#Intent;package=com.manateeworks.barcodescanners;end';
-  // لو مش متسطب بعد ثانيتين - وديه على جوجل بلاي يحمّله
-  setTimeout(function(){
-    window.open('https://play.google.com/store/apps/details?id=com.manateeworks.barcodescanners','_blank');
-  }, 1800);
+  setTimeout(function(){ window.open('https://play.google.com/store/apps/details?id=com.manateeworks.barcodescanners','_blank'); }, 1800);
 }
 // ===== السيريال: لقطة ثابتة زي صور الجهاز =====
 function openCamera(jobId){
