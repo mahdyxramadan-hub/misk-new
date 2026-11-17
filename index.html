@@ -17,7 +17,7 @@ a{color:#f0abfc}
 body.logging-in .top .logo{opacity:0;transform:scale(1.3);filter:blur(10px)}
 body.logging-in .top{opacity:0;transform:scale(1.1);transition:all .8s ease}
 .top p{margin:6px 0 0;color:#e9d5ff;font-size:13px}
-.card{background:rgba(255,255,255,.08);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:14px;margin-bottom:12px;box-shadow:0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.2)}
+.card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:14px;margin-bottom:12px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
 .card-light{background:#fff;color:#111;border-radius:20px;padding:14px;margin-bottom:12px}
 input,button,select,textarea{width:100%;padding:13px;margin:6px 0;border:1px solid rgba(255,255,255,.28);border-radius:14px;font-size:16px;background:rgba(255,255,255,.10);color:#fff}
 input::placeholder,textarea::placeholder{color:#e9d5ff}
@@ -25,12 +25,12 @@ button{background:linear-gradient(90deg,#9333ea,#ec4899);color:#fff;border:0;fon
 button:active{transform:scale(.98)}
 button:disabled{opacity:.55}
 .hidden{display:none}
-#loginPage{max-width:430px;margin:6px auto;background:rgba(255,255,255,.08);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.25);border-radius:28px;padding:14px 14px 12px;box-shadow:0 0 30px rgba(168,85,247,.35);text-align:center}
+#loginPage{max-width:430px;margin:6px auto;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);border-radius:28px;padding:14px 14px 12px;box-shadow:0 0 30px rgba(168,85,247,.35);text-align:center}
 #loginPage h2{font-size:17px !important}
 #loginPage p{font-size:12px !important}
 #loginPage input{padding:10px !important;font-size:14px !important}
 #loginPage button{padding:11px !important;font-size:16px !important}
-#loginPage input{background:rgba(255,255,255,.95);color:#111;border:1px solid rgba(255,255,255,.6);text-align:center}
+#loginPage input{background:#fff;color:#111;border:1px solid rgba(255,255,255,.6);text-align:center}
 #loginPage button{background:linear-gradient(90deg,#9333ea,#ec4899);font-size:18px;padding:15px}
 .login-logo-wrap{text-align:center;margin:2px 0 8px;background:radial-gradient(circle, rgba(168,85,247,.35) 0%, rgba(236,72,153,.12) 45%, transparent 70%);border-radius:24px;padding:10px 0;border:1px solid rgba(255,255,255,.2)}
 .login-logo-wrap .logo{width:380px;max-width:100%;display:block;margin:0 auto}
@@ -57,7 +57,7 @@ button:disabled{opacity:.55}
 .btn-attend{background:linear-gradient(90deg,#16a34a,#22c55e) !important;border:1px solid rgba(255,255,255,.3) !important;box-shadow:0 0 14px rgba(34,197,94,.4)}
 .btn-live{background:rgba(255,255,255,.10) !important;border:1px solid rgba(255,255,255,.30) !important;box-shadow:0 0 14px rgba(168,85,247,.35)}
 .stats{display:flex;gap:10px;margin:12px 0}
-.stat{flex:1;background:rgba(255,255,255,.08);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:12px 6px;text-align:center;min-width:0;cursor:pointer}
+.stat{flex:1;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:12px 6px;text-align:center;min-width:0;cursor:pointer}
 .stat.active{border-color:#f0abfc !important;box-shadow:0 0 22px rgba(236,72,153,.55)}
 .circle{width:72px;height:72px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;background:rgba(255,255,255,.10)}
 .c-green{border:3px solid #22c55e;box-shadow:0 0 18px rgba(34,197,94,.5);color:#fff}
@@ -68,7 +68,7 @@ button:disabled{opacity:.55}
 .stat b{display:block;font-size:13px}
 .stat small{color:#e9d5ff;font-size:11px}
 .searchBox{position:relative}
-.searchBox input{padding-right:44px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.30);border-radius:16px;font-size:17px;backdrop-filter:blur(10px)}
+.searchBox input{padding-right:44px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.30);border-radius:16px;font-size:17px}
 .searchBox span{position:absolute;right:14px;top:18px;font-size:20px}
 #jobsList{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-items:start;width:100%}
 #jobsList > p{grid-column:1/-1}
@@ -84,18 +84,23 @@ button:disabled{opacity:.55}
   .login-logo-wrap .logo{width:320px}
   .login-circle{width:54px;height:54px;font-size:18px}
 }
-.job{background:rgba(255,255,255,.09);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#fff;border-radius:20px;padding:0;margin-bottom:0;border:1px solid rgba(255,255,255,.28);display:flex;flex-direction:column;min-width:0;overflow-wrap:break-word;word-break:break-word;overflow:hidden;box-shadow:0 10px 28px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.18)}
-.job.done{border-color:rgba(255,255,255,.45);box-shadow:0 0 22px rgba(236,72,153,.35)}
+/* ===== كارت العميل زي صورة 11 بالظبط ===== */
+.job{background:rgba(255,255,255,.09);color:#fff;border-radius:20px;padding:0;margin-bottom:0;border:1px solid rgba(255,255,255,.28);display:flex;flex-direction:column;min-width:0;overflow-wrap:break-word;word-break:break-word;overflow:hidden;box-shadow:0 10px 28px rgba(0,0,0,.35)}
+.job.done{border-color:#f0abfc;box-shadow:0 0 22px rgba(236,72,153,.45)}
 .job.problem{border-color:rgba(255,255,255,.28)}
 .job.arch{border-color:rgba(255,255,255,.28)}
 .job h3{margin:0;padding:12px 10px 8px;background:transparent;color:#fff;font-size:13px;line-height:1.4;word-break:break-word;overflow-wrap:anywhere}
-.job .meta{font-size:11px;color:#f5d0fe;line-height:1.5;word-break:break-word;overflow-wrap:anywhere;padding:10px}
+.job .meta{font-size:11px;color:#f5d0fe;line-height:1.7;word-break:break-word;overflow-wrap:anywhere;padding:10px}
 .job .meta b{color:#fff}
-.serial{border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);text-align:center;font-weight:bold;font-size:13px;padding:10px;width:calc(100% - 20px);margin:0 10px;color:#fff;border-radius:999px}
+.we-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#9333ea,#ec4899);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;color:#fff;flex-shrink:0;box-shadow:0 4px 12px rgba(236,72,153,.5)}
+.we-order{font-size:11px;color:#f0abfc;font-weight:bold}
+.we-service{font-size:12px;color:#fff;font-weight:bold}
+.we-addr{font-size:11px;color:#e9d5ff}
+.serial{border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);text-align:center;font-weight:bold;font-size:13px;padding:10px;width:calc(100% - 20px);margin:0 10px;color:#fff;border-radius:14px}
 .serial:disabled{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.25)}
 .row{display:flex;gap:6px;flex-wrap:wrap;padding:0 10px}
 .row button{flex:1;min-width:0}
-.job button{border-radius:999px !important;padding:13px 10px !important;font-size:13px !important;font-weight:900 !important;border:1px solid rgba(255,255,255,.30) !important}
+.job button{border-radius:14px !important;padding:13px 10px !important;font-size:13px !important;font-weight:900 !important;border:1px solid rgba(255,255,255,.30) !important}
 .camBtn{background:rgba(255,255,255,.12) !important;color:#fff !important}
 .manateeBtn{background:rgba(255,255,255,.12) !important;color:#fff !important}
 .saveBtn{background:linear-gradient(90deg,#9333ea,#ec4899) !important;color:#fff !important}
@@ -107,23 +112,23 @@ button:disabled{opacity:.55}
 .statusBtn.done{background:linear-gradient(90deg,#9333ea,#ec4899) !important;color:#fff !important}
 .statusBtn.blocked{background:rgba(255,255,255,.08) !important;color:#e9d5ff !important;border-color:rgba(255,255,255,.2) !important}
 .job > button:last-child{margin:6px 10px 12px !important;width:calc(100% - 20px) !important}
-.badge{display:inline-block;background:rgba(236,72,153,.18);border:1px solid rgba(240,171,252,.55);color:#fbcfe8;padding:2px 6px;border-radius:999px;font-size:10px;font-weight:bold;max-width:100%;overflow-wrap:anywhere}
+.badge{display:inline-block;background:rgba(236,72,153,.20);border:1px solid rgba(240,171,252,.60);color:#fbcfe8;padding:3px 9px;border-radius:999px;font-size:10px;font-weight:bold;max-width:100%;overflow-wrap:anywhere}
 .job h3 .badge{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.35)}
-.badge-arch{background:rgba(236,72,153,.18);border-color:rgba(240,171,252,.55);color:#fbcfe8}
-.badge-upd{background:rgba(236,72,153,.18);border-color:rgba(240,171,252,.55);color:#fbcfe8}
-.badge-group{background:rgba(236,72,153,.18);border-color:rgba(240,171,252,.55);color:#fbcfe8}
-.badge-recipient{background:rgba(236,72,153,.18);border-color:rgba(240,171,252,.55);color:#fbcfe8}
-.badge-problem{background:rgba(236,72,153,.18);border-color:rgba(240,171,252,.55);color:#fbcfe8}
+.badge-arch{background:rgba(236,72,153,.20);border-color:rgba(240,171,252,.60);color:#fbcfe8}
+.badge-upd{background:rgba(236,72,153,.20);border-color:rgba(240,171,252,.60);color:#fbcfe8}
+.badge-group{background:rgba(236,72,153,.20);border-color:rgba(240,171,252,.60);color:#fbcfe8}
+.badge-recipient{background:rgba(236,72,153,.20);border-color:rgba(240,171,252,.60);color:#fbcfe8}
+.badge-problem{background:rgba(236,72,153,.20);border-color:rgba(240,171,252,.60);color:#fbcfe8}
 .hint{font-size:13px;color:#f5d0fe;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);padding:10px;border-radius:16px;margin-bottom:12px;line-height:1.7}
 #prog{height:18px;background:rgba(255,255,255,.12);border-radius:10px;overflow:hidden;margin:8px 0;display:none}
 #progBar{height:100%;width:0%;background:#22c55e;transition:width .3s}
-.bottomNav{position:fixed;bottom:0;right:0;left:0;background:rgba(22,0,46,.85);backdrop-filter:blur(14px);border-top:1px solid rgba(255,255,255,.22);display:flex;padding:8px 0 14px;z-index:100}
+.bottomNav{position:fixed;bottom:0;right:0;left:0;background:rgba(22,0,46,.92);border-top:1px solid rgba(255,255,255,.22);display:flex;padding:8px 0 14px;z-index:100}
 .bottomNav div{flex:1;text-align:center;font-size:12px;color:#e9d5ff}
 .bottomNav div.active{color:#fff}
 .bottomNav div span{font-size:22px;display:block}
 #upDownModal,#recipientModal,#statusModal{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;display:none;align-items:center;justify-content:center;padding:16px}
 #upDownModal .box,#recipientModal .box,#statusModal .box{background:#fff;color:#111;border-radius:22px;padding:22px;width:100%;max-width:380px;text-align:center}
-#upDownModal .bigBtn,#recipientModal .bigBtn,#statusModal .bigBtn{font-size:20px;padding:16px;margin:8px 0;color:#fff;border-radius:999px !important}
+#upDownModal .bigBtn,#recipientModal .bigBtn,#statusModal .bigBtn{font-size:20px;padding:16px;margin:8px 0;color:#fff;border-radius:14px !important}
 #upDownModal .up{background:linear-gradient(90deg,#9333ea,#ec4899)} #upDownModal .down{background:#fff;color:#9333ea;border:2px solid #9333ea}
 #recipientModal .bigBtn{background:linear-gradient(90deg,#9333ea,#ec4899)}
 #statusModal .bigBtn{background:#fff;color:#9333ea;border:2px solid #9333ea}
@@ -146,7 +151,7 @@ button:disabled{opacity:.55}
 #followerCard input{background:#fff;color:#111;border:1px solid #e879f9;text-align:center;font-weight:bold;direction:ltr}
 #sendLockModal{position:fixed !important;inset:0 !important;background:rgba(0,0,0,.96) !important;z-index:20000 !important;display:none;align-items:center !important;justify-content:center !important;padding:14px !important}
 #sendLockModal .lockBox{background:#fff;color:#111;border-radius:22px;padding:20px;width:100%;max-width:420px;text-align:center;box-shadow:0 0 30px rgba(236,72,153,.4)}
-.lockBtn{font-size:20px !important;padding:18px !important;margin:10px 0 !important;border-radius:999px !important}
+.lockBtn{font-size:20px !important;padding:18px !important;margin:10px 0 !important;border-radius:14px !important}
 .lockBtn.done{background:linear-gradient(90deg,#9333ea,#ec4899) !important}
 .lockBtn:disabled{opacity:.6}
 .netWarn{background:#ffe6e6;border:1px solid #dc3545;color:#dc3545;padding:10px;border-radius:12px;font-size:14px;font-weight:bold;margin:8px 0;display:none}
@@ -235,7 +240,7 @@ button:disabled{opacity:.55}
 <p id="archiveSummary" style="font-size:13px;color:#e9d5ff;margin:10px 0 0;text-align:center"></p>
 <button onclick="exportArchive()" style="background:#00a651">⬇️ تحميل اليوم المختار اكسيل - نفس الشيت المرفوع بالظبط - تم التسليم بس</button>
 </div>
-<div class="searchBox"><span>🔍</span><input id="searchInput" placeholder="بحث عن مهمة / رقم تسلسلي ..." oninput="onSearch()"></div>
+<div class="searchBox"><span>🔍</span><input id="searchInput" placeholder="ابحث برقم الطلب أو اسم العميل ..." oninput="onSearch()"></div>
 <div id="uploadingBanner">⏳ جاري رفع الصورة... استنى لحد ما تخلص</div>
 <div class="hint">صور الـ 3 صور الاول: وش الجهاز + ضهر الجهاز + الايصال والبطاقة. وبعدين سيريال + Up / Down + المستلم. لو العميل مش موجود، دوس <b>حالة الزيارة</b> واختار تأجيل / لم يتم الرد / رفض الزيارة + كومنت، وهيتبعت للمتابع أوتوماتيك من غير صور. لو الأوردر عليه سيريال مينفعش ياخد حالة زيارة.</div>
 <div id="jobsList"></div>
@@ -297,7 +302,7 @@ let istighfarList=[
  {t:'اللهم اغفر لي', d:'اللهم اغفر لي ذنبي كله، دقه وجله، أوله وآخره، علانيته وسره'},
  {t:'رب اغفر لي وتب علي', d:'رب اغفر لي وتب علي إنك أنت التواب الرحيم'},
  {t:'سبحان الله وبحمده', d:'سبحان الله وبحمده، أستغفر الله وأتوب إليه'},
- {t:'لا إله إلا أنت سبحانك', d:'لا إله إلا أنت سبحانك إني كنت من الظالمين'},
+   {t:'لا إله إلا أنت سبحانك', d:'لا إله إلا أنت سبحانك إني كنت من الظالمين'},
  {t:'اللهم إنك عفو', d:'اللهم إنك عفو تحب العفو فاعف عني'},
  {t:'أستغفرك ربي', d:'أستغفرك ربي من كل ذنب وأتوب إليك'}
 ];
@@ -566,5 +571,3 @@ setInterval(()=>{
   if(el) el.src = serverImages[serverIndex];
 }, 5000);
 </script></body></html>
-
-  
