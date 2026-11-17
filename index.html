@@ -196,9 +196,9 @@ button:disabled{opacity:.55}
 <select id="a_device" style="background:#fff;color:#111;border:1px solid #ddd"><option value="">اختر نوع الجهاز - ONU أو ONT</option><option value="ONU">ONU</option><option value="ONT">ONT</option></select>
 <select id="a_tech" style="background:#fff;color:#111;border:1px solid #ddd"><option value="">اختر اسم الفني</option></select>
 <button onclick="addJob()">اضافة</button>
-<hr><h3>📂 رفع الـ 4 شيتات مرة واحدة - سريع</h3>
-<p style="font-size:12px;color:#555">اختار الـ 4 ملفات مع بعض: Upper + Delta + Sina + Alex - الجروب بيتحدد من G2 / G3 / G4 جوة الشيت اوتوماتيك</p>
-<input type="file" id="sheetInput" accept=".xlsx,.xls,.csv" multiple style="background:#fff;color:#111"><button onclick="uploadSheetFast()" style="background:#ff7b00">🚀 رفع الـ 4 شيتات مرة واحدة</button>
+<hr><h3>📂 رفع الشيتات - واحد أو أكتر - سريع</h3>
+<p style="font-size:12px;color:#555">اختار ملف واحد أو الـ 4 مع بعض: Upper + Delta + Sina + Alex - الجروب بيتحدد من G2 / G3 / G4 جوة الشيت أو من اسم الملف اوتوماتيك</p>
+<input type="file" id="sheetInput" accept=".xlsx,.xls,.csv" multiple style="background:#fff;color:#111"><button onclick="uploadSheetFast()" style="background:#ff7b00">🚀 رفع الشيتات</button>
 <div id="prog"><div id="progBar"></div></div><p id="uploadMsg"></p>
 <hr><h3>📦 أرشفة شغل اليوم</h3>
 <p style="font-size:13px;color:#555">تاريخ الشيت - لو فاضي هياخد تاريخ الشيت نفسه اوتوماتيك:</p>
@@ -494,22 +494,13 @@ async function archiveOldJobs(){ if(currentUser.role!=='admin'){ alert('الار
 function exportArchive(){
   let d=document.getElementById('archiveDate').value;
   let base=d?archiveJobs.filter(function(j){return getArchiveDisplayDate(j)===d;}):archiveJobs;
-  // التصدير = نفس الشيت المرفوع بالظبط - 18 عمود بس - تم التسليم + سيريال بس
-  // Serial = اللي الفني سحبه - Comment = تم التسليم - Status = UP أو DOWN
-  let data=base.filter(function(j){
-    let hasSerial=j.serial && String(j.serial).trim()!=='';
-    if(!hasSerial) return false;
-    return true;
-  });
+  let data=base.filter(function(j){ return j.serial && String(j.serial).trim()!==''; });
   if(!data.length){ alert('مفيش شغل تم التسليم وعليه سيريال في اليوم ده'); return; }
   let headers=['Date','Tel','Mobile','Name','Device type','Offer name','Returned Rent CPE serial','Paper Code','Exchange Name','Compound Name','Address','Senior Support','Senior Mobile','Serial','Comment','Status','Tech','Tech Phone'];
   let aoa=[headers];
   data.forEach(function(j){
     let upRaw=String(j.up_down||'').trim().toUpperCase();
-    let upDown='UP';
-    if(upRaw==='DOWN' || upRaw==='DAWN' || upRaw==='DOWEN' || upRaw==='DOWN'.toLowerCase()) upDown='DOWN';
-    else if(upRaw==='UP') upDown='UP';
-    else upDown='UP';
+    let upDown=(upRaw==='DOWN'||upRaw==='DAWN'||upRaw==='DOWEN')?'DOWN':'UP';
     aoa.push([ getArchiveDisplayDate(j), fixTel(j.landline || j.order_no), fixMobile(j.mobile), j.customer_name||'', j.device_type||'', j.offer_name||'', j.returned_serial||'', j.paper_code||'', j.exchange_name||'', j.compound_name||'', j.address||'', j.senior_support||'', fixMobile(j.senior_mobile), String(j.serial||'').trim(), 'تم التسليم', upDown, j.tech_name||'', fixMobile(j.tech_phone) ]);
   });
   let ws=XLSX.utils.aoa_to_sheet(aoa);
@@ -576,8 +567,35 @@ async function wipeAllSystem(){
     goHome(); loadJobs();
   }catch(e){ alert('غلط في المسح: '+e.message); }
 }
+// ===== إصلاح الرفع - الجروب من G2/G3/G4 أو من اسم الملف - مرة واحدة بس =====
+function getGroupFromSheetRows(rows){
+  let candidates = [];
+  for(let r=1; r<=4; r++){
+    if(rows[r] && rows[r][6]) candidates.push(String(rows[r][6]));
+  }
+  for(let r=0; r<5; r++){
+    if(!rows[r]) continue;
+    for(let c=0; c<rows[r].length; c++){
+      candidates.push(String(rows[r][c]||''));
+    }
+  }
+  let all = candidates.join(' ').toLowerCase();
+  if(all.includes('alex')) return 'Alex';
+  if(all.includes('delta')) return 'Delta';
+  if(all.includes('upper')) return 'Upper';
+  if(all.includes('sina') || all.includes('sinai')) return 'Sina';
+  return null;
+}
+function getGroupFromFileName(name){
+  let n = String(name||'').toLowerCase();
+  if(n.includes('alex')) return 'Alex';
+  if(n.includes('delta')) return 'Delta';
+  if(n.includes('upper')) return 'Upper';
+  if(n.includes('sina') || n.includes('sinai')) return 'Sina';
+  return null;
+}
 async function uploadSheetFast(){
-  let files=document.getElementById('sheetInput').files; if(!files.length){ alert('اختار الـ 4 شيتات الاول'); return; } const start=Date.now(); document.getElementById('prog').style.display='block'; document.getElementById('progBar').style.width='0%'; let totalAll=0;
+  let files=document.getElementById('sheetInput').files; if(!files.length){ alert('اختار الشيت الاول'); return; } const start=Date.now(); document.getElementById('prog').style.display='block'; document.getElementById('progBar').style.width='0%'; let totalAll=0;
   for(let fi=0; fi<files.length; fi++){ let file=files[fi]; const buf=await file.arrayBuffer(); const wb=XLSX.read(buf,{type:'array'}); const ws=wb.Sheets[wb.SheetNames[0]]; const rowsArr=XLSX.utils.sheet_to_json(ws,{header:1,defval:'',raw:false}); let group = getGroupFromSheetRows(rowsArr) || getGroupFromFileName(file.name); if(!group){ alert('مش لاقي اسم الجروب في G2 ولا G3 ولا G4 في ملف: '+file.name+' - اكتب Alex او Delta او Upper او Sinai في G2'); continue; } document.getElementById('uploadMsg').innerText='جاري قراءة: '+file.name+' - الجروب: '+group; let all=[]; for(let ri=1; ri<rowsArr.length; ri++){ const r=rowsArr[ri]; if(!r) continue; const get=(i)=>String(r[i]==null?'':r[i]).trim(); const date=get(0), tel=get(1), mobile=get(2), cust=get(3), device=get(4), offer=get(5), returnedRaw=get(6), paper=get(7), exch=get(8), compound=get(9), address=get(10), senior=get(11), seniorMob=get(12), serial=get(13), comment=get(14), statusRaw=get(15), tech=get(16), techPhoneRaw=get(17); if(!tel && !cust) continue; let returned=returnedRaw; if(returned.toLowerCase().includes('operation sheet') || returned.toLowerCase().includes('daily operation')) returned='Rent'; let cleanTech=String(tech||'').trim(); if(cleanTech.toLowerCase()==='mahdy') cleanTech=''; let upFromSheet=null, statusFinal='جديد'; let pLow=String(statusRaw||'').trim().toLowerCase(); if(pLow==='up') upFromSheet='Up'; if(pLow==='down' || pLow==='dawn' || pLow==='dowen') upFromSheet='Down'; if(serial && String(serial).trim()){ statusFinal='تم التسليم'; comment=''; } else if(pLow==='تأجيل' || pLow==='تاجيل') statusFinal='تأجيل'; else if(statusRaw) statusFinal=statusRaw; else statusFinal='جديد'; all.push({date:date,customer_name:cust,address:address,order_no:tel,landline:tel,mobile:mobile,device_type:device,offer_name:offer,returned_serial:returned,paper_code:paper,exchange_name:exch,compound_name:compound,senior_support:senior,senior_mobile:seniorMob,serial:serial||null,comment:comment,status:statusFinal,tech_name:cleanTech,tech_phone:normPhone(techPhoneRaw),up_down:upFromSheet,report_group:group}); } document.getElementById('uploadMsg').innerText='لقينا في '+file.name+' : '+all.length+' اوردر - الجروب: '+group+' - جاري الرفع...'; const CHUNK=500; for(let i=0;i<all.length;i+=CHUNK){ let chunk=all.slice(i,i+CHUNK); let rr=await supabaseClient.from('jobs').insert(chunk); if(rr.error){ let fallback=chunk.map(function(o){ let c={...o}; delete c.report_group; return c; }); let rr2=await supabaseClient.from('jobs').insert(fallback); if(rr2.error){ alert('غلط في رفع '+file.name+': '+rr2.error.message); } else { alert('خلي بالك: اعمل عمود report_group في Supabase - الشيت ده اترفع من غير جروب'); } } let pct=Math.round(((fi*1000)+i+chunk.length)/((files.length*1000))*100); if(pct>100) pct=100; document.getElementById('progBar').style.width=pct+'%'; } totalAll+=all.length; document.getElementById('uploadMsg').innerText='تم رفع '+file.name+' - '+all.length+' اوردر - الجروب: '+group; }
   document.getElementById('progBar').style.width='100%'; document.getElementById('uploadMsg').innerText='✅ تم رفع '+files.length+' شيتات - اجمالي '+totalAll+' اوردر في '+Math.round((Date.now()-start)/1000)+' ثانية - كل اوردر متخزن بالجروب بتاعه'; alert('✅ تم رفع '+files.length+' شيتات - اجمالي '+totalAll+' اوردر - كل اوردر متخزن بالجروب بتاعه'); document.getElementById('sheetInput').value=''; goHome(); loadJobs();
 }
