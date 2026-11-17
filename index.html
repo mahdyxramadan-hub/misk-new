@@ -183,11 +183,13 @@ button:disabled{opacity:.55}
 <div class="login-bottom"><button class="btn-attend" onclick="doAttendance()">🕐 الحضور والانصراف<br><span id="attendTime" style="font-size:11px;font-weight:normal">--:--:--</span></button><button class="btn-live" onclick="getLiveLocation()">📍 لايف لوكيشن<br><span style="font-size:11px;font-weight:normal">من موقع الفني</span></button></div>
 </div>
 <div id="appPage" class="hidden">
- <!-- صور السيرفر الداخلية - بتتغير كل 5 ثواني -->
-<div style="margin:0 0 12px;border-radius:18px;overflow:hidden;border:1px solid #00c6ff">
-<img id="serverRotator" src="server1.jpg" style="width:100%;height:180px;object-fit:cover;display:block">
-</div> 
-<div class="card"><h2 id="welcome" style="margin:0"></h2><div id="techInfo" style="font-size:14px;color:#8aa3c7"></div><div style="display:flex;gap:6px;align-items:center;margin-top:8px"><span id="liveDot" style="font-size:12px">🟢 تحديث تلقائي شغال - كل 5 ثواني</span><span id="lastUpdate" style="font-size:11px;color:#8aa3c7"></span><button onclick="toggleAutoRefresh()" id="autoBtn" style="background:#333;padding:8px;font-size:12px;width:auto">⏸️ وقف التحديث</button></div><div class="zoomBar"><button onclick="zoomIn()">🔍+ زوم إن</button><button onclick="zoomOut()">🔍- زوم أوت</button><button onclick="resetZoom()">↩️ رجوع 100%</button></div><button onclick="logout()" style="background:#333;margin-top:10px">خروج</button></div>
+ <!-- خلفية كاملة للكارت بتاع الفني - بتتغير كل 5 ثواني -->
+<div style="position:relative;border-radius:18px;overflow:hidden;border:1px solid #00c6ff;margin-bottom:12px">
+<img id="serverRotator" src="server1.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+<div style="position:relative;z-index:2;padding:14px;background:linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.65));text-shadow:0 2px 8px #000">
+<div class="card" style="background:transparent;border:none;box-shadow:none;padding:0;margin:0"><h2 id="welcome" style="margin:0;color:#fff"></h2><div id="techInfo" style="font-size:14px;color:#fff"></div></div>
+</div>
+</div>
 <div id="followerCard" class="card">
 <h3 style="margin:0 0 6px">👤 رقم المتابع بتاع النهاردة - اجباري</h3>
 <p style="font-size:12px;color:#8aa3c7;margin:0 0 6px">الفني بيكتب الرقم بايده، من غيره مفيش حفظ ولا ارسال - الارسال للمتابع بس</p>
