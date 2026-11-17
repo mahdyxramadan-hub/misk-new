@@ -197,7 +197,7 @@ button:active{transform:scale(.98)}
 <div class="stat"><div class="circle c-purple" id="aEmpty">0</div><b>فاضي</b><small>لا سيريال ولا ابديت</small></div>
 </div>
 <p id="archiveSummary" style="font-size:13px;color:#8aa3c7;margin:10px 0 0;text-align:center"></p>
-<button onclick="exportArchive()" style="background:#00a651">⬇️ تحميل اليوم المختار اكسيل - 18 عمود</button>
+<button onclick="exportArchive()" style="background:#00a651">⬇️ تحميل اليوم المختار اكسيل - نفس تصميم الشيت المرفوع + السيريال + Up/Down</button>
 </div>
 <div class="searchBox"><span>🔍</span><input id="searchInput" placeholder="بحث عن مهمة / رقم تسلسلي ..." oninput="onSearch()"></div>
 <div class="hint">صور الـ 3 صور الاول: وش الجهاز + ضهر الجهاز + الايصال والبطاقة. وبعدين سيريال + Up / Down، والاوردر مش هيتقفل غير وهما الـ 5 موجودين. وبعد الحفظ هيفتح واتساب المتابع على طول.</div>
@@ -230,8 +230,8 @@ button:active{transform:scale(.98)}
 <p id="lockCustomer" style="font-weight:bold"></p>
 <div id="lockNetWarn" class="netWarn">⚠️ مفيش نت عندك - الرسالة متحفظة - اول ما النت يرجع ابعتها</div>
 <p id="lockStatus" style="font-size:14px;line-height:1.8"></p>
-<button id="btnSendBoth" class="lockBtn" onclick="sendToFollowerOnly()" style="background:#25D366">👤 ارسال للمتابع - واتساب ماسنجر</button>
-<p style="font-size:12px;color:#666">هيفتح واتساب ماسنجر العادي على رقم المتابع والرسالة جاهزة - دوس ارسال جوه الواتساب</p>
+<button id="btnSendBoth" class="lockBtn" onclick="sendToFollowerOnly()" style="background:#25D366">👤 ارسال للمتابع - واتساب ماسنجر + الصور</button>
+<p style="font-size:12px;color:#666">هيفتح مشاركة فيها النص + الـ 3 صور جاهزين - اختار واتساب ماسنجر ودوس ارسال</p>
 <div id="lockConfirmBox" style="display:none;background:#fff7e6;border:1px solid #ff7b00;border-radius:12px;padding:12px;margin-top:8px">
 <p id="lockConfirmText" style="font-weight:bold;margin:0 0 8px"></p>
 <div class="row"><button onclick="confirmSendYes()" style="background:#00a651">✅ ايوه بعت للمتابع</button><button onclick="confirmSendNo()" style="background:#dc3545">❌ لا لسه</button></div>
@@ -280,11 +280,11 @@ function restoreFollower(){ try{ let f=localStorage.getItem('misk_follower'); if
 function getSendState(id){ try{ return JSON.parse(localStorage.getItem('misk_sent_'+id)||'{"follower":false}'); }catch(e){ return {follower:false}; } }
 function setSendState(id,st){ try{ localStorage.setItem('misk_sent_'+id, JSON.stringify(st)); }catch(e){} }
 function buildReportText(j){ let tel = String(j.landline || j.order_no || '').trim(); let mob = String(j.mobile || '').trim(); let name = String(j.customer_name || '').trim(); let serial = String(j.serial || '').trim(); let updown = String(j.up_down || '').trim(); return [tel, mob, name, serial, updown].filter(function(s){return String(s||'').trim()!=='';}).join('\n'); }
-function updateLockUI(){ let st=getSendState(lockJobId); let j=allJobs.find(function(x){return x.id==lockJobId;}); document.getElementById('lockCustomer').innerText = j ? (j.customer_name||'') + ' - ' + (j.serial||'') : ''; document.getElementById('lockStatus').innerHTML = 'المتابع: ' + getFollowerPhone() + ' - ' + (st.follower ? '✅ تم' : '❌ لسه متبعتش'); let b=document.getElementById('btnSendBoth'); let done=st.follower; b.innerText = done ? '✅ تم - بعت للمتابع' : '👤 ارسال للمتابع - واتساب ماسنجر'; b.classList.toggle('done', done); b.disabled = done; let net=document.getElementById('lockNetWarn'); net.style.display = navigator.onLine ? 'none' : 'block'; if(done){ setTimeout(function(){ document.getElementById('sendLockModal').style.display='none'; lockJobId=null; loadJobs(); }, 600); } }
+function updateLockUI(){ let st=getSendState(lockJobId); let j=allJobs.find(function(x){return x.id==lockJobId;}); document.getElementById('lockCustomer').innerText = j ? (j.customer_name||'') + ' - ' + (j.serial||'') : ''; document.getElementById('lockStatus').innerHTML = 'المتابع: ' + getFollowerPhone() + ' - ' + (st.follower ? '✅ تم' : '❌ لسه متبعتش'); let b=document.getElementById('btnSendBoth'); let done=st.follower; b.innerText = done ? '✅ تم - بعت للمتابع' : '👤 ارسال للمتابع - واتساب ماسنجر + الصور'; b.classList.toggle('done', done); b.disabled = done; let net=document.getElementById('lockNetWarn'); net.style.display = navigator.onLine ? 'none' : 'block'; if(done){ setTimeout(function(){ document.getElementById('sendLockModal').style.display='none'; lockJobId=null; loadJobs(); }, 600); } }
 function showLockForJob(id){ lockJobId=id; lockPendingType=null; document.getElementById('lockConfirmBox').style.display='none'; document.getElementById('sendLockModal').style.display='flex'; updateLockUI(); }
 function checkLockAfterLoad(){ if(suppressLockCheck) return; try{ let last=localStorage.getItem('misk_locked_job'); if(last){ let id=Number(last); let j=allJobs.find(function(x){return x.id==id;}); if(j && isFullyDone(j)){ let st=getSendState(id); if(!st.follower){ showLockForJob(id); } } } }catch(e){} }
 function closeLockBack(){ document.getElementById('sendLockModal').style.display='none'; document.getElementById('lockConfirmBox').style.display='none'; lockPendingType=null; lockJobId=null; renderJobs(); }
-// ===== واتساب ماسنجر العادي فقط - مش اعمال =====
+// ===== ارسال للمتابع: نص + 3 صور مع بعض =====
 async function sendToFollowerOnly(){
   let j=allJobs.find(function(x){return x.id==lockJobId;}); if(!j) return;
   let ph=getFollowerPhone();
@@ -293,10 +293,33 @@ async function sendToFollowerOnly(){
   let text=buildReportText(j);
   try{ await navigator.clipboard.writeText(text); }catch(e){}
   let intl=ph; if(intl.startsWith('0')) intl='20'+intl.slice(1);
-  // نفتح ماسنجر العادي مباشرة - whatsapp:// مش wa.me عشان wa.me بيروح للأعمال
-  window.location.href='whatsapp://send?phone='+intl+'&text='+encodeURIComponent(text);
+  // المحاولة 1: مشاركة نص + صور - دي اللي بتخلي الصور تروح مع الرسالة
+  try{
+    let files=[];
+    let urls=[{u:j.photo_front,n:'wesh.jpg'},{u:j.photo_back,n:'dahr.jpg'},{u:j.photo_receipt,n:'esal.jpg'}];
+    for(let it of urls){
+      if(!it.u) continue;
+      try{
+        let r=await fetch(it.u);
+        let b=await r.blob();
+        files.push(new File([b], it.n, {type:'image/jpeg'}));
+      }catch(e){}
+    }
+    if(files.length && navigator.share && navigator.canShare && navigator.canShare({files:files})){
+      await navigator.share({title:'MISK - '+j.customer_name, text:text, files:files});
+      lockPendingType='follower';
+      document.getElementById('lockConfirmText').innerText='بعت للمتابع - '+ph+' ؟\nالنص + الصور كانوا جاهزين - دوس ارسال جوه الواتساب';
+      document.getElementById('lockConfirmBox').style.display='block';
+      return;
+    }
+  }catch(e){
+    // لو لغى المشاركة او تليفونه مش بيدعمها، نكمل للطريقة العادية
+    if(e && e.name==='AbortError'){ lockPendingType='follower'; document.getElementById('lockConfirmText').innerText='بعت للمتابع - '+ph+' ؟'; document.getElementById('lockConfirmBox').style.display='block'; return; }
+  }
+  // المحاولة 2: واتساب ماسنجر - نص بس - والصور هتتعلق يدوي
+  window.location.href='whatsapp://send?phone='+intl+'&text='+encodeURIComponent(text+'\n\n- الصور: وش + ضهر + ايصال - هعلقهم بعد الرسالة -');
   lockPendingType='follower';
-  document.getElementById('lockConfirmText').innerText='بعت للمتابع - '+ph+' ؟\nالرسالة كانت جاهزة - دوس ارسال جوه الواتساب';
+  document.getElementById('lockConfirmText').innerText='بعت للمتابع - '+ph+' ؟\nالرسالة كانت جاهزة - دوس ارسال جوه الواتساب - وعلق الـ 3 صور يدوي لو مظهروش';
   document.getElementById('lockConfirmBox').style.display='block';
 }
 function confirmSendYes(){ if(!lockPendingType) return; let st=getSendState(lockJobId); st.follower=true; setSendState(lockJobId, st); document.getElementById('lockConfirmBox').style.display='none'; lockPendingType=null; try{ localStorage.removeItem('misk_locked_job'); }catch(e){} updateLockUI(); }
@@ -338,29 +361,76 @@ async function handlePhotoFile(file){ if(!file || !currentPhotoJobId || !current
 document.getElementById('photoInput').addEventListener('change', async function(e){ let file=e.target.files[0]; e.target.value=''; await handlePhotoFile(file); });
 document.getElementById('photoGalleryInput').addEventListener('change', async function(e){ let file=e.target.files[0]; e.target.value=''; await handlePhotoFile(file); });
 async function archiveOldJobs(){ if(currentUser.role!=='admin'){ alert('الارشيف للادمن بس'); return; } let count=allJobs.length; if(!count){ alert('مفيش شغل يتعملو ارشيف'); return; } let manual=document.getElementById('manualArchiveDate').value.trim(); let sheetDate=manual; if(!sheetDate){ let counts={}; allJobs.forEach(function(j){ let d=String(j.date||'').trim(); if(d) counts[d]=(counts[d]||0)+1; }); let best=''; let bestN=0; for(let k in counts){ if(counts[k]>bestN){bestN=counts[k]; best=k;} } sheetDate=best || todayStr(); } if(!confirm('هتنقل '+count+' اوردر للأرشيف بتاريخ الشيت: '+sheetDate+' ؟\nوهتفضي الرئيسية لشغل بكرة.\nمفيش حاجة هتتمسح نهائي.')) return; document.getElementById('uploadMsg').innerText='جاري الأرشفة بتاريخ '+sheetDate+'... متقفليش الصفحة'; try{ let toArch=allJobs.map(function(j){ return { archive_date:sheetDate, date:sheetDate, customer_name:j.customer_name, address:j.address, order_no:j.order_no, landline:j.landline, mobile:j.mobile, device_type:j.device_type, offer_name:j.offer_name, returned_serial:j.returned_serial, paper_code:j.paper_code, exchange_name:j.exchange_name, compound_name:j.compound_name, senior_support:j.senior_support, senior_mobile:j.senior_mobile, serial:j.serial, comment:j.comment, status:j.status, tech_name:j.tech_name, tech_phone:j.tech_phone, up_down:j.up_down, report_group:j.report_group||null, photo_front:j.photo_front||null, photo_back:j.photo_back||null, photo_receipt:j.photo_receipt||null }; }); for(let i=0;i<toArch.length;i+=500){ let chunk=toArch.slice(i,i+500); let r=await supabaseClient.from('jobs_archive').insert(chunk); if(r.error){ let noPhoto=chunk.map(function(o){ let c={archive_date:o.archive_date,date:o.date,customer_name:o.customer_name,address:o.address,order_no:o.order_no,landline:o.landline,mobile:o.mobile,device_type:o.device_type,offer_name:o.offer_name,returned_serial:o.returned_serial,paper_code:o.paper_code,exchange_name:o.exchange_name,compound_name:o.compound_name,senior_support:o.senior_support,senior_mobile:o.senior_mobile,serial:o.serial,comment:o.comment,status:o.status,tech_name:o.tech_name,tech_phone:o.tech_phone,up_down:o.up_down,report_group:o.report_group}; return c; }); let r2=await supabaseClient.from('jobs_archive').insert(noPhoto); if(r2.error) throw r2.error; } document.getElementById('uploadMsg').innerText='تم أرشفة '+(i+chunk.length)+' من '+toArch.length+' بتاريخ '+sheetDate; } let del=await supabaseClient.from('jobs').delete().neq('id',0); if(del.error) throw del.error; alert('✅ تم أرشفة '+count+' اوردر بتاريخ الشيت '+sheetDate); document.getElementById('uploadMsg').innerText='✅ تم أرشفة '+count+' اوردر بتاريخ '+sheetDate; document.getElementById('manualArchiveDate').value=''; goHome(); loadJobs(); }catch(e){ alert('غلط في الأرشيف: '+e.message+'\nاتأكد انك عملت جدول jobs_archive في Supabase'); } }
-function exportArchive(){ let d=document.getElementById('archiveDate').value; let data=d?archiveJobs.filter(function(j){return getArchiveDisplayDate(j)===d;}):archiveJobs; if(!data.length){ alert('مفيش ارشيف'); return; } let rows=data.map(function(j){ return { 'Date': getArchiveDisplayDate(j), 'Tel': fixTel(j.landline || j.order_no), 'Mobile': fixMobile(j.mobile), 'Name': j.customer_name || '', 'Device type': j.device_type || '', 'Offer name': j.offer_name || '', 'Returned Rent CPE serial': j.returned_serial || '', 'Paper Code': j.paper_code || '', 'Exchange Name': j.exchange_name || '', 'Compound Name': j.compound_name || '', 'Address': j.address || '', 'Senior Support': j.senior_support || '', 'Senior Mobile': fixMobile(j.senior_mobile), 'Serial': String(j.serial || ''), 'Comment': j.comment || '', 'Status': j.status || '', 'Tech': j.tech_name || '', 'Tech Phone': fixMobile(j.tech_phone), 'UpDown': j.up_down || '', 'Group': j.report_group||'', 'Photo Front': j.photo_front||'', 'Photo Back': j.photo_back||'', 'Photo Receipt': j.photo_receipt||'' }; }); let ws=XLSX.utils.json_to_sheet(rows); let range=XLSX.utils.decode_range(ws['!ref']); for(let r=1;r<=range.e.r;r++){ ['B','C','M','N','R'].forEach(function(col){ let cell=ws[col+(r+1)]; if(cell){ cell.t='s'; cell.z='@'; } }); } ws['!cols']=[{wch:12},{wch:15},{wch:15},{wch:30},{wch:10},{wch:38},{wch:18},{wch:12},{wch:15},{wch:22},{wch:50},{wch:16},{wch:15},{wch:18},{wch:22},{wch:12},{wch:18},{wch:15},{wch:10},{wch:15},{wch:40},{wch:40},{wch:40}]; let wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,'ورقة1'); XLSX.writeFile(wb,'misk_archive_'+(d||'all')+'.xlsx'); }
-// ===== الاسكانر - يفتح الابليكيشن لو موجود، ويلغي جوجل بلاي لو فتح =====
+// ===== تصدير بنفس تصميم الشيت المرفوع =====
+function exportArchive(){
+  let d=document.getElementById('archiveDate').value;
+  let data=d?archiveJobs.filter(function(j){return getArchiveDisplayDate(j)===d;}):archiveJobs;
+  if(!data.length){ alert('مفيش ارشيف'); return; }
+  // نفس ترتيب وأسماء أعمدة الشيت اللي بترفعه
+  let headers=['Date','Tel','Mobile','Name','Device type','Offer name','Returned Rent CPE serial','Paper Code','Exchange Name','Compound Name','Address','Senior Support','Senior Mobile','Serial','Comment','Status','Tech','Tech Phone','UpDown','Group'];
+  let aoa=[headers];
+  data.forEach(function(j){
+    let statusTxt='';
+    if(j.serial) statusTxt='تم التسليم';
+    else if(j.status==='تأجيل' || j.status==='تاجيل') statusTxt='تأجيل';
+    else if(j.up_down) statusTxt=j.up_down;
+    else statusTxt=j.status||'جديد';
+    aoa.push([
+      getArchiveDisplayDate(j),
+      fixTel(j.landline || j.order_no),
+      fixMobile(j.mobile),
+      j.customer_name||'',
+      j.device_type||'',
+      j.offer_name||'',
+      j.returned_serial||'',
+      j.paper_code||'',
+      j.exchange_name||'',
+      j.compound_name||'',
+      j.address||'',
+      j.senior_support||'',
+      fixMobile(j.senior_mobile),
+      String(j.serial||''),
+      j.comment||'',
+      statusTxt,
+      j.tech_name||'',
+      fixMobile(j.tech_phone),
+      j.up_down||'',
+      j.report_group||''
+    ]);
+  });
+  let ws=XLSX.utils.aoa_to_sheet(aoa);
+  // تثبيت الأرقام كنص عشان السيريال والتليفون ميتغيرش
+  let range=XLSX.utils.decode_range(ws['!ref']);
+  for(let r=1;r<=range.e.r;r++){
+    ['B','C','M','N','R'].forEach(function(col){
+      let cell=ws[col+(r+1)];
+      if(cell){ cell.t='s'; cell.z='@'; }
+    });
+  }
+  ws['!cols']=[{wch:12},{wch:15},{wch:15},{wch:30},{wch:12},{wch:38},{wch:20},{wch:12},{wch:15},{wch:22},{wch:50},{wch:16},{wch:15},{wch:18},{wch:22},{wch:12},{wch:18},{wch:15},{wch:10},{wch:20}];
+  ws['!freeze']={xSplit:0,ySplit:1};
+  let wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'ورقة1');
+  XLSX.writeFile(wb,'misk_'+(d||'all')+'_updated.xlsx');
+}
+// ===== الاسكانر - من غير جوجل بلاي أوتوماتيك =====
 function openManatee(jobId){
   currentJobId=jobId;
-  var playUrl='https://play.google.com/store/apps/details?id=com.manateeworks.barcodescanners';
-  var opened=false;
-  function onHide(){ opened=true; document.removeEventListener('visibilitychange', onHide); window.removeEventListener('blur', onHide); }
-  document.addEventListener('visibilitychange', onHide);
-  window.addEventListener('blur', onHide);
-  // المحاولة 1: الحزمة القديمة Manatee
-  window.location.href='intent://#Intent;package=com.manateeworks.barcodescanners;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;end';
+  // نحاول نفتح الابليكيشن بس - مفيش تحويل لجوجل بلاي خالص
+  // لو الابليكيشن مفتوح في الخلفية، ده هيجيبه قدام
+  try{
+    let a=document.createElement('a');
+    a.href='intent://#Intent;package=com.manateeworks.barcodescanners;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;end';
+    document.body.appendChild(a); a.click(); a.remove();
+  }catch(e){}
   setTimeout(function(){
-    if(opened) return;
-    // المحاولة 2: الحزمة الجديدة Cognex - Manatee بقت Cognex
-    window.location.href='intent://#Intent;package=com.cognex.barcodescanners;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;end';
-  }, 900);
-  setTimeout(function(){
-    document.removeEventListener('visibilitychange', onHide);
-    window.removeEventListener('blur', onHide);
-    if(opened) return;
-    // لو ولا واحدة فتحت، يبقى مش متثبت - روح جوجل بلاي
-    if(document.visibilityState==='visible'){ window.location.href=playUrl; }
-  }, 2000);
+    // المحاولة التانية بالحزمة الجديدة Cognex
+    try{
+      let b=document.createElement('a');
+      b.href='intent://#Intent;package=com.cognex.barcodescanners;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;end';
+      document.body.appendChild(b); b.click(); b.remove();
+    }catch(e){}
+  }, 700);
 }
 function openCamera(jobId){
   currentJobId=jobId;
@@ -397,11 +467,9 @@ async function decodeSerialFromPhoto(file, jobId){
   }catch(e){ alert('معرفش أقرا الصورة - صوّر تاني من قريب'); }
 }
 document.getElementById('serialCamInput').addEventListener('change', async function(e){ let file=e.target.files[0]; e.target.value=''; if(!file || !currentJobId) return; await decodeSerialFromPhoto(file, currentJobId); });
-// ===== حفظ = حفظ + ارسال - والـ Up/Down لوحده مش بيبعت =====
 async function saveSerial(id){
   if(currentUser && currentUser.role!=='admin'){ if(!getFollowerPhone()){ alert('سجل رقم المتابع'); document.getElementById('followerMsg').innerText='سجل رقم المتابع الاول'; document.getElementById('followerPhone').focus(); document.getElementById('followerPhone').scrollIntoView({behavior:'smooth'}); return; } }
   let f=allJobs.find(function(x){return x.id==id;});
-  // لو الاوردر خلصان اصلا، دوس حفظ يطلع شاشة الارسال على طول
   if(f && isFullyDone(f)){
     try{ localStorage.setItem('misk_locked_job', String(id)); }catch(e){}
     showLockForJob(id);
