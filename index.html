@@ -9,66 +9,66 @@
 <style>
 *{box-sizing:border-box;font-family:Tahoma}
 html,body{overflow-x:hidden !important;max-width:100vw;width:100%}
-body{margin:0;background:#f2f3f7;color:#111;padding:0 8px 90px}
-a{color:#4b0f8f}
+body{margin:0;background:linear-gradient(180deg,#1a0033 0%,#2a0a4a 35%,#12002b 100%);color:#fff;padding:0 8px 90px}
+a{color:#c084fc}
 .top{display:none !important}
-.logo{width:420px;max-width:96%;height:auto;display:block;border:none;border-radius:20px;background:transparent;transition:all .8s ease;animation:khadda 1.2s ease-out;filter:drop-shadow(0 0 18px rgba(147,51,234,.9)) drop-shadow(0 0 30px rgba(0,198,255,.6))}
+.logo{width:420px;max-width:96%;height:auto;display:block;border:none;border-radius:24px;background:transparent;transition:all .8s ease;animation:khadda 1.2s ease-out;filter:drop-shadow(0 0 18px rgba(147,51,234,.9)) drop-shadow(0 0 30px rgba(168,85,247,.6))}
 @keyframes khadda{0%{transform:scale(.1);opacity:0;filter:blur(15px)}40%{transform:scale(1.4);opacity:1;filter:blur(0)}60%{transform:scale(1.15) rotate(-2deg)}80%{transform:scale(1.05) rotate(2deg)}100%{transform:scale(1) rotate(0)}}
 body.logging-in .top .logo{opacity:0;transform:scale(1.3);filter:blur(10px)}
 body.logging-in .top{opacity:0;transform:scale(1.1);transition:all .8s ease}
-.top p{margin:6px 0 0;color:#8aa3c7;font-size:13px}
-.card{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:14px;margin-bottom:12px;color:#111;box-shadow:0 2px 10px rgba(0,0,0,.05)}
-.card-light{background:#fff;color:#111;border-radius:18px;padding:14px;margin-bottom:12px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
-input,button,select,textarea{width:100%;padding:13px;margin:6px 0;border:1px solid #e5e7eb;border-radius:12px;font-size:16px;background:#fff;color:#111}
-input::placeholder,textarea::placeholder{color:#9aa0aa}
-button{background:#4b0f8f;color:#fff;border:0;font-weight:bold;cursor:pointer}
+.top p{margin:6px 0 0;color:#d8b4fe;font-size:13px}
+.card{background:linear-gradient(180deg,#2e1065,#1e0b3d);border:1px solid #7c3aed;border-radius:24px;padding:14px;margin-bottom:12px;box-shadow:0 8px 24px rgba(124,58,237,.25)}
+.card-light{background:#fff;color:#111;border-radius:24px;padding:14px;margin-bottom:12px}
+input,button,select,textarea{width:100%;padding:13px;margin:6px 0;border:1px solid #7c3aed;border-radius:16px;font-size:16px;background:#2e1065;color:#fff}
+input::placeholder,textarea::placeholder{color:#c4b5fd}
+button{background:#7c3aed;color:#fff;border:0;font-weight:bold;cursor:pointer;box-shadow:0 4px 14px rgba(124,58,237,.35)}
 button:active{transform:scale(.98)}
 button:disabled{opacity:.55}
 .hidden{display:none}
-#loginPage{max-width:430px;margin:6px auto;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:14px 14px 12px;box-shadow:0 4px 20px rgba(0,0,0,.08);text-align:center}
+#loginPage{max-width:430px;margin:6px auto;background:linear-gradient(180deg,#2e1065,#170338);border:1px solid #a855f7;border-radius:28px;padding:14px 14px 12px;box-shadow:0 0 28px rgba(168,85,247,.35);text-align:center}
 #loginPage h2{font-size:17px !important}
 #loginPage p{font-size:12px !important}
 #loginPage input{padding:10px !important;font-size:14px !important}
 #loginPage button{padding:11px !important;font-size:16px !important}
-#loginPage input{background:#fff;color:#111;border:1px solid #e5e7eb;text-align:center}
-#loginPage button{background:#00a651;font-size:18px;padding:15px}
-.login-logo-wrap{text-align:center;margin:2px 0 8px;background:radial-gradient(circle, rgba(147,51,234,.12) 0%, rgba(0,198,255,.06) 45%, transparent 70%);border-radius:20px;padding:10px 0;border:1px solid rgba(147,51,234,.25)}
+#loginPage input{background:#fff;color:#111;border:1px solid #ddd6fe;text-align:center}
+#loginPage button{background:#7c3aed;font-size:18px;padding:15px}
+.login-logo-wrap{text-align:center;margin:2px 0 8px;background:radial-gradient(circle, rgba(168,85,247,.35) 0%, rgba(124,58,237,.12) 45%, transparent 70%);border-radius:24px;padding:10px 0;border:1px solid rgba(168,85,247,.5)}
 .login-logo-wrap .logo{width:380px;max-width:100%;display:block;margin:0 auto}
-.login-subtitle{color:#4b0f8f;font-size:13px;margin:4px 0 10px}
+.login-subtitle{color:#e9d5ff;font-size:13px;margin:4px 0 10px}
 .login-stats{display:flex;gap:8px;margin:14px 0;flex-wrap:nowrap}
-.login-stat{flex:1;background:#f8f7ff;border:1px solid #e5e7eb;border-radius:16px;padding:10px 4px;text-align:center;min-width:0;cursor:pointer}
-.login-stat b{display:block;font-size:11px;line-height:1.4;margin-top:6px;color:#111}
-.login-stat small{color:#6b7280;font-size:10px;display:block;line-height:1.4}
-.login-circle{width:62px;height:62px;border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;background:#fff}
+.login-stat{flex:1;background:#1e0b3d;border:1px solid #7c3aed;border-radius:20px;padding:10px 4px;text-align:center;min-width:0;cursor:pointer}
+.login-stat b{display:block;font-size:11px;line-height:1.4;margin-top:6px}
+.login-stat small{color:#c4b5fd;font-size:10px;display:block;line-height:1.4}
+.login-circle{width:62px;height:62px;border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;background:linear-gradient(135deg,#7c3aed,#4c1d95);box-shadow:0 4px 14px rgba(124,58,237,.5)}
 .login-stat .clockText{font-size:13px;font-weight:900;line-height:1.2}
-.companies-wrap{margin:12px 0;background:#f8f7ff;border:1px solid #e5e7eb;border-radius:14px;padding:10px 0;overflow:hidden}
-.companies-title{font-size:13px;font-weight:bold;color:#111;margin-bottom:8px}
+.companies-wrap{margin:12px 0;background:#1e0b3d;border:1px solid #a855f7;border-radius:18px;padding:10px 0;overflow:hidden}
+.companies-title{font-size:13px;font-weight:bold;color:#fff;margin-bottom:8px}
 .marquee{display:flex;gap:14px;white-space:nowrap;animation:marq 18s linear infinite;width:max-content}
-.marquee span{background:#fff;border:1px solid #4b0f8f;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:bold;color:#4b0f8f}
+.marquee span{background:#2e1065;border:1px solid #a855f7;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:bold;color:#e9d5ff}
 @keyframes marq{0%{transform:translateX(0)}100%{transform:translateX(50%)}}
-.map-box{margin:12px 0;background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:10px;text-align:right}
+.map-box{margin:12px 0;background:#1e0b3d;border:1px solid #a855f7;border-radius:20px;padding:10px;text-align:right}
 .map-box b{font-size:13px}
-.map-frame{height:130px;border-radius:12px;margin-top:8px;background:#f2f3f7;border:1px solid #e5e7eb;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
-.map-pin{font-size:36px;filter:drop-shadow(0 0 12px #ff00ff);animation:pinPulse 1.6s infinite}
+.map-frame{height:130px;border-radius:16px;margin-top:8px;background:#2e1065;border:1px solid #7c3aed;position:relative;overflow:hidden;background-image:linear-gradient(45deg,rgba(168,85,247,.12) 25%,transparent 25%),linear-gradient(-45deg,rgba(124,58,237,.12) 25%,transparent 25%);background-size:28px 28px;display:flex;align-items:center;justify-content:center}
+.map-pin{font-size:36px;filter:drop-shadow(0 0 12px #a855f7);animation:pinPulse 1.6s infinite}
 @keyframes pinPulse{0%{transform:scale(1)}50%{transform:scale(1.18)}100%{transform:scale(1)}}
-.map-loc{position:absolute;bottom:8px;right:8px;left:8px;background:rgba(0,0,0,.7);border-radius:10px;padding:6px;font-size:11px;text-align:center;color:#fff}
+.map-loc{position:absolute;bottom:8px;right:8px;left:8px;background:rgba(0,0,0,.7);border-radius:10px;padding:6px;font-size:11px;text-align:center;color:#e9d5ff}
 .login-bottom{display:flex;gap:8px;margin-top:10px}
 .login-bottom button{flex:1;font-size:13px !important;padding:12px 6px !important}
-.btn-attend{background:#00a651 !important;border:1px solid #22c55e !important}
-.btn-live{background:#fff !important;color:#4b0f8f !important;border:1px solid #4b0f8f !important}
+.btn-attend{background:#16a34a !important;border:1px solid #22c55e !important;box-shadow:0 0 14px rgba(34,197,94,.5)}
+.btn-live{background:#2e1065 !important;border:1px solid #a855f7 !important;box-shadow:0 0 14px rgba(168,85,247,.4)}
 .stats{display:flex;gap:10px;margin:12px 0}
-.stat{flex:1;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:12px 6px;text-align:center;min-width:0;cursor:pointer}
-.stat.active{border-color:#4b0f8f !important;box-shadow:0 0 18px rgba(75,15,143,.25)}
-.circle{width:72px;height:72px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;background:#f8f7ff}
-.c-green{border:3px solid #22c55e;color:#111}
-.c-yellow{border:3px solid #facc15;color:#111}
-.c-red{border:3px solid #ef4444;color:#111}
-.c-purple{border:3px solid #9333ea;color:#111}
-.c-blue{border:3px solid #00c6ff;color:#111}
-.stat b{display:block;font-size:13px;color:#111}
-.stat small{color:#6b7280;font-size:11px}
+.stat{flex:1;background:linear-gradient(180deg,#2e1065,#1e0b3d);border:1px solid #7c3aed;border-radius:22px;padding:12px 6px;text-align:center;min-width:0;cursor:pointer}
+.stat.active{border-color:#e9d5ff !important;box-shadow:0 0 18px rgba(168,85,247,.6)}
+.circle{width:72px;height:72px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;background:#1e0b3d}
+.c-green{border:3px solid #22c55e;box-shadow:0 0 18px rgba(34,197,94,.5);color:#fff}
+.c-yellow{border:3px solid #facc15;box-shadow:0 0 18px rgba(250,204,21,.45);color:#fff}
+.c-red{border:3px solid #ef4444;box-shadow:0 0 18px rgba(239,68,68,.5);color:#fff}
+.c-purple{border:3px solid #a855f7;box-shadow:0 0 18px rgba(168,85,247,.5);color:#fff}
+.c-blue{border:3px solid #a855f7;box-shadow:0 0 18px rgba(168,85,247,.5);color:#fff}
+.stat b{display:block;font-size:13px}
+.stat small{color:#c4b5fd;font-size:11px}
 .searchBox{position:relative}
-.searchBox input{padding-right:44px;background:#fff;border:1px solid #4b0f8f;font-size:17px}
+.searchBox input{padding-right:44px;background:#1e0b3d;border:1px solid #a855f7;font-size:17px}
 .searchBox span{position:absolute;right:14px;top:18px;font-size:20px}
 #jobsList{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-items:start;width:100%}
 #jobsList > p{grid-column:1/-1}
@@ -84,85 +84,82 @@ button:disabled{opacity:.55}
   .login-logo-wrap .logo{width:320px}
   .login-circle{width:54px;height:54px;font-size:18px}
 }
-.job{background:#fff;color:#111;border-radius:20px;padding:0;margin-bottom:0;border:1px solid #e5e7eb;display:flex;flex-direction:column;min-width:0;overflow-wrap:break-word;word-break:break-word;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.05)}
-.job.done{border-color:#22c55e}
-.job.problem{border-color:#ef4444}
-.job.arch{border-color:#e5e7eb}
-.job h3{margin:0;padding:12px 10px 8px;background:#4b0f8f;color:#fff;font-size:13px;line-height:1.4;word-break:break-word;overflow-wrap:anywhere}
-.job .meta{font-size:11px;color:#333;line-height:1.5;word-break:break-word;overflow-wrap:anywhere;padding:10px}
-.job .meta b{color:#4b0f8f}
-.serial{border:1px solid #e5e7eb;background:#f8f7ff;text-align:center;font-weight:bold;font-size:13px;padding:10px;width:calc(100% - 20px);margin:0 10px;color:#111;border-radius:999px}
-.serial:disabled{background:#f2f2f2;color:#333;border-color:#e5e7eb}
+.job{background:#fff;color:#2e1065;border-radius:24px;padding:0;margin-bottom:0;border:2px solid #7c3aed;display:flex;flex-direction:column;min-width:0;overflow-wrap:break-word;word-break:break-word;overflow:hidden;box-shadow:0 8px 20px rgba(124,58,237,.18)}
+.job.done{border-color:#7c3aed}
+.job.problem{border-color:#7c3aed}
+.job.arch{border-color:#7c3aed}
+.job h3{margin:0;padding:12px 10px 8px;background:linear-gradient(90deg,#4c1d95,#7c3aed);color:#fff;font-size:13px;line-height:1.4;word-break:break-word;overflow-wrap:anywhere}
+.job .meta{font-size:11px;color:#2e1065;line-height:1.5;word-break:break-word;overflow-wrap:anywhere;padding:10px}
+.job .meta b{color:#6d28d9}
+.serial{border:2px solid #7c3aed;background:#fff;text-align:center;font-weight:bold;font-size:13px;padding:10px;width:calc(100% - 20px);margin:0 10px;color:#2e1065;border-radius:999px}
+.serial:disabled{background:#f2f2f2;color:#333;border-color:#7c3aed}
 .row{display:flex;gap:6px;flex-wrap:wrap;padding:0 10px}
 .row button{flex:1;min-width:0}
-.job button{border-radius:999px !important;padding:13px 10px !important;font-size:13px !important;font-weight:900 !important;border:1px solid #e5e7eb !important}
-.camBtn{background:#fff !important;color:#4b0f8f !important}
-.manateeBtn{background:#fff !important;color:#4b0f8f !important}
-.saveBtn{background:#4b0f8f !important;color:#fff !important}
-.upDownBtn{background:#fff !important;color:#4b0f8f !important}
-.upDownBtn.done{background:#4b0f8f !important;color:#fff !important}
-.recipientBtn{background:#fff !important;color:#4b0f8f !important}
-.recipientBtn.done{background:#4b0f8f !important;color:#fff !important}
-.statusBtn{background:#fff !important;color:#4b0f8f !important}
-.statusBtn.done{background:#4b0f8f !important;color:#fff !important}
+.job button{border-radius:999px !important;padding:13px 10px !important;font-size:13px !important;font-weight:900 !important;border:2px solid #7c3aed !important}
+.camBtn{background:#fff !important;color:#6d28d9 !important}
+.manateeBtn{background:#fff !important;color:#6d28d9 !important}
+.saveBtn{background:#7c3aed !important;color:#fff !important}
+.upDownBtn{background:#fff !important;color:#6d28d9 !important}
+.upDownBtn.done{background:#7c3aed !important;color:#fff !important}
+.recipientBtn{background:#fff !important;color:#6d28d9 !important}
+.recipientBtn.done{background:#7c3aed !important;color:#fff !important}
+.statusBtn{background:#fff !important;color:#6d28d9 !important}
+.statusBtn.done{background:#7c3aed !important;color:#fff !important}
 .statusBtn.blocked{background:#eee !important;color:#888 !important;border-color:#aaa !important}
 .job > button:last-child{margin:6px 10px 12px !important;width:calc(100% - 20px) !important}
-.badge{display:inline-block;background:#fff;border:1px solid #e5e7eb;color:#4b0f8f;padding:2px 6px;border-radius:999px;font-size:10px;font-weight:bold;max-width:100%;overflow-wrap:anywhere}
-.job h3 .badge{background:#fff;color:#4b0f8f;border-color:#fff}
-.badge-arch{background:#fff;border-color:#e5e7eb;color:#111}
-.badge-upd{background:#fff;border-color:#e5e7eb;color:#111}
-.badge-group{background:#fff;border-color:#e5e7eb;color:#111}
-.badge-recipient{background:#fff;border-color:#e5e7eb;color:#111}
-.badge-problem{background:#fff;border-color:#ef4444;color:#ef4444}
-.hint{font-size:13px;color:#333;background:#fff;border:1px solid #e5e7eb;padding:10px;border-radius:12px;margin-bottom:12px;line-height:1.7}
-#prog{height:18px;background:#e5e7eb;border-radius:10px;overflow:hidden;margin:8px 0;display:none}
+.badge{display:inline-block;background:#f3e8ff;border:1px solid #7c3aed;color:#6d28d9;padding:2px 6px;border-radius:999px;font-size:10px;font-weight:bold;max-width:100%;overflow-wrap:anywhere}
+.job h3 .badge{background:#fff;color:#6d28d9;border-color:#fff}
+.badge-arch{background:#f3e8ff;border-color:#7c3aed;color:#6d28d9}
+.badge-upd{background:#f3e8ff;border-color:#7c3aed;color:#6d28d9}
+.badge-group{background:#f3e8ff;border-color:#7c3aed;color:#6d28d9}
+.badge-recipient{background:#f3e8ff;border-color:#7c3aed;color:#6d28d9}
+.badge-problem{background:#f3e8ff;border-color:#7c3aed;color:#6d28d9}
+.hint{font-size:13px;color:#e9d5ff;background:#2e1065;border:1px solid #7c3aed;padding:10px;border-radius:16px;margin-bottom:12px;line-height:1.7}
+#prog{height:18px;background:#2e1065;border-radius:10px;overflow:hidden;margin:8px 0;display:none}
 #progBar{height:100%;width:0%;background:#22c55e;transition:width .3s}
-.bottomNav{position:fixed;bottom:0;right:0;left:0;background:#fff;border-top:1px solid #e5e7eb;display:flex;padding:8px 0 14px;z-index:100}
-.bottomNav div{flex:1;text-align:center;font-size:12px;color:#6b7280}
-.bottomNav div.active{color:#4b0f8f}
+.bottomNav{position:fixed;bottom:0;right:0;left:0;background:#1a0033;border-top:1px solid #7c3aed;display:flex;padding:8px 0 14px;z-index:100}
+.bottomNav div{flex:1;text-align:center;font-size:12px;color:#c4b5fd}
+.bottomNav div.active{color:#fff}
 .bottomNav div span{font-size:22px;display:block}
 #upDownModal,#recipientModal,#statusModal{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;display:none;align-items:center;justify-content:center;padding:16px}
-#upDownModal .box,#recipientModal .box,#statusModal .box{background:#fff;color:#111;border-radius:18px;padding:22px;width:100%;max-width:380px;text-align:center}
+#upDownModal .box,#recipientModal .box,#statusModal .box{background:#fff;color:#111;border-radius:24px;padding:22px;width:100%;max-width:380px;text-align:center}
 #upDownModal .bigBtn,#recipientModal .bigBtn,#statusModal .bigBtn{font-size:20px;padding:16px;margin:8px 0;color:#fff;border-radius:999px !important}
-#upDownModal .up{background:#4b0f8f} #upDownModal .down{background:#fff;color:#4b0f8f;border:2px solid #4b0f8f}
-#recipientModal .bigBtn{background:#4b0f8f}
-#statusModal .bigBtn{background:#fff;color:#4b0f8f;border:2px solid #4b0f8f}
+#upDownModal .up{background:#7c3aed} #upDownModal .down{background:#fff;color:#6d28d9;border:2px solid #7c3aed}
+#recipientModal .bigBtn{background:#7c3aed}
+#statusModal .bigBtn{background:#fff;color:#6d28d9;border:2px solid #7c3aed}
 #statusModal textarea{background:#fff;color:#111;border:1px solid #ddd;text-align:right}
-.sheetCard{display:inline-block;background:#fff;color:#111;border-radius:20px;padding:6px 12px;margin:4px 4px 0 0;border:1px solid #9333ea;font-size:14px;font-weight:bold;cursor:pointer;width:auto}
+.sheetCard{display:inline-block;background:#fff;color:#111;border-radius:20px;padding:6px 12px;margin:4px 4px 0 0;border:1px solid #a855f7;font-size:14px;font-weight:bold;cursor:pointer;width:auto}
 .sheetCard b{font-size:14px}
 .sheetCard span{display:none}
 #archiveSheetsList{margin-top:8px}
-.photoBtn{padding:8px 4px !important;font-size:11px !important;background:#fff !important;color:#4b0f8f !important;border:1px solid #4b0f8f !important;border-radius:12px !important;white-space:nowrap}
-.photoBtn.done{background:#4b0f8f !important;color:#fff !important}
-.photoBtn.missing{background:#fff !important;color:#4b0f8f !important}
-.photoBtn.uploading{background:#fff !important;color:#4b0f8f !important}
-.photoThumb{width:100%;height:90px;object-fit:contain;background:#f0f0f0;border-radius:8px;border:1px solid #e5e7eb;margin-top:4px;cursor:pointer}
+.photoBtn{padding:8px 4px !important;font-size:11px !important;background:#fff !important;color:#6d28d9 !important;border:2px solid #7c3aed !important;border-radius:12px !important;white-space:nowrap}
+.photoBtn.done{background:#7c3aed !important;color:#fff !important}
+.photoBtn.missing{background:#fff !important;color:#6d28d9 !important}
+.photoBtn.uploading{background:#fff !important;color:#6d28d9 !important}
+.photoThumb{width:100%;height:90px;object-fit:contain;background:#f3e8ff;border-radius:8px;border:2px solid #7c3aed;margin-top:4px;cursor:pointer}
 .photoWrap{flex:1;text-align:center;min-width:0}
 .smallBtn{background:#fff !important;color:#dc3545 !important;border:1px solid #dc3545 !important;border-radius:999px !important;padding:4px !important;font-size:11px !important;margin:4px 0 0 !important}
 #photoCamModal,#upDownModal,#recipientModal,#statusModal,#photoModal{position:fixed !important;inset:0 !important;left:0 !important;right:0 !important;top:0 !important;bottom:0 !important;display:none;align-items:center !important;justify-content:center !important;padding:12px !important;box-sizing:border-box;margin:0 !important;transform:none !important}
 #photoCamModal > div,#upDownModal .box,#recipientModal .box,#statusModal .box{width:100% !important;max-width:420px !important;margin:0 auto !important;max-height:92vh;overflow-y:auto;position:relative;left:auto !important;right:auto !important;transform:none !important}
 #photoModal img{margin:0 auto}
-#followerCard{border:2px solid #4b0f8f}
-#followerCard input{background:#fff;color:#111;border:1px solid #4b0f8f;text-align:center;font-weight:bold;direction:ltr}
+#followerCard{border:2px solid #a855f7}
+#followerCard input{background:#fff;color:#111;border:1px solid #a855f7;text-align:center;font-weight:bold;direction:ltr}
 #sendLockModal{position:fixed !important;inset:0 !important;background:rgba(0,0,0,.96) !important;z-index:20000 !important;display:none;align-items:center !important;justify-content:center !important;padding:14px !important}
-#sendLockModal .lockBox{background:#fff;color:#111;border-radius:20px;padding:20px;width:100%;max-width:420px;text-align:center;box-shadow:0 0 30px rgba(255,0,0,.4)}
+#sendLockModal .lockBox{background:#fff;color:#111;border-radius:24px;padding:20px;width:100%;max-width:420px;text-align:center;box-shadow:0 0 30px rgba(168,85,247,.4)}
 .lockBtn{font-size:20px !important;padding:18px !important;margin:10px 0 !important;border-radius:999px !important}
-.lockBtn.done{background:#4b0f8f !important}
+.lockBtn.done{background:#7c3aed !important}
 .lockBtn:disabled{opacity:.6}
 .netWarn{background:#ffe6e6;border:1px solid #dc3545;color:#dc3545;padding:10px;border-radius:12px;font-size:14px;font-weight:bold;margin:8px 0;display:none}
 #uploadingBanner{display:none;background:#ff7b00;color:#fff;padding:10px;border-radius:12px;font-size:14px;font-weight:bold;text-align:center;margin-bottom:10px}
 .zoomBar{display:flex;gap:8px;margin:10px 0}
-.zoomBar button{flex:1;background:#fff !important;border:1px solid #4b0f8f !important;color:#4b0f8f !important;font-size:16px !important;padding:10px !important}
+.zoomBar button{flex:1;background:#1e0b3d !important;border:1px solid #a855f7 !important;font-size:16px !important;padding:10px !important}
 #istighfarOverlay{position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:30000;display:none;align-items:center;justify-content:center;text-align:center;padding:20px}
-#istighfarOverlay .istBox{background:#fff;border:2px solid #22c55e;border-radius:20px;padding:24px;max-width:420px;width:100%}
-#azkarModal,#passModal,#adminPassModal{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:30001;display:none;align-items:center;justify-content:center;padding:14px}
-#azkarModal .box,#passModal .box,#adminPassModal .box{background:#fff;color:#111;border-radius:18px;padding:18px;width:100%;max-width:420px;max-height:88vh;overflow-y:auto;text-align:right}
-#azkarModal .box input,#passModal .box input,#adminPassModal .box input{background:#fff;color:#111;border:1px solid #ddd}
+#istighfarOverlay .istBox{background:#1e0b3d;border:2px solid #22c55e;border-radius:24px;padding:24px;max-width:420px;width:100%}
+#azkarModal,#passModal{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:30001;display:none;align-items:center;justify-content:center;padding:14px}
+#azkarModal .box,#passModal .box{background:#fff;color:#111;border-radius:24px;padding:18px;width:100%;max-width:420px;max-height:88vh;overflow-y:auto;text-align:right}
+#azkarModal .box input,#passModal .box input{background:#fff;color:#111;border:1px solid #ddd}
 .lockedJob{opacity:.92}
 .lockedBanner{background:#111;color:#fff;padding:8px 10px;text-align:center;font-weight:bold;font-size:13px;border-radius:0}
-.dangerZone{margin-top:16px;border:2px solid #ef4444;border-radius:16px;padding:12px;background:#fff5f5;max-height:220px;overflow-y:auto}
-.dangerZone h3{color:#dc3545}
-.exportTop{margin-bottom:12px}
 @media(max-width:600px){ #loginPage{max-width:400px} }
 </style>
 </head>
@@ -171,7 +168,7 @@ button:disabled{opacity:.55}
 <div id="loginPage">
 <div class="login-logo-wrap"><img class="logo" src="misk-logo.png?v=18" alt="MISK" onerror="this.style.display='none'"><div class="login-subtitle">SERVER • CCTV • ELECTRONICS</div></div>
 <h2 style="margin:4px 0">MISK - تسجيل دخول</h2>
-<p style="color:#6b7280;font-size:13px">مرحباً! سجل الدخول للوصول إلى لوحة الفني</p>
+<p style="color:#c4b5fd;font-size:13px">مرحباً! سجل الدخول للوصول إلى لوحة الفني</p>
 <input id="user" placeholder="اسم المستخدم"><input id="pass" type="password" placeholder="الباسورد">
 <button onclick="login()">تسجيل الدخول</button><p id="loginMsg" style="color:#ff8a8a"></p>
 <div class="login-stats">
@@ -181,13 +178,13 @@ button:disabled{opacity:.55}
 <div class="login-stat"><div class="login-circle c-green" style="font-size:28px">2</div><b>عنصر فارغ</b><small>هنملاه بعدين - رقم 2</small></div>
 </div>
 <div class="companies-wrap"><div class="companies-title">🏢 شركات تم التعامل معها</div><div class="marquee"><span>CLOUD</span><span>DATA</span><span>TECH</span><span>STC</span><span>SABIC</span><span>ARAMCO</span><span>MISK</span><span>CLOUD</span><span>DATA</span><span>TECH</span><span>STC</span><span>SABIC</span><span>ARAMCO</span></div></div>
-<div class="map-box"><b>🗺️ المهام - الخريطة</b><div class="map-frame"><div class="map-pin">📍</div><div class="map-loc" id="mapLocText">📍 موقعك الحالي: جاري تحديد الموقع... - اضغط لايف لوكيشن</div></div><p style="font-size:11px;color:#6b7280;margin:6px 0 0">مراجعة تقرير الصباح • منذ 10 دقائق<br>تحديث حالة المشروع • منذ 30 دقيقة</p></div>
+<div class="map-box"><b>🗺️ المهام - الخريطة</b><div class="map-frame"><div class="map-pin">📍</div><div class="map-loc" id="mapLocText">📍 موقعك الحالي: جاري تحديد الموقع... - اضغط لايف لوكيشن</div></div><p style="font-size:11px;color:#c4b5fd;margin:6px 0 0">مراجعة تقرير الصباح • منذ 10 دقائق<br>تحديث حالة المشروع • منذ 30 دقيقة</p></div>
 <div class="login-bottom"><button class="btn-attend" onclick="doAttendance()">🕐 الحضور والانصراف<br><span id="attendTime" style="font-size:11px;font-weight:normal">--:--:--</span></button><button class="btn-live" onclick="getLiveLocation()">📍 لايف لوكيشن<br><span style="font-size:11px;font-weight:normal">من موقع الفني</span></button></div>
 </div>
 <div id="appPage" class="hidden">
-<div style="position:relative;border-radius:18px;overflow:hidden;border:1px solid #e5e7eb;margin-bottom:12px;min-height:190px">
+<div style="position:relative;border-radius:24px;overflow:hidden;border:1px solid #a855f7;margin-bottom:12px;min-height:190px">
 <img id="serverRotator" src="server1.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
-<div style="position:relative;z-index:2;padding:26px 16px;background:linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0.65));text-shadow:0 2px 8px #000;min-height:190px;display:flex;flex-direction:column;justify-content:center">
+<div style="position:relative;z-index:2;padding:26px 16px;background:linear-gradient(to bottom, rgba(26,0,51,0.25), rgba(26,0,51,0.65));text-shadow:0 2px 8px #000;min-height:190px;display:flex;flex-direction:column;justify-content:center">
 <div class="card" style="background:transparent;border:none;box-shadow:none;padding:0;margin:0"><h2 id="welcome" style="margin:0;color:#fff;font-size:30px;line-height:1.3"></h2><div id="techInfo" style="font-size:18px;color:#fff;margin-top:8px"></div>
 <button onclick="localStorage.clear();location.reload()" style="margin-top:8px;padding:5px 12px;border:none;border-radius:8px;background:#ff4757;color:#fff;font-size:14px;font-weight:bold;cursor:pointer;align-self:flex-start;width:auto">🚪 خروج</button>
 </div>
@@ -195,14 +192,13 @@ button:disabled{opacity:.55}
 </div>
 <div id="followerCard" class="card">
 <h3 style="margin:0 0 6px">👤 رقم المتابع بتاع النهاردة - اجباري</h3>
-<p style="font-size:12px;color:#6b7280;margin:0 0 6px">الفني بيكتب الرقم بايده، من غيره مفيش حفظ ولا ارسال - الارسال للمتابع بس</p>
+<p style="font-size:12px;color:#c4b5fd;margin:0 0 6px">الفني بيكتب الرقم بايده، من غيره مفيش حفظ ولا ارسال - الارسال للمتابع بس</p>
 <input id="followerPhone" placeholder="010xxxxxxxxx" inputmode="numeric" oninput="saveFollowerPhone()">
 <div class="row"><button onclick="clearFollowerPhone()" style="background:#dc3545">🗑️ مسح رقم المتابع</button></div>
 <p id="followerMsg" style="font-size:13px;color:#ff8a8a;margin:4px 0 0"></p>
 </div>
 <div id="adminAdd" class="card-light hidden">
-<div class="exportTop"><button onclick="exportArchive()" style="background:#00a651">📥 تصدير جدول Excel</button><p id="exportMsg" style="font-size:12px;color:#6b7280;text-align:center;margin:4px 0 0"></p></div>
-<div style="background:#4b0f8f;color:#fff;padding:14px;border-radius:14px;text-align:center;margin:0 0 12px;border:2px solid #4b0f8f"><div style="font-size:16px">👷 إجمالي الفنيين المتسجلين</div><div id="techCount" style="font-size:36px;font-weight:900;color:#fff">...</div><div id="techList" style="font-size:13px;color:#fff;line-height:1.8;text-align:right"></div><button onclick="loadTechCount()" style="background:#fff;color:#4b0f8f;margin-top:8px">🔄 تحديث العدد</button></div>
+<div style="background:#1e0b3d;color:#fff;padding:14px;border-radius:14px;text-align:center;margin:0 0 12px;border:2px solid #a855f7"><div style="font-size:16px">👷 إجمالي الفنيين المتسجلين</div><div id="techCount" style="font-size:36px;font-weight:900;color:#e9d5ff">...</div><div id="techList" style="font-size:13px;color:#e9d5ff;line-height:1.8;text-align:right"></div><button onclick="loadTechCount()" style="background:#7c3aed;margin-top:8px">🔄 تحديث العدد</button></div>
 <h3>➕ اضافة شغل يدوي</h3>
 <input id="a_customer" placeholder="اسم العميل" style="background:#fff;color:#111;border:1px solid #ddd"><input id="a_address" placeholder="العنوان" style="background:#fff;color:#111;border:1px solid #ddd">
 <input id="a_order" placeholder="رقم الاوردر - Tel" style="background:#fff;color:#111;border:1px solid #ddd"><input id="a_landline" placeholder="رقم الارضي / موبايل العميل" style="background:#fff;color:#111;border:1px solid #ddd">
@@ -218,7 +214,9 @@ button:disabled{opacity:.55}
 <input type="text" id="manualArchiveDate" placeholder="مثال: 22-10-2026 - سيبه فاضي وهياخد تاريخ الشيت" style="background:#fff;color:#111;border:1px solid #ddd">
 <button onclick="archiveOldJobs()" style="background:#9333ea">📦 أرشفة - كل يوم لوحده بتاريخ الشيت بتاعه</button>
 <p style="font-size:12px;color:#666">بينقل كل الشغل للأرشيف بتاريخ الشيت نفسه، وبيفضي الرئيسية لشغل بكرة. مفيش حاجة بتتمسح.</p>
-<div class="dangerZone"><h3>⚠️ منطقة الخطر - أدمن بس</h3><p style="font-size:12px;color:#666">انزل هنا عشان تشوف زراير المسح - محمية بباسورد الأدمن</p><button onclick="askAdminPass('clearOld')" style="background:#dc3545">🗑️ حذف العمل اليومي القديم</button><button onclick="askAdminPass('wipeAll')" style="background:#000;border:2px solid #dc3545">🗑️ حذف جميع البيانات وإعادة التعيين - بداية جديدة<br><span style="font-size:11px;font-weight:normal">بيمسح الرئيسية + الأرشيف كله - الفنيين بيفضلوا</span></button></div>
+<hr><h3 style="color:#dc3545">⚠️ منطقة الخطر - أدمن بس</h3>
+<button onclick="clearOldJobs()" style="background:#dc3545">🗑️ مسح شغل اليوم القديم - الرئيسية بس</button>
+<button onclick="wipeAllSystem()" style="background:#000;border:2px solid #dc3545">🗑️ مسح كل حاجة - بداية جديدة - أدمن بس<br><span style="font-size:11px;font-weight:normal">بيمسح الرئيسية + الأرشيف كله - الفنيين بيفضلوا</span></button>
 </div>
 <div class="stats">
 <div class="stat" id="statDone" onclick="filterByCircle('done')"><div class="circle c-green" id="cDone">0</div><b>تم التسليم</b><small>دوس لعرض المتسلمين</small></div>
@@ -234,7 +232,7 @@ button:disabled{opacity:.55}
 <div class="stat"><div class="circle c-blue" id="aUpdated">0</div><b>عليه ابديت</b><small>Up/Down او تأجيل - من غير سيريال</small></div>
 <div class="stat"><div class="circle c-purple" id="aEmpty">0</div><b>فاضي</b><small>لا سيريال ولا ابديت</small></div>
 </div>
-<p id="archiveSummary" style="font-size:13px;color:#6b7280;margin:10px 0 0;text-align:center"></p>
+<p id="archiveSummary" style="font-size:13px;color:#c4b5fd;margin:10px 0 0;text-align:center"></p>
 <button onclick="exportArchive()" style="background:#00a651">⬇️ تحميل اليوم المختار اكسيل - نفس الشيت المرفوع بالظبط - تم التسليم بس</button>
 </div>
 <div class="searchBox"><span>🔍</span><input id="searchInput" placeholder="بحث عن مهمة / رقم تسلسلي ..." oninput="onSearch()"></div>
@@ -258,7 +256,7 @@ button:disabled{opacity:.55}
 <input type="file" id="serialCamInput" accept="image/*" capture="environment" class="hidden">
 <div id="photoModal" style="position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:10001;display:none;align-items:center;justify-content:center;padding:12px" onclick="this.style.display='none'"><div style="text-align:center"><img id="photoModalImg" style="max-width:100%;max-height:80vh;border-radius:12px"><br><button onclick="event.stopPropagation();rotatePhotoModal()" style="background:#ff7b00;width:auto;padding:12px 20px;margin-top:10px">↻ تدوير الصورة</button></div></div>
 <div id="photoCamModal" style="position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:10002;display:none;align-items:center;justify-content:center;padding:12px">
-<div style="background:#fff;color:#111;border-radius:18px;padding:14px;width:100%;max-width:420px;text-align:center">
+<div style="background:#fff;color:#111;border-radius:24px;padding:14px;width:100%;max-width:420px;text-align:center">
 <h3 id="photoCamTitle" style="margin:0 0 8px">📷 صور وش الجهاز</h3>
 <p id="photoCamMsg" style="font-size:15px;color:#111;font-weight:bold">هتصور ازاي؟ اختار:</p>
 <button onclick="capturePhoto()" style="background:#007bff;font-size:20px;padding:18px;margin:6px 0">📷 صوّر بالكاميرا - كاميرا التليفون</button>
@@ -279,10 +277,9 @@ button:disabled{opacity:.55}
 </div>
 <button onclick="closeLockBack()" style="background:#333;font-size:18px !important;padding:14px !important;margin-top:14px !important">⬅️ رجوع - هبعت بعدين</button>
 </div></div>
-<div id="istighfarOverlay"><div class="istBox"><div style="font-size:42px">🤲</div><h2 id="istTitle" style="color:#111;margin:8px 0">أستغفر الله العظيم</h2><p id="istText" style="color:#333;line-height:1.8">أستغفر الله العظيم الذي لا إله إلا هو الحي القيوم وأتوب إليه<br><span id="istCount" style="font-size:28px;font-weight:900;color:#22c55e">10</span></p><p style="color:#6b7280;font-size:12px">ثواني ونكمل...</p></div></div>
+<div id="istighfarOverlay"><div class="istBox"><div style="font-size:42px">🤲</div><h2 id="istTitle" style="color:#fff;margin:8px 0">أستغفر الله العظيم</h2><p id="istText" style="color:#e9d5ff;line-height:1.8">أستغفر الله العظيم الذي لا إله إلا هو الحي القيوم وأتوب إليه<br><span id="istCount" style="font-size:28px;font-weight:900;color:#22c55e">10</span></p><p style="color:#c4b5fd;font-size:12px">ثواني ونكمل...</p></div></div>
 <div id="azkarModal"><div class="box"><h3 style="margin:0 0 10px">📖 الأذكار وحصن المسلم</h3><div id="azkarFull" style="line-height:2;font-size:15px"></div><button onclick="closeAzkar()" style="background:#333">✖️ اقفل</button></div></div>
 <div id="passModal"><div class="box"><h3 style="margin:0 0 8px">🔐 تريد تغيير الباسورد؟</h3><p style="font-size:14px;line-height:1.7">لو حابب تغير الباسورد بتاعك، اكتب الجديد هنا. لو مش حابب دوس تخطي.</p><input id="newPassInput" type="password" placeholder="الباسورد الجديد"><button onclick="doChangePass()" style="background:#00a651">✅ تغيير الباسورد</button><button onclick="closePassModal()" style="background:#333">⏭️ تخطي - مش عايز أغير</button></div></div>
-<div id="adminPassModal"><div class="box"><h3 style="margin:0 0 8px">🔐 تأكيد كلمة المرور</h3><p style="font-size:14px;line-height:1.7">اكتب باسورد الأدمن عشان تكمل المسح</p><input id="adminPassInput" type="password" placeholder="باسورد الأدمن"><button onclick="confirmAdminPass()" style="background:#dc3545">✅ تأكيد ومسح</button><button onclick="closeAdminPass()" style="background:#333">✖️ إلغاء</button></div></div>
 <script>
 let azkarList=['سبحان الله وبحمده','لا إله إلا الله وحده لا شريك له','أستغفر الله العظيم','اللهم صل على محمد','أعوذ بكلمات الله التامات','سبحان الله العظيم','الحمد لله رب العالمين','لا حول ولا قوة إلا بالله'];
 let azkarIdx=0;
@@ -300,7 +297,7 @@ let istighfarList=[
  {t:'اللهم اغفر لي', d:'اللهم اغفر لي ذنبي كله، دقه وجله، أوله وآخره، علانيته وسره'},
  {t:'رب اغفر لي وتب علي', d:'رب اغفر لي وتب علي إنك أنت التواب الرحيم'},
  {t:'سبحان الله وبحمده', d:'سبحان الله وبحمده، أستغفر الله وأتوب إليه'},
-  {t:'لا إله إلا أنت سبحانك', d:'لا إله إلا أنت سبحانك إني كنت من الظالمين'},
+   {t:'لا إله إلا أنت سبحانك', d:'لا إله إلا أنت سبحانك إني كنت من الظالمين'},
  {t:'اللهم إنك عفو', d:'اللهم إنك عفو تحب العفو فاعف عني'},
  {t:'أستغفرك ربي', d:'أستغفرك ربي من كل ذنب وأتوب إليك'}
 ];
@@ -308,10 +305,6 @@ function showIstighfar(){ let idx=0; try{ idx=parseInt(localStorage.getItem('mis
 function askChangePass(){ if(!currentUser || currentUser.role==='admin') return; document.getElementById('passModal').style.display='flex'; }
 function closePassModal(){ document.getElementById('passModal').style.display='none'; }
 async function doChangePass(){ let np=document.getElementById('newPassInput').value.trim(); if(!np || np.length<3){ alert('اكتب باسورد جديد 3 حروف على الأقل'); return; } let r=await supabaseClient.from('technicians').update({password:np}).eq('id',currentUser.id); if(r.error){ alert(r.error.message); return; } currentUser.password=np; try{ localStorage.setItem('misk_user',JSON.stringify(currentUser)); }catch(e){} alert('✅ تم تغيير الباسورد'); closePassModal(); }
-let pendingAdminAction=null;
-function askAdminPass(action){ if(!currentUser || currentUser.role!=='admin'){ alert('⛔ الزرار ده للأدمن بس'); return; } pendingAdminAction=action; document.getElementById('adminPassInput').value=''; document.getElementById('adminPassModal').style.display='flex'; }
-function closeAdminPass(){ document.getElementById('adminPassModal').style.display='none'; pendingAdminAction=null; }
-async function confirmAdminPass(){ let v=document.getElementById('adminPassInput').value.trim(); if(!v){ alert('اكتب باسورد الأدمن'); return; } if(!currentUser || String(currentUser.password).trim()!==v){ alert('باسورد غلط'); return; } let a=pendingAdminAction; document.getElementById('adminPassModal').style.display='none'; pendingAdminAction=null; if(a==='clearOld') await clearOldJobs(); if(a==='wipeAll') await wipeAllSystem(); }
 function tickLoginClock(){ let d=new Date(); let h=String(d.getHours()).padStart(2,'0'); let m=String(d.getMinutes()).padStart(2,'0'); let s=String(d.getSeconds()).padStart(2,'0'); let c=document.getElementById('loginClock'); if(c) c.innerText=h+':'+m; let a=document.getElementById('attendTime'); if(a) a.innerText=h+':'+m+':'+s; let dt=document.getElementById('loginDate'); if(dt) dt.innerText=d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear(); }
 setInterval(tickLoginClock,1000); tickLoginClock();
 async function loadWeather(lat,lon){ try{ let r=await fetch('https://api.open-meteo.com/v1/forecast?latitude='+(lat||30.0444)+'&longitude='+(lon||31.2357)+'&current=temperature_2m,weather_code&timezone=auto'); let j=await r.json(); let t=Math.round(j.current.temperature_2m); let code=j.current.weather_code; let icon=code===0?'☀️':code<3?'🌤️':'☁️'; let el=document.getElementById('loginWeather'); if(el) el.innerText=icon+' '+t+'°'; }catch(e){ let el=document.getElementById('loginWeather'); if(el) el.innerText='☀️ --°'; } }
@@ -331,7 +324,7 @@ let pendingStatusId=null, pendingStatusValue='';
 let autoRefreshOn=true, isSilentRefreshing=false, lastUpdateTime=null;
 let photoModalRotate=0;
 function isLockedJob(j){ if(!j) return false; if(!currentUser || currentUser.role==='admin') return false; if(!isFullyDone(j)) return false; let st=getSendState(j.id); return !!st.follower; }
-function isAnyModalOpen(){ let ids=['upDownModal','recipientModal','statusModal','photoCamModal','sendLockModal','photoModal','azkarModal','passModal','adminPassModal']; for(let id of ids){ let el=document.getElementById(id); if(el && el.style.display==='flex') return true; } return false; }
+function isAnyModalOpen(){ let ids=['upDownModal','recipientModal','statusModal','photoCamModal','sendLockModal','photoModal','azkarModal','passModal']; for(let id of ids){ let el=document.getElementById(id); if(el && el.style.display==='flex') return true; } return false; }
 function isUserTyping(){ let a=document.activeElement; if(!a) return false; if(a.tagName==='INPUT' || a.tagName==='TEXTAREA' || a.tagName==='SELECT') return true; return false; }
 function toggleAutoRefresh(){ autoRefreshOn=!autoRefreshOn; let b=document.getElementById('autoBtn'); let d=document.getElementById('liveDot'); if(b) b.innerText=autoRefreshOn?'⏸️ وقف التحديث':'▶️ شغل التحديث'; if(d) d.innerText=autoRefreshOn?'🟢 تحديث تلقائي شغال - كل 5 ثواني':'⏸️ التحديث واقف - دوس شغل'; }
 async function silentRefresh(){ if(!currentUser) return; if(!autoRefreshOn) return; if(isSilentRefreshing) return; if(isUploadingPhoto) return; if(isAnyModalOpen()) return; if(isUserTyping()) return; if(lockJobId) return; if(currentFilter==='archive') return; let scrollY=window.scrollY; let activeId=document.activeElement ? document.activeElement.id : null; let searchVal=document.getElementById('searchInput')?document.getElementById('searchInput').value:''; isSilentRefreshing=true; try{ let data=await fetchAll('jobs'); if(currentUser.role!=='admin'){ const myName=String(currentUser.name||'').trim().toLowerCase(); const myPhone=normPhone(currentUser.phone||''); data=data.filter(j=>{ const tn=String(j.tech_name||'').trim().toLowerCase(); const tp=normPhone(j.tech_phone||''); return tn===myName || (myPhone && tp && tp===myPhone); }); } let oldStr=JSON.stringify(allJobs.map(j=>j.id+'|'+j.serial+'|'+j.up_down+'|'+j.recipient+'|'+j.status+'|'+j.photo_front+'|'+j.photo_back+'|'+j.photo_receipt)); let newStr=JSON.stringify(data.map(j=>j.id+'|'+j.serial+'|'+j.up_down+'|'+j.recipient+'|'+j.status+'|'+j.photo_front+'|'+j.photo_back+'|'+j.photo_receipt)); if(oldStr!==newStr){ allJobs=data; renderJobs(); if(document.getElementById('searchInput')) document.getElementById('searchInput').value=searchVal; } lastUpdateTime=new Date(); let lu=document.getElementById('lastUpdate'); if(lu) lu.innerText='آخر تحديث '+lastUpdateTime.toLocaleTimeString('ar-EG'); window.scrollTo(0,scrollY); if(activeId){ let el=document.getElementById(activeId); if(el) el.focus({preventScroll:true}); } }catch(e){} finally{ isSilentRefreshing=false; } }
@@ -413,10 +406,10 @@ function openArchiveDay(d){ document.getElementById('archiveDate').value=d; rend
 function exportOneDay(d){ document.getElementById('archiveDate').value=d; exportArchive(); }
 function photoBtnHtml(j, type, label, isArch){
   let url=j[type]||'';
-  if(isLockedJob(j) && !isArch){ if(!url) return '<div class="photoWrap"><div style="font-size:11px">🔒 '+label+' - مقفول</div></div>'; return '<div class="photoWrap"><div style="font-size:11px;font-weight:bold;color:#4b0f8f;padding:6px">✅ '+label+'</div><img class="photoThumb" src="'+esc(url)+'" onclick="viewPhoto(\''+esc(url)+'\')"></div>'; }
-  if(isArch){ if(!url) return '<div class="photoWrap"><div style="font-size:11px;font-weight:bold;color:#4b0f8f;padding:6px">'+label+'</div><div style="height:90px;background:#f0f0f0;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px">❌</div></div>'; return '<div class="photoWrap"><div style="font-size:11px;font-weight:bold;color:#4b0f8f;padding:6px">'+label+'</div><img class="photoThumb" src="'+esc(url)+'" onclick="viewPhoto(\''+esc(url)+'\')"></div>'; }
-  if(url) return '<div class="photoWrap"><div style="font-size:11px;font-weight:bold;color:#4b0f8f;padding:6px">✅ '+label+'</div><img class="photoThumb" src="'+esc(url)+'" onclick="viewPhoto(\''+esc(url)+'\')"><button class="smallBtn" onclick="deletePhoto('+j.id+',\''+type+'\')">🗑️ مسح</button></div>';
-  if(isUploadingPhoto && pendingPhotoSnapshot && pendingPhotoSnapshot.jobId==j.id && pendingPhotoSnapshot.type==type) return '<div class="photoWrap"><div style="font-size:11px;font-weight:bold;color:#4b0f8f;padding:6px">'+label+'</div><div style="height:90px;background:#f0f0f0;border-radius:8px;display:flex;align-items:center;justify-content:center">⏳ جاري الرفع...</div></div>';
+  if(isLockedJob(j) && !isArch){ if(!url) return '<div class="photoWrap"><div style="font-size:11px">🔒 '+label+' - مقفول</div></div>'; return '<div class="photoWrap"><div style="font-size:11px;font-weight:bold;color:#6d28d9;padding:6px">✅ '+label+'</div><img class="photoThumb" src="'+esc(url)+'" onclick="viewPhoto(\''+esc(url)+'\')"></div>'; }
+  if(isArch){ if(!url) return '<div class="photoWrap"><div style="font-size:11px;font-weight:bold;color:#6d28d9;padding:6px">'+label+'</div><div style="height:90px;background:#f3e8ff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px">❌</div></div>'; return '<div class="photoWrap"><div style="font-size:11px;font-weight:bold;color:#6d28d9;padding:6px">'+label+'</div><img class="photoThumb" src="'+esc(url)+'" onclick="viewPhoto(\''+esc(url)+'\')"></div>'; }
+  if(url) return '<div class="photoWrap"><div style="font-size:11px;font-weight:bold;color:#6d28d9;padding:6px">✅ '+label+'</div><img class="photoThumb" src="'+esc(url)+'" onclick="viewPhoto(\''+esc(url)+'\')"><button class="smallBtn" onclick="deletePhoto('+j.id+',\''+type+'\')">🗑️ مسح</button></div>';
+  if(isUploadingPhoto && pendingPhotoSnapshot && pendingPhotoSnapshot.jobId==j.id && pendingPhotoSnapshot.type==type) return '<div class="photoWrap"><div style="font-size:11px;font-weight:bold;color:#6d28d9;padding:6px">'+label+'</div><div style="height:90px;background:#f3e8ff;border-radius:8px;display:flex;align-items:center;justify-content:center">⏳ جاري الرفع...</div></div>';
   return '<div class="photoWrap"><button class="photoBtn missing" onclick="openPhoto('+j.id+',\''+type+'\')">📷 '+label+'</button></div>';
 }
 function renderJobs(){
@@ -431,8 +424,8 @@ let pending=allJobs.filter(function(j){return isPendingJob(j);}).length;
 let problem=allJobs.filter(function(j){return isProblemJob(j);}).length;
 document.getElementById('cDone').innerText=done; document.getElementById('cPending').innerText=pending; document.getElementById('cProblem').innerText=problem;
 if(isArch){ let aDone=data.filter(function(j){return !!j.serial;}).length; let aUpd=data.filter(function(j){return isUpdated(j);}).length; let aEmpty=data.filter(function(j){return isEmptyJob(j);}).length; document.getElementById('aDone').innerText=aDone; document.getElementById('aUpdated').innerText=aUpd; document.getElementById('aEmpty').innerText=aEmpty; let selD=document.getElementById('archiveDate').value || 'كل الأيام'; document.getElementById('archiveSummary').innerText='اليوم: '+selD+' - الاجمالي: '+data.length+' - تم: '+aDone+' - ابديت: '+aUpd+' - فاضي: '+aEmpty; }
-filteredJobs=data; const list=document.getElementById('jobsList'); if(!data.length){list.innerHTML='<div class="card" style="text-align:center">مفيش شغل هنا - جرب بحث تاني أو دوس على دايرة تانية</div>'; document.getElementById('loadMoreWrap').innerHTML=''; return;} let show=data.slice(0, visibleCount); let html='<p style="font-size:13px;color:#6b7280">'+(isArch?'أرشيف: ':'')+'عدد الاوردرات: '+data.length+' من '+base.length+' - ظاهر منهم '+show.length+'</p>';
-show.forEach(j=>{ const isAdmin=currentUser.role==='admin'; const locked=isLockedJob(j); const disabled = locked ? 'disabled' : ''; let dispDate = isArch ? getArchiveDisplayDate(j) : (j.date||''); let updBadge = (!j.serial && isUpdated(j)) ? '<span class="badge badge-upd">🔄 ابديت</span>' : ''; let emptyBadge = (!j.serial && isEmptyJob(j)) ? '<span class="badge" style="background:#fff;border-color:#e5e7eb;color:#111">⚪ فاضي</span>' : ''; let photosBadge = hasAllPhotos(j) ? '<span class="badge">📷 3/3</span>' : '<span class="badge">📷 '+(3-missingPhotos(j).length)+'/3</span>'; let upDownBadge = j.up_down ? '<span class="badge">'+esc(j.up_down)+'</span>' : '<span class="badge">⚠️ ناقص Up/Down</span>'; let recipientBadge = j.recipient ? '<span class="badge badge-recipient">👤 '+esc(j.recipient)+'</span>' : '<span class="badge">⚠️ ناقص المستلم</span>'; let statusBadge = isProblemJob(j) ? '<span class="badge badge-problem">⚠️ '+esc(j.status||'مشكلة')+'</span>' : ''; let groupBadge = j.report_group ? '<span class="badge badge-group">👥 '+esc(j.report_group)+'</span>' : ''; let hasSerial = !!(j.serial && String(j.serial).trim()); let statusBtnHtml = ''; if(!isArch){ if(locked){ statusBtnHtml='<button class="statusBtn blocked" disabled>🔒 مقفول - تم الارسال للمتابع - الأدمن بس يعدل</button>'; } else if(hasSerial){ statusBtnHtml = '<button class="statusBtn blocked" disabled>🔒 عليه سيريال - مينفعش حالة زيارة</button>'; } else { statusBtnHtml = '<button class="statusBtn '+(isProblemJob(j)?'done':'')+'" onclick="openStatusModal('+j.id+',\''+esc(j.customer_name)+'\')"> '+(isProblemJob(j)?'تغيير الحالة: '+esc(j.status):'📋 حالة الزيارة - تأجيل / لم يتم الرد / رفض')+'</button>'; } } html+='<div class="job '+(isDoneJob(j)?'done':'')+' '+(isProblemJob(j)?'problem':'')+' '+(isArch?'arch':'')+' '+(locked?'lockedJob':'')+'">'+(locked?'<div class="lockedBanner">🔒 مقفول - تم الارسال للمتابع - التعديل للأدمن بس</div>':'')+'<h3>'+esc(j.customer_name||'بدون اسم')+' '+(isDoneJob(j)?'<span class="badge">✅ تم</span>':'')+' '+updBadge+' '+emptyBadge+' '+photosBadge+' '+upDownBadge+' '+recipientBadge+' '+statusBadge+' '+groupBadge+' '+(isArch?'<span class="badge badge-arch">📦 '+esc(dispDate)+'</span>':'')+'</h3>'+'<div class="meta"><b>تاريخ الشيت:</b> '+esc(dispDate)+' • <b>SN:</b> <span dir="ltr">'+esc(j.serial||'لسه')+'</span> • <b>Tel:</b> <span dir="ltr">'+esc(j.landline||j.order_no||'')+'</span><br>'+'<b>العنوان:</b> '+esc(j.address||'')+'<br>'+'<b>الجهاز:</b> '+esc(j.device_type||'')+' • <b>العرض:</b> '+esc(j.offer_name||'')+'<br>'+'<b>الجروب:</b> '+esc(j.report_group||'مش متحدد - ارفع بالاسم الصح')+' • <b>الحالة:</b> '+esc(j.status||'جديد')+' • <b>الخط:</b> '+(j.up_down?esc(j.up_down):'لسه')+' • <b>المستلم:</b> '+(j.recipient?esc(j.recipient):'لسه')+(j.comment?'<br><b>كومنت:</b> '+esc(j.comment):'')+'</div>'; html+='<div style="margin-top:8px"><b style="font-size:11px;color:#4b0f8f;padding:0 10px;display:block">📷 الصور الاجبارية - 3 صور:</b><div class="row" style="margin-top:4px">'+photoBtnHtml(j,'photo_front','وش الجهاز',isArch)+photoBtnHtml(j,'photo_back','ضهر الجهاز',isArch)+photoBtnHtml(j,'photo_receipt','الايصال + البطاقة',isArch)+'</div></div>'; if(!isArch){ if(locked){ html+='<input class="serial" value="'+esc(j.serial||'')+'" disabled><div class="row"><button disabled style="background:#eee;color:#888">🔒 مقفول - تم الارسال</button></div>'; } else { html+='<input id="s'+j.id+'" class="serial" value="'+esc(j.serial||'')+'" placeholder="اضافة سيريال - الزق هنا من Manatee" '+disabled+'>'+'<div class="row"><button class="manateeBtn" onclick="openManatee('+j.id+')">📲 افتح Manatee - انسخ والزق</button>'+'<button class="saveBtn" onclick="saveSerial('+j.id+')">💾 حفظ وارسال للمتابع</button></div>'+'<div class="row"><button class="upDownBtn '+(j.up_down?'done':'')+'" onclick="openUpDownOnly('+j.id+',\''+esc(j.customer_name)+'\')"> '+(j.up_down?'تغيير: '+esc(j.up_down):'⬆️ Up / ⬇️ Down *')+'</button><button class="recipientBtn '+(j.recipient?'done':'')+'" onclick="openRecipientOnly('+j.id+',\''+esc(j.customer_name)+'\')"> '+(j.recipient?'تغيير: '+esc(j.recipient):'👤 المستلم *')+'</button></div>'+statusBtnHtml; } } html+='</div>'; }); list.innerHTML=html; if(data.length > visibleCount){ document.getElementById('loadMoreWrap').innerHTML='<button onclick="showMore()" style="background:#00a651">عرض المزيد - باقي '+(data.length-visibleCount)+' اوردر</button>'; } else { document.getElementById('loadMoreWrap').innerHTML=''; } }
+filteredJobs=data; const list=document.getElementById('jobsList'); if(!data.length){list.innerHTML='<div class="card" style="text-align:center">مفيش شغل هنا - جرب بحث تاني أو دوس على دايرة تانية</div>'; document.getElementById('loadMoreWrap').innerHTML=''; return;} let show=data.slice(0, visibleCount); let html='<p style="font-size:13px;color:#c4b5fd">'+(isArch?'أرشيف: ':'')+'عدد الاوردرات: '+data.length+' من '+base.length+' - ظاهر منهم '+show.length+'</p>';
+show.forEach(j=>{ const isAdmin=currentUser.role==='admin'; const locked=isLockedJob(j); const disabled = locked ? 'disabled' : ''; let dispDate = isArch ? getArchiveDisplayDate(j) : (j.date||''); let updBadge = (!j.serial && isUpdated(j)) ? '<span class="badge badge-upd">🔄 ابديت</span>' : ''; let emptyBadge = (!j.serial && isEmptyJob(j)) ? '<span class="badge" style="background:#f3e8ff;border-color:#7c3aed;color:#6d28d9">⚪ فاضي</span>' : ''; let photosBadge = hasAllPhotos(j) ? '<span class="badge">📷 3/3</span>' : '<span class="badge">📷 '+(3-missingPhotos(j).length)+'/3</span>'; let upDownBadge = j.up_down ? '<span class="badge">'+esc(j.up_down)+'</span>' : '<span class="badge">⚠️ ناقص Up/Down</span>'; let recipientBadge = j.recipient ? '<span class="badge badge-recipient">👤 '+esc(j.recipient)+'</span>' : '<span class="badge">⚠️ ناقص المستلم</span>'; let statusBadge = isProblemJob(j) ? '<span class="badge badge-problem">⚠️ '+esc(j.status||'مشكلة')+'</span>' : ''; let groupBadge = j.report_group ? '<span class="badge badge-group">👥 '+esc(j.report_group)+'</span>' : ''; let hasSerial = !!(j.serial && String(j.serial).trim()); let statusBtnHtml = ''; if(!isArch){ if(locked){ statusBtnHtml='<button class="statusBtn blocked" disabled>🔒 مقفول - تم الارسال للمتابع - الأدمن بس يعدل</button>'; } else if(hasSerial){ statusBtnHtml = '<button class="statusBtn blocked" disabled>🔒 عليه سيريال - مينفعش حالة زيارة</button>'; } else { statusBtnHtml = '<button class="statusBtn '+(isProblemJob(j)?'done':'')+'" onclick="openStatusModal('+j.id+',\''+esc(j.customer_name)+'\')"> '+(isProblemJob(j)?'تغيير الحالة: '+esc(j.status):'📋 حالة الزيارة - تأجيل / لم يتم الرد / رفض')+'</button>'; } } html+='<div class="job '+(isDoneJob(j)?'done':'')+' '+(isProblemJob(j)?'problem':'')+' '+(isArch?'arch':'')+' '+(locked?'lockedJob':'')+'">'+(locked?'<div class="lockedBanner">🔒 مقفول - تم الارسال للمتابع - التعديل للأدمن بس</div>':'')+'<h3>'+esc(j.customer_name||'بدون اسم')+' '+(isDoneJob(j)?'<span class="badge">✅ تم</span>':'')+' '+updBadge+' '+emptyBadge+' '+photosBadge+' '+upDownBadge+' '+recipientBadge+' '+statusBadge+' '+groupBadge+' '+(isArch?'<span class="badge badge-arch">📦 '+esc(dispDate)+'</span>':'')+'</h3>'+'<div class="meta"><b>تاريخ الشيت:</b> '+esc(dispDate)+' • <b>SN:</b> <span dir="ltr">'+esc(j.serial||'لسه')+'</span> • <b>Tel:</b> <span dir="ltr">'+esc(j.landline||j.order_no||'')+'</span><br>'+'<b>العنوان:</b> '+esc(j.address||'')+'<br>'+'<b>الجهاز:</b> '+esc(j.device_type||'')+' • <b>العرض:</b> '+esc(j.offer_name||'')+'<br>'+'<b>الجروب:</b> '+esc(j.report_group||'مش متحدد - ارفع بالاسم الصح')+' • <b>الحالة:</b> '+esc(j.status||'جديد')+' • <b>الخط:</b> '+(j.up_down?esc(j.up_down):'لسه')+' • <b>المستلم:</b> '+(j.recipient?esc(j.recipient):'لسه')+(j.comment?'<br><b>كومنت:</b> '+esc(j.comment):'')+'</div>'; html+='<div style="margin-top:8px"><b style="font-size:11px;color:#6d28d9;padding:0 10px;display:block">📷 الصور الاجبارية - 3 صور:</b><div class="row" style="margin-top:4px">'+photoBtnHtml(j,'photo_front','وش الجهاز',isArch)+photoBtnHtml(j,'photo_back','ضهر الجهاز',isArch)+photoBtnHtml(j,'photo_receipt','الايصال + البطاقة',isArch)+'</div></div>'; if(!isArch){ if(locked){ html+='<input class="serial" value="'+esc(j.serial||'')+'" disabled><div class="row"><button disabled style="background:#eee;color:#888">🔒 مقفول - تم الارسال</button></div>'; } else { html+='<input id="s'+j.id+'" class="serial" value="'+esc(j.serial||'')+'" placeholder="اضافة سيريال - الزق هنا من Manatee" '+disabled+'>'+'<div class="row"><button class="manateeBtn" onclick="openManatee('+j.id+')">📲 افتح Manatee - انسخ والزق</button>'+'<button class="saveBtn" onclick="saveSerial('+j.id+')">💾 حفظ وارسال للمتابع</button></div>'+'<div class="row"><button class="upDownBtn '+(j.up_down?'done':'')+'" onclick="openUpDownOnly('+j.id+',\''+esc(j.customer_name)+'\')"> '+(j.up_down?'تغيير: '+esc(j.up_down):'⬆️ Up / ⬇️ Down *')+'</button><button class="recipientBtn '+(j.recipient?'done':'')+'" onclick="openRecipientOnly('+j.id+',\''+esc(j.customer_name)+'\')"> '+(j.recipient?'تغيير: '+esc(j.recipient):'👤 المستلم *')+'</button></div>'+statusBtnHtml; } } html+='</div>'; }); list.innerHTML=html; if(data.length > visibleCount){ document.getElementById('loadMoreWrap').innerHTML='<button onclick="showMore()" style="background:#00a651">عرض المزيد - باقي '+(data.length-visibleCount)+' اوردر</button>'; } else { document.getElementById('loadMoreWrap').innerHTML=''; } }
 function showMore(){ visibleCount+=50; renderJobs(); }
 function viewPhoto(url){ photoModalRotate=0; document.getElementById('photoModalImg').src=url; document.getElementById('photoModalImg').style.transform='rotate(0deg)'; document.getElementById('photoModal').style.display='flex'; }
 function rotatePhotoModal(){ photoModalRotate=(photoModalRotate+90)%360; document.getElementById('photoModalImg').style.transform='rotate('+photoModalRotate+'deg)'; }
@@ -492,7 +485,7 @@ function exportArchive(){
   let headers=['Date','Tel','Mobile','Name','Device type','Offer name','Returned Rent CPE serial','Paper Code','Exchange Name','Compound Name','Address','Senior Support','Senior Mobile','Serial','Comment','Status','Tech','Tech Phone'];
   let aoa=[headers];
   data.forEach(function(j){ let upRaw=String(j.up_down||'').trim().toUpperCase(); let upDown=(upRaw==='DOWN'||upRaw==='DAWN'||upRaw==='DOWEN')?'DOWN':'UP'; aoa.push([ getArchiveDisplayDate(j), fixTel(j.landline || j.order_no), fixMobile(j.mobile), j.customer_name||'', j.device_type||'', j.offer_name||'', j.returned_serial||'', j.paper_code||'', j.exchange_name||'', j.compound_name||'', j.address||'', j.senior_support||'', fixMobile(j.senior_mobile), String(j.serial||'').trim(), 'تم التسليم', upDown, j.tech_name||'', fixMobile(j.tech_phone) ]); });
-  let ws=XLSX.utils.aoa_to_sheet(aoa); let range=XLSX.utils.decode_range(ws['!ref']); for(let r=1;r<=range.e.r;r++){ ['B','C','M','N','R'].forEach(function(col){ let cell=ws[col+(r+1)]; if(cell){ cell.t='s'; cell.z='@'; } }); } ws['!cols']=[{wch:12},{wch:15},{wch:15},{wch:30},{wch:12},{wch:38},{wch:20},{wch:12},{wch:15},{wch:22},{wch:50},{wch:16},{wch:15},{wch:18},{wch:22},{wch:12},{wch:18},{wch:15}]; ws['!freeze']={xSplit:0,ySplit:1}; let wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,'ورقة1'); let fname='misk_'+(d||'all')+'_تم_التسليم.xlsx'; XLSX.writeFile(wb,fname); let em=document.getElementById('exportMsg'); if(em) em.innerText='تم تحميل الشيت بنجاح - '+fname+' - '+new Date().toLocaleString('ar-EG'); alert('✅ تم تصدير '+data.length+' عميل - تم التسليم بس - كل واحد قدامه السيريال + تم التسليم + UP/DOWN');
+  let ws=XLSX.utils.aoa_to_sheet(aoa); let range=XLSX.utils.decode_range(ws['!ref']); for(let r=1;r<=range.e.r;r++){ ['B','C','M','N','R'].forEach(function(col){ let cell=ws[col+(r+1)]; if(cell){ cell.t='s'; cell.z='@'; } }); } ws['!cols']=[{wch:12},{wch:15},{wch:15},{wch:30},{wch:12},{wch:38},{wch:20},{wch:12},{wch:15},{wch:22},{wch:50},{wch:16},{wch:15},{wch:18},{wch:22},{wch:12},{wch:18},{wch:15}]; ws['!freeze']={xSplit:0,ySplit:1}; let wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,'ورقة1'); XLSX.writeFile(wb,'misk_'+(d||'all')+'_تم_التسليم.xlsx'); alert('✅ تم تصدير '+data.length+' عميل - تم التسليم بس - كل واحد قدامه السيريال + تم التسليم + UP/DOWN');
 }
 function openManatee(jobId){ currentJobId=jobId; try{ let a=document.createElement('a'); a.href='intent://#Intent;package=com.manateeworks.barcodescanners;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;end'; document.body.appendChild(a); a.click(); a.remove(); }catch(e){} setTimeout(function(){ try{ let b=document.createElement('a'); b.href='intent://#Intent;package=com.cognex.barcodescanners;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;end'; document.body.appendChild(b); b.click(); b.remove(); }catch(e){} }, 700); }
 function openCamera(jobId){ currentJobId=jobId; let inp=document.getElementById('serialCamInput'); inp.value=''; inp.click(); }
