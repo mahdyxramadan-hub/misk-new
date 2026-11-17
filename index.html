@@ -336,7 +336,7 @@ async function openCamera(jobId){
     let doClose=()=>{ if(closed) return; closed=true; try{clearInterval(timer);}catch(e){} try{stream.getTracks().forEach(t=>t.stop());}catch(e){} try{v.remove();box.remove();hint.remove();closeBtn.remove();}catch(e){} };
     closeBtn.onclick=doClose;
     let det=new BarcodeDetector({formats:['code_128','code_39','ean_13','ean_8','upc_a','qr_code','code_93','itf']});
-    timer=setInterval(async ()=>{ if(closed) return; try{ let codes=await det.detect(v); if(codes && codes.length){ let txt=codes[0].rawValue.trim(); let inp=document.getElementById('s'+jobId); if(inp) inp.value=txt; doClose(); alert('تم قراءة: '+txt+'\nدوس حفظ'); } }catch(e){} }, 300);
+    timer=setInterval(async ()=>{ if(closed) return; try{ let codes=await det.detect(v); if(codes && codes.length){ let raw=codes[0].rawValue.trim(); let clean=raw.replace(/[^A-Z0-9]/gi,'').toUpperCase(); let txt=clean.length>16 ? clean.slice(-16) : clean; let inp=document.getElementById('s'+jobId); if(inp) inp.value=txt; doClose(); alert('تم قراءة: '+txt+'\nدوس حفظ'); } }catch(e){} }, 300);
     setTimeout(()=>{ if(!closed){ doClose(); alert('مقراش - جرب تقرب اكتر ونضف الكاميرا، او اكتب السيريال بايدك'); } }, 20000);
   }catch(e){ alert('افتح الكاميرا واديله صلاحية'); }
 }
