@@ -331,12 +331,13 @@ async function openCamera(jobId){
     v=document.createElement('video'); v.srcObject=stream; v.setAttribute('playsinline',true); v.setAttribute('muted',true); await v.play(); document.body.appendChild(v);
     v.style.cssText='position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:9999;background:#000';
     let box=document.createElement('div'); box.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:85%;height:140px;border:3px solid #00ff00;border-radius:12px;z-index:10000;pointer-events:none'; document.body.appendChild(box);
-    let hint=document.createElement('div'); hint.textContent='صوّب على الباركود - هيقرا لوحده'; hint.style.cssText='position:fixed;top:70px;left:10px;right:10px;z-index:10001;background:rgba(0,0,0,.7);color:#fff;text-align:center;padding:12px;border-radius:10px'; document.body.appendChild(hint);
+    let hint=document.createElement('div'); hint.textContent='ثبّت ايدك ثانيتين على الباركود - هيقرا لوحده'; hint.style.cssText='position:fixed;top:70px;left:10px;right:10px;z-index:10001;background:rgba(0,0,0,.7);color:#fff;text-align:center;padding:12px;border-radius:10px'; document.body.appendChild(hint);
     let closeBtn=document.createElement('button'); closeBtn.textContent='✕ اقفل واكتب بايدك'; closeBtn.style.cssText='position:fixed;top:15px;right:15px;z-index:10001;padding:10px 16px;font-size:16px;background:#ff3b30;color:#fff;border:0;border-radius:10px'; document.body.appendChild(closeBtn);
     let doClose=()=>{ if(closed) return; closed=true; try{clearInterval(timer);}catch(e){} try{stream.getTracks().forEach(t=>t.stop());}catch(e){} try{v.remove();box.remove();hint.remove();closeBtn.remove();}catch(e){} };
     closeBtn.onclick=doClose;
     let det=new BarcodeDetector({formats:['code_128','code_39','ean_13','ean_8','upc_a','qr_code','code_93','itf']});
-    timer=setInterval(async ()=>{ if(closed) return; try{ let codes=await det.detect(v); if(codes && codes.length){ let raw=codes[0].rawValue.trim(); let clean=raw.replace(/[^A-Z0-9]/gi,'').toUpperCase(); let txt=clean.length>16 ? clean.slice(-16) : clean; let inp=document.getElementById('s'+jobId); if(inp) inp.value=txt; doClose(); alert('تم قراءة: '+txt+'\nدوس حفظ'); } }catch(e){} }, 300);
+    let lastTxt='', sameCount=0;
+    timer=setInterval(async ()=>{ if(closed) return; try{ let codes=await det.detect(v); if(!codes || !codes.length) return; for(let c of codes){ let clean=String(c.rawValue||'').replace(/[^A-Z0-9]/gi,'').toUpperCase(); if(clean.length!==16) continue; if(!/^[0-9]/.test(clean)) continue; if(clean.replace(/\D/g,'').length<10) continue; if(clean===lastTxt){ sameCount++; } else { lastTxt=clean; sameCount=1; } if(sameCount<3) continue; let inp=document.getElementById('s'+jobId); if(inp) inp.value=clean; doClose(); alert('تم قراءة: '+clean+'\nدوس حفظ'); return; } }catch(e){} }, 300);
     setTimeout(()=>{ if(!closed){ doClose(); alert('مقراش - جرب تقرب اكتر ونضف الكاميرا، او اكتب السيريال بايدك'); } }, 20000);
   }catch(e){ alert('افتح الكاميرا واديله صلاحية'); }
 }
