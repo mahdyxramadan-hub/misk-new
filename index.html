@@ -4,7 +4,6 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Misk - Daily v14 - Neon Sport Login</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
 <style>
 *{box-sizing:border-box;font-family:Tahoma}
@@ -325,28 +324,20 @@ async function archiveOldJobs(){ if(currentUser.role!=='admin'){ alert('الار
 function exportArchive(){ let d=document.getElementById('archiveDate').value; let data=d?archiveJobs.filter(function(j){return getArchiveDisplayDate(j)===d;}):archiveJobs; if(!data.length){ alert('مفيش ارشيف'); return; } let rows=data.map(function(j){ return { 'Date': getArchiveDisplayDate(j), 'Tel': fixTel(j.landline || j.order_no), 'Mobile': fixMobile(j.mobile), 'Name': j.customer_name || '', 'Device type': j.device_type || '', 'Offer name': j.offer_name || '', 'Returned Rent CPE serial': j.returned_serial || '', 'Paper Code': j.paper_code || '', 'Exchange Name': j.exchange_name || '', 'Compound Name': j.compound_name || '', 'Address': j.address || '', 'Senior Support': j.senior_support || '', 'Senior Mobile': fixMobile(j.senior_mobile), 'Serial': String(j.serial || ''), 'Comment': j.comment || '', 'Status': j.status || '', 'Tech': j.tech_name || '', 'Tech Phone': fixMobile(j.tech_phone), 'UpDown': j.up_down || '', 'Group': j.report_group||'', 'Photo Front': j.photo_front||'', 'Photo Back': j.photo_back||'', 'Photo Receipt': j.photo_receipt||'' }; }); let ws=XLSX.utils.json_to_sheet(rows); let range=XLSX.utils.decode_range(ws['!ref']); for(let r=1;r<=range.e.r;r++){ ['B','C','M','N','R'].forEach(function(col){ let cell=ws[col+(r+1)]; if(cell){ cell.t='s'; cell.z='@'; } }); } ws['!cols']=[{wch:12},{wch:15},{wch:15},{wch:30},{wch:10},{wch:38},{wch:18},{wch:12},{wch:15},{wch:22},{wch:50},{wch:16},{wch:15},{wch:18},{wch:22},{wch:12},{wch:18},{wch:15},{wch:10},{wch:15},{wch:40},{wch:40},{wch:40}]; let wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,'ورقة1'); XLSX.writeFile(wb,'misk_archive_'+(d||'all')+'.xlsx'); }
 async function openCamera(jobId){
   currentJobId=jobId;
-  let stream=null, v=null;
+  if(!('BarcodeDetector' in window)){ alert('متصفحك مش بيدعم القراءة السريعة - اكتب السيريال بايدك'); return; }
+  let stream=null, v=null, timer=null, closed=false;
   try{
-    stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment', width:{ideal:3840}, height:{ideal:2160}}});
+    stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment', width:{ideal:1920}, height:{ideal:1080}}});
     v=document.createElement('video'); v.srcObject=stream; v.setAttribute('playsinline',true); v.setAttribute('muted',true); await v.play(); document.body.appendChild(v);
     v.style.cssText='position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:9999;background:#000';
-    let btn=document.createElement('button'); btn.textContent='📸 صور السيريال'; btn.style.cssText='position:fixed;bottom:30px;left:10px;right:10px;z-index:10001;padding:18px;font-size:20px;background:#00a651;color:#fff;border:0;border-radius:12px;font-weight:bold'; document.body.appendChild(btn);
-    let box=document.createElement('div'); box.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;height:120px;border:3px solid #00ff00;border-radius:12px;z-index:10000;pointer-events:none'; document.body.appendChild(box);
-    let hint=document.createElement('div'); hint.textContent='حط السيريال جوه المربع الأخضر ودوس 📸'; hint.style.cssText='position:fixed;top:70px;left:10px;right:10px;z-index:10001;background:rgba(0,0,0,.7);color:#fff;text-align:center;padding:12px;border-radius:10px'; document.body.appendChild(hint);
-    let closeBtn=document.createElement('button'); closeBtn.textContent='✕'; closeBtn.style.cssText='position:fixed;top:15px;right:15px;z-index:10001;padding:10px 16px;font-size:18px;background:#ff3b30;color:#fff;border:0;border-radius:10px'; document.body.appendChild(closeBtn);
-    let doClose=()=>{ try{stream.getTracks().forEach(t=>t.stop());}catch(e){} try{v.remove();btn.remove();box.remove();hint.remove();closeBtn.remove();}catch(e){} };
+    let box=document.createElement('div'); box.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:85%;height:140px;border:3px solid #00ff00;border-radius:12px;z-index:10000;pointer-events:none'; document.body.appendChild(box);
+    let hint=document.createElement('div'); hint.textContent='صوّب على الباركود - هيقرا لوحده'; hint.style.cssText='position:fixed;top:70px;left:10px;right:10px;z-index:10001;background:rgba(0,0,0,.7);color:#fff;text-align:center;padding:12px;border-radius:10px'; document.body.appendChild(hint);
+    let closeBtn=document.createElement('button'); closeBtn.textContent='✕ اقفل واكتب بايدك'; closeBtn.style.cssText='position:fixed;top:15px;right:15px;z-index:10001;padding:10px 16px;font-size:16px;background:#ff3b30;color:#fff;border:0;border-radius:10px'; document.body.appendChild(closeBtn);
+    let doClose=()=>{ if(closed) return; closed=true; try{clearInterval(timer);}catch(e){} try{stream.getTracks().forEach(t=>t.stop());}catch(e){} try{v.remove();box.remove();hint.remove();closeBtn.remove();}catch(e){} };
     closeBtn.onclick=doClose;
-    btn.onclick=async ()=>{
-      btn.textContent='جارى القراءة... استنى ثانية';
-      try{
-        let canvas=document.createElement('canvas'); canvas.width=v.videoWidth; canvas.height=v.videoHeight; canvas.getContext('2d').drawImage(v,0,0);
-        let crop=document.createElement('canvas'); let cw=v.videoWidth*0.9, ch=v.videoHeight*0.25; crop.width=cw; crop.height=ch; crop.getContext('2d').drawImage(canvas, v.videoWidth*0.05, v.videoHeight*0.37, cw, ch, 0,0,cw,ch);
-        let res=await Tesseract.recognize(crop.toDataURL('image/jpeg',1), 'eng', {tessedit_char_whitelist:'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:'});
-        let txt=res.data.text.replace(/[^A-Z0-9]/gi,''); let m=txt.match(/(?:SN)?([A-Z0-9]{10,})/); let serial=m?m[1]:txt;
-        if(serial.length<8) throw new Error('مش واضح');
-        let inp=document.getElementById('s'+jobId); if(inp) inp.value=serial; doClose(); alert('تم قراءة السيريال: '+serial+'\nدوس حفظ');
-      }catch(e){ btn.textContent='📸 صور السيريال'; alert('الصورة مش واضحة - قرّب شوية وخلي السيريال جوه المربع بالظبط وجرب تاني'); }
-    };
+    let det=new BarcodeDetector({formats:['code_128','code_39','ean_13','ean_8','upc_a','qr_code','code_93','itf']});
+    timer=setInterval(async ()=>{ if(closed) return; try{ let codes=await det.detect(v); if(codes && codes.length){ let txt=codes[0].rawValue.trim(); let inp=document.getElementById('s'+jobId); if(inp) inp.value=txt; doClose(); alert('تم قراءة: '+txt+'\nدوس حفظ'); } }catch(e){} }, 300);
+    setTimeout(()=>{ if(!closed){ doClose(); alert('مقراش - جرب تقرب اكتر ونضف الكاميرا، او اكتب السيريال بايدك'); } }, 20000);
   }catch(e){ alert('افتح الكاميرا واديله صلاحية'); }
 }
 async function saveSerial(id){
