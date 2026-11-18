@@ -262,15 +262,21 @@ function afterLogin(){
   if(lp) lp.classList.add("hidden");
   let ap = document.getElementById("appPage");
   if(ap) ap.classList.remove("hidden");
-  let w = document.getElementById("welcome");
-  if(w) w.innerText="أهلاً "+userObj.name+(userObj.isAdmin?" - أدمن":"");
-  let ti = document.getElementById("techInfo");
-  if(ti) ti.innerText=userObj.isAdmin?"كل الصلاحيات ماعدا مسح كل حاجة وريسترة السيستم":"فني - بتشوف شغلك ومخزنك بس";
+let w = document.getElementById("welcome");
+let ti = document.getElementById("techInfo");
+let isAdmin = userObj.role === 'admin' || userObj.role === 'super_admin';
+let isMahdy = userObj.role === 'super_admin';
+if (w) w.innerText = "أهلاً " + userObj.name;
+if (ti) {
+  if (isMahdy) ti.innerText = "Super Admin";
+  else if (isAdmin) ti.innerText = "ادمن";
+  else ti.innerText = "فني";
+}
   let aa = document.getElementById("adminAdd");
-  if(aa) aa.classList.toggle("hidden", !userObj.isAdmin);
+  if(aa) aa.classList.toggle("hidden", !isAdmin);
   let an = document.getElementById("archiveNav");
-  if(an) an.style.display=userObj.isAdmin?"":"none";
-  if(userObj.isAdmin) loadTechNames();
+  if(an) an.style.display = isAdmin ? "" : "none";
+  if(isAdmin) loadTechNames();
   loadJobs(); loadWarehouse(); loadArchive();
   let pm = document.getElementById("passModal");
   if(pm && !localStorage.getItem("misk_pass_changed_"+userObj.username)) pm.style.display="flex";
