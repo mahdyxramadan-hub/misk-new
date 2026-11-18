@@ -1,4 +1,4 @@
-<!-- ===== MISK - WE - النسخة الجديدة - الجزء 1 من 4 ===== -->
+<!-- ===== MISK - WE - النسخة المتصلحة - الجزء 1 من 3 ===== -->
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -66,7 +66,7 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <div style="text-align:center;background:#4A0E68;color:#fff;padding:18px;border-radius:16px"><div style="font-size:32px;font-weight:900">MISK<span style="color:#ff2a8a">.</span></div><small>SERVER • CCTV • ELECTRONICS</small></div>
 <h2 style="text-align:center">تسجيل دخول - صفحة واحدة</h2>
 <p style="text-align:center;font-size:13px;color:#666">فني: اسم عادي - أدمن: اسمه فيه كلمة admin</p>
-<input id="user" placeholder="اسم المستخدم" onkeydown="if(event.key==='Enter') login(event)"><input id="pass" type="password" placeholder="الباسورد" onkeydown="if(event.key==='Enter') login(event)">
+<input id="user" placeholder="اسم المستخدم" autocomplete="off" onkeydown="if(event.key==='Enter') login(event)"><input id="pass" type="password" placeholder="الباسورد" autocomplete="off" onkeydown="if(event.key==='Enter') login(event)">
 <button class="btn" type="button" onclick="login(event)">تسجيل الدخول</button><p id="loginMsg" style="color:red;text-align:center"></p>
 <div class="stats" style="padding:0;margin-top:10px">
 <div class="stat" onclick="showAzkar()"><div class="circle c-purple">📖</div><b style="font-size:11px">اذكار الصباح والمساء</b><br><small id="azkarText">سبحان الله وبحمده</small></div>
@@ -121,24 +121,25 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
   <div id="techCount" style="font-size:28px;font-weight:900;color:#00c6ff">0</div>
   <div style="font-size:12px;opacity:.7">عدد الفنيين المسجلين</div>
   <button onclick="openAddTech()" style="background:#00c6ff;border:0;padding:10px;border-radius:50px;width:100%;color:#fff;font-size:14px;margin-top:8px">➕ اضافة فني</button>
+  <div id="techList" style="text-align:right;font-size:13px;margin-top:8px"></div>
 </div>
 
-<!-- نافذة اضافة فني -->
 <div id="addTechModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center">
   <div style="background:#fff;width:92%;max-width:380px;padding:16px;border-radius:16px;color:#000">
     <h3 style="text-align:center;margin:0 0 12px">➕ اضافة فني جديد</h3>
-    <input id="techName" placeholder="اسم الفني - زي ما هو في شيت الأجهزة" style="width:100%;padding:10px;margin-bottom:8px;border-radius:10px;border:1px solid #ccc">
-    <input id="techPhone" placeholder="رقم التليفون - ده اليوزر بتاعه" style="width:100%;padding:10px;margin-bottom:8px;border-radius:10px;border:1px solid #ccc">
-    <input id="techPass" placeholder="الباسورد" style="width:100%;padding:10px;margin-bottom:8px;border-radius:10px;border:1px solid #ccc">
-    <input id="techLine" placeholder="Line - مثال: 93" style="width:100%;padding:10px;margin-bottom:8px;border-radius:10px;border:1px solid #ccc">
-    <input id="techGov" placeholder="المحافظة - مثال: sohag" style="width:100%;padding:10px;margin-bottom:12px;border-radius:10px;border:1px solid #ccc">
+    <input id="techName" placeholder="اسم الفني - زي ما هو في شيت الأجهزة" autocomplete="off" style="width:100%;padding:10px;margin-bottom:8px;border-radius:10px;border:1px solid #ccc">
+    <input id="techPhone" placeholder="رقم التليفون - ده اليوزر بتاعه" autocomplete="off" style="width:100%;padding:10px;margin-bottom:8px;border-radius:10px;border:1px solid #ccc">
+    <input id="techPass" placeholder="الباسورد" autocomplete="off" style="width:100%;padding:10px;margin-bottom:8px;border-radius:10px;border:1px solid #ccc">
+    <input id="techLine" placeholder="Line - مثال: 93" autocomplete="off" style="width:100%;padding:10px;margin-bottom:8px;border-radius:10px;border:1px solid #ccc">
+    <input id="techGov" placeholder="المحافظة - مثال: sohag" autocomplete="off" style="width:100%;padding:10px;margin-bottom:12px;border-radius:10px;border:1px solid #ccc">
     <button onclick="saveTechnician()" style="width:100%;background:#00c6ff;color:#fff;border:0;padding:12px;border-radius:12px;font-size:15px">اوكي - اضافة</button>
     <button onclick="closeAddTech()" style="width:100%;background:#eee;border:0;padding:10px;border-radius:12px;margin-top:8px">الغاء</button>
     <div id="techMsg" style="text-align:center;font-size:13px;margin-top:8px;color:green"></div>
   </div>
 </div>
-<div class="admin-box open"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">➕ اضافة شغل <span>▼</span></div><div class="admin-box-body"><input id="a_customer" placeholder="اسم العميل"><input id="a_code" placeholder="كود كام"><input id="a_address" placeholder="العنوان"><input id="a_order" placeholder="رقم الاوردر - Tel"><input id="a_landline" placeholder="رقم الارضي / موبايل العميل"><select id="a_device"><option value="">اختر الجهاز - ONU أو ONT</option><option value="ONU">ONU</option><option value="ONT">ONT</option></select><select id="a_tech"><option value="">اختر اسم الفني</option></select><button class="btn" onclick="addJob()">اضافة</button></div></div>
-  <div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📦 المخزن - رفع شيت الأجهزة <span>▼</span></div><div class="admin-box-body"><input type="file" id="warehouseInput" accept=".xlsx,.xls,.csv"><button class="orangeBtn" onclick="uploadWarehouseSheet()" style="width:100%;padding:13px;border-radius:50px;border:0">📦 رفع شيت المخزن - بيضيف مش بيبدل</button><p id="warehouseUploadMsg" style="font-size:13px"></p><p style="font-size:12px;color:#666">الأعمدة: A:sn - B:date - C:serial - D:date install - E:costmer phone - F:Model - G:Tech - H:Comment - بيقرا كل ورق المحافظات.</p></div></div>
+<!-- اضافة شغل - الترتيب الجديد المتصلح -->
+<div class="admin-box open"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">➕ اضافة شغل <span>▼</span></div><div class="admin-box-body"><input id="a_customer" placeholder="اسم العميل" autocomplete="off"><input id="a_landline" placeholder="رقم التليفون الأرضي" inputmode="numeric" autocomplete="off"><input id="a_mobile" placeholder="رقم الموبايل" inputmode="numeric" autocomplete="off"><input id="a_code" placeholder="كود كام" autocomplete="off"><input id="a_address" placeholder="العنوان" autocomplete="off"><input id="a_order" placeholder="رقم الأوردر - Tel" autocomplete="off"><select id="a_device"><option value="">اختر الجهاز - ONU أو ONT</option><option value="ONU">ONU</option><option value="ONT">ONT</option></select><select id="a_tech"><option value="">اختر اسم الفني</option></select><button class="btn" onclick="addJob()">اضافة</button></div></div>
+  <div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📦 المخزن - رفع شيت الأجهزة <span>▼</span></div><div class="admin-box-body"><input type="file" id="warehouseInput" accept=".xlsx,.xls,.csv"><button class="orangeBtn" onclick="uploadWarehouseSheet()" style="width:100%;padding:13px;border-radius:50px;border:0">📦 رفع شيت المخزن - بيضيف مش بيبدل</button><p id="warehouseUploadMsg" style="font-size:13px"></p><p style="font-size:12px;color:#666">الأعمدة: A:sn - B:date - C:serial - D:date install - E:costmer phone - F:Model - G:Tech - H:Comment - بيقرا كل ورق المحافظات.</p><div id="warehouseSummary" style="font-size:13px;margin-top:8px"></div><div id="warehousePreview" style="font-size:12px"></div></div></div>
 <div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📂 رفع شيت الشغل <span>▼</span></div><div class="admin-box-body"><input type="file" id="sheetInput" accept=".xlsx,.xls,.csv" multiple><button class="orangeBtn" onclick="uploadSheetFast()" style="width:100%;padding:13px;border-radius:50px;border:0">🚀 رفع شيتات الشغل</button><div id="prog" style="height:18px;background:#eee;border-radius:10px;overflow:hidden;margin:8px 0;display:none"><div id="progBar" style="height:100%;width:0%;background:#1aa34a"></div></div><p id="uploadMsg"></p></div></div>
 <div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📦 أرشفة - إنهاء اليوم <span>▼</span></div><div class="admin-box-body"><input type="text" id="manualArchiveDate" placeholder="مثال: 18-11-2026 - سيبه فاضي وهياخد تاريخ النهاردة"><button onclick="archiveOldJobs()" style="background:#9333ea;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">📦 أرشفة اليوم ده</button><button onclick="downloadEndOfDay()" style="background:#00a651;color:#fff;width:100%;padding:13px;border-radius:50px;border:0;margin-top:8px">📥 تحميل فولدر اليوم - شيتين على اللاب توب</button><p style="font-size:12px;color:#666">الفولدر بتاريخ اليوم جواه: شيت تم التسليم + شيت تأجيل / أبديت</p></div></div>
 <div class="admin-box"><div class="admin-box-head" style="background:#fff0f0" onclick="this.parentElement.classList.toggle('open')">🗑️ مسح أوردر واحد / مسح أرضي <span>▼</span></div><div class="admin-box-body"><input id="delOrderId" placeholder="رقم الأوردر - ID"><button onclick="deleteOneJob()" style="background:#dc3545;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">🗑️ مسح الأوردر ده</button><button onclick="deleteLandlineOnly()" style="background:#ff7a00;color:#fff;width:100%;padding:13px;border-radius:50px;border:0;margin-top:8px">🗑️ مسح الرقم الأرضي بس من الأوردر ده</button><p style="font-size:12px;color:#666">الأدمن بس - ومفيش مسح كل حاجة ولا ريسترة هنا</p></div></div>
@@ -176,7 +177,7 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <div id="azkarModal"><div class="box" style="text-align:right;max-height:88vh;overflow-y:auto"><h3 style="margin:0 0 10px">📖 الأذكار وحصن المسلم</h3><div id="azkarFull" style="line-height:2;font-size:15px"></div><button onclick="closeAzkar()" style="background:#333;color:#fff">✖️ اقفل</button></div></div>
 <div id="passModal"><div class="box"><h3 style="margin:0 0 8px">🔐 تريد تغيير الباسورد؟</h3><p style="font-size:14px;line-height:1.7">لو حابب تغير الباسورد بتاعك، اكتب الجديد هنا. لو مش حابب دوس تخطي.</p><input id="newPassInput" type="password" placeholder="الباسورد الجديد"><button onclick="doChangePass()" style="background:#00a651;color:#fff">✅ تغيير الباسورد</button><button onclick="closePassModal()" style="background:#333;color:#fff">⏭️ تخطي - مش عايز أغير</button></div></div>
 <script>
-// ===== الجزء 2 من 4 - الدخول + المخزن + الشغل =====
+// ===== الجزء 2 من 3 - الدخول + المخزن + الشغل =====
 const SUPABASE_URL = "https://wpbjdxjozibqcoyrmxlc.supabase.co";
 const SUPABASE_KEY = "sb_publishable_EpBDoKSZQ6OMZA3wHKd8vg_9_ocCNnm";
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -210,8 +211,10 @@ function daysBetween(dateStr){
   let d=new Date(+p[2], +p[1]-1, +p[0]); if(isNaN(d)) return 9999;
   return Math.floor((new Date().setHours(0,0,0,0)-d.getTime())/86400000);
 }
+function getVal(id){ return (document.getElementById(id)?.value || "").trim() }
+function techDisplayName(t){ return (t.name || t.username || "").trim() }
 
-// ===== دخول - صفحة واحدة =====
+// ===== دخول =====
 async function login(e){
   if(e) e.preventDefault();
   let u = document.getElementById('user').value.trim().toLowerCase();
@@ -227,17 +230,19 @@ async function login(e){
     let found = res.data.find(t => {
       let userInDb = String(t.username || '').trim().toLowerCase();
       let nameInDb = String(t.name || '').trim().toLowerCase().replace(/[\s_]+/g,'');
+      let phoneInDb = String(t.phone || '').trim();
       let inputClean = u.replace(/[\s_]+/g,'');
       let passInDb = String(t.password || '').trim();
-      let userMatch = (userInDb === u) || (nameInDb === inputClean) || (userInDb.replace(/[\s_]+/g,'') === inputClean);
+      let userMatch = (userInDb === u) || (nameInDb === inputClean) || (userInDb.replace(/[\s_]+/g,'') === inputClean) || (phoneInDb === u);
       return userMatch && passInDb === p;
     });
     if(!found){
       if(msgEl) msgEl.innerText = 'الاسم مش موجود';
       return false;
     }
-    let isAdmin = isAdminName(found.username);
-    userObj = {id: found.id, username: found.username, name: found.username, role: isAdmin ? "admin" : "tech", isAdmin: isAdmin};
+    let display = techDisplayName(found);
+    let isAdmin = isAdminName(display) || isAdminName(found.username);
+    userObj = {id: found.id, username: found.username, name: display, role: isAdmin ? "admin" : "tech", isAdmin: isAdmin};
     localStorage.setItem('misk_user', JSON.stringify(userObj));
     localStorage.setItem('misk_pass', p);
     afterLogin();
@@ -276,7 +281,7 @@ async function doChangePass(){
 }
 function closePassModal(){ document.getElementById("passModal").style.display="none" }
 
-// ===== المخزن - إضافة مش تبديل =====
+// ===== المخزن =====
 async function loadWarehouse(){
   let {data}=await supabaseClient.from(WAREHOUSE_TABLE).select("*").order("created_at",{ascending:false}).limit(20000);
   allWarehouse=data||[];
@@ -363,15 +368,16 @@ async function loadJobs(){
   renderJobs(); loadTechCount(); showLeftAlert();
 }
 async function loadTechNames(){
-  let {data}=await supabaseClient.from("technicians").select("username").order("username");
-  cachedTechNames=(data||[]).map(t=>t.username);
+  let {data}=await supabaseClient.from("technicians").select("username,name").order("name");
+  // شيل admin / ادمن من الليستة
+  cachedTechNames=(data||[]).map(t=>techDisplayName(t)).filter(n=> n && !isAdminName(n));
   let sel=document.getElementById("a_tech");
   if(sel) sel.innerHTML=`<option value="">اختر اسم الفني</option>`+cachedTechNames.map(n=>`<option value="${n}">${n}</option>`).join("");
 }
 async function loadTechCount(){
-  let {data}=await supabaseClient.from("technicians").select("username");
+  let {data}=await supabaseClient.from("technicians").select("username,name");
   let el=document.getElementById("techCount"); if(el) el.innerText=(data||[]).length;
-  let list=document.getElementById("techList"); if(list) list.innerHTML=(data||[]).map(t=>`<div>${t.username}</div>`).join("");
+  let list=document.getElementById("techList"); if(list) list.innerHTML=(data||[]).map(t=>`<div>${techDisplayName(t)}</div>`).join("");
 }
 function renderJobs(){
   let list=document.getElementById("jobsList"); if(!list) return;
@@ -411,7 +417,7 @@ function showLeftAlert(){
 }
 </script>
 <script>
-// ===== الجزء 3 من 4 - التفاصيل + الحفظ + الأرشفة + إنهاء اليوم =====
+// ===== الجزء 3 من 3 - التفاصيل + الحفظ + الأرشفة + إنهاء اليوم =====
 function openDetails(id){
   let j=allJobs.find(x=>String(x.id)===String(id)); if(!j) return;
   currentDetailId=j.id;
@@ -465,7 +471,8 @@ async function confirmStatus(){
   let cm=document.getElementById("statusComment").value.trim();
   if(!st) return alert("اختار الحالة الأول");
   let j=allJobs.find(x=>String(x.id)===String(currentStatusJobId)); if(!j) return;
-  await supabaseClient.from(TABLE).update({status:st, comment:cm}).eq("id", j.id);
+  let {error}=await supabaseClient.from(TABLE).update({status:st, comment:cm}).eq("id", j.id);
+  if(error) return alert("خطأ: "+error.message);
   j.status=st; j.comment=cm;
   closeStatusModal(); closeDetails(); renderJobs();
   alert("تم حفظ الحالة: "+st);
@@ -478,9 +485,13 @@ async function saveSerial(id){
   let rec=j.recipient||recipientMap[id];
   if(!up) return alert("اختار Up / Down الأول");
   if(!rec) return alert("اختار المستلم الأول");
-  let payload={serial, up_down:up, recipient:rec, status:"تم التسليم", delivered_at:new Date().toISOString(), delivered_date:todayStr()};
-  let {error}=await supabaseClient.from(TABLE).update(payload).eq("id", id);
-  if(error) return alert("خطأ في الحفظ: "+error.message);
+  let payload={serial, up_down:up, recipient:rec, status:"تم التسليم"};
+  // جرب بالأعمدة الزيادة، ولو فشلت جرب بالأساسي بس
+  let r1=await supabaseClient.from(TABLE).update({...payload, delivered_at:new Date().toISOString(), delivered_date:todayStr()}).eq("id", id);
+  if(r1.error){
+    let r2=await supabaseClient.from(TABLE).update(payload).eq("id", id);
+    if(r2.error) return alert("خطأ في الحفظ: "+r2.error.message);
+  }
   Object.assign(j, payload);
   await registerDeliveredInWarehouse(j, serial);
   await loadWarehouse();
@@ -490,14 +501,14 @@ async function saveSerial(id){
 async function addJob(){
   if(!userObj.isAdmin) return alert("الأدمن بس");
   let payload={
-    customer_name:document.getElementById("a_customer").value.trim(),
-    landline:document.getElementById("a_landline").value.trim(),
-    mobile:document.getElementById("a_mobile").value.trim(),
-    code:document.getElementById("a_code").value.trim(),
-    address:document.getElementById("a_address").value.trim(),
-    order:document.getElementById("a_order").value.trim(),
-    device:document.getElementById("a_device").value,
-    tech:document.getElementById("a_tech").value,
+    customer_name:getVal("a_customer"),
+    landline:getVal("a_landline"),
+    mobile:getVal("a_mobile"),
+    code:getVal("a_code"),
+    address:getVal("a_address"),
+    order:getVal("a_order"),
+    device:getVal("a_device"),
+    tech:getVal("a_tech"),
     status:"جديد", date:todayStr()
   };
   if(!payload.customer_name||!payload.tech) return alert("اكتب اسم العميل واختار الفني");
@@ -518,12 +529,7 @@ async function addJob(){
     if(r2.error){ alert("مش اتحفظ، السبب: "+r2.error.message); return; }
   }
   alert("تمت الإضافة ✅ - هتلاقيه في قيد الانتظار");
-  document.getElementById("a_customer").value="";
-  document.getElementById("a_landline").value="";
-  document.getElementById("a_mobile").value="";
-  document.getElementById("a_code").value="";
-  document.getElementById("a_address").value="";
-  document.getElementById("a_order").value="";
+  ["a_customer","a_landline","a_mobile","a_code","a_address","a_order"].forEach(id=>{ let e=document.getElementById(id); if(e) e.value=""; });
   activeFilter="pending"; visibleCount=10;
   await loadJobs();
   showTab('pending', document.querySelectorAll(".tabs div")[1]);
@@ -532,7 +538,7 @@ async function uploadSheetFast(){
   let files=document.getElementById("sheetInput").files;
   if(!files.length) return alert("اختار ملف الأول");
   document.getElementById("uploadMsg").innerText="جاري الرفع...";
-  let total=0;
+  let total=0, skipped=0;
   for(let f of files){
     let buf=await f.arrayBuffer();
     let wb=XLSX.read(buf,{type:"array"});
@@ -540,15 +546,20 @@ async function uploadSheetFast(){
       let arr=XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,defval:""});
       for(let r of arr){
         if(!r[0] && !r[1]) continue;
-        let maybeSerial = String(r[2]||"").trim();
-        if(String(r[0]||"").toLowerCase()==="sn" || maybeSerial.length > 12) continue;
-        let payload={customer_name:String(r[0]||""), address:String(r[1]||""), order:String(r[2]||""), landline:String(r[3]||""), mobile:String(r[4]||""), device:String(r[5]||""), tech:String(r[6]||""), status:"جديد", date:todayStr(), comment:String(r[7]||"")};
-        if(!payload.customer_name) continue;
-        await supabaseClient.from(TABLE).insert(payload); total++;
+        if(String(r[0]||"").toLowerCase().trim()==="sn") continue;
+        let customer=String(r[0]||"").trim();
+        if(!customer) continue;
+        let payload={customer_name:customer, address:String(r[1]||""), order:String(r[2]||""), landline:String(r[3]||""), mobile:String(r[4]||""), device:String(r[5]||""), tech:String(r[6]||""), status:"جديد", date:todayStr(), comment:String(r[7]||"")};
+        if(!payload.order){ continue; }
+        // منع التكرار: لو الأوردر موجود متضيفوش تاني
+        let {data:ex}=await supabaseClient.from(TABLE).select("id").eq("order", payload.order).maybeSingle();
+        if(ex){ skipped++; continue; }
+        let {error}=await supabaseClient.from(TABLE).insert(payload);
+        if(!error) total++;
       }
     }
   }
-  document.getElementById("uploadMsg").innerText=`تم رفع ${total} أوردر`;
+  document.getElementById("uploadMsg").innerText=`تم رفع ${total} أوردر - وتخطينا ${skipped} أوردر مكرر`;
   loadJobs();
 }
 async function loadArchive(){
@@ -565,11 +576,13 @@ async function archiveOldJobs(){
   let date=document.getElementById("manualArchiveDate").value.trim()||todayStr();
   if(!confirm("هترشف شغل يوم "+date+"؟")) return;
   let toArchive=allJobs.filter(j=> (j.date===date || fmtDate(j.created_at)===date) && j.status);
+  let ok=0;
   for(let j of toArchive){
-    await supabaseClient.from(ARCHIVE_TABLE).insert({...j, id:undefined, archive_date:date});
-    await supabaseClient.from(TABLE).delete().eq("id", j.id);
+    let arch={customer_name:j.customer_name, address:j.address, order:j.order, landline:j.landline, mobile:j.mobile, code:j.code, device:j.device, tech:j.tech, status:j.status, serial:j.serial||"", comment:j.comment||"", date:j.date||date, archive_date:date, recipient:j.recipient||"", up_down:j.up_down||""};
+    let {error}=await supabaseClient.from(ARCHIVE_TABLE).insert(arch);
+    if(!error){ await supabaseClient.from(TABLE).delete().eq("id", j.id); ok++; }
   }
-  alert(`تمت أرشفة ${toArchive.length} أوردر ليوم ${date}`);
+  alert(`تمت أرشفة ${ok} أوردر ليوم ${date}`);
   loadJobs(); loadArchive();
 }
 function exportArchive(){
@@ -620,7 +633,7 @@ async function deleteLandlineOnly(){
 }
 </script>
 <script>
-// ===== الجزء 4 من 4 - المتابع + الحضور + الصور + البداية =====
+// ===== الجزء 4 - المتابع + الحضور + الصور + البداية =====
 function saveFollowerPhone(){
   let v=document.getElementById("followerPhone").value.trim();
   localStorage.setItem("misk_follower_"+todayStr(), v);
@@ -643,7 +656,7 @@ function getLiveLocation(){
     document.getElementById("mapLocText").innerText=`📍 ${p.coords.latitude.toFixed(5)}, ${p.coords.longitude.toFixed(5)}`;
   }, ()=>alert("افتح اللوكيشن من المتصفح"));
 }
-function openManatee(id){ window.open("https://manatee.example.com","_blank") }
+function openManatee(id){ window.open("https://play.google.com/store/search?q=manatee+barcode+scanner&c=apps","_blank") }
 function openAzkar(){ document.getElementById("azkarFull").innerHTML=`<b>أذكار الصباح والمساء</b><br>أعوذ بالله من الشيطان الرجيم<br>اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ<br><br>سبحان الله وبحمده - 100 مرة<br>أستغفر الله العظيم وأتوب إليه<br>اللهم صل وسلم على نبينا محمد`; document.getElementById("azkarModal").style.display="flex" }
 function closeAzkar(){ document.getElementById("azkarModal").style.display="none" }
 function showAzkar(){ openAzkar() }
@@ -708,7 +721,7 @@ window.addEventListener("load", ()=>{
 if("serviceWorker" in navigator){ navigator.serviceWorker.register("sw.js").catch(()=>{}) }
 </script>
 <script>
-// ===== اضافة فني - بيحفظ في Supabase عشان يعرف يدخل =====
+// ===== اضافة فني - متصلح =====
 function normName(s){ return String(s||'').trim().toLowerCase().replace(/\s+/g,' '); }
 function getCustodyForTech(techName){
   const devices = window.warehouseDevices || JSON.parse(localStorage.getItem('warehouseDevices')||'[]');
@@ -724,15 +737,18 @@ async function saveTechnician(){
   const line = document.getElementById('techLine').value.trim();
   const gov = document.getElementById('techGov').value.trim();
   if(!name || !phone){ alert('اكتب اسم الفني ورقم الموبايل'); return; }
-  // اليوزر هو رقم التليفون - زي ما login بيدور عليه
-  let {error} = await supabaseClient.from('technicians').insert({username: phone, name: name, password: pass, phone: phone, line: line, governorate: gov});
+  // اليوزر = اسم الفني عشان يظهر صح في الليستة، والدخول بيقبل الاسم أو رقم التليفون
+  let {error} = await supabaseClient.from('technicians').insert({username: name, name: name, password: pass, phone: phone, line: line, governorate: gov});
   if(error){
-    // لو موجود قبل كده، حدث الباسورد بتاعه
-    let {error:err2} = await supabaseClient.from('technicians').update({name:name, password:pass, phone:phone, line:line, governorate:gov}).eq('username', phone);
-    if(err2){ alert('خطأ: '+err2.message); return; }
+    let {error:err2} = await supabaseClient.from('technicians').update({name:name, password:pass, phone:phone, line:line, governorate:gov}).eq('username', name);
+    if(err2){
+      // لو القديم كان متسجل برقم التليفون، حدثه
+      let {error:err3} = await supabaseClient.from('technicians').update({name:name, password:pass, phone:phone, line:line, governorate:gov}).eq('phone', phone);
+      if(err3){ alert('خطأ: '+err3.message); return; }
+    }
   }
   const custody = getCustodyForTech(name);
-  document.getElementById('techMsg').textContent = 'تم اضافة ' + name + ' ✅ - على عهدته دلوقتي ' + custody.length + ' جهاز - اليوزر: ' + phone + ' - الباسورد: ' + pass;
+  document.getElementById('techMsg').textContent = 'تم اضافة ' + name + ' ✅ - على عهدته دلوقتي ' + custody.length + ' جهاز - اليوزر: ' + name + ' أو ' + phone + ' - الباسورد: ' + pass;
   loadTechCount(); loadTechNames();
   setTimeout(closeAddTech, 1500);
 }
