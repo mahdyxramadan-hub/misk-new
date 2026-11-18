@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <link rel="manifest" href="manifest.json">
+<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#00a651">
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Misk - WE</title>
@@ -64,7 +64,7 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <div id="loginPage">
 <div style="text-align:center;background:#4A0E68;color:#fff;padding:18px;border-radius:16px"><div style="font-size:32px;font-weight:900">MISK<span style="color:#ff2a8a">.</span></div><small>SERVER • CCTV • ELECTRONICS</small></div>
 <h2 style="text-align:center">تسجيل دخول - صفحة واحدة</h2>
-<p style="text-align:center;font-size:13px;color:#666">فني: اسم عادي - أدمن: اسمه فيه كلمة admin</p>
+<p style="text-align:center;font-size:13px;color:#666">اكتب اسم المستخدم والباسورد</p>
 <input id="user" placeholder="اسم المستخدم" autocomplete="off" onkeydown="if(event.key==='Enter') login(event)"><input id="pass" type="password" placeholder="الباسورد" autocomplete="off" onkeydown="if(event.key==='Enter') login(event)">
 <button class="btn" type="button" onclick="login(event)">تسجيل الدخول</button><p id="loginMsg" style="color:red;text-align:center"></p>
 <div class="stats" style="padding:0;margin-top:10px">
@@ -85,8 +85,8 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
     </div>
   </div>
 </div>
-<button onclick="logout()" style="margin-top:12px;width:100%;padding:10px;border:0;border-radius:50px;background:#ff4757;color:#fff;font-weight:800">🚪 خروج</button>
-  <div class="we-bar"><div class="logo">WE<span>.</span></div><div>🔔</div></div>
+<div class="top-img"><small>☰</small><br><br><b id="welcome" style="font-size:22px"></b><br><small id="techInfo"></small><div style="position:absolute;left:14px;top:14px">🔔</div><button onclick="logout()" style="margin-top:12px;width:100%;padding:10px;border:0;border-radius:50px;background:#ff4757;color:#fff;font-weight:800">🚪 خروج</button></div>
+<div class="we-bar"><div class="logo">WE<span>.</span></div><div>🔔</div></div>
 <div style="position:relative"><img id="serverRotator" src="server1.jpg" style="width:100%;height:140px;object-fit:cover;display:block"></div>
 <div class="admin-layout">
 <div class="admin-main">
@@ -135,7 +135,7 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
     <input id="techLine" placeholder="Line - مثال: 93" autocomplete="off" style="width:100%;padding:10px;margin-bottom:8px;border-radius:10px;border:1px solid #ccc">
     <input id="techGov" placeholder="المحافظة - مثال: sohag" autocomplete="off" style="width:100%;padding:10px;margin-bottom:12px;border-radius:10px;border:1px solid #ccc">
     <button onclick="saveTechnician()" style="width:100%;background:#00c6ff;color:#fff;border:0;padding:12px;border-radius:12px;font-size:15px">اوكي - اضافة</button>
-    <button onclick="closeAddTech()" style="width:100%;background:#eee;border:0;padding:10px;border-radius:12px;margin-top:8px">الغاء</button>
+    <button onclick="closeAddTech()" style="background:#eee;border:0;padding:10px;border-radius:12px;margin-top:8px">الغاء</button>
     <div id="techMsg" style="text-align:center;font-size:13px;margin-top:8px;color:green"></div>
   </div>
 </div>
@@ -182,11 +182,11 @@ const BUCKET = "photo";
 const TABLE = "jobs";
 const ARCHIVE_TABLE = "jobs_archive";
 const WAREHOUSE_TABLE = "warehouse";
-const ADMIN_NUM = "01008755075";
 let userObj=null, allJobs=[], allWarehouse=[], archivedJobs=[], searchQ="", activeFilter="all", currentDetailId=null, currentPhotoSlot=null, currentStatusJobId=null, currentStatusCustomer="", currentSerialCamJobId=null, photoRot=0, activeTab="all", visibleCount=10, currentLockId=null, lockStep=0, pendingLockPayload=null, currentUpDownJobId=null, currentRecipientJobId=null, recipientMap={}, upDownMap={}, serialMap={}, photosMap={}, techLeftAlerts=[];
 let cachedTechNames=[];
+let silentSec = 5;
+let autoOn = true;
 function norm(s){return String(s||"").trim().toLowerCase().replace(/[\u064B-\u0652]/g,"").replace(/أ|إ|آ/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/\s+/g," ")}
-function isAdminName(name){ return norm(name).includes("admin") || norm(name).includes("ادمن") }
 function normTechKey(name){ return norm(name).replace(/[^a-z0-9\u0600-\u06FF]/g,"") }
 function cleanSerial(s){ return String(s||"").trim().toUpperCase().replace(/[^A-Z0-9]/g,"") }
 function fmtDate(d){ const x=new Date(d); if(isNaN(x)) return ""; return String(x.getDate()).padStart(2,"0")+"-"+String(x.getMonth()+1).padStart(2,"0")+"-"+x.getFullYear() }
@@ -209,6 +209,15 @@ function daysBetween(dateStr){
 function getVal(id){ return (document.getElementById(id)?.value || "").trim() }
 function techDisplayName(t){ return (t.name || t.username || "").trim() }
 function getJobTech(j){ return (j.tech || j.tech_name || j.Tech || "").trim() }
+function getRoleFromDb(t){
+  let r = String(t.role||"").trim().toLowerCase();
+  if(r==="super_admin"||r==="superadmin"||r==="super admin") return "super_admin";
+  if(r==="admin") return "admin";
+  if(r==="tech"||r==="technician") return "tech";
+  let n = norm(t.name||"")+" "+norm(t.username||"");
+  if(n.includes("admin")||n.includes("ادمن")) return "admin";
+  return "tech";
+}
 function myJobsBase(){ if(!userObj) return []; if(userObj.isAdmin) return [...allJobs]; return allJobs.filter(j=> normTechKey(getJobTech(j))===normTechKey(userObj.name)); }
 async function insertJobSafe(payload){
   let r1 = await supabaseClient.from(TABLE).insert(payload);
@@ -246,8 +255,9 @@ async function login(e){
       return false;
     }
     let display = techDisplayName(found);
-    let isAdmin = isAdminName(display) || isAdminName(found.username);
-    userObj = {id: found.id, username: found.username, name: display, role: isAdmin ? "admin" : "tech", isAdmin: isAdmin};
+    let role = getRoleFromDb(found);
+    let isAdmin = (role==="admin"||role==="super_admin");
+    userObj = {id: found.id, username: found.username, name: display, role: role, isAdmin: isAdmin, isSuper: role==="super_admin"};
     localStorage.setItem('misk_user', JSON.stringify(userObj));
     localStorage.setItem('misk_pass', p);
     afterLogin();
@@ -262,21 +272,17 @@ function afterLogin(){
   if(lp) lp.classList.add("hidden");
   let ap = document.getElementById("appPage");
   if(ap) ap.classList.remove("hidden");
-let w = document.getElementById("welcome");
-let ti = document.getElementById("techInfo");
-let isAdmin = userObj.role === 'admin' || userObj.role === 'super_admin' || userObj.name === 'Mona Beker';
-let isMahdy = userObj.role === 'super_admin';
-  if (w) w.innerText = "أهلاً " + (userObj.name || userObj.username || "Mahdy");
+  let w = document.getElementById("welcome");
+  let ti = document.getElementById("techInfo");
+  let isAdmin = userObj.isAdmin;
+  let isSuper = userObj.role === 'super_admin';
+  let displayName = (userObj.name || userObj.username || "Mahdy").trim();
+  if (w) w.innerText = "أهلاً " + displayName;
   if (ti) {
-    if (isSuper) ti.innerText = "Super Admin - " + (userObj.name || userObj.username);
-    else if (isAdmin) ti.innerText = "ادمن - " + (userObj.name || userObj.username);
-    else ti.innerText = "فني - " + (userObj.name || userObj.username);
+    if (isSuper) ti.innerText = "Super Admin - " + displayName;
+    else if (isAdmin) ti.innerText = "ادمن - " + displayName;
+    else ti.innerText = "فني - " + displayName;
   }
-if (ti) {
-  if (isMahdy) ti.innerText = "Super Admin";
-  else if (isAdmin) ti.innerText = "ادمن";
-  else ti.innerText = "فني";
-}
   let aa = document.getElementById("adminAdd");
   if(aa) aa.classList.toggle("hidden", !isAdmin);
   let an = document.getElementById("archiveNav");
@@ -287,7 +293,6 @@ if (ti) {
   if(pm && !localStorage.getItem("misk_pass_changed_"+userObj.username)) pm.style.display="flex";
 }
 function logout(){
-  // امسح كل حاجة تخص MISK بس، مش كل حاجة في المتصفح
   Object.keys(localStorage).forEach(k=>{
     if(k.startsWith("misk_")) localStorage.removeItem(k);
   });
@@ -297,7 +302,8 @@ function logout(){
 async function doChangePass(){
   let np=document.getElementById("newPassInput").value.trim();
   if(!np) return alert("اكتب الباسورد الجديد");
-  await supabaseClient.from("technicians").update({password:np}).eq("id", userObj.id);
+  let {error} = await supabaseClient.from("technicians").update({password:np}).eq("id", userObj.id);
+  if(error) return alert("خطأ: "+error.message);
   localStorage.setItem("misk_pass_changed_"+userObj.username,"1");
   localStorage.setItem("misk_pass", np);
   closePassModal(); alert("تم تغيير الباسورد");
@@ -387,15 +393,15 @@ async function loadJobs(){
   renderJobs(); loadTechCount(); showLeftAlert();
 }
 async function loadTechNames(){
-  let {data}=await supabaseClient.from("technicians").select("username,name").order("name");
-  cachedTechNames=(data||[]).map(t=>techDisplayName(t)).filter(n=> n && !isAdminName(n));
+  let {data}=await supabaseClient.from("technicians").select("username,name,role").order("name");
+  cachedTechNames=(data||[]).filter(t=> getRoleFromDb(t)==="tech").map(t=>techDisplayName(t)).filter(n=> n);
   let sel=document.getElementById("a_tech");
   if(sel) sel.innerHTML=`<option value="">اختر اسم الفني</option>`+cachedTechNames.map(n=>`<option value="${n}">${n}</option>`).join("");
 }
 async function loadTechCount(){
-  let {data}=await supabaseClient.from("technicians").select("username,name");
+  let {data}=await supabaseClient.from("technicians").select("username,name,role");
   let el=document.getElementById("techCount"); if(el) el.innerText=(data||[]).length;
-  let list=document.getElementById("techList"); if(list) list.innerHTML=(data||[]).map(t=>`<div>${techDisplayName(t)}</div>`).join("");
+  let list=document.getElementById("techList"); if(list) list.innerHTML=(data||[]).map(t=>`<div>${techDisplayName(t)} - ${getRoleFromDb(t)}</div>`).join("");
 }
 function renderJobs(){
   let list=document.getElementById("jobsList"); if(!list) return;
@@ -429,12 +435,8 @@ function showTab(tab, el){
 }
 function showLeftAlert(){
   let box=document.getElementById("leftTechAlerts"); if(!box) return;
-  let left=allJobs.filter(j=> normTechKey(getJobTech(j))==="youssefamr" && j.status!=="تم التسليم");
-  if(!left.length){ box.innerHTML=""; return; }
-  box.innerHTML=`<div style="background:#ffe6e6;border:2px solid #dc3545;margin:0 12px 12px;border-radius:16px;padding:14px"><h3 style="margin:0">⚠️ شغل متساب من Youssef Amr (${left.length})</h3><p style="font-size:13px">الشغل ده متساب ومحتاج يتوزع</p></div>`;
+  box.innerHTML="";
 }
-</script>
-<script>
 function openDetails(id){
   let j=allJobs.find(x=>String(x.id)===String(id)); if(!j) return;
   currentDetailId=j.id;
@@ -502,6 +504,9 @@ async function saveSerial(id){
   let rec=j.recipient||recipientMap[id];
   if(!up) return alert("اختار Up / Down الأول");
   if(!rec) return alert("اختار المستلم الأول");
+  if(!j.photo1) return alert("📷 صور وش الجهاز الأول - اجباري");
+  if(!j.photo2) return alert("📷 صور ضهر الجهاز الأول - اجباري");
+  if(!j.photo3) return alert("📷 صور الايصال والبطاقة الأول - اجباري");
   let payload={serial, up_down:up, recipient:rec, status:"تم التسليم"};
   let r1=await supabaseClient.from(TABLE).update({...payload, delivered_at:new Date().toISOString(), delivered_date:todayStr()}).eq("id", id);
   if(r1.error){
@@ -553,7 +558,6 @@ async function addJob(){
   await loadJobs();
   showTab('pending', document.querySelectorAll(".tabs div")[1]);
 }
-// ===== النسخة السريعة الصح 100% - مراجعة كاملة =====
 async function uploadSheetFast(){
   let files=document.getElementById("sheetInput").files;
   if(!files.length) return alert("اختار ملف الأول");
@@ -708,8 +712,6 @@ async function deleteLandlineOnly(){
   await supabaseClient.from(TABLE).update({landline:""}).eq("order", order);
   alert("تم مسح الرقم الأرضي بس من الأوردر "+order); loadJobs();
 }
-</script>
-<script>
 function saveFollowerPhone(){
   let v=document.getElementById("followerPhone").value.trim();
   localStorage.setItem("misk_follower_"+todayStr(), v);
@@ -812,7 +814,7 @@ async function saveTechnician(){
   const line = document.getElementById('techLine').value.trim();
   const gov = document.getElementById('techGov').value.trim();
   if(!name || !phone){ alert('اكتب اسم الفني ورقم الموبايل'); return; }
-  let {error} = await supabaseClient.from('technicians').insert({username: name, name: name, password: pass, phone: phone, line: line, governorate: gov});
+  let {error} = await supabaseClient.from('technicians').insert({username: name, name: name, password: pass, phone: phone, line: line, governorate: gov, role: 'tech'});
   if(error){
     let {error:err2} = await supabaseClient.from('technicians').update({name:name, password:pass, phone:phone, line:line, governorate:gov}).eq('username', name);
     if(err2){
@@ -825,11 +827,9 @@ async function saveTechnician(){
   loadTechCount(); loadTechNames();
   setTimeout(closeAddTech, 1500);
 }
-let silentSec = 5;
-let autoOn = true;
 function silentRefreshNow(){
   if(!userObj) return;
-  loadJobs();
+  loadJobs(); loadWarehouse();
   silentSec = 5;
 }
 function toggleAuto(){
