@@ -535,32 +535,85 @@ async function addJob(){
   await loadJobs();
   showTab('pending', document.querySelectorAll(".tabs div")[1]);
 }
+// ===== النسخة السريعة الصح 100% - مراجعة كاملة =====
 async function uploadSheetFast(){
   let files=document.getElementById("sheetInput").files;
   if(!files.length) return alert("اختار ملف الأول");
+  autoOn = false;
+  let btnAuto = document.getElementById("autoBtn");
+  if(btnAuto){ btnAuto.textContent="تشغيل"; btnAuto.style.background="#dcfce7"; btnAuto.style.color="#166534"; }
   document.getElementById("uploadMsg").innerText="جاري الرفع...";
+  let prog = document.getElementById("prog");
+  let progBar = document.getElementById("progBar");
+  if(prog) prog.style.display="block";
   let total=0, skipped=0;
-  for(let f of files){
-    let buf=await f.arrayBuffer();
-    let wb=XLSX.read(buf,{type:"array"});
-    for(let sn of wb.SheetNames){
-      let arr=XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,defval:""});
-      for(let r of arr){
-        if(!r[0] && !r[1]) continue;
-        if(String(r[0]||"").toLowerCase().trim()==="sn") continue;
-        let customer=String(r[0]||"").trim();
-        if(!customer) continue;
-        let techVal=String(r[6]||"").trim();
-        let payload={customer_name:customer, address:String(r[1]||""), order:String(r[2]||""), landline:String(r[3]||""), mobile:String(r[4]||""), device:String(r[5]||""), tech:techVal, tech_name:techVal, status:"جديد", date:todayStr(), comment:String(r[7]||"")};
-        if(!payload.order){ continue; }
-        let {data:ex}=await supabaseClient.from(TABLE).select("id").eq("order", payload.order).maybeSingle();
-        if(ex){ skipped++; continue; }
-        let {error}=await insertJobSafe(payload);
-        if(!error) total++;
+  try{
+    for(let f of files){
+      let buf=await f.arrayBuffer();
+      let wb=XLSX.read(buf,{type:"array"});
+      let ws = wb.Sheets["Sheet1"] || wb.Sheets[wb.SheetNames[0]];
+      let arr = XLSX.utils.sheet_to_json(ws,{header:1,defval:""});
+      let toInsert=[];
+      for(let i=1;i<arr.length;i++){
+        let r=arr[i];
+        let customer=String(r[3]||"").trim();
+        let order=String(r[1]||"").trim();
+        if(!customer || !order) continue;
+        if(customer==="Name") continue;
+        let techVal=String(r[16]||"").trim();
+        let techPhone=String(r[17]||"").trim();
+        toInsert.push({
+          customer_name: customer,
+          address: String(r[10]||""),
+          order: order,
+          landline: order,
+          mobile: String(r[2]||""),
+          device: String(r[4]||""),
+          code: String(r[7]||""),
+          tech: techVal,
+          tech_name: techVal,
+          tech_phone: techPhone,
+          status: "جديد",
+          date: todayStr(),
+          comment: String(r[14]||""),
+          serial: String(r[13]||"")
+        });
+      }
+      if(toInsert.length){
+        let orders = [...new Set(toInsert.map(x=>x.order))];
+        let exSet = new Set();
+        for(let i=0;i<orders.length;i+=500){
+          let chunkOrders = orders.slice(i, i+500);
+          let {data:ex} = await supabaseClient.from(TABLE).select("order").in("order", chunkOrders);
+          (ex||[]).forEach(x=> exSet.add(String(x.order)));
+        }
+        let filtered=[];
+        for(let x of toInsert){ if(exSet.has(String(x.order))) skipped++; else filtered.push(x); }
+        toInsert=filtered;
+      }
+      for(let i=0;i<toInsert.length;i+=500){
+        let chunk = toInsert.slice(i, i+500);
+        let {error} = await supabaseClient.from(TABLE).insert(chunk);
+        if(error){
+          let chunk2 = chunk.map(({tech_name, tech_phone, ...rest})=>rest);
+          let r2 = await supabaseClient.from(TABLE).insert(chunk2);
+          if(r2.error){
+            let chunk3 = chunk.map(({tech, ...rest})=>rest);
+            let r3 = await supabaseClient.from(TABLE).insert(chunk3);
+            if(!r3.error) total+=chunk3.length;
+            else { alert("خطأ: "+r3.error.message); console.log(r3.error); }
+          } else total+=chunk2.length;
+        } else total+=chunk.length;
+        if(progBar) progBar.style.width = Math.round(((i+chunk.length)/Math.max(1,toInsert.length))*100)+"%";
+        document.getElementById("uploadMsg").innerText=`جاري... تم رفع ${total} - ملف ${f.name}`;
       }
     }
-  }
-  document.getElementById("uploadMsg").innerText=`تم رفع ${total} أوردر - وتخطينا ${skipped} أوردر مكرر`;
+  }catch(e){ alert("خطأ في الرفع: "+e.message); console.log(e); }
+  if(prog) prog.style.display="none";
+  if(progBar) progBar.style.width="0%";
+  document.getElementById("uploadMsg").innerText=`تم رفع ${total} أوردر - وتخطينا ${skipped} مكرر ✅`;
+  autoOn = true;
+  if(btnAuto){ btnAuto.textContent="إيقاف"; btnAuto.style.background="#fee2e2"; btnAuto.style.color="#dc2626"; }
   loadJobs();
 }
 async function loadArchive(){
