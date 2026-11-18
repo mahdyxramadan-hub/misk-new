@@ -78,10 +78,13 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 </div>
 
 <div id="appPage" class="hidden">
-  <div style="background:#0f172a;color:#fff;padding:8px 12px;border-radius:10px;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-    <span>🔄 تحديث صامت</span>
-    <span>هيحدث بعد: <b id="silentCount">30</b> ثانية</span>
-    <button onclick="silentRefreshNow()" style="background:#22c55e;border:0;color:#fff;padding:6px 12px;border-radius:8px;cursor:pointer">حدث دلوقتي</button>
+  <div style="display:flex;justify-content:flex-end;margin-bottom:6px">
+    <div style="display:flex;align-items:center;gap:6px;background:#fff;border:1px solid #e5e7eb;padding:4px 8px;border-radius:20px;font-size:12px;box-shadow:0 2px 8px rgba(0,0,0,.08)">
+      <span style="width:8px;height:8px;background:#22c55e;border-radius:50%;display:inline-block"></span>
+      <span>تحديث بعد <b id="silentCount">5</b></span>
+      <button onclick="silentRefreshNow()" style="background:#7c3aed;border:0;color:#fff;padding:3px 8px;border-radius:12px;font-size:11px;cursor:pointer">حدث</button>
+      <button id="autoBtn" onclick="toggleAuto()" style="background:#fee2e2;border:0;color:#dc2626;padding:3px 8px;border-radius:12px;font-size:11px;cursor:pointer">إيقاف</button>
+    </div>
   </div>
 </div>
 <div class="top-img"><small>☰</small><br><br><b id="welcome" style="font-size:22px"></b><br><small id="techInfo"></small><div style="position:absolute;left:14px;top:14px">🔔</div><button onclick="localStorage.clear();location.reload()" style="margin-top:12px;width:100%;padding:10px;border:0;border-radius:50px;background:#ff4757;color:#fff;font-weight:800">🚪 خروج</button></div>
@@ -758,6 +761,33 @@ async function saveTechnician(){
   loadTechCount(); loadTechNames();
   setTimeout(closeAddTech, 1500);
 }
+  // ===== تحديث صامت شيك - كل 5 ثواني =====
+let silentSec = 5;
+let autoOn = true;
+function silentRefreshNow(){
+  if(!userObj) return;
+  loadJobs();
+  silentSec = 5;
+}
+function toggleAuto(){
+  autoOn = !autoOn;
+  const b = document.getElementById("autoBtn");
+  if(b){
+    b.textContent = autoOn ? "إيقاف" : "تشغيل";
+    b.style.background = autoOn ? "#fee2e2" : "#dcfce7";
+    b.style.color = autoOn ? "#dc2626" : "#166534";
+  }
+}
+setInterval(()=>{
+  if(!userObj || !autoOn) return;
+  const el = document.getElementById("silentCount");
+  silentSec--;
+  if(el) el.textContent = silentSec;
+  if(silentSec <= 0){
+    silentSec = 5;
+    loadJobs();
+  }
+}, 1000);
 </script>
 </body>
 </html>
