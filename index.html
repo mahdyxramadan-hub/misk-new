@@ -85,8 +85,8 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
     </div>
   </div>
 </div>
-<div class="top-img"><small>☰</small><br><br><b id="welcome" style="font-size:22px"></b><br><small id="techInfo"></small><div style="position:absolute;left:14px;top:14px">🔔</div><button onclick="localStorage.clear();location.reload()" style="margin-top:12px;width:100%;padding:10px;border:0;border-radius:50px;background:#ff4757;color:#fff;font-weight:800">🚪 خروج</button></div>
-<div class="we-bar"><div class="logo">WE<span>.</span></div><div>🔔</div></div>
+<button onclick="logout()" style="margin-top:12px;width:100%;padding:10px;border:0;border-radius:50px;background:#ff4757;color:#fff;font-weight:800">🚪 خروج</button>
+  <div class="we-bar"><div class="logo">WE<span>.</span></div><div>🔔</div></div>
 <div style="position:relative"><img id="serverRotator" src="server1.jpg" style="width:100%;height:140px;object-fit:cover;display:block"></div>
 <div class="admin-layout">
 <div class="admin-main">
@@ -281,7 +281,14 @@ if (ti) {
   let pm = document.getElementById("passModal");
   if(pm && !localStorage.getItem("misk_pass_changed_"+userObj.username)) pm.style.display="flex";
 }
-function logout(){ localStorage.removeItem("misk_user"); location.reload() }
+function logout(){
+  // امسح كل حاجة تخص MISK بس، مش كل حاجة في المتصفح
+  Object.keys(localStorage).forEach(k=>{
+    if(k.startsWith("misk_")) localStorage.removeItem(k);
+  });
+  sessionStorage.clear();
+  location.reload();
+}
 async function doChangePass(){
   let np=document.getElementById("newPassInput").value.trim();
   if(!np) return alert("اكتب الباسورد الجديد");
