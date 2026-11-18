@@ -118,8 +118,28 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 
 <div id="adminAdd" class="hidden">
 <div class="admin-side">
-<div style="background:#071126;color:#fff;padding:12px;border-radius:12px;text-align:center;margin-bottom:10px"><b>👷 الفنيين</b><div id="techCount" style="font-size:28px;font-weight:900;color:#00c6ff">...</div><div id="techList" style="font-size:12px;line-height:1.8"></div><button onclick="loadTechCount()" style="background:#00c6ff;border:0;padding:8px;border-radius:50px;width:100%">🔄 تحديث</button></div>
-<div class="admin-box open"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">➕ اضافة شغل <span>▼</span></div><div class="admin-box-body"><input id="a_customer" placeholder="اسم العميل"><input id="a_address" placeholder="العنوان"><input id="a_order" placeholder="رقم الاوردر - Tel"><input id="a_landline" placeholder="رقم الارضي / موبايل العميل"><select id="a_device"><option value="">اختر الجهاز - ONU أو ONT</option><option value="ONU">ONU</option><option value="ONT">ONT</option></select><select id="a_tech"><option value="">اختر اسم الفني</option></select><button class="btn" onclick="addJob()">اضافة</button></div></div>
+ <div style="background:#071126;color:#fff;padding:12px;border-radius:12px;text-align:center;margin-bottom:10px">
+  <b>👷 الفنيين</b>
+  <div id="techCount" style="font-size:28px;font-weight:900;color:#00c6ff">0</div>
+  <div style="font-size:12px;opacity:.7">عدد الفنيين المسجلين</div>
+  <button onclick="openAddTech()" style="background:#00c6ff;border:0;padding:10px;border-radius:50px;width:100%;color:#fff;font-size:14px;margin-top:8px">➕ اضافة فني</button>
+</div>
+
+<!-- نافذة اضافة فني -->
+<div id="addTechModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center">
+  <div style="background:#fff;width:92%;max-width:380px;padding:16px;border-radius:16px;color:#000">
+    <h3 style="text-align:center;margin:0 0 12px">➕ اضافة فني جديد</h3>
+    <input id="techName" placeholder="اسم الفني - زي ما هو في شيت الأجهزة" style="width:100%;padding:10px;margin-bottom:8px;border-radius:10px;border:1px solid #ccc">
+    <input id="techPhone" placeholder="رقم التليفون - ده اليوزر بتاعه" style="width:100%;padding:10px;margin-bottom:8px;border-radius:10px;border:1px solid #ccc">
+    <input id="techPass" placeholder="الباسورد" style="width:100%;padding:10px;margin-bottom:8px;border-radius:10px;border:1px solid #ccc">
+    <input id="techLine" placeholder="Line - مثال: 93" style="width:100%;padding:10px;margin-bottom:8px;border-radius:10px;border:1px solid #ccc">
+    <input id="techGov" placeholder="المحافظة - مثال: sohag" style="width:100%;padding:10px;margin-bottom:12px;border-radius:10px;border:1px solid #ccc">
+    <button onclick="saveTechnician()" style="width:100%;background:#00c6ff;color:#fff;border:0;padding:12px;border-radius:12px;font-size:15px">اوكي - اضافة</button>
+    <button onclick="closeAddTech()" style="width:100%;background:#eee;border:0;padding:10px;border-radius:12px;margin-top:8px">الغاء</button>
+    <div id="techMsg" style="text-align:center;font-size:13px;margin-top:8px;color:green"></div>
+  </div>
+</div>
+  <div class="admin-box open"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">➕ اضافة شغل <span>▼</span></div><div class="admin-box-body"><input id="a_customer" placeholder="اسم العميل"><input id="a_address" placeholder="العنوان"><input id="a_order" placeholder="رقم الاوردر - Tel"><input id="a_landline" placeholder="رقم الارضي / موبايل العميل"><select id="a_device"><option value="">اختر الجهاز - ONU أو ONT</option><option value="ONU">ONU</option><option value="ONT">ONT</option></select><select id="a_tech"><option value="">اختر اسم الفني</option></select><button class="btn" onclick="addJob()">اضافة</button></div></div>
 <div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📦 المخزن - رفع شيت الأجهزة <span>▼</span></div><div class="admin-box-body"><input type="file" id="warehouseInput" accept=".xlsx,.xls,.csv"><button class="orangeBtn" onclick="uploadWarehouseSheet()" style="width:100%;padding:13px;border-radius:50px;border:0">📦 رفع شيت المخزن - بيضيف مش بيبدل</button><p id="warehouseUploadMsg" style="font-size:13px"></p><p style="font-size:12px;color:#666">الأعمدة: A:sn - B:date - C:serial - D:date install - E:costmer phone - F:Model - G:Tech - H:Comment - بيقرا كل ورق المحافظات.</p></div></div>
 <div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📂 رفع شيت الشغل <span>▼</span></div><div class="admin-box-body"><input type="file" id="sheetInput" accept=".xlsx,.xls,.csv" multiple><button class="orangeBtn" onclick="uploadSheetFast()" style="width:100%;padding:13px;border-radius:50px;border:0">🚀 رفع شيتات الشغل</button><div id="prog" style="height:18px;background:#eee;border-radius:10px;overflow:hidden;margin:8px 0;display:none"><div id="progBar" style="height:100%;width:0%;background:#1aa34a"></div></div><p id="uploadMsg"></p></div></div>
 <div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📦 أرشفة - إنهاء اليوم <span>▼</span></div><div class="admin-box-body"><input type="text" id="manualArchiveDate" placeholder="مثال: 18-11-2026 - سيبه فاضي وهياخد تاريخ النهاردة"><button onclick="archiveOldJobs()" style="background:#9333ea;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">📦 أرشفة اليوم ده</button><button onclick="downloadEndOfDay()" style="background:#00a651;color:#fff;width:100%;padding:13px;border-radius:50px;border:0;margin-top:8px">📥 تحميل فولدر اليوم - شيتين على اللاب توب</button><p style="font-size:12px;color:#666">الفولدر بتاريخ اليوم جواه: شيت تم التسليم + شيت تأجيل / أبديت</p></div></div>
@@ -685,6 +705,38 @@ window.addEventListener("load", ()=>{
   if(fp) document.getElementById("followerMsg").innerText="✅ رقم المتابع المحفوظ: "+fp;
 });
 if("serviceWorker" in navigator){ navigator.serviceWorker.register("sw.js").catch(()=>{}) }
+</script>
+<script>
+function normName(s){ return String(s||'').trim().toLowerCase().replace(/\s+/g,' '); }
+function getTechs(){ return JSON.parse(localStorage.getItem('technicians')||'[]'); }
+function openAddTech(){ document.getElementById('addTechModal').style.display='flex'; }
+function closeAddTech(){ document.getElementById('addTechModal').style.display='none'; }
+function loadTechCount(){
+  const list = getTechs();
+  document.getElementById('techCount').textContent = list.length;
+}
+function getCustodyForTech(techName){
+  const devices = window.warehouseDevices || JSON.parse(localStorage.getItem('warehouseDevices')||'[]');
+  const n = normName(techName);
+  return devices.filter(d => normName(d.Tech || d.tech) === n);
+}
+function saveTechnician(){
+  const name = document.getElementById('techName').value.trim();
+  const phone = document.getElementById('techPhone').value.trim();
+  const pass = document.getElementById('techPass').value.trim();
+  const line = document.getElementById('techLine').value.trim();
+  const gov = document.getElementById('techGov').value.trim();
+  if(!name || !phone || !pass){ alert('اكتب اسم الفني ورقم التليفون والباسورد'); return; }
+  let list = getTechs();
+  if(list.some(t => normName(t.name) === normName(name))){ alert('الفني ده موجود قبل كده'); return; }
+  list.push({name, phone, password: pass, line, governorate: gov});
+  localStorage.setItem('technicians', JSON.stringify(list));
+  loadTechCount();
+  const custody = getCustodyForTech(name);
+  document.getElementById('techMsg').textContent = 'تم اضافة ' + name + ' ✅ - على عهدته دلوقتي ' + custody.length + ' جهاز';
+  setTimeout(closeAddTech, 1200);
+}
+loadTechCount();
 </script>
 </body>
 </html>
