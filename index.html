@@ -204,21 +204,30 @@ function daysBetween(dateStr){
 
 // ===== دخول - صفحة واحدة =====
 async function login(){
-  let u=document.getElementById("user").value.trim(), p=document.getElementById("pass").value.trim();
-  if(!u||!p){ document.getElementById("loginMsg").innerText="اكتب الاسم والباسورد"; return }
-  document.getElementById("loginMsg").innerText="جاري...";
-  let {data,error}=await supabaseClient.from("technicians").select("*").eq("username",u).maybeSingle();
-  if(error||!data){
-    // جرب بالاسم مهما كانت طريقة الكتابة
-    let {data:all}=await supabaseClient.from("technicians").select("*");
-    data=(all||[]).find(t=>norm(t.username)===norm(u));
+  let u = document.getElementById('user').value.trim().toLowerCase();
+  let p = document.getElementById('pass').value.trim();
+  document.getElementById('loginMsg').innerText = 'جاري...';
+  let res = await supabaseClient.from('technicians').select('*');
+  if(res.error || !res.data){
+    document.getElementById('loginMsg').innerText = 'مشكلة في الاتصال - جرب تاني';
+    return;
   }
-  if(!data){ document.getElementById("loginMsg").innerText="الاسم مش موجود"; return }
-  if(data.password!==p){ document.getElementById("loginMsg").innerText="الباسورد غلط"; return }
-  let isAdmin=isAdminName(data.username);
-  userObj={id:data.id, username:data.username, name:data.username, role:isAdmin?"admin":"tech", isAdmin};
-  localStorage.setItem("misk_user", JSON.stringify(userObj));
-  localStorage.setItem("misk_pass", p);
+  let found = res.data.find(t => {
+    let userInDb = String(t.username || '').trim().toLowerCase();
+    let nameInDb = String(t.name || '').trim().toLowerCase().replace(/[\s_]+/g,'');
+    let inputClean = u.replace(/[\s_]+/g,'');
+    let passInDb = String(t.password || '').trim();
+    let userMatch = (userInDb === u) || (nameInDb === inputClean) || (userInDb.replace(/[\s_]+/g,'') === inputClean);
+    return userMatch && passInDb === p;
+  });
+  if(!found){
+    document.getElementById('loginMsg').innerText = 'الاسم مش موجود';
+    return;
+  }
+  let isAdmin = isAdminName(found.username);
+  userObj = {id: found.id, username: found.username, name: found.username, role: isAdmin ? "admin" : "tech", isAdmin: isAdmin};
+  localStorage.setItem('misk_user', JSON.stringify(userObj));
+  localStorage.setItem('misk_pass', p);
   afterLogin();
 }
 function afterLogin(){
