@@ -265,4 +265,29 @@ function getGroupFromFileName(name){ let n=String(name||'').toLowerCase(); if(n.
 async function uploadSheetFast(){ let files=document.getElementById('sheetInput').files; if(!files.length){ alert('اختار الشيت الاول'); return; } const start=Date.now(); document.getElementById('prog').style.display='block'; document.getElementById('progBar').style.width='0%'; let totalAll=0; for(let fi=0;fi<files.length;fi++){ let file=files[fi]; const buf=await file.arrayBuffer(); const wb=XLSX.read(buf,{type:'array'}); const ws=wb.Sheets[wb.SheetNames[0]]; const rowsArr=XLSX.utils.sheet_to_json(ws,{header:1,defval:'',raw:false}); let group=getGroupFromSheetRows(rowsArr)||getGroupFromFileName(file.name); if(!group){ alert('مش لاقي اسم الجروب في G2 ولا G3 ولا G4 في ملف: '+file.name); continue; } let all=[]; for(let ri=1;ri<rowsArr.length;ri++){ const r=rowsArr[ri]; if(!r) continue; const get=(i)=>String(r[i]==null?'':r[i]).trim(); const date=get(0),tel=get(1),mobile=get(2),cust=get(3),device=get(4),offer=get(5),returnedRaw=get(6),paper=get(7),exch=get(8),compound=get(9),address=get(10),senior=get(11),seniorMob=get(12),serial=get(13),comment=get(14),statusRaw=get(15),tech=get(16),techPhoneRaw=get(17); if(!tel&&!cust) continue; let returned=returnedRaw; if(returned.toLowerCase().includes('operation sheet')||returned.toLowerCase().includes('daily operation')) returned='Rent'; let cleanTech=String(tech||'').trim(); if(cleanTech.toLowerCase()==='mahdy') cleanTech=''; let upFromSheet=null,statusFinal='جديد'; let pLow=String(statusRaw||'').trim().toLowerCase(); if(pLow==='up') upFromSheet='Up'; if(pLow==='down'||pLow==='dawn'||pLow==='dowen') upFromSheet='Down'; if(serial&&String(serial).trim()){ statusFinal='تم التسليم'; comment=''; } else if(pLow==='تأجيل'||pLow==='تاجيل') statusFinal='تأجيل'; else if(statusRaw) statusFinal=statusRaw; else statusFinal='جديد'; all.push({date:date,customer_name:cust,address:address,order_no:tel,landline:tel,mobile:mobile,device_type:device,offer_name:offer,returned_serial:returned,paper_code:paper,exchange_name:exch,compound_name:compound,senior_support:senior,senior_mobile:seniorMob,serial:serial||null,comment:comment,status:statusFinal,tech_name:cleanTech,tech_phone:normPhone(techPhoneRaw),up_down:upFromSheet,report_group:group}); } const CHUNK=500; for(let i=0;i<all.length;i+=CHUNK){ let chunk=all.slice(i,i+CHUNK); let rr=await supabaseClient.from('jobs').insert(chunk); if(rr.error){ alert('غلط في رفع '+file.name+': '+rr.error.message); } } totalAll+=all.length; document.getElementById('uploadMsg').innerText='تم رفع '+file.name+' - '+all.length+' اوردر - الجروب: '+group; } document.getElementById('progBar').style.width='100%'; document.getElementById('uploadMsg').innerText='✅ تم رفع '+files.length+' شيتات - اجمالي '+totalAll+' اوردر'; alert('✅ تم رفع '+files.length+' شيتات - اجمالي '+totalAll+' اوردر'); document.getElementById('sheetInput').value=''; goHome(); loadJobs(); }
 let serverImages=['server1.jpg','server2.jpg','server3.jpg']; let serverIndex=0;
 setInterval(()=>{ serverIndex=(serverIndex+1)%serverImages.length; let el=document.getElementById('serverRotator'); if(el) el.src=serverImages[serverIndex]; },5000);
+// --- زرار تثبيت التطبيق ---
+let deferredPrompt = null;
+let installBtn = document.createElement('button');
+installBtn.id = 'installBtn';
+installBtn.innerText = '📲 ثبت التطبيق على موبايلك - دوس هنا';
+installBtn.style.cssText = 'display:none;background:#00a651;color:#fff;width:100%;padding:14px;border-radius:50px;border:0;font-weight:900;font-size:16px;margin-top:10px;position:fixed;bottom:15px;left:10px;right:10px;z-index:9999;box-shadow:0 4px 15px rgba(0,0,0,0.3)';
+installBtn.onclick = installApp;
+document.body.appendChild(installBtn);
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.style.display = 'block';
+});
+async function installApp(){
+  if(deferredPrompt){
+    deferredPrompt.prompt();
+    let r = await deferredPrompt.userChoice;
+    if(r.outcome === 'accepted') alert('✅ اتثبت خلاص - هتلاقي أيقونة MISK على الشاشة');
+    deferredPrompt = null;
+    installBtn.style.display = 'none';
+  } else {
+    alert('افتح من جوجل كروم، ودوس على الـ 3 نقط فوق واختار "إضافة إلى الشاشة الرئيسية"');
+  }
+}
 </script></body></html>
