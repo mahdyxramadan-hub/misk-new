@@ -9,9 +9,9 @@
 body{margin:0;background:#f2f2f7;padding-bottom:80px}
 .header{background:#4A0E68;color:#fff;padding:16px 16px 20px;border-radius:0 0 20px 20px}
 .header-top{display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:28px;font-weight:900;color:#fff}
+.logo{font-size:28px;font-weight:900}
 .logo span{color:#ff2a8a}
-.welcome{font-size:14px;opacity:.9}
+.welcome{font-size:14px}
 .stats{display:flex;gap:10px;margin:14px 0 0}
 .stat{flex:1;background:#fff;color:#222;border-radius:14px;padding:10px;text-align:center}
 .stat b{font-size:20px;display:block}
@@ -24,42 +24,81 @@ body{margin:0;background:#f2f2f7;padding-bottom:80px}
 .late{background:#ffecec;color:#d32f2f}
 .done{background:#e8f5e9;color:#2e7d32}
 .info{color:#555;font-size:13px;line-height:1.8;margin:8px 0}
-.btn{width:100%;background:#E6007E;color:#fff;border:0;padding:12px;border-radius:12px;font-weight:800;font-size:15px}
-.tabs{position:fixed;bottom:0;right:0;left:0;background:#fff;display:flex;border-top:1px solid #eee;padding:10px 0}
+.btn{width:100%;background:#E6007E;color:#fff;border:0;padding:12px;border-radius:12px;font-weight:800;font-size:15px;cursor:pointer}
+.tabs{position:fixed;bottom:0;right:0;left:0;background:#fff;display:flex;border-top:1px solid #eee;padding:10px 0;z-index:10}
 .tabs a{flex:1;text-align:center;text-decoration:none;color:#777;font-size:12px}
 .tabs a.active{color:#4A0E68;font-weight:800}
+/* صفحة التفاصيل */
+#details{display:none;position:fixed;inset:0;background:#f2f2f7;z-index:20;overflow-y:auto;padding-bottom:90px}
+.d-head{background:#4A0E68;color:#fff;padding:14px;display:flex;align-items:center;gap:12px;position:sticky;top:0}
+.back{background:#fff;color:#4A0E68;border:0;padding:8px 14px;border-radius:10px;font-weight:800;font-size:16px;cursor:pointer}
+.d-box{background:#fff;margin:12px;border-radius:16px;padding:14px}
+.d-box h3{margin:0 0 8px;color:#4A0E68}
+.d-line{font-size:14px;line-height:2;color:#333}
+.d-line b{color:#000}
+input{width:100%;padding:12px;border:2px solid #4A0E68;border-radius:12px;font-size:16px;text-align:center;margin:8px 0}
+.imgs{display:flex;gap:8px}
+.imgbox{flex:1;background:#eee;border:2px dashed #aaa;border-radius:12px;height:110px;display:flex;align-items:center;justify-content:center;font-size:12px;text-align:center;color:#555}
+.row{display:flex;gap:8px}
+.row button{flex:1}
+.save{background:#1aa34a;color:#fff;border:0;padding:13px;border-radius:12px;font-weight:800}
+.blue{background:#0b7ed1;color:#fff;border:0;padding:13px;border-radius:12px;font-weight:800}
+.orange{background:#ff7a00;color:#fff;border:0;padding:12px;border-radius:12px;font-weight:800;width:100%;margin:8px 0}
 </style>
 </head>
 <body>
 
+<!-- القائمة -->
+<div id="list">
 <div class="header">
-<div class="header-top">
-<div class="logo">MISK<span>.</span></div>
-<div class="welcome">مرحباً بالفني 👋<br><b>مهام اليوم</b></div>
-</div>
-<div class="stats">
-<div class="stat"><b>12</b><small>مهام اليوم</small></div>
-<div class="stat"><b>8</b><small>مكتملة</small></div>
-<div class="stat"><b>2</b><small>متأخرة</small></div>
-</div>
+<div class="header-top"><div class="logo">MISK<span>.</span></div><div class="welcome">مرحباً بالفني 👋<br><b>مهام اليوم</b></div></div>
+<div class="stats"><div class="stat"><b>12</b><small>مهام اليوم</small></div><div class="stat"><b>8</b><small>مكتملة</small></div><div class="stat"><b>2</b><small>متأخرة</small></div></div>
 </div>
 
 <div class="card">
 <div class="card-top"><div class="name">أحمد محمد - #1023</div><div class="badge new">جديد</div></div>
 <div class="info">📍 بردلة - البحيرة<br>🕐 10:30 ص - تركيب راوتر<br>📞 0100XXXXXXX</div>
-<button class="btn">عرض التفاصيل</button>
+<button class="btn" onclick="openD('أحمد محمد - #1023','بردلة - البحيرة','10:30 ص - تركيب راوتر')">عرض التفاصيل</button>
 </div>
 
 <div class="card">
 <div class="card-top"><div class="name">سارة علي - #1024</div><div class="badge late">متأخر</div></div>
 <div class="info">📍 دمنهور - البحيرة<br>🕐 11:00 ص - صيانة خط<br>📞 0111XXXXXXX</div>
-<button class="btn">عرض التفاصيل</button>
+<button class="btn" onclick="openD('سارة علي - #1024','دمنهور - البحيرة','11:00 ص - صيانة خط')">عرض التفاصيل</button>
+</div>
 </div>
 
-<div class="card">
-<div class="card-top"><div class="name">محمود حسن - #1025</div><div class="badge done">مكتمل</div></div>
-<div class="info">📍 كفر الدوار<br>🕐 12:00 م - تفعيل خدمة<br>📞 0122XXXXXXX</div>
-<button class="btn">عرض التفاصيل</button>
+<!-- التفاصيل - ملي الشاشة -->
+<div id="details">
+<div class="d-head">
+<button class="back" onclick="goBack()">← رجوع</button>
+<div><b id="dName">تفاصيل الأوردر</b><br><small>لو دخلت أوردر غلط دوس رجوع</small></div>
+</div>
+
+<div class="d-box">
+<input placeholder="اضافة سيريال">
+<div class="row"><button class="blue">📷 صور السيريال</button><button class="save">💾 حفظ</button></div>
+<button class="orange">⬆️ Up / ⬇️ Down *</button>
+</div>
+
+<div class="d-box">
+<h3 id="dTitle">أحمد محمد</h3>
+<div class="d-line"><b>العنوان:</b> <span id="dAddr"></span><br><b>الخدمة:</b> <span id="dService"></span><br><b>تاريخ الشيت:</b> Tel-16 : لسه<br><b>الجهاز:</b> ONT &nbsp;•&nbsp; <b>العرض:</b> NEW-FTTH ONT<br><b>الحالة:</b> جديد &nbsp;•&nbsp; <b>الخط:</b> لسه<br><b>الجروب:</b> Misk Report Alex</div>
+</div>
+
+<div class="d-box">
+<h3>📷 الصور الاجبارية - 3 صور:</h3>
+<div class="imgs">
+<div class="imgbox">✅ وش الجهاز<br>+ صور تاني</div>
+<div class="imgbox">✅ ضهر الجهاز<br>+ صور تاني</div>
+<div class="imgbox">✅ الايصال +<br>البطاقة</div>
+</div>
+<div class="row" style="margin-top:8px"><button class="save">حفظ</button><button class="blue">📷 صور السيريال</button></div>
+</div>
+
+<div class="d-box" style="text-align:center">
+<button class="save" style="width:100%;font-size:17px;padding:14px">✅ تم التنفيذ - انهاء الأوردر</button>
+</div>
 </div>
 
 <div class="tabs">
@@ -70,5 +109,18 @@ body{margin:0;background:#f2f2f7;padding-bottom:80px}
 <a href="#">👤<br>الحساب</a>
 </div>
 
+<script>
+function openD(name,addr,service){
+document.getElementById('dName').innerText=name;
+document.getElementById('dTitle').innerText=name;
+document.getElementById('dAddr').innerText=addr;
+document.getElementById('dService').innerText=service;
+document.getElementById('details').style.display='block';
+window.scrollTo(0,0);
+}
+function goBack(){
+document.getElementById('details').style.display='none';
+}
+</script>
 </body>
 </html>
