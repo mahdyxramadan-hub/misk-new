@@ -491,17 +491,42 @@ async function addJob(){
   if(!userObj.isAdmin) return alert("الأدمن بس");
   let payload={
     customer_name:document.getElementById("a_customer").value.trim(),
+    landline:document.getElementById("a_landline").value.trim(),
+    mobile:document.getElementById("a_mobile").value.trim(),
     code:document.getElementById("a_code").value.trim(),
     address:document.getElementById("a_address").value.trim(),
     order:document.getElementById("a_order").value.trim(),
-    landline:document.getElementById("a_landline").value.trim(),
     device:document.getElementById("a_device").value,
     tech:document.getElementById("a_tech").value,
     status:"جديد", date:todayStr()
   };
   if(!payload.customer_name||!payload.tech) return alert("اكتب اسم العميل واختار الفني");
-  await supabaseClient.from(TABLE).insert(payload);
-  alert("تمت الإضافة"); loadJobs();
+  if(!payload.order) return alert("اكتب رقم الأوردر");
+  let {error} = await supabaseClient.from(TABLE).insert(payload);
+  if(error){
+    let payload2 = {
+      customer_name: payload.customer_name,
+      address: payload.address,
+      order: payload.order,
+      landline: payload.landline,
+      device: payload.device,
+      tech: payload.tech,
+      status:"جديد", date:todayStr(),
+      comment: "موبايل: "+payload.mobile+" | كود: "+payload.code
+    };
+    let r2 = await supabaseClient.from(TABLE).insert(payload2);
+    if(r2.error){ alert("مش اتحفظ، السبب: "+r2.error.message); return; }
+  }
+  alert("تمت الإضافة ✅ - هتلاقيه في قيد الانتظار");
+  document.getElementById("a_customer").value="";
+  document.getElementById("a_landline").value="";
+  document.getElementById("a_mobile").value="";
+  document.getElementById("a_code").value="";
+  document.getElementById("a_address").value="";
+  document.getElementById("a_order").value="";
+  activeFilter="pending"; visibleCount=10;
+  await loadJobs();
+  showTab('pending', document.querySelectorAll(".tabs div")[1]);
 }
 async function uploadSheetFast(){
   let files=document.getElementById("sheetInput").files;
