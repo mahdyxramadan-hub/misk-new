@@ -266,7 +266,12 @@ let w = document.getElementById("welcome");
 let ti = document.getElementById("techInfo");
 let isAdmin = userObj.role === 'admin' || userObj.role === 'super_admin' || userObj.name === 'Mona Beker';
 let isMahdy = userObj.role === 'super_admin';
-if (w) w.innerText = "أهلاً " + userObj.name;
+  if (w) w.innerText = "أهلاً " + (userObj.name || userObj.username || "Mahdy");
+  if (ti) {
+    if (isSuper) ti.innerText = "Super Admin - " + (userObj.name || userObj.username);
+    else if (isAdmin) ti.innerText = "ادمن - " + (userObj.name || userObj.username);
+    else ti.innerText = "فني - " + (userObj.name || userObj.username);
+  }
 if (ti) {
   if (isMahdy) ti.innerText = "Super Admin";
   else if (isAdmin) ti.innerText = "ادمن";
