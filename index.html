@@ -66,8 +66,8 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <div style="text-align:center;background:#4A0E68;color:#fff;padding:18px;border-radius:16px"><div style="font-size:32px;font-weight:900">MISK<span style="color:#ff2a8a">.</span></div><small>SERVER • CCTV • ELECTRONICS</small></div>
 <h2 style="text-align:center">تسجيل دخول - صفحة واحدة</h2>
 <p style="text-align:center;font-size:13px;color:#666">فني: اسم عادي - أدمن: اسمه فيه كلمة admin</p>
-<input id="user" placeholder="اسم المستخدم"><input id="pass" type="password" placeholder="الباسورد">
-<button class="btn" onclick="login()">تسجيل الدخول</button><p id="loginMsg" style="color:red;text-align:center"></p>
+<input id="user" placeholder="اسم المستخدم" onkeydown="if(event.key==='Enter') login(event)"><input id="pass" type="password" placeholder="الباسورد" onkeydown="if(event.key==='Enter') login(event)">
+<button class="btn" type="button" onclick="login(event)">تسجيل الدخول</button><p id="loginMsg" style="color:red;text-align:center"></p>
 <div class="stats" style="padding:0;margin-top:10px">
 <div class="stat" onclick="showAzkar()"><div class="circle c-purple">📖</div><b style="font-size:11px">اذكار الصباح والمساء</b><br><small id="azkarText">سبحان الله وبحمده</small></div>
 <div class="stat"><div class="circle c-blue"><span id="loginClock">--:--</span></div><b style="font-size:11px">الساعة وحالة الجو</b><br><small id="loginDate">--</small><br><small id="loginWeather">☀️ جاري...</small></div>
@@ -93,8 +93,6 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 
 <div id="leftTechAlerts"></div>
 <div id="stockAlerts"></div>
-
-
 
 <div class="stats">
 <div class="stat" id="statDone" onclick="filterByCircle('done')"><div class="circle c-green" id="cDone">0</div><b>تم التسليم</b><br><small>دوس لعرض المتسلمين</small></div>
@@ -214,43 +212,58 @@ function daysBetween(dateStr){
 }
 
 // ===== دخول - صفحة واحدة =====
-async function login(){
+async function login(e){
+  if(e) e.preventDefault();
   let u = document.getElementById('user').value.trim().toLowerCase();
   let p = document.getElementById('pass').value.trim();
-  document.getElementById('loginMsg').innerText = 'جاري...';
-  let res = await supabaseClient.from('technicians').select('*');
-  if(res.error || !res.data){
-    document.getElementById('loginMsg').innerText = 'خطأ: ' + (res.error ? res.error.message : 'مفيش داتا');
-    return;
+  let msgEl = document.getElementById('loginMsg');
+  if(msgEl) msgEl.innerText = 'جاري...';
+  try{
+    let res = await supabaseClient.from('technicians').select('*');
+    if(res.error || !res.data){
+      if(msgEl) msgEl.innerText = 'خطأ: ' + (res.error ? res.error.message : 'مفيش داتا');
+      return false;
+    }
+    let found = res.data.find(t => {
+      let userInDb = String(t.username || '').trim().toLowerCase();
+      let nameInDb = String(t.name || '').trim().toLowerCase().replace(/[\s_]+/g,'');
+      let inputClean = u.replace(/[\s_]+/g,'');
+      let passInDb = String(t.password || '').trim();
+      let userMatch = (userInDb === u) || (nameInDb === inputClean) || (userInDb.replace(/[\s_]+/g,'') === inputClean);
+      return userMatch && passInDb === p;
+    });
+    if(!found){
+      if(msgEl) msgEl.innerText = 'الاسم مش موجود';
+      return false;
+    }
+    let isAdmin = isAdminName(found.username);
+    userObj = {id: found.id, username: found.username, name: found.username, role: isAdmin ? "admin" : "tech", isAdmin: isAdmin};
+    localStorage.setItem('misk_user', JSON.stringify(userObj));
+    localStorage.setItem('misk_pass', p);
+    afterLogin();
+  }catch(err){
+    if(msgEl) msgEl.innerText = 'خطأ: ' + err.message;
+    console.log(err);
   }
-  let found = res.data.find(t => {
-    let userInDb = String(t.username || '').trim().toLowerCase();
-    let nameInDb = String(t.name || '').trim().toLowerCase().replace(/[\s_]+/g,'');
-    let inputClean = u.replace(/[\s_]+/g,'');
-    let passInDb = String(t.password || '').trim();
-    let userMatch = (userInDb === u) || (nameInDb === inputClean) || (userInDb.replace(/[\s_]+/g,'') === inputClean);
-    return userMatch && passInDb === p;
-  });
-  if(!found){
-    document.getElementById('loginMsg').innerText = 'الاسم مش موجود';
-    return;
-  }
-  let isAdmin = isAdminName(found.username);
-  userObj = {id: found.id, username: found.username, name: found.username, role: isAdmin ? "admin" : "tech", isAdmin: isAdmin};
-  localStorage.setItem('misk_user', JSON.stringify(userObj));
-  localStorage.setItem('misk_pass', p);
-  afterLogin();
+  return false;
 }
 function afterLogin(){
-  document.getElementById("loginPage").classList.add("hidden");
-  document.getElementById("appPage").classList.remove("hidden");
-  document.getElementById("welcome").innerText="أهلاً "+userObj.name+(userObj.isAdmin?" - أدمن":"");
-  document.getElementById("techInfo").innerText=userObj.isAdmin?"كل الصلاحيات ماعدا مسح كل حاجة وريسترة السيستم":"فني - بتشوف شغلك ومخزنك بس";
-  document.getElementById("adminAdd").classList.toggle("hidden", !userObj.isAdmin);
-  document.getElementById("archiveNav").style.display=userObj.isAdmin?"":"none";
+  let lp = document.getElementById("loginPage");
+  if(lp) lp.classList.add("hidden");
+  let ap = document.getElementById("appPage");
+  if(ap) ap.classList.remove("hidden");
+  let w = document.getElementById("welcome");
+  if(w) w.innerText="أهلاً "+userObj.name+(userObj.isAdmin?" - أدمن":"");
+  let ti = document.getElementById("techInfo");
+  if(ti) ti.innerText=userObj.isAdmin?"كل الصلاحيات ماعدا مسح كل حاجة وريسترة السيستم":"فني - بتشوف شغلك ومخزنك بس";
+  let aa = document.getElementById("adminAdd");
+  if(aa) aa.classList.toggle("hidden", !userObj.isAdmin);
+  let an = document.getElementById("archiveNav");
+  if(an) an.style.display=userObj.isAdmin?"":"none";
   if(userObj.isAdmin) loadTechNames();
   loadJobs(); loadWarehouse(); loadArchive();
-  if(!localStorage.getItem("misk_pass_changed_"+userObj.username)) document.getElementById("passModal").style.display="flex";
+  let pm = document.getElementById("passModal");
+  if(pm && !localStorage.getItem("misk_pass_changed_"+userObj.username)) pm.style.display="flex";
 }
 function logout(){ localStorage.removeItem("misk_user"); location.reload() }
 async function doChangePass(){
