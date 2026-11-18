@@ -284,7 +284,6 @@ async function loadWarehouse(){
 }
 function myWarehouse(){
   if(userObj.isAdmin) return allWarehouse;
-  // الفني: أجهزته هو بس، واللي مفيش قدامه تليفون = لسه في العهدة
   return allWarehouse.filter(w=> normTechKey(w.tech)===normTechKey(userObj.name) && !String(w.customer_phone||"").trim() && !String(w.date_install||"").trim());
 }
 function renderWarehouse(){
@@ -292,7 +291,6 @@ function renderWarehouse(){
   let delivered=allWarehouse.filter(w=> String(w.customer_phone||"").trim() || String(w.date_install||"").trim());
   let el=document.getElementById("warehouseSummary");
   if(el) el.innerText = userObj.isAdmin ? `إجمالي المخزن: ${allWarehouse.length} - في العهدة: ${allWarehouse.length-delivered.length} - متسلم: ${delivered.length}` : `عهدتك: ${mine.length} جهاز - اللي معاك بس، المتسلم اتشال من عندك`;
-  // تنبيه شهرين - من عمود B date
   let old=mine.filter(w=> daysBetween(w.date_received||w.date||"")>=60);
   let box=document.getElementById("stockAlerts");
   if(box){
@@ -300,10 +298,8 @@ function renderWarehouse(){
       box.innerHTML=`<div style="background:#fff3cd;border:2px solid #ff7a00;margin:0 12px 12px;border-radius:16px;padding:14px"><h3 style="margin:0">⚠️ جرد - أجهزة بقالها 60 يوم ومركبتش (${old.length})</h3>`+old.map(w=>`<div style="font-size:13px;line-height:2">🔴 سيريال <b>${w.serial}</b> - متسلم بتاريخ <b>${w.date_received||w.date||""}</b> - لم يتم التركيب حتى الآن - الفني: ${w.tech||""} - ${w.comment||""}</div>`).join("")+`</div>`;
     } else box.innerHTML="";
   }
-  // معاينة سريعة
   let prev=document.getElementById("warehousePreview");
   if(prev) prev.innerHTML=mine.slice(0,5).map(w=>`<div style="font-size:12px;line-height:2">📦 ${w.serial} - ${w.model||""} - ${w.tech||""} - ${w.date_received||""}</div>`).join("")+(mine.length>5?`<div style="font-size:12px">... و ${mine.length-5} جهاز تاني</div>`:"");
-  // لو تاب المخزن مفتوح
   if(activeTab==="warehouse") renderWarehouseList();
 }
 function renderWarehouseList(){
@@ -312,7 +308,6 @@ function renderWarehouseList(){
   if(!box) return;
   box.innerHTML=`<h3 style="padding:0 12px">📦 المخزن (${mine.length})</h3>`+mine.map(w=>`<div class="warehouseCard"><b>${w.serial}</b><div style="font-size:13px;line-height:2">الموديل: ${w.model||""}<br>الفني: ${w.tech||""}<br>تاريخ الاستلام: ${w.date_received||w.date||""}<br>الكومنت: ${w.comment||""}<br>الحالة: <b style="color:#ff7a00">في العهدة - لم يتم التركيب</b></div></div>`).join("") || `<p style="padding:0 12px">مفيش أجهزة في عهدتك دلوقتي</p>`;
 }
-// رفع شيت المخزن - بيضيف مش بيبدل - بيقرا كل ورق المحافظات
 async function uploadWarehouseSheet(){
   let f=document.getElementById("warehouseInput").files[0];
   if(!f) return alert("اختار ملف المخزن الأول");
@@ -325,7 +320,7 @@ async function uploadWarehouseSheet(){
     let ws=wb.Sheets[sn];
     let arr=XLSX.utils.sheet_to_json(ws,{header:1,defval:""});
     arr.forEach((r,i)=>{
-      if(i===0) return; // أول صف عنوان
+      if(i===0) return;
       let serial=cleanSerial(r[2]);
       if(!serial) return;
       rows.push({
@@ -336,7 +331,6 @@ async function uploadWarehouseSheet(){
       });
     });
   });
-  // إضافة مش تبديل: لو السيريال موجود قبل كده، حدثه، لو مش موجود ضيفه
   let added=0, updated=0;
   for(let r of rows){
     let {data:ex}=await supabaseClient.from(WAREHOUSE_TABLE).select("id").eq("serial", r.serial).maybeSingle();
@@ -346,11 +340,9 @@ async function uploadWarehouseSheet(){
   document.getElementById("warehouseUploadMsg").innerText=`تم: ${added} جهاز جديد اتضاف + ${updated} جهاز اتحدث - الإجمالي في المخزن بقى ${allWarehouse.length+added}`;
   loadWarehouse();
 }
-// لما الفني يقفل أوردر - يتسجل في المخزن عند الأدمن + يتشال من عهدة الفني
 async function registerDeliveredInWarehouse(job, serial){
   if(!serial) return;
   let clean=cleanSerial(serial);
-  // دور على الجهاز في المخزن
   let {data:ex}=await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("serial", clean).maybeSingle();
   let payload={
     serial:clean, model:job.device||ex?.model||"",
@@ -362,7 +354,6 @@ async function registerDeliveredInWarehouse(job, serial){
   };
   if(ex) await supabaseClient.from(WAREHOUSE_TABLE).update(payload).eq("id", ex.id);
   else await supabaseClient.from(WAREHOUSE_TABLE).insert(payload);
-  // كده الجهاز بقى متسلم، فالفني مش هيشوفه تاني لأن myWarehouse بتفلتر اللي مفيش قدامهم تليفون
 }
 
 // ===== الشغل =====
@@ -399,6 +390,7 @@ function renderJobs(){
 }
 function onSearch(){ searchQ=document.getElementById("searchInput").value; renderJobs() }
 function filterByCircle(f){ activeFilter=f; visibleCount=10; renderJobs() }
+function showTab(tab, el){
   activeTab=tab;
   document.querySelectorAll(".tabs div").forEach(d=>d.classList.remove("active"));
   if(el) el.classList.add("active");
@@ -411,7 +403,6 @@ function filterByCircle(f){ activeFilter=f; visibleCount=10; renderJobs() }
   if(tab==="warehouse") renderWarehouseList();
   if(tab!=="warehouse") renderJobs();
 }
-  // تنبيه الفني اللي مشي
 function showLeftAlert(){
   let box=document.getElementById("leftTechAlerts"); if(!box) return;
   let left=allJobs.filter(j=> normTechKey(j.tech)==="youssefamr" && j.status!=="تم التسليم");
@@ -449,8 +440,6 @@ function openPhotoCam(i){ currentPhotoSlot=i; document.getElementById("photoCamT
 function closePhotoCam(){ document.getElementById("photoCamModal").style.display="none" }
 function capturePhoto(){ document.getElementById("photoInput").click() }
 function openPhotoFile(){ document.getElementById("photoGalleryInput").click() }
-
-// ===== Up / Down + المستلم =====
 function openUpDownOnly(id, cust){ currentUpDownJobId=id; document.getElementById("upDownCustomer").innerText=cust; document.getElementById("upDownModal").style.display="flex" }
 function closeUpDown(){ document.getElementById("upDownModal").style.display="none" }
 function chooseUpDown(v){ upDownMap[currentUpDownJobId]=v; document.getElementById("upDownModal").style.display="none"; let j=allJobs.find(x=>String(x.id)===String(currentUpDownJobId)); if(j) j.up_down=v; document.getElementById("dUpDownBtn").innerText=`⬆️ Up / ⬇️ Down: ${v} ✅`; alert("تم تسجيل: "+v) }
@@ -462,8 +451,6 @@ function chooseRecipient(v){
   document.getElementById("dRecipientBtn").innerText=`👤 المستلم: ${v} ✅`; alert("المستلم: "+v);
 }
 function clearRecipientChoice(){ delete recipientMap[currentRecipientJobId]; document.getElementById("recipientModal").style.display="none"; document.getElementById("dRecipientBtn").innerText="👤 المستلم *"; alert("تم مسح المستلم") }
-
-// ===== حالة الزيارة =====
 function openStatusModal(id, cust){
   currentStatusJobId=id; currentStatusCustomer=cust;
   document.getElementById("statusCustomer").innerText=cust;
@@ -483,8 +470,6 @@ async function confirmStatus(){
   closeStatusModal(); closeDetails(); renderJobs();
   alert("تم حفظ الحالة: "+st);
 }
-
-// ===== حفظ السيريال - بيسجل في المخزن عند الأدمن =====
 async function saveSerial(id){
   let j=allJobs.find(x=>String(x.id)===String(id)); if(!j) return;
   let serial=cleanSerial(document.getElementById("dSerial").value);
@@ -497,14 +482,11 @@ async function saveSerial(id){
   let {error}=await supabaseClient.from(TABLE).update(payload).eq("id", id);
   if(error) return alert("خطأ في الحفظ: "+error.message);
   Object.assign(j, payload);
-  // أهم حتة: يتسجل في المخزن عند الأدمن بالرقم الأرضي + تاريخ القفل، ويتشال من عهدة الفني
   await registerDeliveredInWarehouse(j, serial);
   await loadWarehouse();
   closeDetails(); renderJobs();
   alert("✅ تم التسليم - اتسجل في المخزن عند الأدمن بالرقم الأرضي "+(j.landline||"")+" وتاريخ "+todayStr()+" واتشال من عهدتك");
 }
-
-// ===== إضافة شغل - الأدمن بس =====
 async function addJob(){
   if(!userObj.isAdmin) return alert("الأدمن بس");
   let payload={
@@ -521,8 +503,6 @@ async function addJob(){
   await supabaseClient.from(TABLE).insert(payload);
   alert("تمت الإضافة"); loadJobs();
 }
-
-// ===== رفع شيت الشغل =====
 async function uploadSheetFast(){
   let files=document.getElementById("sheetInput").files;
   if(!files.length) return alert("اختار ملف الأول");
@@ -535,9 +515,8 @@ async function uploadSheetFast(){
       let arr=XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,defval:""});
       for(let r of arr){
         if(!r[0] && !r[1]) continue;
-       // لو الصف ده شيت أجهزة - العمود A فيه sn والعمود C فيه سيريال طويل - سيبه للمخزن
-let maybeSerial = String(r[2]||"").trim();
-if(String(r[0]||"").toLowerCase()==="sn" || maybeSerial.length > 12) continue;
+        let maybeSerial = String(r[2]||"").trim();
+        if(String(r[0]||"").toLowerCase()==="sn" || maybeSerial.length > 12) continue;
         let payload={customer_name:String(r[0]||""), address:String(r[1]||""), order:String(r[2]||""), landline:String(r[3]||""), mobile:String(r[4]||""), device:String(r[5]||""), tech:String(r[6]||""), status:"جديد", date:todayStr(), comment:String(r[7]||"")};
         if(!payload.customer_name) continue;
         await supabaseClient.from(TABLE).insert(payload); total++;
@@ -547,8 +526,6 @@ if(String(r[0]||"").toLowerCase()==="sn" || maybeSerial.length > 12) continue;
   document.getElementById("uploadMsg").innerText=`تم رفع ${total} أوردر`;
   loadJobs();
 }
-
-// ===== الأرشفة =====
 async function loadArchive(){
   let {data}=await supabaseClient.from(ARCHIVE_TABLE).select("*").order("created_at",{ascending:false}).limit(5000);
   archivedJobs=data||[];
@@ -578,14 +555,10 @@ function exportArchive(){
   let wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "ارشيف");
   XLSX.writeFile(wb, `ارشيف-${date}.xlsx`);
 }
-
-// ===== إنهاء اليوم - فولدر بتاريخ اليوم جواه شيتين + تحميل على اللاب توب =====
 async function downloadEndOfDay(){
   if(!userObj.isAdmin) return alert("الأدمن بس");
   let date=todayStr();
-  // شيت 1: تم التسليم
   let done=allJobs.filter(j=>j.status==="تم التسليم");
-  // شيت 2: تأجيل أو أي أبديت
   let updated=allJobs.filter(j=>["تأجيل","لم يتم الرد","رفض الزيارة"].includes(j.status) || (j.comment||"").trim()!=="");
   if(!done.length && !updated.length) return alert("مفيش شغل النهاردة عشان ينزل");
   let zip=new JSZip();
@@ -602,8 +575,6 @@ async function downloadEndOfDay(){
   let a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=`انهاء-اليوم-${date}.zip`; a.click();
   alert(`✅ نزل فولدر ${date} جواه شيتين:\n1. تم التسليم (${done.length})\n2. تأجيل / أبديت (${updated.length})\nعلى اللاب توب`);
 }
-
-// ===== مسح أوردر واحد / مسح أرضي - الأدمن بس =====
 async function deleteOneJob(){
   if(!userObj.isAdmin) return alert("الأدمن بس");
   let order=document.getElementById("delOrderId").value.trim();
@@ -636,7 +607,6 @@ function clearFollowerPhone(){
   document.getElementById("followerMsg").innerText="تم مسح رقم المتابع";
 }
 function getFollowerPhone(){ return localStorage.getItem("misk_follower_"+todayStr())||"" }
-
 function doAttendance(){
   let now=new Date().toLocaleTimeString("ar-EG");
   document.getElementById("attendTime").innerText=now;
@@ -661,8 +631,6 @@ function sendToFollowerOnly(){
 function confirmSendYes(){ document.getElementById("sendLockModal").style.display="none"; alert("تمام ✅") }
 function confirmSendNo(){ document.getElementById("sendLockModal").style.display="none" }
 function closeLockBack(){ document.getElementById("sendLockModal").style.display="none" }
-
-// ===== رفع الصور =====
 async function uploadPhoto(file, jobId, slot){
   let name=`${jobId}_${slot}_${Date.now()}.jpg`;
   let {error}=await supabaseClient.storage.from(BUCKET).upload(name, file);
@@ -696,8 +664,6 @@ document.getElementById("photoGalleryInput")?.addEventListener("change", async e
   document.getElementById("uploadingBanner").style.display="none";
   closePhotoCam();
 });
-
-// ===== ساعة + تاريخ + تنبيه الفني اللي مشي =====
 function tickClock(){
   let n=new Date();
   let clock=document.getElementById("loginClock"); if(clock) clock.innerText=String(n.getHours()).padStart(2,"0")+":"+String(n.getMinutes()).padStart(2,"0");
@@ -705,8 +671,6 @@ function tickClock(){
   let a=document.getElementById("attendTime"); if(a) a.innerText=n.toLocaleTimeString("ar-EG");
 }
 setInterval(tickClock, 1000); tickClock();
-
-// ===== بداية التشغيل =====
 window.addEventListener("load", ()=>{
   let saved=localStorage.getItem("misk_user");
   if(saved){
@@ -714,40 +678,39 @@ window.addEventListener("load", ()=>{
   }
   let fp=getFollowerPhone();
   if(fp) document.getElementById("followerPhone").value=fp;
-  // استرجاع رقم المتابع لو موجود
   if(fp) document.getElementById("followerMsg").innerText="✅ رقم المتابع المحفوظ: "+fp;
 });
 if("serviceWorker" in navigator){ navigator.serviceWorker.register("sw.js").catch(()=>{}) }
 </script>
 <script>
+// ===== اضافة فني - بيحفظ في Supabase عشان يعرف يدخل =====
 function normName(s){ return String(s||'').trim().toLowerCase().replace(/\s+/g,' '); }
-function getTechs(){ return JSON.parse(localStorage.getItem('technicians')||'[]'); }
-function openAddTech(){ document.getElementById('addTechModal').style.display='flex'; }
-function closeAddTech(){ document.getElementById('addTechModal').style.display='none'; }
-function loadTechCount(){
-  const list = getTechs();
-  document.getElementById('techCount').textContent = list.length;
-}
 function getCustodyForTech(techName){
   const devices = window.warehouseDevices || JSON.parse(localStorage.getItem('warehouseDevices')||'[]');
   const n = normName(techName);
   return devices.filter(d => normName(d.Tech || d.tech) === n);
 }
-function saveTechnician(){
+function openAddTech(){ document.getElementById('addTechModal').style.display='flex'; }
+function closeAddTech(){ document.getElementById('addTechModal').style.display='none'; }
+async function saveTechnician(){
   const name = document.getElementById('techName').value.trim();
   const phone = document.getElementById('techPhone').value.trim();
-   const gov = document.getElementById('techGov').value.trim();
-  let list = getTechs();
+  const pass = document.getElementById('techPass').value.trim() || phone;
+  const line = document.getElementById('techLine').value.trim();
+  const gov = document.getElementById('techGov').value.trim();
   if(!name || !phone){ alert('اكتب اسم الفني ورقم الموبايل'); return; }
-  if(list.some(t => normName(t.name) === normName(name))){ alert('الفني ده موجود قبل كده'); return; }
- list.push({name, phone, password: phone, governorate: gov});
-  localStorage.setItem('technicians', JSON.stringify(list));
-  loadTechCount();
+  // اليوزر هو رقم التليفون - زي ما login بيدور عليه
+  let {error} = await supabaseClient.from('technicians').insert({username: phone, name: name, password: pass, phone: phone, line: line, governorate: gov});
+  if(error){
+    // لو موجود قبل كده، حدث الباسورد بتاعه
+    let {error:err2} = await supabaseClient.from('technicians').update({name:name, password:pass, phone:phone, line:line, governorate:gov}).eq('username', phone);
+    if(err2){ alert('خطأ: '+err2.message); return; }
+  }
   const custody = getCustodyForTech(name);
-  document.getElementById('techMsg').textContent = 'تم اضافة ' + name + ' ✅ - على عهدته دلوقتي ' + custody.length + ' جهاز';
-  setTimeout(closeAddTech, 1200);
+  document.getElementById('techMsg').textContent = 'تم اضافة ' + name + ' ✅ - على عهدته دلوقتي ' + custody.length + ' جهاز - اليوزر: ' + phone + ' - الباسورد: ' + pass;
+  loadTechCount(); loadTechNames();
+  setTimeout(closeAddTech, 1500);
 }
-loadTechCount();
 </script>
 </body>
 </html>
