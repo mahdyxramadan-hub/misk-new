@@ -75,7 +75,6 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <div class="row"><button class="blueBtn" onclick="getLiveLocation()">📍 لايف لوكيشن</button></div>
 <p id="mapLocText" style="font-size:12px;color:#666;text-align:center"></p>
 </div>
-
 <div id="appPage" class="hidden">
   <div style="display:flex;justify-content:flex-end;margin-bottom:6px">
     <div style="display:flex;align-items:center;gap:6px;background:#fff;border:1px solid #e5e7eb;padding:4px 8px;border-radius:20px;font-size:12px;box-shadow:0 2px 8px rgba(0,0,0,.08)">
@@ -89,7 +88,6 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <div class="top-img"><small>☰</small><br><br><b id="welcome" style="font-size:22px"></b><br><small id="techInfo"></small><div style="position:absolute;left:14px;top:14px">🔔</div><button onclick="localStorage.clear();location.reload()" style="margin-top:12px;width:100%;padding:10px;border:0;border-radius:50px;background:#ff4757;color:#fff;font-weight:800">🚪 خروج</button></div>
 <div class="we-bar"><div class="logo">WE<span>.</span></div><div>🔔</div></div>
 <div style="position:relative"><img id="serverRotator" src="server1.jpg" style="width:100%;height:140px;object-fit:cover;display:block"></div>
-
 <div class="admin-layout">
 <div class="admin-main">
 <div id="followerCard" style="background:#fff;margin:12px;border:2px solid #0b7ed1;border-radius:16px;padding:14px">
@@ -98,10 +96,8 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <p id="followerMsg" style="font-size:13px;color:red"></p>
 <button onclick="clearFollowerPhone()" style="background:#dc3545;color:#fff;border:0;padding:10px;border-radius:50px;width:100%">🗑️ مسح رقم المتابع</button>
 </div>
-
 <div id="leftTechAlerts"></div>
 <div id="stockAlerts"></div>
-
 <div class="stats">
 <div class="stat" id="statDone" onclick="filterByCircle('done')"><div class="circle c-green" id="cDone">0</div><b>تم التسليم</b><br><small>دوس لعرض المتسلمين</small></div>
 <div class="stat" id="statPending" onclick="filterByCircle('pending')"><div class="circle c-yellow" id="cPending">0</div><b>قيد الانتظار</b><br><small>باقي الشغل اللي لسه متقفلش</small></div>
@@ -121,7 +117,6 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <div id="warehouseList" class="hidden"></div>
 <div id="loadMoreWrap" style="padding:0 12px"></div>
 </div>
-
 <div id="adminAdd" class="hidden">
 <div class="admin-side">
  <div style="background:#071126;color:#fff;padding:12px;border-radius:12px;text-align:center;margin-bottom:10px">
@@ -131,7 +126,6 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
   <button onclick="openAddTech()" style="background:#00c6ff;border:0;padding:10px;border-radius:50px;width:100%;color:#fff;font-size:14px;margin-top:8px">➕ اضافة فني</button>
   <div id="techList" style="text-align:right;font-size:13px;margin-top:8px"></div>
 </div>
-
 <div id="addTechModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center">
   <div style="background:#fff;width:92%;max-width:380px;padding:16px;border-radius:16px;color:#000">
     <h3 style="text-align:center;margin:0 0 12px">➕ اضافة فني جديد</h3>
@@ -145,7 +139,6 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
     <div id="techMsg" style="text-align:center;font-size:13px;margin-top:8px;color:green"></div>
   </div>
 </div>
-<!-- اضافة شغل - الترتيب الجديد المتصلح -->
 <div class="admin-box open"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">➕ اضافة شغل <span>▼</span></div><div class="admin-box-body"><input id="a_customer" placeholder="اسم العميل" autocomplete="off"><input id="a_landline" placeholder="رقم التليفون الأرضي" inputmode="numeric" autocomplete="off"><input id="a_mobile" placeholder="رقم الموبايل" inputmode="numeric" autocomplete="off"><input id="a_code" placeholder="كود كام" autocomplete="off"><input id="a_address" placeholder="العنوان" autocomplete="off"><input id="a_order" placeholder="رقم الأوردر - Tel" autocomplete="off"><select id="a_device"><option value="">اختر الجهاز - ONU أو ONT</option><option value="ONU">ONU</option><option value="ONT">ONT</option></select><select id="a_tech"><option value="">اختر اسم الفني</option></select><button class="btn" onclick="addJob()">اضافة</button></div></div>
   <div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📦 المخزن - رفع شيت الأجهزة <span>▼</span></div><div class="admin-box-body"><input type="file" id="warehouseInput" accept=".xlsx,.xls,.csv"><button class="orangeBtn" onclick="uploadWarehouseSheet()" style="width:100%;padding:13px;border-radius:50px;border:0">📦 رفع شيت المخزن - بيضيف مش بيبدل</button><p id="warehouseUploadMsg" style="font-size:13px"></p><p style="font-size:12px;color:#666">الأعمدة: A:sn - B:date - C:serial - D:date install - E:costmer phone - F:Model - G:Tech - H:Comment - بيقرا كل ورق المحافظات.</p><div id="warehouseSummary" style="font-size:13px;margin-top:8px"></div><div id="warehousePreview" style="font-size:12px"></div></div></div>
 <div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📂 رفع شيت الشغل <span>▼</span></div><div class="admin-box-body"><input type="file" id="sheetInput" accept=".xlsx,.xls,.csv" multiple><button class="orangeBtn" onclick="uploadSheetFast()" style="width:100%;padding:13px;border-radius:50px;border:0">🚀 رفع شيتات الشغل</button><div id="prog" style="height:18px;background:#eee;border-radius:10px;overflow:hidden;margin:8px 0;display:none"><div id="progBar" style="height:100%;width:0%;background:#1aa34a"></div></div><p id="uploadMsg"></p></div></div>
@@ -155,7 +148,6 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 </div>
 </div>
 </div>
-
 <div class="tabs" id="bottomNav">
 <div class="active" onclick="showTab('all',this)"><span style="font-size:20px;display:block">🏠</span>الرئيسية</div>
 <div onclick="showTab('pending',this)"><span style="font-size:20px;display:block">📋</span>المهام</div>
@@ -164,14 +156,12 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <div id="archiveNav" onclick="showTab('archive',this)" style="display:none"><span style="font-size:20px;display:block">📦</span>الأرشيف</div>
 <div onclick="logout()"><span style="font-size:20px;display:block">👤</span>الحساب</div>
 </div>
-
 <div id="details">
 <div class="d-head"><button class="back" onclick="closeDetails()">← رجوع</button><b id="dTitle" style="font-size:18px">تفاصيل المهمة</b></div>
 <div class="d-box"><h3 id="dCustomer" style="margin:0"></h3><p id="dMeta" style="font-size:13px;color:#555;line-height:1.8"></p><p id="dComment" style="font-size:13px"></p></div>
 <div class="d-box"><b>📷 الصور الاجبارية - 3 صور</b><div class="imgs" id="dPhotos"></div><p style="font-size:12px;color:#777">دوس على أي صورة عشان تصورها أو تشوفها</p></div>
 <div class="d-box"><b>🔢 السيريال</b><input id="dSerial" class="serial" placeholder="اضافة سيريال - الزق هنا من Manatee"><div class="row"><button class="whiteBtn" onclick="openManatee(currentDetailId)">📲 افتح Manatee - انسخ والزق</button></div><div class="row"><button class="blueBtn" onclick="openUpDownOnly(currentDetailId, document.getElementById('dCustomer').innerText)" id="dUpDownBtn">⬆️ Up / ⬇️ Down *</button><button class="blueBtn" onclick="openRecipientOnly(currentDetailId, document.getElementById('dCustomer').innerText)" id="dRecipientBtn">👤 المستلم *</button></div><button class="btn2" onclick="openStatusModal(currentDetailId, document.getElementById('dCustomer').innerText)" id="dStatusBtn">📋 حالة الزيارة - تأجيل / لم يتم الرد / رفض</button><button class="bigSave" onclick="saveSerial(currentDetailId)">💾 حفظ وارسال للمتابع</button><p style="font-size:12px;color:#777;text-align:center">هيتأكد من الصور والـ Up/Down والمستلم قبل الحفظ</p></div>
 </div>
-
 <div id="upDownModal"><div class="box"><h3>📶 حالة الخط ايه؟</h3><p id="upDownCustomer"></p><button style="background:#1aa34a;color:#fff" onclick="chooseUpDown('Up')">⬆️ Up</button><button style="background:#fff;color:#1aa34a;border:2px solid #1aa34a" onclick="chooseUpDown('Down')">⬇️ Down</button><button style="background:#333;color:#fff" onclick="closeUpDown()">↩️ الرجوع - من غير تسجيل</button></div></div>
 <div id="recipientModal"><div class="box"><h3>👤 مين اللي استلم؟</h3><p id="recipientCustomer"></p><button style="background:#1aa34a;color:#fff" onclick="chooseRecipient('الزوج')">👨 الزوج</button><button style="background:#1aa34a;color:#fff" onclick="chooseRecipient('الزوجة')">👩 الزوجة</button><button style="background:#1aa34a;color:#fff" onclick="chooseRecipient('نجله')">🧒 نجله</button><button style="background:#1aa34a;color:#fff" onclick="chooseRecipient('مستأجر')">🏠 مستأجر</button><button style="background:#dc3545;color:#fff" onclick="clearRecipientChoice()">🗑️ مسح الاختيار</button><button style="background:#333;color:#fff" onclick="chooseRecipient('الرجوع')">↩️ الرجوع - من غير تسجيل</button></div></div>
 <div id="statusModal"><div class="box"><h3>📋 حالة الزيارة</h3><p id="statusCustomer"></p><button style="background:#fff;color:#1aa34a;border:2px solid #1aa34a" onclick="selectStatusOption('تأجيل')">⏰ تأجيل</button><button style="background:#fff;color:#1aa34a;border:2px solid #1aa34a" onclick="selectStatusOption('لم يتم الرد')">📞 لم يتم الرد</button><button style="background:#fff;color:#1aa34a;border:2px solid #1aa34a" onclick="selectStatusOption('رفض الزيارة')">🚫 رفض الزيارة</button><p id="selectedStatusLabel" style="font-weight:bold;color:#dc3545"></p><textarea id="statusComment" placeholder="اكتب كومنت - مثال: العميل مش موجود، التليفون مقفول..." rows="3" style="border-radius:12px;text-align:right"></textarea><button style="background:#00a651;color:#fff" onclick="confirmStatus()">✅ حفظ الحالة وارسال للمتابع أوتوماتيك</button><button style="background:#333;color:#fff" onclick="closeStatusModal()">✖️ اقفل من غير حفظ</button></div></div>
@@ -185,7 +175,6 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <div id="azkarModal"><div class="box" style="text-align:right;max-height:88vh;overflow-y:auto"><h3 style="margin:0 0 10px">📖 الأذكار وحصن المسلم</h3><div id="azkarFull" style="line-height:2;font-size:15px"></div><button onclick="closeAzkar()" style="background:#333;color:#fff">✖️ اقفل</button></div></div>
 <div id="passModal"><div class="box"><h3 style="margin:0 0 8px">🔐 تريد تغيير الباسورد؟</h3><p style="font-size:14px;line-height:1.7">لو حابب تغير الباسورد بتاعك، اكتب الجديد هنا. لو مش حابب دوس تخطي.</p><input id="newPassInput" type="password" placeholder="الباسورد الجديد"><button onclick="doChangePass()" style="background:#00a651;color:#fff">✅ تغيير الباسورد</button><button onclick="closePassModal()" style="background:#333;color:#fff">⏭️ تخطي - مش عايز أغير</button></div></div>
 <script>
-// ===== الجزء 2 من 3 - الدخول + المخزن + الشغل =====
 const SUPABASE_URL = "https://wpbjdxjozibqcoyrmxlc.supabase.co";
 const SUPABASE_KEY = "sb_publishable_EpBDoKSZQ6OMZA3wHKd8vg_9_ocCNnm";
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -194,10 +183,8 @@ const TABLE = "jobs";
 const ARCHIVE_TABLE = "jobs_archive";
 const WAREHOUSE_TABLE = "warehouse";
 const ADMIN_NUM = "01008755075";
-
 let userObj=null, allJobs=[], allWarehouse=[], archivedJobs=[], searchQ="", activeFilter="all", currentDetailId=null, currentPhotoSlot=null, currentStatusJobId=null, currentStatusCustomer="", currentSerialCamJobId=null, photoRot=0, activeTab="all", visibleCount=10, currentLockId=null, lockStep=0, pendingLockPayload=null, currentUpDownJobId=null, currentRecipientJobId=null, recipientMap={}, upDownMap={}, serialMap={}, photosMap={}, techLeftAlerts=[];
 let cachedTechNames=[];
-
 function norm(s){return String(s||"").trim().toLowerCase().replace(/[\u064B-\u0652]/g,"").replace(/أ|إ|آ/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/\s+/g," ")}
 function isAdminName(name){ return norm(name).includes("admin") || norm(name).includes("ادمن") }
 function normTechKey(name){ return norm(name).replace(/[^a-z0-9\u0600-\u06FF]/g,"") }
@@ -221,8 +208,18 @@ function daysBetween(dateStr){
 }
 function getVal(id){ return (document.getElementById(id)?.value || "").trim() }
 function techDisplayName(t){ return (t.name || t.username || "").trim() }
-
-// ===== دخول =====
+function getJobTech(j){ return (j.tech || j.tech_name || j.Tech || "").trim() }
+function myJobsBase(){ if(!userObj) return []; if(userObj.isAdmin) return [...allJobs]; return allJobs.filter(j=> normTechKey(getJobTech(j))===normTechKey(userObj.name)); }
+async function insertJobSafe(payload){
+  let r1 = await supabaseClient.from(TABLE).insert(payload);
+  if(!r1.error) return r1;
+  let p2 = {...payload}; delete p2.tech_name;
+  let r2 = await supabaseClient.from(TABLE).insert(p2);
+  if(!r2.error) return r2;
+  let p3 = {...payload}; delete p3.tech;
+  let r3 = await supabaseClient.from(TABLE).insert(p3);
+  return r3;
+}
 async function login(e){
   if(e) e.preventDefault();
   let u = document.getElementById('user').value.trim().toLowerCase();
@@ -288,8 +285,6 @@ async function doChangePass(){
   closePassModal(); alert("تم تغيير الباسورد");
 }
 function closePassModal(){ document.getElementById("passModal").style.display="none" }
-
-// ===== المخزن =====
 async function loadWarehouse(){
   let {data}=await supabaseClient.from(WAREHOUSE_TABLE).select("*").order("created_at",{ascending:false}).limit(20000);
   allWarehouse=data||[];
@@ -359,7 +354,7 @@ async function registerDeliveredInWarehouse(job, serial){
   let {data:ex}=await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("serial", clean).maybeSingle();
   let payload={
     serial:clean, model:job.device||ex?.model||"",
-    tech: job.tech||ex?.tech||userObj.name,
+    tech: getJobTech(job)||ex?.tech||userObj.name,
     customer_phone: job.landline||job.mobile||ex?.customer_phone||"",
     date_install: todayStr(), date_received: ex?.date_received||todayStr(),
     comment: (ex?.comment||"")+" | تم التسليم يوم "+todayStr()+" - أوردر "+(job.order||""),
@@ -368,8 +363,6 @@ async function registerDeliveredInWarehouse(job, serial){
   if(ex) await supabaseClient.from(WAREHOUSE_TABLE).update(payload).eq("id", ex.id);
   else await supabaseClient.from(WAREHOUSE_TABLE).insert(payload);
 }
-
-// ===== الشغل =====
 async function loadJobs(){
   let {data}=await supabaseClient.from(TABLE).select("*").order("created_at",{ascending:false}).limit(5000);
   allJobs=data||[];
@@ -377,7 +370,6 @@ async function loadJobs(){
 }
 async function loadTechNames(){
   let {data}=await supabaseClient.from("technicians").select("username,name").order("name");
-  // شيل admin / ادمن من الليستة
   cachedTechNames=(data||[]).map(t=>techDisplayName(t)).filter(n=> n && !isAdminName(n));
   let sel=document.getElementById("a_tech");
   if(sel) sel.innerHTML=`<option value="">اختر اسم الفني</option>`+cachedTechNames.map(n=>`<option value="${n}">${n}</option>`).join("");
@@ -389,17 +381,17 @@ async function loadTechCount(){
 }
 function renderJobs(){
   let list=document.getElementById("jobsList"); if(!list) return;
-  let jobs=[...allJobs];
+  let mine=myJobsBase();
+  let jobs=[...mine];
   if(activeFilter==="done") jobs=jobs.filter(j=>j.status==="تم التسليم");
   if(activeFilter==="pending") jobs=jobs.filter(j=>j.status!=="تم التسليم" && !["تأجيل","لم يتم الرد","رفض الزيارة"].includes(j.status));
   if(activeFilter==="problem") jobs=jobs.filter(j=>["تأجيل","لم يتم الرد","رفض الزيارة"].includes(j.status));
-  if(!userObj.isAdmin) jobs=jobs.filter(j=> normTechKey(j.tech)===normTechKey(userObj.name));
   if(searchQ) jobs=jobs.filter(j=> (j.customer_name+" "+j.serial+" "+j.order+" "+j.landline+" "+(j.code||"")).toLowerCase().includes(searchQ.toLowerCase()));
-  document.getElementById("cDone").innerText=allJobs.filter(j=>j.status==="تم التسليم").length;
-  document.getElementById("cPending").innerText=allJobs.filter(j=>j.status!=="تم التسليم" && !["تأجيل","لم يتم الرد","رفض الزيارة"].includes(j.status)).length;
-  document.getElementById("cProblem").innerText=allJobs.filter(j=>["تأجيل","لم يتم الرد","رفض الزيارة"].includes(j.status)).length;
+  document.getElementById("cDone").innerText=mine.filter(j=>j.status==="تم التسليم").length;
+  document.getElementById("cPending").innerText=mine.filter(j=>j.status!=="تم التسليم" && !["تأجيل","لم يتم الرد","رفض الزيارة"].includes(j.status)).length;
+  document.getElementById("cProblem").innerText=mine.filter(j=>["تأجيل","لم يتم الرد","رفض الزيارة"].includes(j.status)).length;
   let show=jobs.slice(0, visibleCount);
-  list.innerHTML=show.map(j=>`<div class="job" onclick="openDetails('${j.id}')"><h3>${j.customer_name||""} - ${j.order||""}</h3><div style="font-weight:bold;color:#0b6cff">🆔 الكود: ${j.code||"—"}</div><div class="meta">📍 ${j.address||""}<br>📞 الأرضي: ${j.landline||""} | 📱 ${j.mobile||""}<br>👷 الفني: ${j.tech||""} | 📦 الجهاز: ${j.device||""}<br>🔢 السيريال: ${j.serial||"لسه"} | الحالة: <b>${j.status||"جديد"}</b><br>💬 ${j.comment||""}</div><span class="badge">${j.status||"جديد"}</span></div>`).join("") || `<p style="text-align:center">مفيش شغل هنا</p>`;
+  list.innerHTML=show.map(j=>`<div class="job" onclick="openDetails('${j.id}')"><h3>${j.customer_name||""} - ${j.order||""}</h3><div style="font-weight:bold;color:#0b6cff">🆔 الكود: ${j.code||"—"}</div><div class="meta">📍 ${j.address||""}<br>📞 الأرضي: ${j.landline||""} | 📱 ${j.mobile||""}<br>👷 الفني: ${getJobTech(j)||""} | 📦 الجهاز: ${j.device||""}<br>🔢 السيريال: ${j.serial||"لسه"} | الحالة: <b>${j.status||"جديد"}</b><br>💬 ${j.comment||""}</div><span class="badge">${j.status||"جديد"}</span></div>`).join("") || `<p style="text-align:center">مفيش شغل هنا</p>`;
   document.getElementById("loadMoreWrap").innerHTML= jobs.length>visibleCount ? `<button class="btn" onclick="visibleCount+=20;renderJobs()">عرض المزيد (${jobs.length-visibleCount} باقي)</button>` : "";
 }
 function onSearch(){ searchQ=document.getElementById("searchInput").value; renderJobs() }
@@ -419,20 +411,19 @@ function showTab(tab, el){
 }
 function showLeftAlert(){
   let box=document.getElementById("leftTechAlerts"); if(!box) return;
-  let left=allJobs.filter(j=> normTechKey(j.tech)==="youssefamr" && j.status!=="تم التسليم");
+  let left=allJobs.filter(j=> normTechKey(getJobTech(j))==="youssefamr" && j.status!=="تم التسليم");
   if(!left.length){ box.innerHTML=""; return; }
   box.innerHTML=`<div style="background:#ffe6e6;border:2px solid #dc3545;margin:0 12px 12px;border-radius:16px;padding:14px"><h3 style="margin:0">⚠️ شغل متساب من Youssef Amr (${left.length})</h3><p style="font-size:13px">الشغل ده متساب ومحتاج يتوزع</p></div>`;
 }
 </script>
 <script>
-// ===== الجزء 3 من 3 - التفاصيل + الحفظ + الأرشفة + إنهاء اليوم =====
 function openDetails(id){
   let j=allJobs.find(x=>String(x.id)===String(id)); if(!j) return;
   currentDetailId=j.id;
   document.getElementById("details").style.display="block";
   document.getElementById("dTitle").innerText=j.customer_name||"";
   document.getElementById("dCustomer").innerText=j.customer_name||"";
-  document.getElementById("dMeta").innerHTML=`العنوان: ${j.address||""}<br>الأوردر: ${j.order||""}<br>الأرضي: ${j.landline||""}<br>الموبايل: ${j.mobile||""}<br>الفني: ${j.tech||""}<br>الجهاز: ${j.device||""}<br>الحالة: ${j.status||""}`;
+  document.getElementById("dMeta").innerHTML=`العنوان: ${j.address||""}<br>الأوردر: ${j.order||""}<br>الأرضي: ${j.landline||""}<br>الموبايل: ${j.mobile||""}<br>الفني: ${getJobTech(j)||""}<br>الجهاز: ${j.device||""}<br>الحالة: ${j.status||""}`;
   document.getElementById("dComment").innerText=j.comment||"";
   document.getElementById("dSerial").value=j.serial||"";
   renderPhotos(j);
@@ -494,7 +485,6 @@ async function saveSerial(id){
   if(!up) return alert("اختار Up / Down الأول");
   if(!rec) return alert("اختار المستلم الأول");
   let payload={serial, up_down:up, recipient:rec, status:"تم التسليم"};
-  // جرب بالأعمدة الزيادة، ولو فشلت جرب بالأساسي بس
   let r1=await supabaseClient.from(TABLE).update({...payload, delivered_at:new Date().toISOString(), delivered_date:todayStr()}).eq("id", id);
   if(r1.error){
     let r2=await supabaseClient.from(TABLE).update(payload).eq("id", id);
@@ -508,6 +498,7 @@ async function saveSerial(id){
 }
 async function addJob(){
   if(!userObj.isAdmin) return alert("الأدمن بس");
+  let techVal=getVal("a_tech");
   let payload={
     customer_name:getVal("a_customer"),
     landline:getVal("a_landline"),
@@ -516,13 +507,14 @@ async function addJob(){
     address:getVal("a_address"),
     order:getVal("a_order"),
     device:getVal("a_device"),
-    tech:getVal("a_tech"),
+    tech:techVal,
+    tech_name:techVal,
     status:"جديد", date:todayStr()
   };
   if(!payload.customer_name||!payload.tech) return alert("اكتب اسم العميل واختار الفني");
   if(!payload.order) return alert("اكتب رقم الأوردر");
-  let {error} = await supabaseClient.from(TABLE).insert(payload);
-  if(error){
+  let r = await insertJobSafe(payload);
+  if(r.error){
     let payload2 = {
       customer_name: payload.customer_name,
       address: payload.address,
@@ -530,10 +522,11 @@ async function addJob(){
       landline: payload.landline,
       device: payload.device,
       tech: payload.tech,
+      tech_name: payload.tech,
       status:"جديد", date:todayStr(),
       comment: "موبايل: "+payload.mobile+" | كود: "+payload.code
     };
-    let r2 = await supabaseClient.from(TABLE).insert(payload2);
+    let r2 = await insertJobSafe(payload2);
     if(r2.error){ alert("مش اتحفظ، السبب: "+r2.error.message); return; }
   }
   alert("تمت الإضافة ✅ - هتلاقيه في قيد الانتظار");
@@ -557,12 +550,12 @@ async function uploadSheetFast(){
         if(String(r[0]||"").toLowerCase().trim()==="sn") continue;
         let customer=String(r[0]||"").trim();
         if(!customer) continue;
-        let payload={customer_name:customer, address:String(r[1]||""), order:String(r[2]||""), landline:String(r[3]||""), mobile:String(r[4]||""), device:String(r[5]||""), tech:String(r[6]||""), status:"جديد", date:todayStr(), comment:String(r[7]||"")};
+        let techVal=String(r[6]||"").trim();
+        let payload={customer_name:customer, address:String(r[1]||""), order:String(r[2]||""), landline:String(r[3]||""), mobile:String(r[4]||""), device:String(r[5]||""), tech:techVal, tech_name:techVal, status:"جديد", date:todayStr(), comment:String(r[7]||"")};
         if(!payload.order){ continue; }
-        // منع التكرار: لو الأوردر موجود متضيفوش تاني
         let {data:ex}=await supabaseClient.from(TABLE).select("id").eq("order", payload.order).maybeSingle();
         if(ex){ skipped++; continue; }
-        let {error}=await supabaseClient.from(TABLE).insert(payload);
+        let {error}=await insertJobSafe(payload);
         if(!error) total++;
       }
     }
@@ -586,9 +579,14 @@ async function archiveOldJobs(){
   let toArchive=allJobs.filter(j=> (j.date===date || fmtDate(j.created_at)===date) && j.status);
   let ok=0;
   for(let j of toArchive){
-    let arch={customer_name:j.customer_name, address:j.address, order:j.order, landline:j.landline, mobile:j.mobile, code:j.code, device:j.device, tech:j.tech, status:j.status, serial:j.serial||"", comment:j.comment||"", date:j.date||date, archive_date:date, recipient:j.recipient||"", up_down:j.up_down||""};
+    let arch={customer_name:j.customer_name, address:j.address, order:j.order, landline:j.landline, mobile:j.mobile, code:j.code, device:j.device, tech:getJobTech(j), tech_name:getJobTech(j), status:j.status, serial:j.serial||"", comment:j.comment||"", date:j.date||date, archive_date:date, recipient:j.recipient||"", up_down:j.up_down||""};
     let {error}=await supabaseClient.from(ARCHIVE_TABLE).insert(arch);
-    if(!error){ await supabaseClient.from(TABLE).delete().eq("id", j.id); ok++; }
+    if(error){
+      let a2={...arch}; delete a2.tech_name;
+      let r2=await supabaseClient.from(ARCHIVE_TABLE).insert(a2);
+      if(r2.error){ let a3={...arch}; delete a3.tech; let r3=await supabaseClient.from(ARCHIVE_TABLE).insert(a3); if(r3.error) continue; }
+    }
+    await supabaseClient.from(TABLE).delete().eq("id", j.id); ok++;
   }
   alert(`تمت أرشفة ${ok} أوردر ليوم ${date}`);
   loadJobs(); loadArchive();
@@ -597,7 +595,7 @@ function exportArchive(){
   let date=document.getElementById("archiveDate").value||todayStr();
   let rows=archivedJobs.filter(a=>(a.archive_date||fmtDate(a.created_at))===date);
   if(!rows.length) return alert("مفيش أرشيف لليوم ده");
-  let ws=XLSX.utils.json_to_sheet(rows.map(r=>({العميل:r.customer_name, الأوردر:r.order, الأرضي:r.landline, الفني:r.tech, السيريال:r.serial, الحالة:r.status, الكومنت:r.comment})));
+  let ws=XLSX.utils.json_to_sheet(rows.map(r=>({العميل:r.customer_name, الأوردر:r.order, الأرضي:r.landline, الفني:getJobTech(r), السيريال:r.serial, الحالة:r.status, الكومنت:r.comment})));
   let wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "ارشيف");
   XLSX.writeFile(wb, `ارشيف-${date}.xlsx`);
 }
@@ -609,11 +607,11 @@ async function downloadEndOfDay(){
   if(!done.length && !updated.length) return alert("مفيش شغل النهاردة عشان ينزل");
   let zip=new JSZip();
   let folder=zip.folder("انهاء-اليوم-"+date);
-  let ws1=XLSX.utils.json_to_sheet(done.map(r=>({العميل:r.customer_name, الأوردر:r.order, الأرضي:r.landline, الموبايل:r.mobile, الفني:r.tech, السيريال:r.serial, الجهاز:r.device, تاريخ_القفل:r.delivered_date||date, المستلم:r.recipient, Up_Down:r.up_down})));
+  let ws1=XLSX.utils.json_to_sheet(done.map(r=>({العميل:r.customer_name, الأوردر:r.order, الأرضي:r.landline, الموبايل:r.mobile, الفني:getJobTech(r), السيريال:r.serial, الجهاز:r.device, تاريخ_القفل:r.delivered_date||date, المستلم:r.recipient, Up_Down:r.up_down})));
   let wb1=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb1, ws1, "تم التسليم");
   let wb1Bin=XLSX.write(wb1,{bookType:"xlsx", type:"array"});
   folder.file(`تم-التسليم-${date}.xlsx`, wb1Bin);
-  let ws2=XLSX.utils.json_to_sheet(updated.map(r=>({العميل:r.customer_name, الأوردر:r.order, الأرضي:r.landline, الفني:r.tech, الحالة:r.status, الكومنت:r.comment, السيريال:r.serial||""})));
+  let ws2=XLSX.utils.json_to_sheet(updated.map(r=>({العميل:r.customer_name, الأوردر:r.order, الأرضي:r.landline, الفني:getJobTech(r), الحالة:r.status, الكومنت:r.comment, السيريال:r.serial||""})));
   let wb2=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb2, ws2, "تأجيل-ابدیت");
   let wb2Bin=XLSX.write(wb2,{bookType:"xlsx", type:"array"});
   folder.file(`تأجيل-ابدیت-${date}.xlsx`, wb2Bin);
@@ -641,7 +639,6 @@ async function deleteLandlineOnly(){
 }
 </script>
 <script>
-// ===== الجزء 4 - المتابع + الحضور + الصور + البداية =====
 function saveFollowerPhone(){
   let v=document.getElementById("followerPhone").value.trim();
   localStorage.setItem("misk_follower_"+todayStr(), v);
@@ -729,7 +726,6 @@ window.addEventListener("load", ()=>{
 if("serviceWorker" in navigator){ navigator.serviceWorker.register("sw.js").catch(()=>{}) }
 </script>
 <script>
-// ===== اضافة فني - متصلح =====
 function normName(s){ return String(s||'').trim().toLowerCase().replace(/\s+/g,' '); }
 function getCustodyForTech(techName){
   const devices = window.warehouseDevices || JSON.parse(localStorage.getItem('warehouseDevices')||'[]');
@@ -745,12 +741,10 @@ async function saveTechnician(){
   const line = document.getElementById('techLine').value.trim();
   const gov = document.getElementById('techGov').value.trim();
   if(!name || !phone){ alert('اكتب اسم الفني ورقم الموبايل'); return; }
-  // اليوزر = اسم الفني عشان يظهر صح في الليستة، والدخول بيقبل الاسم أو رقم التليفون
   let {error} = await supabaseClient.from('technicians').insert({username: name, name: name, password: pass, phone: phone, line: line, governorate: gov});
   if(error){
     let {error:err2} = await supabaseClient.from('technicians').update({name:name, password:pass, phone:phone, line:line, governorate:gov}).eq('username', name);
     if(err2){
-      // لو القديم كان متسجل برقم التليفون، حدثه
       let {error:err3} = await supabaseClient.from('technicians').update({name:name, password:pass, phone:phone, line:line, governorate:gov}).eq('phone', phone);
       if(err3){ alert('خطأ: '+err3.message); return; }
     }
@@ -760,7 +754,6 @@ async function saveTechnician(){
   loadTechCount(); loadTechNames();
   setTimeout(closeAddTech, 1500);
 }
-  // ===== تحديث صامت شيك - كل 5 ثواني =====
 let silentSec = 5;
 let autoOn = true;
 function silentRefreshNow(){
