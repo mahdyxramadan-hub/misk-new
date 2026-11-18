@@ -2,404 +2,73 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MISK - تسجيل دخول</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MISK - مهام اليوم</title>
 <style>
-*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
-body{margin:0;background:#0f0a1e;color:#fff;min-height:100vh}
-.hidden{display:none!important}
-button{cursor:pointer;border:none;border-radius:12px;padding:12px;font-weight:800;font-size:15px}
-input,select,textarea{width:100%;padding:12px;border-radius:12px;border:1px solid #ddd;background:#fff;color:#111;font-size:15px;outline:none}
-input:focus{border-color:#7c3aed;box-shadow:0 0 0 3px #7c3aed33}
-/* الدخول */
-#loginPage{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;background:radial-gradient(circle at 50% 0%, #4c1d95 0%, #0f0a1e 55%)}
-.loginCard{width:100%;max-width:380px;background:#fff;color:#111;border-radius:24px;padding:22px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.5)}
-.loginLogo{width:100%;height:150px;object-fit:cover;border-radius:16px;background:#2a0a4a}
-.loginCard h2{margin:14px 0 4px;font-size:22px}
-.loginCard p{margin:0 0 16px;color:#666;font-size:13px}
-.loginCard input{margin-bottom:10px;background:#f3f4f6}
-.loginBtn{width:100%;background:linear-gradient(135deg,#7c3aed,#4c1d95);color:#fff;padding:14px;font-size:16px;margin-top:4px}
-.loginBtn:active{transform:scale(.98)}
-#loginMsg{margin-top:10px;color:#dc2626;font-size:13px;min-height:18px}
-.clockBox{margin-top:14px;background:#f3f4f6;border-radius:12px;padding:8px;font-size:13px;color:#444}
-.clockBox b{font-size:18px;color:#4c1d95}
-/* التطبيق */
-#appPage{max-width:520px;margin:0 auto;padding:12px 12px 90px}
-.topBar{background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:18px;padding:16px;display:flex;justify-content:space-between;align-items:center}
-.topBar h3{margin:0;font-size:18px}
-.topBar span{font-size:12px;opacity:.9}
-.logoutBtn{background:#fff;color:#4c1d95;padding:8px 14px;font-size:13px}
-.statsRow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:12px 0}
-.stat{background:#fff;color:#111;border-radius:16px;padding:12px;text-align:center}
-.stat b{font-size:24px;display:block}
-.stat span{font-size:12px;color:#666}
-.stat.done b{color:#16a34a}.stat.pend b{color:#f59e0b}.stat.prob b{color:#dc2626}
-.searchBox{position:sticky;top:8px;z-index:5}
-.searchBox input{background:#fff;border-radius:14px}
-.followerCard{background:#fff;color:#111;border-radius:16px;padding:12px;margin:10px 0}
-.followerCard label{font-size:13px;font-weight:800}
-.followerCard .row{display:flex;gap:8px;margin-top:8px}
-.followerCard input{flex:1}
-.saveFBtn{background:#16a34a;color:#fff;padding:10px 14px}
-.clearFBtn{background:#fee2e2;color:#dc2626;padding:10px 14px}
-.adminBox{background:#fffbeb;border:2px solid #f59e0b;border-radius:16px;padding:12px;color:#111;margin:10px 0}
-.job{background:#fff;color:#111;border-radius:18px;padding:14px;margin:12px 0;box-shadow:0 4px 16px rgba(0,0,0,.15)}
-.job h3{margin:0 0 8px;font-size:17px}
-.badge{background:#ede9fe;color:#4c1d95;padding:3px 8px;border-radius:20px;font-size:11px}
-.meta{font-size:13px;line-height:1.8;color:#444}
-.row{display:flex;gap:8px;margin-top:8px}
-.row button{flex:1}
-.photoBtn{background:#f3f4f6;color:#111;font-size:12px;padding:10px 4px}
-.photoBtn.done{background:#dcfce7;color:#166534}
-.photoWrap{flex:1;text-align:center}
-.photoThumb{width:100%;height:70px;object-fit:cover;border-radius:10px;margin-top:6px}
-.smallBtn{background:none;color:#dc2626;font-size:11px;padding:4px}
-.serial{margin-top:10px;background:#f8fafc;border:2px dashed #7c3aed}
-.manateeBtn{background:#0ea5e9;color:#fff}
-.upDownBtn{background:#f59e0b;color:#fff}
-.upDownBtn.done,.recipientBtn.done,.statusBtn.done{background:#16a34a;color:#fff}
-.recipientBtn{background:#8b5cf6;color:#fff}
-.statusBtn{background:#64748b;color:#fff}
-.saveBtn{width:100%;background:#4c1d95;color:#fff;margin-top:10px;padding:14px}
-.saveBtn:disabled{background:#999}
-.lockedBanner{background:#dcfce7;color:#166534;padding:8px;border-radius:10px;text-align:center;font-weight:800;font-size:13px;margin-bottom:8px}
-.bottomNav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:10px 0 14px;box-shadow:0 -4px 20px rgba(0,0,0,.2);z-index:10;max-width:520px;margin:0 auto;border-radius:18px 18px 0 0}
-.bottomNav div{text-align:center;color:#888;font-size:12px;cursor:pointer;padding:4px 10px}
-.bottomNav div.active{color:#4c1d95;font-weight:900}
-.bottomNav b{font-size:20px;display:block}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:100;padding:16px}
-.modalBox{background:#fff;color:#111;width:100%;max-width:380px;border-radius:20px;padding:18px;max-height:85vh;overflow:auto}
-.modalBox h3{margin:0 0 12px}
-.optBtn{width:100%;background:#f3f4f6;color:#111;margin-bottom:8px;text-align:right}
-.optBtn:hover{background:#ede9fe}
-.closeBtn{background:#e5e7eb;color:#111;margin-top:8px;width:100%}
+*{box-sizing:border-box;font-family:system-ui}
+body{margin:0;background:#f2f2f7;padding-bottom:80px}
+.header{background:#4A0E68;color:#fff;padding:16px 16px 20px;border-radius:0 0 20px 20px}
+.header-top{display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:28px;font-weight:900;color:#fff}
+.logo span{color:#ff2a8a}
+.welcome{font-size:14px;opacity:.9}
+.stats{display:flex;gap:10px;margin:14px 0 0}
+.stat{flex:1;background:#fff;color:#222;border-radius:14px;padding:10px;text-align:center}
+.stat b{font-size:20px;display:block}
+.stat small{color:#666}
+.card{background:#fff;margin:12px 14px 0;border-radius:16px;padding:14px;box-shadow:0 2px 10px #0001}
+.card-top{display:flex;justify-content:space-between;align-items:center}
+.name{font-weight:800;font-size:16px}
+.badge{font-size:12px;padding:5px 10px;border-radius:20px;font-weight:700}
+.new{background:#fff3e0;color:#e67e00}
+.late{background:#ffecec;color:#d32f2f}
+.done{background:#e8f5e9;color:#2e7d32}
+.info{color:#555;font-size:13px;line-height:1.8;margin:8px 0}
+.btn{width:100%;background:#E6007E;color:#fff;border:0;padding:12px;border-radius:12px;font-weight:800;font-size:15px}
+.tabs{position:fixed;bottom:0;right:0;left:0;background:#fff;display:flex;border-top:1px solid #eee;padding:10px 0}
+.tabs a{flex:1;text-align:center;text-decoration:none;color:#777;font-size:12px}
+.tabs a.active{color:#4A0E68;font-weight:800}
 </style>
 </head>
 <body>
-<div id="loginPage">
-<div class="loginCard">
-<img class="loginLogo" src="https://i.imgur.com/8QZQZQZ.jpg" onerror="this.src='https://via.placeholder.com/380x150/4c1d95/ffffff?text=MISK'">
-<h2>MISK - تسجيل دخول</h2>
-<p>مرحبا بيك في نظام الميدان</p>
-<input id="user" placeholder="اسم المستخدم - مثلا admin">
-<input id="pass" type="password" placeholder="الباسورد">
-<button class="loginBtn" onclick="login()">تسجيل الدخول →</button>
-<div id="loginMsg"></div>
-<div class="clockBox">الساعة دلوقتي <br><b id="loginClock">--:--</b><br><span id="loginDate"></span></div>
+
+<div class="header">
+<div class="header-top">
+<div class="logo">MISK<span>.</span></div>
+<div class="welcome">مرحباً بالفني 👋<br><b>مهام اليوم</b></div>
+</div>
+<div class="stats">
+<div class="stat"><b>12</b><small>مهام اليوم</small></div>
+<div class="stat"><b>8</b><small>مكتملة</small></div>
+<div class="stat"><b>2</b><small>متأخرة</small></div>
 </div>
 </div>
-<div id="appPage" class="hidden">
-<div class="topBar">
-<div><h3 id="welcome">اهلا بيك</h3><span id="techInfo"></span></div>
-<button class="logoutBtn" onclick="logout()">خروج</button>
+
+<div class="card">
+<div class="card-top"><div class="name">أحمد محمد - #1023</div><div class="badge new">جديد</div></div>
+<div class="info">📍 بردلة - البحيرة<br>🕐 10:30 ص - تركيب راوتر<br>📞 0100XXXXXXX</div>
+<button class="btn">عرض التفاصيل</button>
 </div>
 
-<div class="statsRow">
-<div class="stat done" onclick="filterByCircle('done')"><b id="cDone">0</b><span>✅ تم</span></div>
-<div class="stat pend" onclick="filterByCircle('pending')"><b id="cPending">0</b><span>⏳ معلق</span></div>
-<div class="stat prob" onclick="filterByCircle('problem')"><b id="cProblem">0</b><span>⚠️ مشكلة</span></div>
+<div class="card">
+<div class="card-top"><div class="name">سارة علي - #1024</div><div class="badge late">متأخر</div></div>
+<div class="info">📍 دمنهور - البحيرة<br>🕐 11:00 ص - صيانة خط<br>📞 0111XXXXXXX</div>
+<button class="btn">عرض التفاصيل</button>
 </div>
 
-<div class="searchBox"><input id="searchInput" placeholder="🔍 دور باسم العميل او الرقم..." oninput="onSearch()"></div>
-
-<div class="followerCard">
-<label>📱 رقم المتابع - اللي هيتبعتله الشغل</label>
-<div class="row"><input id="followerPhone" placeholder="01xxxxxxxxx" inputmode="numeric"><button class="saveFBtn" onclick="saveFollowerPhone()">حفظ</button><button class="clearFBtn" onclick="clearFollowerPhone()">مسح</button></div>
-<div id="followerMsg" style="font-size:12px;color:#16a34a;margin-top:6px"></div>
+<div class="card">
+<div class="card-top"><div class="name">محمود حسن - #1025</div><div class="badge done">مكتمل</div></div>
+<div class="info">📍 كفر الدوار<br>🕐 12:00 م - تفعيل خدمة<br>📞 0122XXXXXXX</div>
+<button class="btn">عرض التفاصيل</button>
 </div>
 
-<div id="adminAdd" class="adminBox hidden">
-<b>➕ اضافة شغل يدوي - أدمن</b>
-<input id="a_customer" placeholder="اسم العميل" style="margin-top:8px">
-<input id="a_address" placeholder="العنوان">
-<input id="a_order" placeholder="رقم الاوردر">
-<input id="a_landline" placeholder="رقم التليفون الارضي">
-<select id="a_device"><option>ONU</option><option>Router</option><option>ONT</option></select>
-<select id="a_tech"><option value="">اختر الفني</option></select>
-<button onclick="addJob()" style="width:100%;background:#f59e0b;color:#fff;margin-top:8px">اضافة</button>
-<div style="margin-top:10px;font-size:13px">عدد الفنيين: <b id="techCount">0</b><div id="techList"></div></div>
-<div style="margin-top:12px"><b>📤 رفع شيت</b><input type="file" id="sheetInput" accept=".xlsx,.xls,.csv" multiple><button onclick="uploadSheetFast()" style="width:100%;background:#16a34a;color:#fff;margin-top:8px">رفع الشيت</button><div id="uploadMsg"></div><div id="prog" style="display:none;background:#eee;border-radius:10px;margin-top:8px"><div id="progBar" style="height:10px;background:#16a34a;width:0%;border-radius:10px"></div></div></div>
-<div style="margin-top:12px;display:flex;gap:8px"><button onclick="archiveOldJobs()" style="flex:1;background:#4c1d95;color:#fff">📦 أرشفة</button><button onclick="clearOldJobs()" style="flex:1;background:#dc2626;color:#fff">🗑️ مسح الرئيسي</button><button onclick="wipeAllSystem()" style="flex:1;background:#111;color:#fff">⚠️ مسح الكل</button></div>
+<div class="tabs">
+<a href="#" class="active">🏠<br>الرئيسية</a>
+<a href="#">📋<br>المهام</a>
+<a href="#">📦<br>الأرشيف</a>
+<a href="#">👁️<br>المتابع</a>
+<a href="#">👤<br>الحساب</a>
 </div>
 
-<div id="archiveFilter" class="hidden" style="background:#fff;color:#111;border-radius:16px;padding:12px;margin-top:10px">
-<b>📦 فلتر الأرشيف</b>
-<select id="archiveDate" onchange="renderJobs()" style="margin-top:8px"></select>
-<div id="archiveSummary" style="font-size:13px;margin-top:8px"></div>
-<div id="archiveSheetsList" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"></div>
-<button onclick="exportArchive()" style="width:100%;background:#16a34a;color:#fff;margin-top:8px">⬇️ تصدير الأرشيف Excel</button>
-</div>
-
-<div id="jobsList"></div>
-<div id="loadMoreWrap"></div>
-<div id="uploadingBanner" style="display:none;position:fixed;top:10px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 18px;border-radius:20px;z-index:200">⏳ جاري رفع الصورة...</div>
-</div>
-
-<div class="bottomNav">
-<div onclick="showTab('all',this)" class="active"><b>🏠</b>الرئيسية</div>
-<div onclick="showTab('done',this)"><b>✅</b>تم</div>
-<div onclick="showTab('pending',this)"><b>⏳</b>معلق</div>
-<div onclick="showTab('problem',this)"><b>⚠️</b>مشكلة</div>
-<div id="archiveNav" onclick="showTab('archive',this)" style="display:none"><b>📦</b>أرشيف</div>
-</div>
-
-<!-- المودالات -->
-<div id="upDownModal" class="modal"><div class="modalBox"><h3 id="upDownCustomer"></h3><p>اختار Up / Down</p><button class="optBtn" onclick="chooseUpDown('UP')">⬆️ UP</button><button class="optBtn" onclick="chooseUpDown('DOWN')">⬇️ DOWN</button><button class="optBtn" onclick="chooseUpDown('UP / DOWN')">⬆️⬇️ UP / DOWN</button><button class="closeBtn" onclick="closeUpDown()">إلغاء</button></div></div>
-
-<div id="recipientModal" class="modal"><div class="modalBox"><h3 id="recipientCustomer"></h3><p>مين اللي استلم؟</p><button class="optBtn" onclick="chooseRecipient('العميل نفسه')">👤 العميل نفسه</button><button class="optBtn" onclick="chooseRecipient('الزوجة')">👩 الزوجة</button><button class="optBtn" onclick="chooseRecipient('الابن')">👦 الابن</button><button class="optBtn" onclick="chooseRecipient('البنت')">👧 البنت</button><button class="optBtn" onclick="chooseRecipient('الأب')">👴 الأب</button><button class="optBtn" onclick="chooseRecipient('الأم')">👵 الأم</button><button class="optBtn" onclick="chooseRecipient('الأخ')">🧑 الأخ</button><button class="optBtn" onclick="chooseRecipient('الجار')">🏠 الجار</button><button class="optBtn" onclick="chooseRecipient('البواب')">🧑‍🦺 البواب</button><button class="closeBtn" onclick="clearRecipientChoice()">مسح الاختيار</button></div></div>
-
-<div id="statusModal" class="modal"><div class="modalBox"><h3 id="statusCustomer"></h3><p>حالة الزيارة:</p><button class="optBtn" onclick="selectStatusOption('تأجيل')">⏳ تأجيل</button><button class="optBtn" onclick="selectStatusOption('لم يتم الرد')">📞 لم يتم الرد</button><button class="optBtn" onclick="selectStatusOption('رفض الزيارة')">🚫 رفض الزيارة</button><div id="selectedStatusLabel" style="font-weight:800;color:#4c1d95;margin:8px 0"></div><textarea id="statusComment" placeholder="اكتب كومنت - ليه تأجيل؟ ليه مردش؟"></textarea><button onclick="confirmStatus()" style="width:100%;background:#dc2626;color:#fff;margin-top:8px">حفظ الحالة</button><button class="closeBtn" onclick="closeStatusModal()">إلغاء</button></div></div>
-
-<div id="photoCamModal" class="modal"><div class="modalBox"><h3 id="photoCamTitle">📷 صور</h3><button onclick="capturePhoto()" style="width:100%;background:#4c1d95;color:#fff;margin-bottom:8px">📷 صور بالكاميرا</button><button onclick="openPhotoFile()" style="width:100%;background:#0ea5e9;color:#fff">🖼️ اختار من المعرض</button><input type="file" id="photoInput" accept="image/*" capture="environment" style="display:none"><input type="file" id="photoGalleryInput" accept="image/*" style="display:none"><button class="closeBtn" onclick="closePhotoCam()">إلغاء</button></div></div>
-
-<div id="photoModal" class="modal" onclick="this.style.display='none'"><div class="modalBox" style="text-align:center"><img id="photoModalImg" style="width:100%;border-radius:12px"><button onclick="event.stopPropagation();rotatePhotoModal()" style="background:#4c1d95;color:#fff;margin-top:8px;width:100%">🔄 لف الصورة</button></div></div>
-
-<div id="sendLockModal" class="modal"><div class="modalBox"><h3>🔒 قفل وارسال</h3><div id="lockCustomer" style="font-weight:800"></div><div id="lockStatus" style="margin:12px 0;font-size:14px;line-height:1.8"></div><button onclick="sendToFollowerOnly()" style="width:100%;background:#16a34a;color:#fff">📤 ابعت للمتابع</button><div id="lockConfirmBox" style="display:none;margin-top:12px;background:#f0fdf4;padding:12px;border-radius:12px"><p id="lockConfirmText"></p><button onclick="confirmSendYes()" style="width:100%;background:#16a34a;color:#fff">✅ ايوه بعت</button><button onclick="confirmSendNo()" style="width:100%;background:#eee;color:#111;margin-top:6px">❌ لسه مبعتش</button></div><button class="closeBtn" onclick="closeLockBack()">رجوع من غير ارسال</button></div></div>
-
-<div id="passModal" class="modal"><div class="modalBox"><h3>🔑 غير الباسورد</h3><input id="newPassInput" placeholder="الباسورد الجديد"><button onclick="doChangePass()" style="width:100%;background:#4c1d95;color:#fff;margin-top:8px">حفظ الباسورد الجديد</button><button class="closeBtn" onclick="closePassModal()">تخطي</button></div></div>
-<script>
-const SUPABASE_URL="https://wpbjdxjozibqcoyrmxlc.supabase.co";
-const SUPABASE_KEY="sb_publishable_EpBDoKSZQ6OMZA3wHKd8vg_9_ocCNnm";
-const supabaseClient=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-let currentUser=null, allJobs=[], archiveJobs=[], currentFilter='all', visibleCount=50;
-let currentPhotoJobId=null, currentPhotoType=null, lockJobId=null, lockPendingType=null;
-let pendingUpDownId=null, pendingRecipientId=null, pendingStatusId=null, pendingStatusValue='';
-let photoModalRotate=0;
-
-function tickClock(){ let d=new Date(); let h=String(d.getHours()).padStart(2,'0'); let m=String(d.getMinutes()).padStart(2,'0'); let c=document.getElementById('loginClock'); if(c) c.innerText=h+':'+m; let dt=document.getElementById('loginDate'); if(dt) dt.innerText=d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear(); }
-setInterval(tickClock,1000); tickClock();
-function esc(v){ return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function todayStr(){ let d=new Date(); return d.getDate()+'-'+(d.getMonth()+1)+'-'+d.getFullYear(); }
-function getSheetDate(j){ if(j.date && String(j.date).trim()) return String(j.date).trim(); if(j.archive_date) return String(j.archive_date).trim(); return todayStr(); }
-function isProblemJob(j){ let s=String(j.status||''); return s==='تأجيل'||s==='تاجيل'||s==='لم يتم الرد'||s==='رفض الزيارة'; }
-function hasAllPhotos(j){ return !!(j.photo_front && j.photo_back && j.photo_receipt); }
-function missingPhotos(j){ let m=[]; if(!j.photo_front) m.push('وش الجهاز'); if(!j.photo_back) m.push('ضهر الجهاز'); if(!j.photo_receipt) m.push('الايصال + البطاقة'); return m; }
-function isFullyDone(j){ return !!(j.serial && String(j.serial).trim() && j.up_down && j.recipient && hasAllPhotos(j)); }
-function isDoneJob(j){ return isFullyDone(j); }
-function isPendingJob(j){ return !isDoneJob(j) && !isProblemJob(j); }
-function isUpdated(j){ if(j.serial) return false; if(j.up_down) return true; if(j.recipient) return true; if(isProblemJob(j)) return true; if(j.status && j.status!=='جديد' && j.status!=='') return true; if(j.comment && String(j.comment).trim()) return true; return false; }
-function isEmptyJob(j){ if(j.serial) return false; return !isUpdated(j); }
-function isLockedJob(j){ if(!j) return false; if(!currentUser || currentUser.role==='admin') return false; if(!isFullyDone(j)) return false; return !!getSendState(j.id).follower; }
-function getSendState(id){ try{ return JSON.parse(localStorage.getItem('misk_sent_'+id)||'{"follower":false}'); }catch(e){ return {follower:false}; } }
-function setSendState(id,st){ try{ localStorage.setItem('misk_sent_'+id, JSON.stringify(st)); }catch(e){} }
-function getFollowerPhone(){ return String(document.getElementById('followerPhone')?document.getElementById('followerPhone').value:'').replace(/\D/g,'').trim(); }
-function saveFollowerPhone(){ let v=getFollowerPhone(); try{ localStorage.setItem('misk_follower',v); }catch(e){} document.getElementById('followerMsg').innerText=v?'تم حفظ رقم المتابع: '+v:''; }
-function clearFollowerPhone(){ document.getElementById('followerPhone').value=''; try{ localStorage.removeItem('misk_follower'); }catch(e){} document.getElementById('followerMsg').innerText='تم مسح رقم المتابع'; }
-function restoreFollower(){ try{ let f=localStorage.getItem('misk_follower'); if(f) document.getElementById('followerPhone').value=f; }catch(e){} }
-function buildReportText(j){ return [String(j.landline||j.order_no||''),String(j.mobile||''),String(j.customer_name||''),String(j.serial||''),String(j.up_down||''),j.recipient?'المستلم: '+j.recipient:''].filter(s=>String(s||'').trim()!=='').join('\n'); }
-function buildProblemText(j){ return [String(j.landline||j.order_no||''),String(j.mobile||''),String(j.customer_name||''),j.address?'العنوان: '+j.address:'',String(j.status||''),j.comment?'كومنت: '+j.comment:''].filter(s=>String(s||'').trim()!=='').join('\n'); }
-function clearProblemForSerial(j,serialVal,upVal,recVal){ if(!serialVal || !String(serialVal).trim()) return {status:j.status,comment:j.comment}; if(!isProblemJob(j)) return {status:'تم التسليم',comment:j.comment}; let full=!!(String(serialVal).trim() && (upVal||j.up_down) && (recVal||j.recipient) && hasAllPhotos(j)); return {status: full?'تم التسليم':'جديد',comment:''}; }
-
-async function login(){
- let u=document.getElementById('user').value.trim();
- let p=document.getElementById('pass').value.trim();
- let msg=document.getElementById('loginMsg');
- if(!u||!p){ msg.innerText='اكتب اسم المستخدم والباسورد'; return; }
- msg.innerText='جاري الدخول...'; msg.style.color='#4c1d95';
- let res=await supabaseClient.from('technicians').select('*').eq('username',u).maybeSingle();
- if(res.error||!res.data){ msg.style.color='#dc2626'; msg.innerText='اسم المستخدم مش موجود'; return; }
- if(String(res.data.password||'')!==p){ msg.style.color='#dc2626'; msg.innerText='الباسورد غلط'; return; }
- currentUser=res.data;
- try{ localStorage.setItem('misk_user',JSON.stringify(res.data)); }catch(e){}
- document.getElementById('loginPage').style.display='none';
- document.getElementById('appPage').classList.remove('hidden');
- document.getElementById('welcome').innerText='اهلا '+(res.data.display_name||res.data.username);
- document.getElementById('techInfo').innerText=(res.data.display_name||'')+' • '+(res.data.role==='admin'?'أدمن':'فني');
- if(res.data.role==='admin'){ document.getElementById('adminAdd').classList.remove('hidden'); document.getElementById('archiveNav').style.display='block'; loadTechListForAdmin(); }
- restoreFollower(); await loadJobs();
- setTimeout(function(){ if(currentUser && currentUser.role!=='admin') askChangePass(); },1200);
-}
-function logout(){ try{ localStorage.removeItem('misk_user'); }catch(e){} location.reload(); }
-function askChangePass(){ document.getElementById('passModal').style.display='flex'; }
-function closePassModal(){ document.getElementById('passModal').style.display='none'; }
-async function doChangePass(){ let np=document.getElementById('newPassInput').value.trim(); if(!np||np.length<3){ alert('اكتب باسورد جديد 3 حروف على الأقل'); return; } let r=await supabaseClient.from('technicians').update({password:np}).eq('id',currentUser.id); if(r.error){ alert(r.error.message); return; } currentUser.password=np; try{ localStorage.setItem('misk_user',JSON.stringify(currentUser)); }catch(e){} alert('✅ تم تغيير الباسورد'); closePassModal(); }
-document.getElementById('user').addEventListener('keydown', e=>{ if(e.key==='Enter') login(); });
-document.getElementById('pass').addEventListener('keydown', e=>{ if(e.key==='Enter') login(); });
-
-async function loadTechListForAdmin(){
- let r=await supabaseClient.from('technicians').select('*').order('display_name');
- if(!r.data) return;
- document.getElementById('techCount').innerText=r.data.length;
- document.getElementById('techList').innerHTML=r.data.map(t=>'👤 '+(t.display_name||t.username)+' - '+t.username).join('<br>');
- let sel=document.getElementById('a_tech'); if(sel) sel.innerHTML='<option value="">اختر اسم الفني</option>'+r.data.map(t=>'<option value="'+t.username+'">'+esc(t.display_name||t.username)+'</option>').join('');
-}
-async function loadJobs(){
- let q=supabaseClient.from('jobs').select('*').order('id',{ascending:true});
- if(currentUser && currentUser.role!=='admin' && currentUser.username) q=q.eq('tech',currentUser.username);
- let res=await q; if(res.error){ alert(res.error.message); return; }
- allJobs=res.data||[];
- let arch=await supabaseClient.from('jobs_archive').select('*').order('id',{ascending:false}).limit(500);
- archiveJobs=arch.data||[]; buildArchiveDates(); renderJobs();
-}
-function buildArchiveDates(){
- let sel=document.getElementById('archiveDate'); if(!sel) return;
- let dates=[...new Set(archiveJobs.map(getSheetDate))].sort().reverse();
- sel.innerHTML='<option value="">كل الأيام</option>'+dates.map(d=>'<option value="'+esc(d)+'">'+esc(d)+'</option>').join('');
- let list=document.getElementById('archiveSheetsList'); if(list) list.innerHTML=dates.map(d=>'<span onclick="document.getElementById(\'archiveDate\').value=\''+esc(d)+'\';renderJobs()" style="background:#ede9fe;padding:6px 10px;border-radius:20px;font-size:12px;cursor:pointer">📦 '+esc(d)+'</span>').join('');
-}
-function getFilteredJobs(){
- let q=String(document.getElementById('searchInput')?document.getElementById('searchInput').value:'').toLowerCase().trim();
- let list=[...allJobs];
- if(currentFilter==='done') list=list.filter(isDoneJob);
- else if(currentFilter==='pending') list=list.filter(isPendingJob);
- else if(currentFilter==='problem') list=list.filter(isProblemJob);
- else if(currentFilter==='archive') list=[...archiveJobs];
- if(q) list=list.filter(j=>JSON.stringify(j).toLowerCase().includes(q));
- return list;
-}
-function renderJobs(){
- let list=getFilteredJobs();
- let el=document.getElementById('jobsList'); if(!el) return;
- let show=list.slice(0,visibleCount);
- if(show.length===0){ el.innerHTML='<p style="text-align:center;color:#fff">مفيش شغل هنا - جرب تاب تاني او ارفع شيت</p>'; document.getElementById('loadMoreWrap').innerHTML=''; updateCircles(); return; }
- el.innerHTML=show.map(renderJobCard).join('');
- let wrap=document.getElementById('loadMoreWrap');
- if(list.length>visibleCount) wrap.innerHTML='<button onclick="visibleCount+=50;renderJobs()" style="width:100%;background:#fff;color:#4c1d95">عرض المزيد - باقي '+(list.length-visibleCount)+'</button>'; else wrap.innerHTML='';
- updateCircles();
-}
-function renderJobCard(j){
- let locked=isLockedJob(j);
- return '<div class="job">'+(locked?'<div class="lockedBanner">🔒 متسلم - اتبعت للمتابع ✅</div>':'')+
- '<h3>'+esc(j.customer_name||'')+' <span class="badge">'+esc(j.device||'')+'</span></h3>'+
- '<div class="meta"><b>العنوان:</b> '+esc(j.address||'')+'<br><b>رقم الاوردر - Tel:</b> '+esc(j.landline||j.order_no||'')+'<br><b>موبايل العميل:</b> '+esc(j.mobile||'--')+'<br><b>رقم الفني:</b> '+esc(j.tech||'')+'<br><b>التاريخ:</b> '+esc(getSheetDate(j))+'</div>'+
- '<div class="row"><div class="photoWrap"><button class="photoBtn '+(j.photo_front?'done':'')+'" onclick="openPhotoCam('+j.id+',\'photo_front\')">📷 وش الجهاز '+(j.photo_front?'✅':'')+'</button>'+(j.photo_front?'<img class="photoThumb" src="'+j.photo_front+'" onclick="openPhotoModal(\''+j.photo_front+'\')">':'')+'<button class="smallBtn" onclick="deletePhoto('+j.id+',\'photo_front\')">🗑️ حذف</button></div>'+
- '<div class="photoWrap"><button class="photoBtn '+(j.photo_back?'done':'')+'" onclick="openPhotoCam('+j.id+',\'photo_back\')">📷 ضهر الجهاز '+(j.photo_back?'✅':'')+'</button>'+(j.photo_back?'<img class="photoThumb" src="'+j.photo_back+'" onclick="openPhotoModal(\''+j.photo_back+'\')">':'')+'<button class="smallBtn" onclick="deletePhoto('+j.id+',\'photo_back\')">🗑️ حذف</button></div>'+
- '<div class="photoWrap"><button class="photoBtn '+(j.photo_receipt?'done':'')+'" onclick="openPhotoCam('+j.id+',\'photo_receipt\')">🧾 الايصال '+(j.photo_receipt?'✅':'')+'</button>'+(j.photo_receipt?'<img class="photoThumb" src="'+j.photo_receipt+'" onclick="openPhotoModal(\''+j.photo_receipt+'\')">':'')+'<button class="smallBtn" onclick="deletePhoto('+j.id+',\'photo_receipt\')">🗑️ حذف</button></div></div>'+
- '<input class="serial" id="serial_'+j.id+'" value="'+esc(j.serial||'')+'" placeholder="اكتب السيريال" oninput="onSerialInput('+j.id+')" '+(locked?'disabled':'')+'>'+
- '<div class="row"><button class="manateeBtn" onclick="scanWithManatee('+j.id+')">🔍 سكان Manatee</button><button class="upDownBtn '+(j.up_down?'done':'')+'" onclick="openUpDown('+j.id+')">📶 '+(j.up_down||'Up / Down')+'</button></div>'+
- '<div class="row"><button class="recipientBtn '+(j.recipient?'done':'')+'" onclick="openRecipient('+j.id+')">👤 '+(j.recipient||'المستلم')+'</button><button class="statusBtn '+(isProblemJob(j)?'done':'')+'" onclick="openStatus('+j.id+')">📋 '+(j.status||'حالة الزيارة')+'</button></div>'+
- '<div style="padding:8px 2px 0;font-size:12px;color:#555">📝 كومنت: <input id="comment_'+j.id+'" value="'+esc(j.comment||'')+'" placeholder="اكتب كومنت..." oninput="onCommentInput('+j.id+')" '+(locked?'disabled':'')+'></div>'+
- '<button class="saveBtn" onclick="saveJob('+j.id+')" '+(locked?'disabled':'')+'>💾 حفظ</button>'+
- (locked?'<button onclick="unlockJob('+j.id+')" style="width:100%;background:#dc3545;color:#fff;margin-top:8px">🔓 فك القفل - تعديل</button>':'')+'</div>';
-}
-function updateCircles(){
- document.getElementById('cDone').innerText=allJobs.filter(isDoneJob).length;
- document.getElementById('cPending').innerText=allJobs.filter(isPendingJob).length;
- document.getElementById('cProblem').innerText=allJobs.filter(isProblemJob).length;
- let sum=document.getElementById('archiveSummary'); if(sum) sum.innerText='اجمالي الارشيف: '+archiveJobs.length+' - تم: '+archiveJobs.filter(isDoneJob).length+' - ابديت: '+archiveJobs.filter(j=>!isDoneJob(j)&&isUpdated(j)).length+' - فاضي: '+archiveJobs.filter(isEmptyJob).length;
-}
-function filterByCircle(t){ if(t==='done') showTab('done',null); else if(t==='pending') showTab('pending',null); else if(t==='problem') showTab('problem',null); }
-function showTab(tab,el){
- if(el){ document.querySelectorAll('.bottomNav div').forEach(d=>d.classList.remove('active')); el.classList.add('active'); }
- if(tab==='archive'){ currentFilter='archive'; document.getElementById('archiveFilter').classList.remove('hidden'); }
- else if(tab==='done'){ currentFilter='done'; document.getElementById('archiveFilter').classList.add('hidden'); }
- else if(tab==='pending'){ currentFilter='pending'; document.getElementById('archiveFilter').classList.add('hidden'); }
- else if(tab==='problem'){ currentFilter='problem'; document.getElementById('archiveFilter').classList.add('hidden'); }
- else { currentFilter='all'; document.getElementById('archiveFilter').classList.add('hidden'); }
- visibleCount=50; renderJobs(); window.scrollTo({top:0,behavior:'smooth'});
-}
-function onSearch(){ visibleCount=50; renderJobs(); }
-function onSerialInput(id){ let j=allJobs.find(x=>x.id===id); if(j) j.serial=document.getElementById('serial_'+id).value; }
-function onCommentInput(id){ let j=allJobs.find(x=>x.id===id); if(j) j.comment=document.getElementById('comment_'+id).value; }
-function openPhotoModal(src){ photoModalRotate=0; document.getElementById('photoModalImg').src=src; document.getElementById('photoModalImg').style.transform='rotate(0deg)'; document.getElementById('photoModal').style.display='flex'; }
-function rotatePhotoModal(){ photoModalRotate=(photoModalRotate+90)%360; document.getElementById('photoModalImg').style.transform='rotate('+photoModalRotate+'deg)'; }
-function openPhotoCam(id,type){ currentPhotoJobId=id; currentPhotoType=type; document.getElementById('photoCamTitle').innerText='📷 صور: '+(type==='photo_front'?'وش الجهاز':type==='photo_back'?'ضهر الجهاز':'الايصال + البطاقة'); document.getElementById('photoCamModal').style.display='flex'; }
-function closePhotoCam(){ document.getElementById('photoCamModal').style.display='none'; currentPhotoJobId=null; currentPhotoType=null; }
-function capturePhoto(){ document.getElementById('photoInput').click(); }
-function openPhotoFile(){ document.getElementById('photoGalleryInput').click(); }
-document.getElementById('photoInput').addEventListener('change', e=>{ handlePhotoFile(e.target.files[0]); e.target.value=''; });
-document.getElementById('photoGalleryInput').addEventListener('change', e=>{ handlePhotoFile(e.target.files[0]); e.target.value=''; });
-async function handlePhotoFile(file){
- if(!file||!currentPhotoJobId) return; let jid=currentPhotoJobId, jtype=currentPhotoType; closePhotoCam();
- document.getElementById('uploadingBanner').style.display='block';
- let reader=new FileReader(); reader.onload=async function(ev){
-  let img=new Image(); img.onload=async function(){
-   let canvas=document.createElement('canvas'); let scale=Math.min(1,1000/img.width); canvas.width=img.width*scale; canvas.height=img.height*scale; canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
-   let blob=await (await fetch(canvas.toDataURL('image/jpeg',0.75))).blob();
-   let fn='job_'+jid+'_'+jtype+'_'+Date.now()+'.jpg';
-   let up=await supabaseClient.storage.from('photos').upload(fn,blob,{contentType:'image/jpeg'});
-   if(up.error){ alert('رفع الصورة فشل: '+up.error.message); document.getElementById('uploadingBanner').style.display='none'; return; }
-   let pub=supabaseClient.storage.from('photos').getPublicUrl(fn).data.publicUrl;
-   let upd={}; upd[jtype]=pub; let r=await supabaseClient.from('jobs').update(upd).eq('id',jid);
-   if(r.error) alert(r.error.message);
-   let jj=allJobs.find(x=>x.id===jid); if(jj) jj[jtype]=pub;
-   document.getElementById('uploadingBanner').style.display='none'; renderJobs();
-  }; img.src=ev.target.result;
- }; reader.readAsDataURL(file);
-}
-async function deletePhoto(id,type){ if(!confirm('تحذف الصورة دي؟')) return; let u={}; u[type]=null; let r=await supabaseClient.from('jobs').update(u).eq('id',id); if(r.error){ alert(r.error.message); return; } let j=allJobs.find(x=>x.id===id); if(j) j[type]=null; renderJobs(); }
-function unlockJob(id){ if(!confirm('تفك القفل وتعدل؟ هتحتاج تبعت للمتابع تاني.')) return; setSendState(id,{follower:false}); renderJobs(); }
-function scanWithManatee(id){ let inp=document.getElementById('serial_'+id); if(inp) inp.focus(); alert('📷 افتح Manatee وصوّر باركود السيريال، وبعدين الصقه هنا'); }
-</script>
-<script>
-function openUpDown(id){ let j=allJobs.find(x=>x.id===id); pendingUpDownId=id; document.getElementById('upDownCustomer').innerText=j?j.customer_name:''; document.getElementById('upDownModal').style.display='flex'; }
-function closeUpDown(){ document.getElementById('upDownModal').style.display='none'; pendingUpDownId=null; }
-function chooseUpDown(v){ let j=allJobs.find(x=>x.id===pendingUpDownId); if(j) j.up_down=v; closeUpDown(); renderJobs(); }
-function openRecipient(id){ let j=allJobs.find(x=>x.id===id); pendingRecipientId=id; document.getElementById('recipientCustomer').innerText=j?j.customer_name:''; document.getElementById('recipientModal').style.display='flex'; }
-function chooseRecipient(v){ let j=allJobs.find(x=>x.id===pendingRecipientId); if(j) j.recipient=v; document.getElementById('recipientModal').style.display='none'; renderJobs(); }
-function clearRecipientChoice(){ let j=allJobs.find(x=>x.id===pendingRecipientId); if(j) j.recipient=''; document.getElementById('recipientModal').style.display='none'; renderJobs(); }
-function openStatus(id){ let j=allJobs.find(x=>x.id===id); pendingStatusId=id; pendingStatusValue=j.status||''; document.getElementById('statusCustomer').innerText=j?j.customer_name:''; document.getElementById('statusComment').value=j.comment||''; document.getElementById('selectedStatusLabel').innerText=pendingStatusValue?('المختار: '+pendingStatusValue):''; document.getElementById('statusModal').style.display='flex'; }
-function closeStatusModal(){ document.getElementById('statusModal').style.display='none'; pendingStatusId=null; }
-function selectStatusOption(v){ pendingStatusValue=v; document.getElementById('selectedStatusLabel').innerText='المختار: '+v; }
-function confirmStatus(){ let j=allJobs.find(x=>x.id===pendingStatusId); if(!j) return; if(!pendingStatusValue){ alert('اختار الحالة الأول'); return; } j.status=pendingStatusValue; j.comment=document.getElementById('statusComment').value; closeStatusModal(); renderJobs(); }
-async function saveJob(id){
- let j=allJobs.find(x=>x.id===id); if(!j) return;
- let serialVal=document.getElementById('serial_'+id)?document.getElementById('serial_'+id).value:'';
- let commentVal=document.getElementById('comment_'+id)?document.getElementById('comment_'+id).value:'';
- let cleared=clearProblemForSerial(j,serialVal,j.up_down,j.recipient);
- let upd={serial:serialVal,up_down:j.up_down||null,recipient:j.recipient||null,status:cleared.status,comment:commentVal||null,photo_front:j.photo_front||null,photo_back:j.photo_back||null,photo_receipt:j.photo_receipt||null};
- let r=await supabaseClient.from('jobs').update(upd).eq('id',id);
- if(r.error){ alert(r.error.message); return; }
- j.serial=serialVal; j.comment=commentVal; j.status=cleared.status;
- if(isFullyDone(j)){ lockJobId=id; document.getElementById('lockCustomer').innerText=j.customer_name; document.getElementById('lockStatus').innerHTML='✅ السيريال: '+esc(serialVal)+'<br>✅ Up/Down: '+esc(j.up_down||'')+'<br>✅ المستلم: '+esc(j.recipient||'')+'<br>✅ الصور كاملة'; document.getElementById('lockConfirmBox').style.display='none'; document.getElementById('sendLockModal').style.display='flex'; }
- else { alert('✅ اتحفظ'); }
- renderJobs();
-}
-function closeLockBack(){ document.getElementById('sendLockModal').style.display='none'; lockJobId=null; }
-function sendToFollowerOnly(){
- let j=allJobs.find(x=>x.id===lockJobId); if(!j) return;
- let phone=getFollowerPhone(); if(!phone){ alert('اكتب رقم المتابع الأول فوق'); return; }
- let text=buildReportText(j);
- window.open('https://wa.me/20'+phone.replace(/^0/,'')+'?text='+encodeURIComponent(text),'_blank');
- document.getElementById('lockConfirmText').innerText='بعت التقرير ده للمتابع؟';
- document.getElementById('lockConfirmBox').style.display='block';
-}
-function confirmSendYes(){ setSendState(lockJobId,{follower:true}); closeLockBack(); renderJobs(); alert('✅ اتقفل واتسلم'); }
-function confirmSendNo(){ alert('ابعت الأول وبعدين دوس ايوه'); }
-async function addJob(){
- let cust=document.getElementById('a_customer').value.trim(); let tech=document.getElementById('a_tech').value;
- if(!cust||!tech){ alert('اكتب اسم العميل واختار الفني'); return; }
- let r=await supabaseClient.from('jobs').insert({customer_name:cust,address:document.getElementById('a_address').value,landline:document.getElementById('a_landline').value,order_no:document.getElementById('a_order').value,device:document.getElementById('a_device').value,tech:tech,status:'جديد',date:todayStr()});
- if(r.error){ alert(r.error.message); return; } alert('✅ اتضاف'); loadJobs();
-}
-function parseSheetRow(row){
- let o={}; Object.keys(row).forEach(k=>{ let v=row[k]; if(v==null) return; let key=String(k).toLowerCase().trim(); if(key.includes('اسم')||key.includes('customer')||key.includes('client')) o.customer_name=String(v).trim(); else if(key.includes('عنوان')||key.includes('address')) o.address=String(v).trim(); else if(key.includes('ارضي')||key.includes('landline')||key.includes('tel')||key.includes('اوردر')||key.includes('order')) o.landline=String(v).trim(); else if(key.includes('موبايل')||key.includes('mobile')||key.includes('phone')) o.mobile=String(v).trim(); else if(key.includes('فني')||key.includes('tech')) o.tech=String(v).trim(); else if(key.includes('جهاز')||key.includes('device')) o.device=String(v).trim(); });
- return o;
-}
-async function uploadSheetFast(){
- let input=document.getElementById('sheetInput'); if(!input.files.length){ alert('اختار ملف الأول'); return; }
- document.getElementById('uploadMsg').innerText='جاري الرفع...';
- let files=[...input.files]; let totalAdded=0;
- for(let f of files){
-  let buf=await f.arrayBuffer(); let wb=XLSX.read(buf,{type:'array'}); let ws=wb.Sheets[wb.SheetNames[0]]; let rows=XLSX.utils.sheet_to_json(ws);
-  let toInsert=[];
-  rows.forEach(r=>{ let p=parseSheetRow(r); if(p.customer_name){ toInsert.push({customer_name:p.customer_name,address:p.address||'',landline:p.landline||'',mobile:p.mobile||'',tech:p.tech||currentUser.username,device:p.device||'ONU',status:'جديد',date:todayStr()}); } });
-  if(toInsert.length){ for(let i=0;i<toInsert.length;i+=50){ let chunk=toInsert.slice(i,i+50); let rr=await supabaseClient.from('jobs').insert(chunk); if(!rr.error) totalAdded+=chunk.length; } }
- }
- document.getElementById('uploadMsg').innerText='✅ اترفع '+totalAdded+' عميل'; input.value=''; loadJobs();
-}
-async function archiveOldJobs(){
- if(!confirm('تنقل كل الشغل الرئيسي للأرشيف؟')) return;
- if(!allJobs.length){ alert('مفيش شغل'); return; }
- let rows=allJobs.map(j=>({customer_name:j.customer_name,address:j.address,landline:j.landline,mobile:j.mobile,tech:j.tech,device:j.device,status:j.status,comment:j.comment,serial:j.serial,up_down:j.up_down,recipient:j.recipient,photo_front:j.photo_front,photo_back:j.photo_back,photo_receipt:j.photo_receipt,date:j.date,archive_date:getSheetDate(j)}));
- let r=await supabaseClient.from('jobs_archive').insert(rows);
- if(r.error){ alert(r.error.message); return; }
- await supabaseClient.from('jobs').delete().neq('id',0);
- alert('✅ اتأرشف'); loadJobs();
-}
-async function clearOldJobs(){ if(!confirm('تمسح كل الشغل الرئيسي؟')) return; await supabaseClient.from('jobs').delete().neq('id',0); loadJobs(); }
-async function wipeAllSystem(){ if(!confirm('تمسح كل حاجة رئيسي + أرشيف؟ خطر!')) return; if(!confirm('متأكد 100%؟')) return; await supabaseClient.from('jobs').delete().neq('id',0); await supabaseClient.from('jobs_archive').delete().neq('id',0); loadJobs(); }
-function exportArchive(){
- let list=archiveJobs; let d=document.getElementById('archiveDate').value; if(d) list=list.filter(j=>getSheetDate(j)===d);
- if(!list.length){ alert('مفيش أرشيف'); return; }
- let data=list.map(j=>({التاريخ:getSheetDate(j),العميل:j.customer_name,العنوان:j.address,الارضي:j.landline,الموبايل:j.mobile,الفني:j.tech,الجهاز:j.device,السيريال:j.serial,UpDown:j.up_down,المستلم:j.recipient,الحالة:j.status,الكومنت:j.comment}));
- let ws=XLSX.utils.json_to_sheet(data); let wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,'Archive'); XLSX.writeFile(wb,'MISK_Archive.xlsx');
-}
-window.addEventListener('load', async function(){
- try{ let saved=localStorage.getItem('misk_user'); if(saved){ currentUser=JSON.parse(saved); document.getElementById('user').value=currentUser.username; } }catch(e){}
-});
-</script>
 </body>
 </html>
