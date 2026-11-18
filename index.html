@@ -12,7 +12,7 @@ body{margin:0;background:#f4f0fa;color:#111;padding-bottom:85px}
 button{cursor:pointer}
 .hidden{display:none}
 input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:50px;font-size:15px}
-.top-img{height:170px;background:linear-gradient(180deg,#1a1a2e,#4A0E68);color:#fff;padding:16px;position:relative}
+.top-img{height:170px;background:linear-gradient(180deg,#1a1a2e,#4A0E68);color:#fff;padding:16px;position:relative;overflow:hidden}
 .we-bar{background:#4A0E68;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:12px 16px}
 .we-bar .logo{font-size:24px;font-weight:900}.we-bar .logo span{color:#ff2a8a}
 .stats{display:flex;gap:10px;padding:12px}
@@ -21,7 +21,7 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 .circle{width:58px;height:58px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px}
 .c-green{background:#1aa34a}.c-yellow{background:#ff7a00}.c-red{background:#d32f2f}.c-purple{background:#7b2fbf}.c-blue{background:#0b7ed1}
 .job{background:#fff;margin:0 12px 12px;border:2px solid #1aa34a;border-radius:16px;padding:14px}
-.job h3{margin:0;font-size:17px}.job .meta{font-size:13px;line-height:1.9;color:#444;margin:8px 0}
+.job h3{margin:0;font-size:17px;word-break:break-word;line-height:1.8}.job .meta{font-size:13px;line-height:2;color:#444;margin:8px 0;word-break:break-word;white-space:normal;overflow:hidden}
 .btn{width:100%;background:#4A0E68;color:#fff;border:0;padding:13px;border-radius:50px;font-weight:800;font-size:16px}
 .btn2{width:100%;background:#E6007E;color:#fff;border:0;padding:12px;border-radius:50px;font-weight:800;margin-top:8px}
 .badge{display:inline-block;background:#eef;border-radius:20px;padding:3px 8px;font-size:11px;font-weight:800}
@@ -45,10 +45,18 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 .box button{width:100%;padding:14px;border-radius:50px;font-weight:800;border:0;margin:6px 0}
 #loginPage{max-width:430px;margin:12px auto;background:#fff;border-radius:18px;padding:16px}
 #loginPage input{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:50px;text-align:center}
+.admin-layout{display:flex;gap:12px;align-items:flex-start}
+.admin-main{flex:1;min-width:0}
+.admin-side{width:320px;flex-shrink:0;position:sticky;top:10px;background:#fff;border-radius:16px;padding:12px;box-shadow:0 2px 10px #0002}
+.admin-box{border:1px solid #eee;border-radius:12px;margin-bottom:10px;overflow:hidden}
+.admin-box-head{padding:12px;font-weight:900;cursor:pointer;display:flex;justify-content:space-between;background:#f8f5ff}
+.admin-box-body{display:none;padding:12px}
+.admin-box.open .admin-box-body{display:block}
+.admin-box.open .admin-box-head{background:#4A0E68;color:#fff}
+@media(max-width:800px){.admin-layout{display:block}.admin-side{width:auto;position:static;margin:0 12px 12px}}
 </style>
 </head>
 <body>
-<!-- ===== LOGIN ===== -->
 <div id="loginPage">
 <div style="text-align:center;background:#4A0E68;color:#fff;padding:18px;border-radius:16px"><div style="font-size:32px;font-weight:900">MISK<span style="color:#ff2a8a">.</span></div><small>SERVER • CCTV • ELECTRONICS</small></div>
 <h2 style="text-align:center">تسجيل دخول</h2>
@@ -63,38 +71,24 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <p id="mapLocText" style="font-size:12px;color:#666;text-align:center"></p>
 </div>
 
-<!-- ===== APP ===== -->
 <div id="appPage" class="hidden">
-<!-- السيرفرات - ظاهرة للفني والأدمن الاتنين -->
 <div class="top-img"><small>☰</small><br><br><b id="welcome" style="font-size:22px"></b><br><small id="techInfo"></small><div style="position:absolute;left:14px;top:14px">🔔</div><button onclick="localStorage.clear();location.reload()" style="margin-top:12px;width:100%;padding:10px;border:0;border-radius:50px;background:#ff4757;color:#fff;font-weight:800">🚪 خروج</button></div>
 <div class="we-bar"><div class="logo">WE<span>.</span></div><div>🔔</div></div>
 <div style="position:relative"><img id="serverRotator" src="server1.jpg" style="width:100%;height:140px;object-fit:cover;display:block"></div>
 
-<!-- ===== الفني بس - المتابع ===== -->
+<div class="admin-layout">
+<div class="admin-main">
 <div id="followerCard" style="background:#fff;margin:12px;border:2px solid #0b7ed1;border-radius:16px;padding:14px">
 <h3 style="margin:0">👤 رقم المتابع بتاع النهاردة - اجباري</h3>
 <input id="followerPhone" placeholder="010xxxxxxxxx" inputmode="numeric" oninput="saveFollowerPhone()" style="border:2px solid #0b7ed1;text-align:center">
 <p id="followerMsg" style="font-size:13px;color:red"></p>
 <button onclick="clearFollowerPhone()" style="background:#dc3545;color:#fff;border:0;padding:10px;border-radius:50px;width:100%">🗑️ مسح رقم المتابع</button>
 </div>
-
-<!-- ===== الأدمن بس - لوحة الأدمن ===== -->
-<div id="adminAdd" class="hidden" style="background:#fff;margin:0 12px 12px;border-radius:16px;padding:14px">
-<div style="background:#071126;color:#fff;padding:14px;border-radius:14px;text-align:center"><div>👷 إجمالي الفنيين المتسجلين</div><div id="techCount" style="font-size:30px;font-weight:900;color:#00c6ff">...</div><div id="techList" style="font-size:13px;line-height:1.8"></div><button onclick="loadTechCount()" style="background:#00c6ff;border:0;padding:10px;border-radius:50px;width:100%">🔄 تحديث العدد</button></div>
-<h3>➕ اضافة شغل يدوي</h3><input id="a_customer" placeholder="اسم العميل"><input id="a_address" placeholder="العنوان"><input id="a_order" placeholder="رقم الاوردر - Tel"><input id="a_landline" placeholder="رقم الارضي / موبايل العميل"><select id="a_device"><option value="">اختر نوع الجهاز - ONU أو ONT</option><option value="ONU">ONU</option><option value="ONT">ONT</option></select><select id="a_tech"><option value="">اختر اسم الفني</option></select><button class="btn" onclick="addJob()">اضافة</button>
-<hr><h3>📂 رفع الشيتات - واحد أو أكتر - سريع</h3><input type="file" id="sheetInput" accept=".xlsx,.xls,.csv" multiple><button class="orangeBtn" onclick="uploadSheetFast()" style="width:100%;padding:13px;border-radius:50px;border:0">🚀 رفع الشيتات</button><div id="prog" style="height:18px;background:#eee;border-radius:10px;overflow:hidden;margin:8px 0;display:none"><div id="progBar" style="height:100%;width:0%;background:#1aa34a"></div></div><p id="uploadMsg"></p>
-<hr><h3>📦 أرشفة شغل اليوم</h3><input type="text" id="manualArchiveDate" placeholder="مثال: 22-10-2026 - سيبه فاضي وهياخد تاريخ الشيت"><button onclick="archiveOldJobs()" style="background:#9333ea;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">📦 أرشفة - كل يوم لوحده بتاريخ الشيت بتاعه</button>
-<hr><h3 style="color:#dc3545">⚠️ منطقة الخطر - أدمن بس</h3><button onclick="clearOldJobs()" style="background:#dc3545;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">🗑️ مسح شغل اليوم القديم - الرئيسية بس</button><button onclick="wipeAllSystem()" style="background:#000;color:#fff;width:100%;padding:13px;border-radius:50px;border:2px solid #dc3545;margin-top:8px">🗑️ مسح كل حاجة - بداية جديدة - أدمن بس</button>
-</div>
-
-<!-- ===== الدواير - للاتنين ===== -->
 <div class="stats">
 <div class="stat" id="statDone" onclick="filterByCircle('done')"><div class="circle c-green" id="cDone">0</div><b>تم التسليم</b><br><small>دوس لعرض المتسلمين</small></div>
 <div class="stat" id="statPending" onclick="filterByCircle('pending')"><div class="circle c-yellow" id="cPending">0</div><b>قيد الانتظار</b><br><small>باقي الشغل اللي لسه متقفلش</small></div>
 <div class="stat" id="statProblem" onclick="filterByCircle('problem')"><div class="circle c-red" id="cProblem">0</div><b>تأجيل</b><br><small>تأجيل / لم يتم الرد / رفض</small></div>
 </div>
-
-<!-- ===== الأرشيف - أدمن بس ===== -->
 <div id="archiveFilter" class="hidden" style="background:#fff;margin:0 12px 12px;border-radius:16px;padding:14px">
 <b>📦 فلتر الأرشيف - كل يوم لوحده:</b><select id="archiveDate" onchange="renderJobs()"><option value="">كل الأيام</option></select>
 <div id="archiveSheetsList" style="margin-top:12px"></div>
@@ -102,7 +96,6 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <p id="archiveSummary" style="font-size:13px;color:#666;text-align:center"></p>
 <button onclick="exportArchive()" style="background:#00a651;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">⬇️ تحميل اليوم المختار اكسيل</button>
 </div>
-
 <div style="padding:0 12px"><input id="searchInput" placeholder="بحث عن مهمة / رقم تسلسلي ..." oninput="onSearch()" style="background:#fff"></div>
 <div id="uploadingBanner" style="display:none;background:#ff7b00;color:#fff;padding:10px;border-radius:12px;font-size:14px;font-weight:bold;text-align:center;margin:0 12px 10px">⏳ جاري رفع الصورة...</div>
 <div style="background:#fff;margin:0 12px 12px;border-radius:12px;padding:10px;font-size:13px;line-height:1.7">صور الـ 3 صور الاول: وش الجهاز + ضهر الجهاز + الايصال والبطاقة. وبعدين سيريال + Up / Down + المستلم. لو العميل مش موجود، دوس <b>حالة الزيارة</b> واختار تأجيل / لم يتم الرد / رفض الزيارة + كومنت.</div>
@@ -110,7 +103,20 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <div id="loadMoreWrap" style="padding:0 12px"></div>
 </div>
 
-<!-- ===== شريط تحت ===== -->
+<div id="adminAdd" class="hidden">
+<div class="admin-side">
+<div style="background:#071126;color:#fff;padding:12px;border-radius:12px;text-align:center;margin-bottom:10px"><b>👷 الفنيين</b><div id="techCount" style="font-size:28px;font-weight:900;color:#00c6ff">...</div><div id="techList" style="font-size:12px;line-height:1.8"></div><button onclick="loadTechCount()" style="background:#00c6ff;border:0;padding:8px;border-radius:50px;width:100%">🔄 تحديث</button></div>
+<div class="admin-box open"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">➕ اضافة شغل <span>▼</span></div><div class="admin-box-body"><input id="a_customer" placeholder="اسم العميل"><input id="a_address" placeholder="العنوان"><input id="a_order" placeholder="رقم الاوردر - Tel"><input id="a_landline" placeholder="رقم الارضي / موبايل العميل"><select id="a_device"><option value="">اختر الجهاز - ONU أو ONT</option><option value="ONU">ONU</option><option value="ONT">ONT</option></select><select id="a_tech"><option value="">اختر اسم الفني</option></select><button class="btn" onclick="addJob()">اضافة</button></div></div>
+<div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📂 رفع الشيت <span>▼</span></div><div class="admin-box-body"><input type="file" id="sheetInput" accept=".xlsx,.xls,.csv" multiple><button class="orangeBtn" onclick="uploadSheetFast()" style="width:100%;padding:13px;border-radius:50px;border:0">🚀 رفع الشيتات</button><div id="prog" style="height:18px;background:#eee;border-radius:10px;overflow:hidden;margin:8px 0;display:none"><div id="progBar" style="height:100%;width:0%;background:#1aa34a"></div></div><p id="uploadMsg"></p></div></div>
+<div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📦 أرشفة - كل يوم لوحده <span>▼</span></div><div class="admin-box-body"><input type="text" id="manualArchiveDate" placeholder="مثال: 22-10-2026 - سيبه فاضي وهياخد تاريخ الشيت"><button onclick="archiveOldJobs()" style="background:#9333ea;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">📦 أرشفة اليوم ده</button><p style="font-size:12px;color:#666">الأرشيف بيتقسم لوحده، كل شيت بتاريخه.</p></div></div>
+<div class="admin-box"><div class="admin-box-head" style="background:#fff0f0" onclick="this.parentElement.classList.toggle('open')">🗑️ مسح شغل اليوم القديم 🔒 <span>▼</span></div><div class="admin-box-body"><button onclick="askAdminPass('clearOldJobs')" style="background:#dc3545;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">🗑️ مسح - هيطلب الباسورد</button></div></div>
+<div class="admin-box"><div class="admin-box-head" style="background:#000;color:#fff" onclick="this.parentElement.classList.toggle('open')">⚠️ مسح كل حاجة 🔒 <span>▼</span></div><div class="admin-box-body"><button onclick="askAdminPass('wipeAllSystem')" style="background:#000;color:#fff;width:100%;padding:13px;border-radius:50px;border:2px solid #dc3545">🗑️ بداية جديدة - هيطلب الباسورد</button></div></div>
+</div>
+</div>
+
+</div>
+</div>
+
 <div class="tabs" id="bottomNav">
 <div class="active" onclick="showTab('all',this)"><span style="font-size:20px;display:block">🏠</span>الرئيسية</div>
 <div onclick="showTab('pending',this)"><span style="font-size:20px;display:block">📋</span>المهام</div>
@@ -118,67 +124,27 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <div id="archiveNav" onclick="showTab('archive',this)" style="display:none"><span style="font-size:20px;display:block">📦</span>الأرشيف</div>
 <div onclick="logout()"><span style="font-size:20px;display:block">👤</span>الحساب</div>
 </div>
-<!-- ===== صفحة التفاصيل - ملي الشاشة - للفني ===== -->
+
 <div id="details">
 <div class="d-head"><button class="back" onclick="closeDetails()">← رجوع</button><b id="dTitle" style="font-size:18px">تفاصيل المهمة</b></div>
-<div class="d-box">
-<h3 id="dCustomer" style="margin:0"></h3>
-<p id="dMeta" style="font-size:13px;color:#555;line-height:1.8"></p>
-<p id="dComment" style="font-size:13px"></p>
+<div class="d-box"><h3 id="dCustomer" style="margin:0"></h3><p id="dMeta" style="font-size:13px;color:#555;line-height:1.8"></p><p id="dComment" style="font-size:13px"></p></div>
+<div class="d-box"><b>📷 الصور الاجبارية - 3 صور</b><div class="imgs" id="dPhotos"></div><p style="font-size:12px;color:#777">دوس على أي صورة عشان تصورها أو تشوفها</p></div>
+<div class="d-box"><b>🔢 السيريال</b><input id="dSerial" class="serial" placeholder="اضافة سيريال - الزق هنا من Manatee"><div class="row"><button class="whiteBtn" onclick="openManatee(currentDetailId)">📲 افتح Manatee - انسخ والزق</button></div><div class="row"><button class="blueBtn" onclick="openUpDownOnly(currentDetailId, document.getElementById('dCustomer').innerText)" id="dUpDownBtn">⬆️ Up / ⬇️ Down *</button><button class="blueBtn" onclick="openRecipientOnly(currentDetailId, document.getElementById('dCustomer').innerText)" id="dRecipientBtn">👤 المستلم *</button></div><button class="btn2" onclick="openStatusModal(currentDetailId, document.getElementById('dCustomer').innerText)" id="dStatusBtn">📋 حالة الزيارة - تأجيل / لم يتم الرد / رفض</button><button class="bigSave" onclick="saveSerial(currentDetailId)">💾 حفظ وارسال للمتابع</button><p style="font-size:12px;color:#777;text-align:center">هيتأكد من الصور والـ Up/Down والمستلم قبل الحفظ</p></div>
 </div>
 
-<div class="d-box">
-<b>📷 الصور الاجبارية - 3 صور</b>
-<div class="imgs" id="dPhotos"></div>
-<p style="font-size:12px;color:#777">دوس على أي صورة عشان تصورها أو تشوفها</p>
-</div>
-
-<div class="d-box">
-<b>🔢 السيريال</b>
-<input id="dSerial" class="serial" placeholder="اضافة سيريال - الزق هنا من Manatee">
-<div class="row"><button class="whiteBtn" onclick="openManatee(currentDetailId)">📲 افتح Manatee - انسخ والزق</button></div>
-<div class="row"><button class="blueBtn" onclick="openUpDownOnly(currentDetailId, document.getElementById('dCustomer').innerText)" id="dUpDownBtn">⬆️ Up / ⬇️ Down *</button><button class="blueBtn" onclick="openRecipientOnly(currentDetailId, document.getElementById('dCustomer').innerText)" id="dRecipientBtn">👤 المستلم *</button></div>
-<button class="btn2" onclick="openStatusModal(currentDetailId, document.getElementById('dCustomer').innerText)" id="dStatusBtn">📋 حالة الزيارة - تأجيل / لم يتم الرد / رفض</button>
-<!-- زرار الحفظ الكبير - لوحده تحت -->
-<button class="bigSave" onclick="saveSerial(currentDetailId)">💾 حفظ وارسال للمتابع</button>
-<p style="font-size:12px;color:#777;text-align:center">هيتأكد من الصور والـ Up/Down والمستلم قبل الحفظ</p>
-</div>
-</div>
-
-<!-- ===== المودالات ===== -->
 <div id="upDownModal"><div class="box"><h3>📶 حالة الخط ايه؟</h3><p id="upDownCustomer"></p><button style="background:#1aa34a;color:#fff" onclick="chooseUpDown('Up')">⬆️ Up</button><button style="background:#fff;color:#1aa34a;border:2px solid #1aa34a" onclick="chooseUpDown('Down')">⬇️ Down</button><button style="background:#333;color:#fff" onclick="closeUpDown()">↩️ الرجوع - من غير تسجيل</button></div></div>
-
 <div id="recipientModal"><div class="box"><h3>👤 مين اللي استلم؟</h3><p id="recipientCustomer"></p><button style="background:#1aa34a;color:#fff" onclick="chooseRecipient('الزوج')">👨 الزوج</button><button style="background:#1aa34a;color:#fff" onclick="chooseRecipient('الزوجة')">👩 الزوجة</button><button style="background:#1aa34a;color:#fff" onclick="chooseRecipient('نجله')">🧒 نجله</button><button style="background:#1aa34a;color:#fff" onclick="chooseRecipient('مستأجر')">🏠 مستأجر</button><button style="background:#dc3545;color:#fff" onclick="clearRecipientChoice()">🗑️ مسح الاختيار</button><button style="background:#333;color:#fff" onclick="chooseRecipient('الرجوع')">↩️ الرجوع - من غير تسجيل</button></div></div>
-
 <div id="statusModal"><div class="box"><h3>📋 حالة الزيارة</h3><p id="statusCustomer"></p><button style="background:#fff;color:#1aa34a;border:2px solid #1aa34a" onclick="selectStatusOption('تأجيل')">⏰ تأجيل</button><button style="background:#fff;color:#1aa34a;border:2px solid #1aa34a" onclick="selectStatusOption('لم يتم الرد')">📞 لم يتم الرد</button><button style="background:#fff;color:#1aa34a;border:2px solid #1aa34a" onclick="selectStatusOption('رفض الزيارة')">🚫 رفض الزيارة</button><p id="selectedStatusLabel" style="font-weight:bold;color:#dc3545"></p><textarea id="statusComment" placeholder="اكتب كومنت - مثال: العميل مش موجود، التليفون مقفول..." rows="3" style="border-radius:12px;text-align:right"></textarea><button style="background:#00a651;color:#fff" onclick="confirmStatus()">✅ حفظ الحالة وارسال للمتابع أوتوماتيك</button><button style="background:#333;color:#fff" onclick="closeStatusModal()">✖️ اقفل من غير حفظ</button></div></div>
-
 <input type="file" id="photoInput" accept="image/*" capture="environment" class="hidden">
 <input type="file" id="photoGalleryInput" accept="image/*" class="hidden">
 <input type="file" id="serialCamInput" accept="image/*" capture="environment" class="hidden">
-
 <div id="photoModal" style="position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:10001;display:none;align-items:center;justify-content:center;padding:12px" onclick="this.style.display='none'"><div style="text-align:center"><img id="photoModalImg" style="max-width:100%;max-height:80vh;border-radius:12px"><br><button onclick="event.stopPropagation();rotatePhotoModal()" style="background:#ff7a00;color:#fff;width:auto;padding:12px 20px;margin-top:10px;border:0;border-radius:50px">↻ تدوير الصورة</button></div></div>
-
 <div id="photoCamModal"><div class="box"><h3 id="photoCamTitle">📷 صور وش الجهاز</h3><p id="photoCamMsg" style="font-weight:bold">هتصور ازاي؟ اختار:</p><button style="background:#007bff;color:#fff" onclick="capturePhoto()">📷 صوّر بالكاميرا - كاميرا التليفون</button><button style="background:#ff7a00;color:#fff" onclick="openPhotoFile()">🖼️ اختار من الاستوديو</button><button style="background:#333;color:#fff" onclick="closePhotoCam()">✖️ اقفل من غير حفظ</button></div></div>
-
-<div id="sendLockModal"><div class="box" style="max-width:420px">
-<h2 style="margin:0">🔒 مطلوب منك عشان تكمل</h2>
-<p id="lockCustomer" style="font-weight:bold"></p>
-<div id="lockNetWarn" style="background:#ffe6e6;border:1px solid #dc3545;color:#dc3545;padding:10px;border-radius:12px;font-size:14px;font-weight:bold;margin:8px 0;display:none">⚠️ مفيش نت عندك - الرسالة متحفظة - اول ما النت يرجع ابعتها</div>
-<p id="lockStatus" style="font-size:14px;line-height:1.8"></p>
-<button id="btnSendBoth" style="background:#25D366;color:#fff" onclick="sendToFollowerOnly()">👤 ارسال للمتابع - واتساب ماسنجر + الصور</button>
-<p style="font-size:12px;color:#666">هيفتح مشاركة فيها النص + الـ 3 صور جاهزين - اختار واتساب ماسنجر ودوس ارسال</p>
-<div id="lockConfirmBox" style="display:none;background:#fff7e6;border:1px solid #ff7b00;border-radius:12px;padding:12px;margin-top:8px">
-<p id="lockConfirmText" style="font-weight:bold;margin:0 0 8px"></p>
-<div class="row"><button onclick="confirmSendYes()" style="background:#00a651;color:#fff">✅ ايوه بعت للمتابع</button><button onclick="confirmSendNo()" style="background:#dc3545;color:#fff">❌ لا لسه</button></div>
-</div>
-<button onclick="closeLockBack()" style="background:#333;color:#fff;margin-top:14px">⬅️ رجوع - هبعت بعدين</button>
-</div></div>
-
+<div id="sendLockModal"><div class="box" style="max-width:420px"><h2 style="margin:0">🔒 مطلوب منك عشان تكمل</h2><p id="lockCustomer" style="font-weight:bold"></p><div id="lockNetWarn" style="background:#ffe6e6;border:1px solid #dc3545;color:#dc3545;padding:10px;border-radius:12px;font-size:14px;font-weight:bold;margin:8px 0;display:none">⚠️ مفيش نت عندك - الرسالة متحفظة - اول ما النت يرجع ابعتها</div><p id="lockStatus" style="font-size:14px;line-height:1.8"></p><button id="btnSendBoth" style="background:#25D366;color:#fff" onclick="sendToFollowerOnly()">👤 ارسال للمتابع - واتساب ماسنجر + الصور</button><p style="font-size:12px;color:#666">هيفتح مشاركة فيها النص + الـ 3 صور جاهزين - اختار واتساب ماسنجر ودوس ارسال</p><div id="lockConfirmBox" style="display:none;background:#fff7e6;border:1px solid #ff7b00;border-radius:12px;padding:12px;margin-top:8px"><p id="lockConfirmText" style="font-weight:bold;margin:0 0 8px"></p><div class="row"><button onclick="confirmSendYes()" style="background:#00a651;color:#fff">✅ ايوه بعت للمتابع</button><button onclick="confirmSendNo()" style="background:#dc3545;color:#fff">❌ لا لسه</button></div></div><button onclick="closeLockBack()" style="background:#333;color:#fff;margin-top:14px">⬅️ رجوع - هبعت بعدين</button></div></div>
 <div id="istighfarOverlay" style="position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:30000;display:none;align-items:center;justify-content:center;text-align:center;padding:20px"><div style="background:#071126;border:2px solid #22c55e;border-radius:20px;padding:24px;max-width:420px;width:100%"><div style="font-size:42px">🤲</div><h2 id="istTitle" style="color:#fff;margin:8px 0">أستغفر الله العظيم</h2><p id="istText" style="color:#cfe3ff;line-height:1.8">أستغفر الله العظيم الذي لا إله إلا هو الحي القيوم وأتوب إليه<br><span id="istCount" style="font-size:28px;font-weight:900;color:#22c55e">10</span></p><p style="color:#8aa3c7;font-size:12px">ثواني ونكمل...</p></div></div>
-
 <div id="azkarModal"><div class="box" style="text-align:right;max-height:88vh;overflow-y:auto"><h3 style="margin:0 0 10px">📖 الأذكار وحصن المسلم</h3><div id="azkarFull" style="line-height:2;font-size:15px"></div><button onclick="closeAzkar()" style="background:#333;color:#fff">✖️ اقفل</button></div></div>
-
 <div id="passModal"><div class="box"><h3 style="margin:0 0 8px">🔐 تريد تغيير الباسورد؟</h3><p style="font-size:14px;line-height:1.7">لو حابب تغير الباسورد بتاعك، اكتب الجديد هنا. لو مش حابب دوس تخطي.</p><input id="newPassInput" type="password" placeholder="الباسورد الجديد"><button onclick="doChangePass()" style="background:#00a651;color:#fff">✅ تغيير الباسورد</button><button onclick="closePassModal()" style="background:#333;color:#fff">⏭️ تخطي - مش عايز أغير</button></div></div>
+
 <script>
 let azkarList=['سبحان الله وبحمده','لا إله إلا الله وحده لا شريك له','أستغفر الله العظيم','اللهم صل على محمد','أعوذ بكلمات الله التامات','سبحان الله العظيم','الحمد لله رب العالمين','لا حول ولا قوة إلا بالله'];
 let azkarIdx=0;
@@ -201,6 +167,7 @@ const SUPABASE_KEY="sb_publishable_EpBDoKSZQ6OMZA3wHKd8vg_9_ocCNnm";
 const supabaseClient=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 let currentUser=null, currentJobId=null, pendingUpDownId=null, pendingSerialValue=null, pendingRecipientId=null, pendingRecipientFromSave=false, allJobs=[], archiveJobs=[], currentFilter='all', visibleCount=50, filteredJobs=[];
 let currentPhotoJobId=null, currentPhotoType=null, photoBlob=null, lockJobId=null, lockPendingType=null, suppressLockCheck=false, isUploadingPhoto=false, pendingPhotoSnapshot=null, pendingStatusId=null, pendingStatusValue='', autoRefreshOn=true, isSilentRefreshing=false, lastUpdateTime=null, photoModalRotate=0, currentDetailId=null;
+function askAdminPass(action){ let p=prompt('🔒 اكتب باسورد الأدمن عشان تكمل:'); if(!p) return; if(currentUser && String(p).trim()===String(currentUser.password).trim()){ if(action==='clearOldJobs') clearOldJobs(); if(action==='wipeAllSystem') wipeAllSystem(); } else { alert('⛔ الباسورد غلط - مش هينفع تمسح'); } }
 function isLockedJob(j){ if(!j) return false; if(!currentUser||currentUser.role==='admin') return false; if(!isFullyDone(j)) return false; let st=getSendState(j.id); return !!st.follower; }
 function isAnyModalOpen(){ let ids=['upDownModal','recipientModal','statusModal','photoCamModal','sendLockModal','photoModal','azkarModal','passModal']; for(let id of ids){ let el=document.getElementById(id); if(el&&el.style.display==='flex') return true; } return false; }
 function isUserTyping(){ let a=document.activeElement; if(!a) return false; return ['INPUT','TEXTAREA','SELECT'].includes(a.tagName); }
