@@ -139,8 +139,8 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
     <div id="techMsg" style="text-align:center;font-size:13px;margin-top:8px;color:green"></div>
   </div>
 </div>
-  <div class="admin-box open"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">➕ اضافة شغل <span>▼</span></div><div class="admin-box-body"><input id="a_customer" placeholder="اسم العميل"><input id="a_address" placeholder="العنوان"><input id="a_order" placeholder="رقم الاوردر - Tel"><input id="a_landline" placeholder="رقم الارضي / موبايل العميل"><select id="a_device"><option value="">اختر الجهاز - ONU أو ONT</option><option value="ONU">ONU</option><option value="ONT">ONT</option></select><select id="a_tech"><option value="">اختر اسم الفني</option></select><button class="btn" onclick="addJob()">اضافة</button></div></div>
-<div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📦 المخزن - رفع شيت الأجهزة <span>▼</span></div><div class="admin-box-body"><input type="file" id="warehouseInput" accept=".xlsx,.xls,.csv"><button class="orangeBtn" onclick="uploadWarehouseSheet()" style="width:100%;padding:13px;border-radius:50px;border:0">📦 رفع شيت المخزن - بيضيف مش بيبدل</button><p id="warehouseUploadMsg" style="font-size:13px"></p><p style="font-size:12px;color:#666">الأعمدة: A:sn - B:date - C:serial - D:date install - E:costmer phone - F:Model - G:Tech - H:Comment - بيقرا كل ورق المحافظات.</p></div></div>
+<div class="admin-box open"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">➕ اضافة شغل <span>▼</span></div><div class="admin-box-body"><input id="a_customer" placeholder="اسم العميل"><input id="a_code" placeholder="كود كام"><input id="a_address" placeholder="العنوان"><input id="a_order" placeholder="رقم الاوردر - Tel"><input id="a_landline" placeholder="رقم الارضي / موبايل العميل"><select id="a_device"><option value="">اختر الجهاز - ONU أو ONT</option><option value="ONU">ONU</option><option value="ONT">ONT</option></select><select id="a_tech"><option value="">اختر اسم الفني</option></select><button class="btn" onclick="addJob()">اضافة</button></div></div>
+  <div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📦 المخزن - رفع شيت الأجهزة <span>▼</span></div><div class="admin-box-body"><input type="file" id="warehouseInput" accept=".xlsx,.xls,.csv"><button class="orangeBtn" onclick="uploadWarehouseSheet()" style="width:100%;padding:13px;border-radius:50px;border:0">📦 رفع شيت المخزن - بيضيف مش بيبدل</button><p id="warehouseUploadMsg" style="font-size:13px"></p><p style="font-size:12px;color:#666">الأعمدة: A:sn - B:date - C:serial - D:date install - E:costmer phone - F:Model - G:Tech - H:Comment - بيقرا كل ورق المحافظات.</p></div></div>
 <div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📂 رفع شيت الشغل <span>▼</span></div><div class="admin-box-body"><input type="file" id="sheetInput" accept=".xlsx,.xls,.csv" multiple><button class="orangeBtn" onclick="uploadSheetFast()" style="width:100%;padding:13px;border-radius:50px;border:0">🚀 رفع شيتات الشغل</button><div id="prog" style="height:18px;background:#eee;border-radius:10px;overflow:hidden;margin:8px 0;display:none"><div id="progBar" style="height:100%;width:0%;background:#1aa34a"></div></div><p id="uploadMsg"></p></div></div>
 <div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📦 أرشفة - إنهاء اليوم <span>▼</span></div><div class="admin-box-body"><input type="text" id="manualArchiveDate" placeholder="مثال: 18-11-2026 - سيبه فاضي وهياخد تاريخ النهاردة"><button onclick="archiveOldJobs()" style="background:#9333ea;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">📦 أرشفة اليوم ده</button><button onclick="downloadEndOfDay()" style="background:#00a651;color:#fff;width:100%;padding:13px;border-radius:50px;border:0;margin-top:8px">📥 تحميل فولدر اليوم - شيتين على اللاب توب</button><p style="font-size:12px;color:#666">الفولدر بتاريخ اليوم جواه: شيت تم التسليم + شيت تأجيل / أبديت</p></div></div>
 <div class="admin-box"><div class="admin-box-head" style="background:#fff0f0" onclick="this.parentElement.classList.toggle('open')">🗑️ مسح أوردر واحد / مسح أرضي <span>▼</span></div><div class="admin-box-body"><input id="delOrderId" placeholder="رقم الأوردر - ID"><button onclick="deleteOneJob()" style="background:#dc3545;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">🗑️ مسح الأوردر ده</button><button onclick="deleteLandlineOnly()" style="background:#ff7a00;color:#fff;width:100%;padding:13px;border-radius:50px;border:0;margin-top:8px">🗑️ مسح الرقم الأرضي بس من الأوردر ده</button><p style="font-size:12px;color:#666">الأدمن بس - ومفيش مسح كل حاجة ولا ريسترة هنا</p></div></div>
@@ -376,17 +376,16 @@ function renderJobs(){
   if(activeFilter==="pending") jobs=jobs.filter(j=>j.status!=="تم التسليم" && !["تأجيل","لم يتم الرد","رفض الزيارة"].includes(j.status));
   if(activeFilter==="problem") jobs=jobs.filter(j=>["تأجيل","لم يتم الرد","رفض الزيارة"].includes(j.status));
   if(!userObj.isAdmin) jobs=jobs.filter(j=> normTechKey(j.tech)===normTechKey(userObj.name));
-  if(searchQ) jobs=jobs.filter(j=> (j.customer_name+" "+j.serial+" "+j.order+" "+j.landline).toLowerCase().includes(searchQ.toLowerCase()));
+  if(searchQ) jobs=jobs.filter(j=> (j.customer_name+" "+j.serial+" "+j.order+" "+j.landline+" "+(j.code||"")).toLowerCase().includes(searchQ.toLowerCase()));
   document.getElementById("cDone").innerText=allJobs.filter(j=>j.status==="تم التسليم").length;
   document.getElementById("cPending").innerText=allJobs.filter(j=>j.status!=="تم التسليم" && !["تأجيل","لم يتم الرد","رفض الزيارة"].includes(j.status)).length;
   document.getElementById("cProblem").innerText=allJobs.filter(j=>["تأجيل","لم يتم الرد","رفض الزيارة"].includes(j.status)).length;
   let show=jobs.slice(0, visibleCount);
-  list.innerHTML=show.map(j=>`<div class="job" onclick="openDetails('${j.id}')"><h3>${j.customer_name||""} - ${j.order||""}</h3><div class="meta">📍 ${j.address||""}<br>📞 الأرضي: ${j.landline||""} | 📱 ${j.mobile||""}<br>👷 الفني: ${j.tech||""} | 📦 الجهاز: ${j.device||""}<br>🔢 السيريال: ${j.serial||"لسه"} | الحالة: <b>${j.status||"جديد"}</b><br>💬 ${j.comment||""}</div><span class="badge">${j.status||"جديد"}</span></div>`).join("") || `<p style="text-align:center">مفيش شغل هنا</p>`;
+  list.innerHTML=show.map(j=>`<div class="job" onclick="openDetails('${j.id}')"><h3>${j.customer_name||""} - ${j.order||""}</h3><div style="font-weight:bold;color:#0b6cff">🆔 الكود: ${j.code||"—"}</div><div class="meta">📍 ${j.address||""}<br>📞 الأرضي: ${j.landline||""} | 📱 ${j.mobile||""}<br>👷 الفني: ${j.tech||""} | 📦 الجهاز: ${j.device||""}<br>🔢 السيريال: ${j.serial||"لسه"} | الحالة: <b>${j.status||"جديد"}</b><br>💬 ${j.comment||""}</div><span class="badge">${j.status||"جديد"}</span></div>`).join("") || `<p style="text-align:center">مفيش شغل هنا</p>`;
   document.getElementById("loadMoreWrap").innerHTML= jobs.length>visibleCount ? `<button class="btn" onclick="visibleCount+=20;renderJobs()">عرض المزيد (${jobs.length-visibleCount} باقي)</button>` : "";
 }
 function onSearch(){ searchQ=document.getElementById("searchInput").value; renderJobs() }
 function filterByCircle(f){ activeFilter=f; visibleCount=10; renderJobs() }
-function showTab(tab, el){
   activeTab=tab;
   document.querySelectorAll(".tabs div").forEach(d=>d.classList.remove("active"));
   if(el) el.classList.add("active");
@@ -497,6 +496,7 @@ async function addJob(){
   if(!userObj.isAdmin) return alert("الأدمن بس");
   let payload={
     customer_name:document.getElementById("a_customer").value.trim(),
+    code:document.getElementById("a_code").value.trim(),
     address:document.getElementById("a_address").value.trim(),
     order:document.getElementById("a_order").value.trim(),
     landline:document.getElementById("a_landline").value.trim(),
@@ -723,13 +723,11 @@ function getCustodyForTech(techName){
 function saveTechnician(){
   const name = document.getElementById('techName').value.trim();
   const phone = document.getElementById('techPhone').value.trim();
-  const pass = document.getElementById('techPass').value.trim();
-  const line = document.getElementById('techLine').value.trim();
-  const gov = document.getElementById('techGov').value.trim();
-  if(!name || !phone || !pass){ alert('اكتب اسم الفني ورقم التليفون والباسورد'); return; }
+   const gov = document.getElementById('techGov').value.trim();
   let list = getTechs();
+  if(!name || !phone){ alert('اكتب اسم الفني ورقم الموبايل'); return; }
   if(list.some(t => normName(t.name) === normName(name))){ alert('الفني ده موجود قبل كده'); return; }
-  list.push({name, phone, password: pass, line, governorate: gov});
+ list.push({name, phone, password: phone, governorate: gov});
   localStorage.setItem('technicians', JSON.stringify(list));
   loadTechCount();
   const custody = getCustodyForTech(name);
