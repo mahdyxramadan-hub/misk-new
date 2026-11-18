@@ -15,7 +15,10 @@ body{margin:0;background:#f4f0fa;color:#111;padding-bottom:85px}
 button{cursor:pointer}
 .hidden{display:none}
 input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:50px;font-size:15px}
-.top-img{height:170px;background:linear-gradient(180deg,#1a1a2e,#4A0E68);color:#fff;padding:16px;position:relative;overflow:hidden}
+.hero-banner{width:100%;height:260px;overflow:hidden;position:relative;background:#111}
+.hero-banner img{width:100%;height:100%;object-fit:cover;display:block}
+.hero-banner .hero-label{position:absolute;bottom:8px;right:10px;background:rgba(0,0,0,.55);color:#fff;font-size:11px;padding:4px 10px;border-radius:20px}
+.top-img{height:130px;background:linear-gradient(180deg,#1a1a2e,#4A0E68);color:#fff;padding:14px;position:relative;overflow:hidden}
 .we-bar{background:#4A0E68;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:12px 16px}
 .we-bar .logo{font-size:24px;font-weight:900}.we-bar .logo span{color:#ff2a8a}
 .stats{display:flex;gap:10px;padding:12px}
@@ -57,10 +60,15 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 .admin-box.open .admin-box-body{display:block}
 .admin-box.open .admin-box-head{background:#4A0E68;color:#fff}
 .warehouseCard{background:#fff;margin:0 12px 12px;border:2px solid #ff7a00;border-radius:16px;padding:14px}
-@media(max-width:800px){.admin-layout{display:block}.admin-side{width:auto;position:static;margin:0 12px 12px}}
+#techList{max-height:170px;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:8px;text-align:right}
+.tech-chip{background:#f1f5ff;border:1px solid #dbe4ff;border-radius:10px;padding:6px 7px;font-size:11px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tech-chip b{font-size:11px}
+.logout-small{background:#ff4757!important;color:#fff!important;border:0!important;padding:3px 9px!important;border-radius:12px!important;font-size:11px!important;width:auto!important;margin:0!important}
+@media(max-width:800px){.admin-layout{display:block}.admin-side{width:auto;position:static;margin:0 12px 12px}.hero-banner{height:210px}}
 </style>
 </head>
 <body>
+<div class="hero-banner"><img id="serverRotator" src="server1.jpg" alt="MISK"><div class="hero-label">MISK • SERVER • CCTV</div></div>
 <div id="loginPage">
 <div style="text-align:center;background:#4A0E68;color:#fff;padding:18px;border-radius:16px"><div style="font-size:32px;font-weight:900">MISK<span style="color:#ff2a8a">.</span></div><small>SERVER • CCTV • ELECTRONICS</small></div>
 <h2 style="text-align:center">تسجيل دخول - صفحة واحدة</h2>
@@ -82,12 +90,12 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
       <span>تحديث بعد <b id="silentCount">5</b></span>
       <button onclick="silentRefreshNow()" style="background:#7c3aed;border:0;color:#fff;padding:3px 8px;border-radius:12px;font-size:11px;cursor:pointer">حدث</button>
       <button id="autoBtn" onclick="toggleAuto()" style="background:#fee2e2;border:0;color:#dc2626;padding:3px 8px;border-radius:12px;font-size:11px;cursor:pointer">إيقاف</button>
+      <button class="logout-small" onclick="logout()">🚪 خروج</button>
     </div>
   </div>
 </div>
-<div class="top-img"><small>☰</small><br><br><b id="welcome" style="font-size:22px"></b><br><small id="techInfo"></small><div style="position:absolute;left:14px;top:14px">🔔</div><button onclick="logout()" style="margin-top:12px;width:100%;padding:10px;border:0;border-radius:50px;background:#ff4757;color:#fff;font-weight:800">🚪 خروج</button></div>
+<div class="top-img"><small>☰</small><br><br><b id="welcome" style="font-size:22px"></b><br><small id="techInfo"></small><div style="position:absolute;left:14px;top:14px">🔔</div></div>
 <div class="we-bar"><div class="logo">WE<span>.</span></div><div>🔔</div></div>
-<div style="position:relative"><img id="serverRotator" src="server1.jpg" style="width:100%;height:140px;object-fit:cover;display:block"></div>
 <div class="admin-layout">
 <div class="admin-main">
 <div id="followerCard" style="background:#fff;margin:12px;border:2px solid #0b7ed1;border-radius:16px;padding:14px">
@@ -124,7 +132,7 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
   <div id="techCount" style="font-size:28px;font-weight:900;color:#00c6ff">0</div>
   <div style="font-size:12px;opacity:.7">عدد الفنيين المسجلين</div>
   <button onclick="openAddTech()" style="background:#00c6ff;border:0;padding:10px;border-radius:50px;width:100%;color:#fff;font-size:14px;margin-top:8px">➕ اضافة فني</button>
-  <div id="techList" style="text-align:right;font-size:13px;margin-top:8px"></div>
+  <div id="techList"></div>
 </div>
 <div id="addTechModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center">
   <div style="background:#fff;width:92%;max-width:380px;padding:16px;border-radius:16px;color:#000">
@@ -186,6 +194,18 @@ let userObj=null, allJobs=[], allWarehouse=[], archivedJobs=[], searchQ="", acti
 let cachedTechNames=[];
 let silentSec = 5;
 let autoOn = true;
+let heroIdx = 0;
+let heroImgs = ["server1.jpg","server2.jpg","server3.jpg","server4.jpg"];
+function rotateHero(){
+  let img = document.getElementById("serverRotator");
+  if(!img) return;
+  heroIdx = (heroIdx+1) % heroImgs.length;
+  img.src = heroImgs[heroIdx];
+}
+setInterval(rotateHero, 4000);
+document.getElementById("serverRotator")?.addEventListener("error", function(){
+  this.src = "server1.jpg";
+});
 function norm(s){return String(s||"").trim().toLowerCase().replace(/[\u064B-\u0652]/g,"").replace(/أ|إ|آ/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/\s+/g," ")}
 function normTechKey(name){ return norm(name).replace(/[^a-z0-9\u0600-\u06FF]/g,"") }
 function cleanSerial(s){ return String(s||"").trim().toUpperCase().replace(/[^A-Z0-9]/g,"") }
@@ -401,7 +421,7 @@ async function loadTechNames(){
 async function loadTechCount(){
   let {data}=await supabaseClient.from("technicians").select("username,name,role");
   let el=document.getElementById("techCount"); if(el) el.innerText=(data||[]).length;
-  let list=document.getElementById("techList"); if(list) list.innerHTML=(data||[]).map(t=>`<div>${techDisplayName(t)} - ${getRoleFromDb(t)}</div>`).join("");
+  let list=document.getElementById("techList"); if(list) list.innerHTML=(data||[]).map(t=>`<div class="tech-chip"><b>${techDisplayName(t)}</b> - ${getRoleFromDb(t)}</div>`).join("");
 }
 function renderJobs(){
   let list=document.getElementById("jobsList"); if(!list) return;
