@@ -766,15 +766,30 @@ async function deleteAllDataSuper(){
 }
 function saveFollowerPhone(){
   let v=document.getElementById("followerPhone").value.trim();
-  localStorage.setItem("misk_follower_"+todayStr(), v);
+  try{ localStorage.setItem("misk_follower_"+todayStr(), v); }catch(e){}
+  try{ localStorage.setItem("misk_follower_phone", v); }catch(e){}
   document.getElementById("followerMsg").innerText=v ? "✅ اتحفظ رقم المتابع: "+v : "";
 }
 function clearFollowerPhone(){
-  localStorage.removeItem("misk_follower_"+todayStr());
+  try{ localStorage.removeItem("misk_follower_"+todayStr()); }catch(e){}
+  try{ localStorage.removeItem("misk_follower_phone"); }catch(e){}
   document.getElementById("followerPhone").value="";
   document.getElementById("followerMsg").innerText="تم مسح رقم المتابع";
 }
-function getFollowerPhone(){ return localStorage.getItem("misk_follower_"+todayStr())||"" }
+function getFollowerPhone(){
+  try{
+    return localStorage.getItem("misk_follower_"+todayStr()) || localStorage.getItem("misk_follower_phone") || "";
+  }catch(e){ return ""; }
+}
+function loadFollowerPhone(){
+  let v = getFollowerPhone();
+  let el = document.getElementById("followerPhone");
+  if(el && v){
+    el.value = v;
+    document.getElementById("followerMsg").innerText = "✅ اتحفظ رقم المتابع: " + v;
+  }
+}
+loadFollowerPhone();
 function doAttendance(){
   let now=new Date().toLocaleTimeString("ar-EG");
   document.getElementById("attendTime").innerText=now;
