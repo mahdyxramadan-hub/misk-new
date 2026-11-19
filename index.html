@@ -167,9 +167,10 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 
         <p style="font-weight:bold;margin:0">إضافة سيريال واحد</p>
         <input id="oneSerial" placeholder="السيريال" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
-       <select id="oneTechSearch" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc;background:#fff">
-  <option value="">-- اختر الفني --</option>
-</select>
+        <div style="position:relative">
+  <input id="oneTechSearch" placeholder="اكتب اسم الفني أو اختار من القايمة ▼" autocomplete="off" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
+  <div id="techDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;max-height:220px;overflow-y:auto;background:#fff;border:1px solid #ccc;border-radius:10px;z-index:999;box-shadow:0 4px 12px rgba(0,0,0,0.15)"></div>
+</div>
       
         <input id="oneModel" placeholder="الموديل (اختياري)" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
         <input id="onePhone" placeholder="رقم العميل (اختياري)" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
@@ -437,15 +438,40 @@ async function uploadWarehouseSheet(){
    let allTechs = [];
 let selectedTech = "";
 
+function renderTechDropdown(filter=""){
+  const dd = document.getElementById("techDropdown");
+  const inp = document.getElementById("oneTechSearch");
+  if(!dd || !inp) return;
+  let list = (allTechs||[]).filter(t=>{
+    let n = (t.name||t.username||"").toLowerCase();
+    return n.includes(filter.toLowerCase());
+  });
+  if(list.length===0){
+    dd.innerHTML = '<div style="padding:10px;color:#888">لا يوجد فني بهذا الاسم</div>';
+  } else {
+    dd.innerHTML = list.map(t=>{
+      let n = t.name||t.username||"";
+      return `<div onclick="document.getElementById('oneTechSearch').value='${n}';document.getElementById('techDropdown').style.display='none'" style="padding:10px;cursor:pointer;border-bottom:1px solid #eee">${n}</div>`;
+    }).join("");
+  }
+  dd.style.display = "block";
+}
+
 async function loadTechsForSearch(){
   let { data } = await supabaseClient.from('users').select('name, username, role').order('name');
   allTechs = data || [];
-   const sel = document.getElementById("oneTechSearch");
-if(sel){
-  sel.innerHTML = '<option value="">-- اختر الفني --</option>' + allTechs.map(t => `<option value="${t.name||t.username||""}">${t.name||t.username||""}</option>`).join("");
+  const inp = document.getElementById("oneTechSearch");
+  if(!inp) return;
+  inp.addEventListener("focus", ()=> renderTechDropdown(inp.value));
+  inp.addEventListener("input", ()=> renderTechDropdown(inp.value));
+  inp.addEventListener("click", ()=> renderTechDropdown(inp.value));
+  document.addEventListener("click", (e)=>{
+    if(!e.target.closest("#oneTechSearch") && !e.target.closest("#techDropdown")){
+      let dd = document.getElementById("techDropdown");
+      if(dd) dd.style.display = "none";
+    }
+  });
 }
-}
-
 
 
 async function addOneSerial(){
