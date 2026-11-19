@@ -397,11 +397,27 @@ function renderWarehouse(){
   if(prev) prev.innerHTML=mine.slice(0,5).map(w=>`<div style="font-size:12px;line-height:2">📦 ${w.serial} - ${w.model||""} - ${w.tech||""} - ${w.date_received||""}</div>`).join("")+(mine.length>5?`<div style="font-size:12px">... و ${mine.length-5} جهاز تاني</div>`:"");
   if(activeTab==="warehouse") renderWarehouseList();
 }
+let warehouseTab='stock';
+let warehouseSearch='';
 function renderWarehouseList(){
   let mine=myWarehouse();
   let box=document.getElementById("warehouseList");
   if(!box) return;
-  box.innerHTML=`<h3 style="padding:0 12px">📦 المخزن (${mine.length})</h3>`+mine.map(w=>`<div class="warehouseCard"><b>${w.serial}</b><div style="font-size:13px;line-height:2">الموديل: ${w.model||""}<br>الفني: ${w.tech||""}<br>تاريخ الاستلام: ${w.date_received||w.date||""}<br>الكومنت: ${w.comment||""}<br>الحالة: <b style="color:#ff7a00">في العهدة - لم يتم التركيب</b></div></div>`).join("") || `<p style="padding:0 12px">مفيش أجهزة في عهدتك دلوقتي</p>`;
+  let stock=mine.filter(w=> !String(w.customer_phone||"").trim() && !String(w.date_install||"").trim());
+  let delivered=mine.filter(w=> String(w.customer_phone||"").trim() || String(w.date_install||"").trim());
+  if(warehouseSearch.trim()){
+    delivered=delivered.filter(w=> String(w.customer_phone||"").includes(warehouseSearch.trim()));
+  }
+  box.innerHTML=`<h3 style="padding:0 12px">📦 المخزن (${mine.length})</h3>
+  <div style="display:flex;gap:8px;padding:0 12px">
+    <button onclick="warehouseTab='stock';warehouseSearch='';renderWarehouseList()" style="flex:1;padding:10px;border-radius:10px;background:${warehouseTab==='stock'?'#0b6b3a;color:#fff':'#eee'}">عهدتي - ${stock.length}</button>
+    <button onclick="warehouseTab='delivered';renderWarehouseList()" style="flex:1;padding:10px;border-radius:10px;background:${warehouseTab==='delivered'?'#0b6b3a;color:#fff':'#eee'}">اللي ركبته - ${delivered.length}</button>
+  </div>
+  ${warehouseTab==='delivered' ? `<input placeholder="دور برقم الأرضي..." value="${warehouseSearch}" oninput="warehouseSearch=this.value;renderWarehouseList()" style="width:calc(100% - 24px);margin:10px 12px;padding:10px;border-radius:10px;border:1px solid #ccc">` : ''}
+  <div style="padding:0 12px">${(warehouseTab==='stock'?stock:delivered).map(w=>`<div class="warehouseCard" style="border:1px solid #ddd;border-radius:12px;padding:10px;margin-bottom:8px">
+    <b>${w.serial||''}</b> - ${w.model||''}<br>
+    ${warehouseTab==='delivered' ? `اسم العميل: ${w.customer_name||''}<br>رقم العميل (أرضي): ${w.customer_phone||''}<br>تاريخ التركيب: ${w.date_install||''}<br>Up: ${w.up||''} - Down: ${w.down||''}` : `الفني: ${w.tech||''}`}
+  </div>`).join('') || '<p style="text-align:center;opacity:.6">مفيش حاجة هنا</p>'}</div>`;
 }
 async function uploadWarehouseSheet(){
   let f=document.getElementById("warehouseInput").files[0];
