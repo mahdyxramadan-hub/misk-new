@@ -150,42 +150,33 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
   <div class="admin-box">
   <div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📦 المخزن <span>▼</span></div>
   <div class="admin-box-body">
-
-    <!-- جوه المخزن: إضافة سيريال -->
     <div class="admin-box">
       <div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">➕ إضافة سيريال <span>▼</span></div>
       <div class="admin-box-body">
-
         <input type="file" id="warehouseInput" accept=".xlsx,.xls,.csv">
         <button class="orangeBtn" onclick="uploadWarehouseSheet()" style="width:100%;padding:13px;border-radius:50px;border:0">📦 رفع شيت المخزن - بيضيف مش بيبدل</button>
         <p id="warehouseUploadMsg" style="font-size:13px"></p>
         <p style="font-size:12px;color:#666">الأعمدة: A:sn - B:date - C:serial - D:date install - E:costmer phone - F:Model - G:Tech - H:Comment - بيقرا كل ورق المحافظات.</p>
         <div id="warehouseSummary" style="font-size:13px;margin-top:8px"></div>
         <div id="warehousePreview" style="font-size:12px"></div>
-
         <hr>
-
         <p style="font-weight:bold;margin:0">إضافة سيريال واحد</p>
         <input id="oneSerial" placeholder="السيريال" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
         <div style="position:relative">
   <input id="oneTechSearch" placeholder="اكتب اسم الفني أو اختار من القايمة ▼" autocomplete="off" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
   <div id="techDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;max-height:220px;overflow-y:auto;background:#fff;border:1px solid #ccc;border-radius:10px;z-index:999;box-shadow:0 4px 12px rgba(0,0,0,0.15)"></div>
 </div>
-      
         <input id="oneModel" placeholder="الموديل (اختياري)" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
         <input id="onePhone" placeholder="رقم العميل (اختياري)" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
         <input id="oneGov" placeholder="المحافظة (اختياري)" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
         <button onclick="addOneSerial()" style="width:100%;padding:13px;border-radius:50px;border:0;background:#222;color:#fff">✅ إضافة السيريال ده للفني</button>
         <p id="oneSerialMsg" style="font-size:13px"></p>
-
       </div>
     </div>
-
     <hr>
     <input type="file" id="masterFile" accept=".xlsx,.csv" style="display:none" onchange="uploadMasterUsersExact(event)">
     <button onclick="document.getElementById('masterFile').click()" style="width:100%;padding:13px;border-radius:50px;border:0;background:#222;color:#fff">👥 رفع الشيت الموحد زي ما هو</button>
     <p id="masterUploadMsg" style="font-size:13px"></p>
-
   </div>
 </div>
   <div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📂 رفع شيت الشغل <span>▼</span></div><div class="admin-box-body"><input type="file" id="sheetInput" accept=".xlsx,.xls,.csv" multiple><button class="orangeBtn" onclick="uploadSheetFast()" style="width:100%;padding:13px;border-radius:50px;border:0">🚀 رفع شيتات الشغل</button><div id="prog" style="height:18px;background:#eee;border-radius:10px;overflow:hidden;margin:8px 0;display:none"><div id="progBar" style="height:100%;width:0%;background:#1aa34a"></div></div><p id="uploadMsg"></p></div></div>
@@ -434,7 +425,6 @@ async function uploadWarehouseSheet(){
       if(i===0) return;
       let serial=cleanSerial(r[2]);
       if(!serial) return;
-      // لو السيريال اتكرر في الشيت، خد آخر واحد
       rowsMap.set(serial, {
         sn:String(r[0]||""), date_received:parseSheetDate(r[1]), serial,
         date_install:parseSheetDate(r[3]), customer_phone:String(r[4]||"").trim(),
@@ -446,9 +436,7 @@ async function uploadWarehouseSheet(){
   let rows=[...rowsMap.values()];
   if(!rows.length) return alert("مفيش سيريالات في الشيت ده");
   document.getElementById("warehouseUploadMsg").innerText=`لقيت ${rows.length} سيريال - جاري الرفع على دفعات...`;
-
   let added=0, updated=0;
-  // جرب الـ Upsert السريع الأول - دفعة 500
   let upsertOk = true;
   for(let i=0;i<rows.length;i+=500){
     let chunk = rows.slice(i, i+500);
@@ -461,8 +449,6 @@ async function uploadWarehouseSheet(){
     loadWarehouse();
     return;
   }
-
-  // لو مفيش Unique على serial، هنعملها بالطريقة التانية: نجيب الموجودين مرة واحدة ونقسم جديد / تحديث
   let serials = rows.map(r=>r.serial);
   let exSet = new Set();
   for(let i=0;i<serials.length;i+=500){
@@ -472,7 +458,6 @@ async function uploadWarehouseSheet(){
   }
   let toInsert = rows.filter(r=>!exSet.has(r.serial));
   let toUpdate = rows.filter(r=>exSet.has(r.serial));
-
   for(let i=0;i<toInsert.length;i+=500){
     let chunk = toInsert.slice(i, i+500);
     let {error} = await supabaseClient.from(WAREHOUSE_TABLE).insert(chunk);
@@ -480,7 +465,6 @@ async function uploadWarehouseSheet(){
     added += chunk.length;
     document.getElementById("warehouseUploadMsg").innerText=`جاري... جديد ${added} + تحديث ${toUpdate.length} - ${Math.round(((added)/rows.length)*100)}%`;
   }
-  // التحديثات بس هي اللي هتتعمل واحد واحد، ودي عادة بتبقى قليلة
   for(let r of toUpdate){
     await supabaseClient.from(WAREHOUSE_TABLE).update(r).eq("serial", r.serial);
     updated++;
@@ -489,12 +473,8 @@ async function uploadWarehouseSheet(){
   document.getElementById("warehouseUploadMsg").innerText=`تم ✅ ${added} جهاز جديد + ${updated} جهاز اتحدث - الإجمالي ${rows.length}`;
   loadWarehouse();
 }
-  document.getElementById("warehouseUploadMsg").innerText=`تم: ${added} جهاز جديد اتضاف + ${updated} جهاز اتحدث - الإجمالي في المخزن بقى ${allWarehouse.length+added}`;
-  loadWarehouse();
-}
-   let allTechs = [];
+let allTechs = [];
 let selectedTech = "";
-
 function renderTechDropdown(filter=""){
   const dd = document.getElementById("techDropdown");
   const inp = document.getElementById("oneTechSearch");
@@ -513,7 +493,6 @@ function renderTechDropdown(filter=""){
   }
   dd.style.display = "block";
 }
-
 async function loadTechsForSearch(){
   let all = [];
   let tables = ['users','technicians','profiles','techs'];
@@ -549,26 +528,24 @@ async function loadTechsForSearch(){
     }
   });
 }
-
-
 async function addOneSerial(){
   let serialRaw = document.getElementById("oneSerial").value.trim();
   let serial = cleanSerial(serialRaw);
-let tech = document.getElementById("oneTechSearch").value.trim();
+  let tech = document.getElementById("oneTechSearch").value.trim();
   if(!serial) return alert("اكتب السيريال الأول");
   if(!tech) return alert("اختار الفني من اللستة");
   let found = allTechs.find(t => t.username === tech || t.name === tech);
-let techName = found ? (found.username || found.name) : tech;
+  let techName = found ? (found.username || found.name) : tech;
   let row = {
     sn: "",
-    date_received: new Date().toISOString().slice(0,10),
+    date_received: todayStr(),
     serial: serial,
     date_install: "",
     customer_phone: document.getElementById("onePhone").value.trim(),
     model: document.getElementById("oneModel").value.trim(),
     tech: techName,
     province: document.getElementById("oneGov").value.trim(),
-    status: "تم التسليم"
+    status: "في العهدة"
   };
   let { data: ex } = await supabaseClient.from(WAREHOUSE_TABLE).select("id").eq("serial", serial).maybeSingle();
   let res;
@@ -580,19 +557,18 @@ let techName = found ? (found.username || found.name) : tech;
   document.getElementById("oneTechSearch").value = "";
   loadWarehouse();
 }
-
 document.addEventListener("DOMContentLoaded", () => {
   loadTechsForSearch();
-  
 });
 async function registerDeliveredInWarehouse(job, serial){
   if(!serial) return;
   let clean=cleanSerial(serial);
-  let {data:ex}=await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("serial", clean).maybeSingle();
+    let {data:ex}=await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("serial", clean).maybeSingle();
   let payload={
     serial:clean, model:job.device||ex?.model||"",
     tech: getJobTech(job)||ex?.tech||userObj.name,
     customer_phone: job.landline||job.mobile||ex?.customer_phone||"",
+    customer_name: job.customer_name||ex?.customer_name||"",
     date_install: todayStr(), date_received: ex?.date_received||todayStr(),
     comment: (ex?.comment||"")+" | تم التسليم يوم "+todayStr()+" - أوردر "+(job.order||""),
     status:"تم التسليم", province: ex?.province||""
@@ -730,19 +706,19 @@ async function saveSerial(id){
   await registerDeliveredInWarehouse(j, serial);
   await loadWarehouse();
   closeDetails(); renderJobs();
-let txt="تم التسليم ✅ - السيريال: "+serial+" - العميل: "+(j.customer_name||j.customer||"")+" - بتاريخ "+todayStr();
-let phone=getFollowerPhone();
-let msgAfter="✅ تم التسليم - اتسجل في المخزن عند الأدمن بالسيريال "+serial+" وتاريخ "+todayStr()+" واتشال من عهدتك";
-let shown=false;
-let showMsg=function(){ if(shown) return; shown=true; alert(msgAfter); };
-if(!phone){ alert(txt); } else {
-let clean=phone.replace(/\D/g,"");
-if(clean.startsWith("0")) clean="20"+clean.slice(1);
-if(clean.length===10) clean="20"+clean;
-window.open("https://wa.me/"+clean+"?text="+encodeURIComponent(txt),"_blank");
-document.addEventListener("visibilitychange", function h(){ if(!document.hidden){ document.removeEventListener("visibilitychange", h); showMsg(); } });
-setTimeout(showMsg, 10000);
-}
+  let txt="تم التسليم ✅ - السيريال: "+serial+" - العميل: "+(j.customer_name||j.customer||"")+" - بتاريخ "+todayStr();
+  let phone=getFollowerPhone();
+  let msgAfter="✅ تم التسليم - اتسجل في المخزن عند الأدمن بالسيريال "+serial+" وتاريخ "+todayStr()+" واتشال من عهدتك";
+  let shown=false;
+  let showMsg=function(){ if(shown) return; shown=true; alert(msgAfter); };
+  if(!phone){ alert(txt); } else {
+    let clean=phone.replace(/\D/g,"");
+    if(clean.startsWith("0")) clean="20"+clean.slice(1);
+    if(clean.length===10) clean="20"+clean;
+    window.open("https://wa.me/"+clean+"?text="+encodeURIComponent(txt),"_blank");
+    document.addEventListener("visibilitychange", function h(){ if(!document.hidden){ document.removeEventListener("visibilitychange", h); showMsg(); } });
+    setTimeout(showMsg, 10000);
+  }
 }
 async function addJob(){
   if(!userObj.isAdmin) return alert("الأدمن بس");
@@ -1010,18 +986,18 @@ function showAzkar(){ openAzkar() }
 function sendToFollowerOnly(){
   let txt=`تم التسليم - ${document.getElementById("dCustomer").innerText} - السيريال: ${document.getElementById("dSerial").value}`;
   let phone = getFollowerPhone();
-if(!phone){ alert("اكتب رقم المتابع الاول فوق"); return; }
-let clean = phone.replace(/\D/g, "");
-if(clean.startsWith("0")) clean = "20" + clean.slice(1);
-if(clean.length === 10) clean = "20" + clean;
-let waLink = "https://wa.me/" + clean + "?text=" + encodeURIComponent(txt);
-window.open(waLink, "_blank");
+  if(!phone){ alert("اكتب رقم المتابع الاول فوق"); return; }
+  let clean = phone.replace(/\D/g, "");
+  if(clean.startsWith("0")) clean = "20" + clean.slice(1);
+  if(clean.length === 10) clean = "20" + clean;
+  let waLink = "https://wa.me/" + clean + "?text=" + encodeURIComponent(txt);
+  window.open(waLink, "_blank");
   document.getElementById("lockConfirmBox").style.display="block";
 }
 function confirmSendYes(){ document.getElementById("sendLockModal").style.display="none"; alert("تمام ✅") }
 function confirmSendNo(){ document.getElementById("sendLockModal").style.display="none" }
 function closeLockBack(){ document.getElementById("sendLockModal").style.display="none" }
-  async function compressImage(file){
+async function compressImage(file){
   return new Promise((res)=>{
     const img = new Image();
     const url = URL.createObjectURL(file);
@@ -1039,8 +1015,8 @@ function closeLockBack(){ document.getElementById("sendLockModal").style.display
     img.src = url;
   });
 }
-  async function uploadPhoto(file, jobId, slot){
-      const compressed = await compressImage(file);
+async function uploadPhoto(file, jobId, slot){
+  const compressed = await compressImage(file);
   file = new File([compressed], "photo.jpg", {type:"image/jpeg"});
   let name=`${jobId}_${slot}_${Date.now()}.jpg`;
   let {error}=await supabaseClient.storage.from(BUCKET).upload(name, file);
@@ -1050,10 +1026,10 @@ function closeLockBack(){ document.getElementById("sendLockModal").style.display
 }
 document.getElementById("photoInput")?.addEventListener("change", async e=>{
   let f=e.target.files[0]; if(!f) return;
-     const tempUrl = URL.createObjectURL(f);
+  const tempUrl = URL.createObjectURL(f);
   let j = allJobs.find(x=>String(x.id)===String(currentDetailId));
   if(j){ j["photo"+(currentPhotoSlot+1)] = tempUrl; renderPhotos(j); }
-     e.target.value = "";
+  e.target.value = "";
   document.getElementById("uploadingBanner").style.display="block";
   let url=await uploadPhoto(f, currentDetailId, currentPhotoSlot);
   if(url){
@@ -1070,7 +1046,7 @@ document.getElementById("photoInput")?.addEventListener("change", async e=>{
 });
 document.getElementById("photoGalleryInput")?.addEventListener("change", async e=>{
   let f=e.target.files[0]; if(!f) return;
-      const tempUrl = URL.createObjectURL(f);
+  const tempUrl = URL.createObjectURL(f);
   let j = allJobs.find(x=>String(x.id)===String(currentDetailId));
   if(j){ j["photo"+(currentPhotoSlot+1)] = tempUrl; renderPhotos(j); }
   e.target.value = "";
