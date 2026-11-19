@@ -388,37 +388,47 @@ function renderWarehouse(){
   if(prev) prev.innerHTML=mine.slice(0,5).map(w=>`<div style="font-size:12px;line-height:2">📦 ${w.serial} - ${w.model||""} - ${w.tech||""} - ${w.date_received||""}</div>`).join("")+(mine.length>5?`<div style="font-size:12px">... و ${mine.length-5} جهاز تاني</div>`:"");
   if(activeTab==="warehouse") renderWarehouseList();
 }
-let warehouseTab='stock';
+  let warehouseTab='all_pending';
 let warehouseSearch='';
 function renderWarehouseList(){
   let box=document.getElementById("warehouseList");
   if(!box) return;
 
   // --- فلتر: كل فني يشوف أجهزته بس، والادمن يشوف الكل ---
-  let myName = (typeof currentUser !== 'undefined' && currentUser?.name) || (typeof currentTech !== 'undefined' && currentTech?.name) || (typeof me !== 'undefined' && me?.name) || (typeof loggedUser !== 'undefined' && loggedUser?.name) || localStorage.getItem('techName') || localStorage.getItem('username') || localStorage.getItem('tech') || '';
-  let isAdmin = (typeof currentUser !== 'undefined' && (currentUser?.role === 'admin' || currentUser?.is_admin === true)) || (typeof me !== 'undefined' && (me?.role === 'admin' || me?.is_admin === true)) || localStorage.getItem('role') === 'admin' || localStorage.getItem('is_admin') === 'true';
-
+  let saved = null;
+  try{ saved = JSON.parse(localStorage.getItem('misk_user') || 'null'); }catch(e){ saved = null; }
+  let myName = (saved && saved.name) || (typeof userObj !== 'undefined' && userObj && userObj.name) || '';
+  let myUsername = (saved && saved.username) || (typeof userObj !== 'undefined' && userObj && userObj.username) || '';
+  let isAdmin = (saved && (saved.isAdmin === true || saved.role === 'admin' || saved.role === 'super_admin')) || (typeof userObj !== 'undefined' && userObj && (userObj.isAdmin === true || userObj.role === 'admin' || userObj.role === 'super_admin'));
   let baseWarehouse = allWarehouse;
-  if(myName && !isAdmin){
-    baseWarehouse = allWarehouse.filter(w => String(w.tech || '').trim().toLowerCase() === String(myName).trim().toLowerCase());
+  if(!isAdmin){
+    if(!myName && !myUsername){
+      baseWarehouse = [];
+    } else {
+      baseWarehouse = allWarehouse.filter(w => { let t = String(w.tech || '').trim().toLowerCase(); return t === String(myName).trim().toLowerCase() || (myUsername && t === String(myUsername).trim().toLowerCase()); });
+    }
   }
   // --- نهاية الفلتر ---
+
+  // عشان دالة الاكسيل تستخدم المتفلتر مش الكل
+  window._warehouseForExcel = baseWarehouse;
 
   let allStock=baseWarehouse.filter(w=> !String(w.customer_phone||"").trim() && !String(w.date_install||"").trim());
   let allDone=baseWarehouse.filter(w=> String(w.customer_phone||"").trim() || String(w.date_install||"").trim());
   if(warehouseSearch.trim()){
-    allDone=allDone.filter(w=> String(w.customer_phone||"").includes(warehouseSearch.trim()));
-    allStock=allStock.filter(w=> String(w.serial||"").includes(warehouseSearch.trim()) || String(w.tech||"").includes(warehouseSearch.trim()));
+    let s = warehouseSearch.trim();
+    allDone=allDone.filter(w=> String(w.customer_phone||"").includes(s) || String(w.serial||"").includes(s) || String(w.tech||"").includes(s));
+    allStock=allStock.filter(w=> String(w.serial||"").includes(s) || String(w.tech||"").includes(s));
   }
   if(warehouseTab==='stock'||warehouseTab==='delivered') warehouseTab='all_pending';
   let listToShow = warehouseTab==='all_done' ? allDone : allStock;
-  box.innerHTML=`<h3 style="padding:0 12px">📦 المخزن (${allWarehouse.length})</h3>
+  box.innerHTML=`<h3 style="padding:0 12px">📦 المخزن (${baseWarehouse.length})</h3>
   <div style="display:flex;gap:8px;padding:0 12px;flex-wrap:wrap">
     <button onclick="warehouseTab='all_pending';renderWarehouseList()" style="flex:1;padding:12px;border-radius:10px;background:${warehouseTab==='all_pending'?'#7c3aed;color:#fff':'#f3e8ff'}">لم يتم تركيبه - ${allStock.length}</button>
     <button onclick="warehouseTab='all_done';renderWarehouseList()" style="flex:1;padding:12px;border-radius:10px;background:${warehouseTab==='all_done'?'#7c3aed;color:#fff':'#f3e8ff'}">تم تركيبه - ${allDone.length}</button>
   </div>
   <button onclick="downloadWarehouseExcel()" style="width:calc(100% - 24px);margin:10px 12px;padding:12px;border-radius:10px;border:0;background:#111;color:#fff;font-weight:800">⬇️ تحميل شيت اكسيل</button>
-  <input placeholder="دور برقم الأرضي أو السيريال أو اسم الفني..." value="${warehouseSearch}" oninput="warehouseSearch=this.value;renderWarehouseList()" style="width:calc(100% - 24px);margin:10px 12px;padding:10px;border-radius:10px;border:1px solid #ccc">
+  <input placeholder="دور برقم الأرضي أو السيريال أو اسم الفني..." value="${String(warehouseSearch).replace(/"/g,'&quot;')}" oninput="warehouseSearch=this.value;renderWarehouseList()" style="width:calc(100% - 24px);margin:10px 12px;padding:10px;border-radius:10px;border:1px solid #ccc">
   <div style="padding:0 12px">${listToShow.map(w=>`<div class="warehouseCard" style="border:1px solid #ddd;border-radius:12px;padding:10px;margin-bottom:8px">
     <b>${w.serial||''}</b> - ${w.model||''}<br>
     الفني: ${w.tech||''} | المحافظة: ${w.province||''}<br>
