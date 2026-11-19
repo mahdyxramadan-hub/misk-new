@@ -831,7 +831,27 @@ window.open(waLink, "_blank");
 function confirmSendYes(){ document.getElementById("sendLockModal").style.display="none"; alert("تمام ✅") }
 function confirmSendNo(){ document.getElementById("sendLockModal").style.display="none" }
 function closeLockBack(){ document.getElementById("sendLockModal").style.display="none" }
-async function uploadPhoto(file, jobId, slot){
+  async function compressImage(file){
+  return new Promise((res)=>{
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = ()=>{
+      const max = 1000;
+      let w = img.width, h = img.height;
+      if(w > max){ h = h * max / w; w = max; }
+      if(h > max){ w = w * max / h; h = max; }
+      const c = document.createElement("canvas");
+      c.width = w; c.height = h;
+      c.getContext("2d").drawImage(img,0,0,w,h);
+      URL.revokeObjectURL(url);
+      c.toBlob(b=>res(b), "image/jpeg", 0.75);
+    };
+    img.src = url;
+  });
+}
+  async function uploadPhoto(file, jobId, slot){
+      const compressed = await compressImage(file);
+  file = new File([compressed], "photo.jpg", {type:"image/jpeg"});
   let name=`${jobId}_${slot}_${Date.now()}.jpg`;
   let {error}=await supabaseClient.storage.from(BUCKET).upload(name, file);
   if(error){ alert("خطأ في الرفع: " + error.message); return null; }
@@ -840,6 +860,10 @@ async function uploadPhoto(file, jobId, slot){
 }
 document.getElementById("photoInput")?.addEventListener("change", async e=>{
   let f=e.target.files[0]; if(!f) return;
+     const tempUrl = URL.createObjectURL(f);
+  let j = allJobs.find(x=>String(x.id)===String(currentDetailId));
+  if(j){ j["photo"+(currentPhotoSlot+1)] = tempUrl; renderPhotos(j); }
+     e.target.value = "";
   document.getElementById("uploadingBanner").style.display="block";
   let url=await uploadPhoto(f, currentDetailId, currentPhotoSlot);
   if(url){
@@ -856,6 +880,10 @@ document.getElementById("photoInput")?.addEventListener("change", async e=>{
 });
 document.getElementById("photoGalleryInput")?.addEventListener("change", async e=>{
   let f=e.target.files[0]; if(!f) return;
+      const tempUrl = URL.createObjectURL(f);
+  let j = allJobs.find(x=>String(x.id)===String(currentDetailId));
+  if(j){ j["photo"+(currentPhotoSlot+1)] = tempUrl; renderPhotos(j); }
+  e.target.value = "";
   document.getElementById("uploadingBanner").style.display="block";
   let url=await uploadPhoto(f, currentDetailId, currentPhotoSlot);
   if(url){
