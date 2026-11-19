@@ -931,7 +931,7 @@ async function archiveOldJobs(){
   alert("تمام ✅ اترشف " + toArchive.length + " أوردر ليوم " + date + " - واليومي بقى فاضي");
   await loadJobs();
   await loadArchive();
-}
+
     await supabaseClient.from(TABLE).delete().eq("id", j.id); ok++;
   }
   alert(`تمت أرشفة ${ok} أوردر ليوم ${date}`);
