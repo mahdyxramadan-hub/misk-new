@@ -932,10 +932,6 @@ async function archiveOldJobs(){
   await loadJobs();
   await loadArchive();
 
-    await supabaseClient.from(TABLE).delete().eq("id", j.id); ok++;
-  }
-  alert(`تمت أرشفة ${ok} أوردر ليوم ${date}`);
-  loadJobs(); loadArchive();
 }
   function getArchiveRows(date){
   date = date || document.getElementById("archiveDate").value || todayStr();
