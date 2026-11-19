@@ -438,33 +438,20 @@ let selectedTech = "";
 async function loadTechsForSearch(){
   let { data } = await supabaseClient.from('users').select('name, username, role').order('name');
   allTechs = data || [];
+  let dl = document.getElementById("techDatalist");
+  if(dl) dl.innerHTML = allTechs.map(t => `<option value="${t.username}">${t.name||""}</option>`).join("");
 }
 
-function filterTechs(){
-  let q = document.getElementById("oneTechSearch").value.trim().toLowerCase();
-  let box = document.getElementById("techList");
-  if(!q){ box.style.display="none"; return; }
-  let filtered = allTechs.filter(t => (t.username||"").toLowerCase().includes(q) || (t.name||"").toLowerCase().includes(q)).slice(0,20);
-  if(!filtered.length){ box.innerHTML = "<div style='padding:10px'>مفيش فني بالاسم ده</div>"; box.style.display="block"; return; }
-  box.innerHTML = filtered.map(t => `<div onclick="pickTech('${t.username}')" style="padding:10px;border-bottom:1px solid #eee;cursor:pointer">${t.username} - ${t.name||""}</div>`).join("");
-  box.style.display="block";
-}
 
-function pickTech(username){
-  selectedTech = username;
-  document.getElementById("oneTechSearch").value = username;
-  document.getElementById("techList").style.display="none";
-}
 
 async function addOneSerial(){
   let serialRaw = document.getElementById("oneSerial").value.trim();
   let serial = cleanSerial(serialRaw);
-  let tech = selectedTech || document.getElementById("oneTechSearch").value.trim();
+let tech = document.getElementById("oneTechSearch").value.trim();
   if(!serial) return alert("اكتب السيريال الأول");
   if(!tech) return alert("اختار الفني من اللستة");
   let found = allTechs.find(t => t.username === tech || t.name === tech);
-  if(!found) return alert("الفني ده مش موجود، اختاره من اللستة");
-  let techName = found.username || found.name;
+let techName = found ? (found.username || found.name) : tech;
   let row = {
     sn: "",
     date_received: new Date().toISOString().slice(0,10),
@@ -484,14 +471,12 @@ async function addOneSerial(){
   document.getElementById("oneSerialMsg").innerText = "تم ✅ " + serial + " اتضاف لـ " + techName;
   document.getElementById("oneSerial").value = "";
   document.getElementById("oneTechSearch").value = "";
-  selectedTech = "";
   loadWarehouse();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   loadTechsForSearch();
-  let inp = document.getElementById("oneTechSearch");
-  if(inp) inp.addEventListener("input", filterTechs);
+  
 });
 async function registerDeliveredInWarehouse(job, serial){
   if(!serial) return;
