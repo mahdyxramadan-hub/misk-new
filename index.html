@@ -802,7 +802,7 @@ function closeLockBack(){ document.getElementById("sendLockModal").style.display
 async function uploadPhoto(file, jobId, slot){
   let name=`${jobId}_${slot}_${Date.now()}.jpg`;
   let {error}=await supabaseClient.storage.from(BUCKET).upload(name, file);
-  if(error) return null;
+  if(error){ alert("خطأ في الرفع: " + error.message); return null; }
   let {data}=supabaseClient.storage.from(BUCKET).getPublicUrl(name);
   return data.publicUrl;
 }
