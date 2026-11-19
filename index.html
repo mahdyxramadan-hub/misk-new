@@ -426,7 +426,7 @@ async function uploadWarehouseSheet(){
   document.getElementById("warehouseUploadMsg").innerText="جاري القراءة - كل ورق المحافظات...";
   let buf=await f.arrayBuffer();
   let wb=XLSX.read(buf,{type:"array"});
-  let rows=[];
+  let rowsMap = new Map();
   wb.SheetNames.forEach(sn=>{
     let ws=wb.Sheets[sn];
     let arr=XLSX.utils.sheet_to_json(ws,{header:1,defval:""});
@@ -434,7 +434,8 @@ async function uploadWarehouseSheet(){
       if(i===0) return;
       let serial=cleanSerial(r[2]);
       if(!serial) return;
-      rows.push({
+      // لو السيريال اتكرر في الشيت، خد آخر واحد
+      rowsMap.set(serial, {
         sn:String(r[0]||""), date_received:parseSheetDate(r[1]), serial,
         date_install:parseSheetDate(r[3]), customer_phone:String(r[4]||"").trim(),
         model:String(r[5]||"").trim(), tech:String(r[6]||"").trim(), comment:String(r[7]||"").trim(),
@@ -442,12 +443,52 @@ async function uploadWarehouseSheet(){
       });
     });
   });
+  let rows=[...rowsMap.values()];
+  if(!rows.length) return alert("مفيش سيريالات في الشيت ده");
+  document.getElementById("warehouseUploadMsg").innerText=`لقيت ${rows.length} سيريال - جاري الرفع على دفعات...`;
+
   let added=0, updated=0;
-  for(let r of rows){
-    let {data:ex}=await supabaseClient.from(WAREHOUSE_TABLE).select("id").eq("serial", r.serial).maybeSingle();
-    if(ex){ await supabaseClient.from(WAREHOUSE_TABLE).update(r).eq("id", ex.id); updated++ }
-    else { await supabaseClient.from(WAREHOUSE_TABLE).insert(r); added++ }
+  // جرب الـ Upsert السريع الأول - دفعة 500
+  let upsertOk = true;
+  for(let i=0;i<rows.length;i+=500){
+    let chunk = rows.slice(i, i+500);
+    let {error} = await supabaseClient.from(WAREHOUSE_TABLE).upsert(chunk, {onConflict:'serial'});
+    if(error){ upsertOk = false; break; }
+    document.getElementById("warehouseUploadMsg").innerText=`جاري... تم رفع ${Math.min(i+500, rows.length)} من ${rows.length} - ${Math.round((Math.min(i+500, rows.length)/rows.length)*100)}%`;
   }
+  if(upsertOk){
+    document.getElementById("warehouseUploadMsg").innerText=`تم ✅ رفع ${rows.length} سيريال - بنفس سرعة شيت الشغل`;
+    loadWarehouse();
+    return;
+  }
+
+  // لو مفيش Unique على serial، هنعملها بالطريقة التانية: نجيب الموجودين مرة واحدة ونقسم جديد / تحديث
+  let serials = rows.map(r=>r.serial);
+  let exSet = new Set();
+  for(let i=0;i<serials.length;i+=500){
+    let chunkSerials = serials.slice(i, i+500);
+    let {data:ex} = await supabaseClient.from(WAREHOUSE_TABLE).select("serial").in("serial", chunkSerials);
+    (ex||[]).forEach(x=> exSet.add(String(x.serial)));
+  }
+  let toInsert = rows.filter(r=>!exSet.has(r.serial));
+  let toUpdate = rows.filter(r=>exSet.has(r.serial));
+
+  for(let i=0;i<toInsert.length;i+=500){
+    let chunk = toInsert.slice(i, i+500);
+    let {error} = await supabaseClient.from(WAREHOUSE_TABLE).insert(chunk);
+    if(error){ alert("خطأ في الرفع: "+error.message); return; }
+    added += chunk.length;
+    document.getElementById("warehouseUploadMsg").innerText=`جاري... جديد ${added} + تحديث ${toUpdate.length} - ${Math.round(((added)/rows.length)*100)}%`;
+  }
+  // التحديثات بس هي اللي هتتعمل واحد واحد، ودي عادة بتبقى قليلة
+  for(let r of toUpdate){
+    await supabaseClient.from(WAREHOUSE_TABLE).update(r).eq("serial", r.serial);
+    updated++;
+    if(updated % 200 === 0) document.getElementById("warehouseUploadMsg").innerText=`جاري تحديث... ${updated} من ${toUpdate.length}`;
+  }
+  document.getElementById("warehouseUploadMsg").innerText=`تم ✅ ${added} جهاز جديد + ${updated} جهاز اتحدث - الإجمالي ${rows.length}`;
+  loadWarehouse();
+}
   document.getElementById("warehouseUploadMsg").innerText=`تم: ${added} جهاز جديد اتضاف + ${updated} جهاز اتحدث - الإجمالي في المخزن بقى ${allWarehouse.length+added}`;
   loadWarehouse();
 }
