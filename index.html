@@ -18,7 +18,6 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 .hero-banner{width:100%;height:260px;overflow:hidden;position:relative;background:#111}
 .hero-banner img{width:100%;height:100%;object-fit:cover;display:block}
 .hero-banner .hero-label{position:absolute;bottom:8px;right:10px;background:rgba(0,0,0,.55);color:#fff;font-size:11px;padding:4px 10px;border-radius:20px}
-.hero-welcome{display:inline-block;background:rgba(0,0,0,.65);color:#fff!important;padding:6px 14px;border-radius:12px;font-weight:900;font-size:18px;margin-top:4px}
 .top-img{height:130px;background:linear-gradient(180deg,#1a1a2e,#4A0E68);color:#fff;padding:14px;position:relative;overflow:hidden}
 .we-bar{background:#4A0E68;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:12px 16px}
 .we-bar .logo{font-size:24px;font-weight:900}.we-bar .logo span{color:#ff2a8a}
@@ -41,8 +40,7 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 .bigSave{width:100%;background:#1aa34a;color:#fff;border:0;padding:17px;border-radius:50px;font-weight:900;font-size:18px;margin-top:12px}
 .tabs{position:fixed;bottom:0;right:0;left:0;background:#fff;display:flex;border-top:1px solid #eee;padding:10px 0;z-index:10}
 .tabs div{flex:1;text-align:center;font-size:12px;color:#777}.tabs div.active{color:#4A0E68;font-weight:800}
-#details{display:none;position:fixed;inset:0;background:#f4f0fa;z-index:50;overflow-y:auto;padding-bottom:90px;direction:ltr}
-#details>*{direction:rtl}
+#details{display:none;position:fixed;inset:0;background:#f4f0fa;z-index:50;overflow-y:auto;padding-bottom:90px}
 .d-head{background:#4A0E68;color:#fff;padding:14px;display:flex;gap:12px;align-items:center;position:sticky;top:0}
 .back{background:#fff;color:#4A0E68;border:0;padding:10px 16px;border-radius:50px;font-weight:800;font-size:18px}
 .d-box{background:#fff;margin:12px;border-radius:16px;padding:14px}
@@ -66,16 +64,13 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 .tech-chip{background:#fff;border:1px solid #dbe4ff;border-radius:10px;padding:6px 7px;font-size:11px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#111!important}
 .tech-chip b{font-size:11px;color:#111!important}
   .logout-small{background:#ff4757!important;color:#fff!important;border:0!important;padding:3px 9px!important;border-radius:12px!important;font-size:11px!important;width:auto!important;margin:0!important}
-body:not(.logged-in) .admin-layout,body:not(.logged-in) .tabs,body:not(.logged-in) #appPage,body:not(.logged-in) .top-img,body:not(.logged-in) .we-bar{display:none!important}
-body:not(.logged-in){padding-bottom:0}
-body:not(.logged-in) #loginPage{display:block!important}
 @media(max-width:800px){.admin-layout{display:block}.admin-side{width:auto;position:static;margin:0 12px 12px}.hero-banner{height:210px}}
 </style>
 </head>
 <body>
-<div class="hero-banner"><img id="serverRotator" src="server1.jpg" alt="MISK"><div style="position:absolute;top:10px;right:0;left:0;text-align:center;z-index:10"><div style="font-size:34px;font-weight:900;color:#fff;text-shadow:0 2px 8px #000">WE<span style="color:#ff2a8a">.</span></div><div id="heroWelcome" class="hero-welcome">أهلاً بيك 👋</div><div style="color:#fff;font-size:12px;font-weight:700;margin-top:4px;text-shadow:0 2px 6px #000">MISK • SERVER • CCTV</div></div><div class="hero-label">MISK • SERVER • CCTV</div></div>
+<div class="hero-banner"><img id="serverRotator" src="server1.jpg" alt="MISK"><div class="hero-label">MISK • SERVER • CCTV</div></div>
 <div id="loginPage">
-<div style="text-align:center;background:linear-gradient(135deg,#4A0E68,#E6007E);color:#fff;padding:22px;border-radius:18px"><div style="font-size:32px;font-weight:900">MISK<span style="color:#ff2a8a">.</span></div><small>SERVER • CCTV • ELECTRONICS</small><div style="margin-top:10px;background:rgba(255,255,255,.2);padding:8px;border-radius:50px;font-size:13px">أهلاً بيك - سجل دخول عشان تشوف شغلك</div></div>
+<div style="text-align:center;background:#4A0E68;color:#fff;padding:18px;border-radius:16px"><div style="font-size:32px;font-weight:900">MISK<span style="color:#ff2a8a">.</span></div><small>SERVER • CCTV • ELECTRONICS</small></div>
 <h2 style="text-align:center">تسجيل دخول - صفحة واحدة</h2>
 <p style="text-align:center;font-size:13px;color:#666">اكتب اسم المستخدم والباسورد</p>
 <input id="user" placeholder="اسم المستخدم" autocomplete="off" onkeydown="if(event.key==='Enter') login(event)"><input id="pass" type="password" placeholder="الباسورد" autocomplete="off" onkeydown="if(event.key==='Enter') login(event)">
@@ -293,7 +288,6 @@ async function login(e){
   return false;
 }
 function afterLogin(){
-  document.body.classList.add("logged-in");
   let lp = document.getElementById("loginPage");
   if(lp) lp.classList.add("hidden");
   let ap = document.getElementById("appPage");
@@ -304,8 +298,6 @@ function afterLogin(){
   let isSuper = userObj.role === 'super_admin';
   let displayName = (userObj.name || userObj.username || "Mahdy").trim();
   if (w) w.innerText = "أهلاً " + displayName;
-  let hw = document.getElementById("heroWelcome");
-  if(hw) hw.innerText = "أهلاً " + displayName + " 👋";
   if (ti) {
     if (isSuper) ti.innerText = "Super Admin - " + displayName;
     else if (isAdmin) ti.innerText = "ادمن - " + displayName;
@@ -321,9 +313,6 @@ function afterLogin(){
   if(pm && !localStorage.getItem("misk_pass_changed_"+userObj.username)) pm.style.display="flex";
 }
 function logout(){
-  document.body.classList.remove("logged-in");
-  let hw = document.getElementById("heroWelcome");
-  if(hw) hw.innerText = "أهلاً بيك 👋";
   Object.keys(localStorage).forEach(k=>{
     if(k.startsWith("misk_")) localStorage.removeItem(k);
   });
@@ -821,14 +810,11 @@ setInterval(tickClock, 1000); tickClock();
 window.addEventListener("load", ()=>{
   let saved=localStorage.getItem("misk_user");
   if(saved){
-    try{ userObj=JSON.parse(saved); afterLogin(); }catch(e){ localStorage.removeItem("misk_user"); document.body.classList.remove("logged-in"); }
-  } else {
-    document.body.classList.remove("logged-in");
-    let hw=document.getElementById("heroWelcome"); if(hw) hw.innerText="أهلاً بيك 👋";
+    try{ userObj=JSON.parse(saved); afterLogin(); }catch(e){ localStorage.removeItem("misk_user") }
   }
   let fp=getFollowerPhone();
-  if(fp){ let fe=document.getElementById("followerPhone"); if(fe) fe.value=fp; }
-  if(fp){ let fm=document.getElementById("followerMsg"); if(fm) fm.innerText="✅ رقم المتابع المحفوظ: "+fp; }
+  if(fp) document.getElementById("followerPhone").value=fp;
+  if(fp) document.getElementById("followerMsg").innerText="✅ رقم المتابع المحفوظ: "+fp;
 });
 if("serviceWorker" in navigator){ navigator.serviceWorker.register("sw.js").catch(()=>{}) }
 </script>
