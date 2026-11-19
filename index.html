@@ -458,8 +458,28 @@ function renderTechDropdown(filter=""){
 }
 
 async function loadTechsForSearch(){
-  let { data } = await supabaseClient.from('users').select('name, username, role').order('name');
-  allTechs = data || [];
+  let all = [];
+  let tables = ['users','technicians','profiles','techs'];
+  for(let tbl of tables){
+    try{
+      let { data } = await supabaseClient.from(tbl).select('*');
+      if(data && data.length>0){
+        data.forEach(r=>{
+          let n = r.name || r.username || r.full_name || r.tech_name || r.technician || "";
+          if(n) all.push({name:n, username:n});
+        });
+        if(all.length>0) break;
+      }
+    }catch(e){}
+  }
+  if(all.length===0){
+    document.querySelectorAll('select option').forEach(o=>{
+      let v = (o.value||o.textContent||"").trim();
+      if(v && v!=="-- اختر الفني --" && v!=="") all.push({name:v, username:v});
+    });
+  }
+  let seen = {};
+  allTechs = all.filter(t=>{ if(seen[t.name]) return false; seen[t.name]=1; return true; });
   const inp = document.getElementById("oneTechSearch");
   if(!inp) return;
   inp.addEventListener("focus", ()=> renderTechDropdown(inp.value));
