@@ -911,13 +911,57 @@ async function archiveOldJobs(){
   alert(`تمت أرشفة ${ok} أوردر ليوم ${date}`);
   loadJobs(); loadArchive();
 }
-function exportArchive(){
-  let date=document.getElementById("archiveDate").value||todayStr();
-  let rows=archivedJobs.filter(a=>(a.archive_date||fmtDate(a.created_at))===date);
+  function getArchiveRows(date){
+  date = date || document.getElementById("archiveDate").value || todayStr();
+  let all = (typeof archivedJobs !== "undefined" && archivedJobs.length) ? archivedJobs : (typeof jobs !== "undefined" ? jobs : []);
+  return all.filter(a => (a.archive_date || fmtDate(a.created_at)) === date);
+}
+
+function renderArchive(){
+  let sel = document.getElementById("archiveDate");
+  if(!sel) return;
+  let all = (typeof archivedJobs !== "undefined" && archivedJobs.length) ? archivedJobs : (typeof jobs !== "undefined" ? jobs : []);
+  // املى قايمة التواريخ
+  let dates = [...new Set(all.map(a => a.archive_date || fmtDate(a.created_at)).filter(Boolean))].sort().reverse();
+  let cur = sel.value;
+  sel.innerHTML = `<option value="">كل الأيام</option>` + dates.map(d => `<option value="${d}" ${d===cur?"selected":""}>${d}</option>`).join("");
+
+  let date = cur || todayStr();
+  let rows = getArchiveRows(date);
+
+  let done = rows.filter(r => r.status === "تم التسليم").length;
+  let updated = rows.filter(r => r.comment && r.comment.trim() !== "" && r.status !== "تم التسليم").length;
+  let empty = rows.filter(r => !r.serial || r.serial === "لسه" || !r.status || r.status === "جديد").length;
+
+  if(document.getElementById("aDone")) document.getElementById("aDone").innerText = done;
+  if(document.getElementById("aUpdated")) document.getElementById("aUpdated").innerText = updated;
+  if(document.getElementById("aEmpty")) document.getElementById("aEmpty").innerText = empty;
+  if(document.getElementById("archiveSummary")) document.getElementById("archiveSummary").innerText = `اليوم ${date} - الاجمالي: ${rows.length} | تم: ${done} | ابديت: ${updated} | فاضي: ${empty}`;
+  if(document.getElementById("archiveSheetsList")) document.getElementById("archiveSheetsList").innerHTML = rows.length ? rows.map(r => `<div style="font-size:13px;padding:6px;border-bottom:1px solid #eee">👤 ${r.customer_name||""} - ${r.order||""} | ${r.status||"جديد"} | ${r.serial||"لسه"}</div>`).join("") : `<p style="text-align:center;color:#999">مفيش شغل في اليوم ده</p>`;
+}
+
+function exportArchive(mode){
+  let date = document.getElementById("archiveDate").value || todayStr();
+  let rows = getArchiveRows(date);
   if(!rows.length) return alert("مفيش أرشيف لليوم ده");
-  let ws=XLSX.utils.json_to_sheet(rows.map(r=>({العميل:r.customer_name, الأوردر:r.order, الأرضي:r.landline, الفني:getJobTech(r), السيريال:r.serial, الحالة:r.status, الكومنت:r.comment})));
-  let wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "ارشيف");
-  XLSX.writeFile(wb, `ارشيف-${date}.xlsx`);
+
+  if(!mode){
+    let choice = prompt("هتحمل ايه من يوم " + date + " ؟\n1 = الكل\n2 = تم التسليم بس\n3 = عليه ابديت بس\n4 = فاضي بس", "1");
+    if(choice === "2") mode = "done";
+    else if(choice === "3") mode = "updated";
+    else if(choice === "4") mode = "empty";
+    else mode = "all";
+  }
+
+  if(mode === "done") rows = rows.filter(r => r.status === "تم التسليم");
+  if(mode === "updated") rows = rows.filter(r => r.comment && r.comment.trim() !== "" && r.status !== "تم التسليم");
+  if(mode === "empty") rows = rows.filter(r => !r.serial || r.serial === "لسه" || !r.status || r.status === "جديد");
+
+  if(!rows.length) return alert("مفيش شغل بالنوع ده في اليوم ده");
+
+  let ws = XLSX.utils.json_to_sheet(rows.map(r => ({العميل:r.customer_name, الأوردر:r.order, الأرضي:r.landline, الموبايل:r.mobile, الفني:getJobTech(r), السيريال:r.serial, الحالة:r.status, الكومنت:r.comment, التاريخ:(r.archive_date||fmtDate(r.created_at))})));
+  let wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "ارشيف");
+  XLSX.writeFile(wb, `ارشيف-${date}-${mode}.xlsx`);
 }
 async function downloadEndOfDay(){
   if(!userObj.isAdmin) return alert("الأدمن بس");
