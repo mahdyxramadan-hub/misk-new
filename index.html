@@ -807,8 +807,13 @@ function closeAzkar(){ document.getElementById("azkarModal").style.display="none
 function showAzkar(){ openAzkar() }
 function sendToFollowerOnly(){
   let txt=`تم التسليم - ${document.getElementById("dCustomer").innerText} - السيريال: ${document.getElementById("dSerial").value}`;
-  if(navigator.share) navigator.share({text:txt});
-  else alert(txt);
+  let phone = getFollowerPhone();
+if(!phone){ alert("اكتب رقم المتابع الاول فوق"); return; }
+let clean = phone.replace(/\D/g, "");
+if(clean.startsWith("0")) clean = "20" + clean.slice(1);
+if(clean.length === 10) clean = "20" + clean;
+let waLink = "https://wa.me/" + clean + "?text=" + encodeURIComponent(txt);
+window.open(waLink, "_blank");
   document.getElementById("lockConfirmBox").style.display="block";
 }
 function confirmSendYes(){ document.getElementById("sendLockModal").style.display="none"; alert("تمام ✅") }
