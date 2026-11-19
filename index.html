@@ -193,7 +193,7 @@ const ARCHIVE_TABLE = "jobs_archive";
 const WAREHOUSE_TABLE = "warehouse";
 let userObj=null, allJobs=[], allWarehouse=[], archivedJobs=[], searchQ="", activeFilter="all", currentDetailId=null, currentPhotoSlot=null, currentStatusJobId=null, currentStatusCustomer="", currentSerialCamJobId=null, photoRot=0, activeTab="all", visibleCount=10, currentLockId=null, lockStep=0, pendingLockPayload=null, currentUpDownJobId=null, currentRecipientJobId=null, recipientMap={}, upDownMap={}, serialMap={}, photosMap={}, techLeftAlerts=[];
 let cachedTechNames=[];
-let silentSec = 30;
+let silentSec = 10;
 let autoOn = true;
 let heroIdx = 0;
 let heroImgs = ["server1.jpg","server2.jpg","server3.jpg","server4.jpg"];
@@ -948,7 +948,7 @@ async function saveTechnician(){
 function silentRefreshNow(){
   if(!userObj) return;
   loadJobs(); loadWarehouse();
-  silentSec = 30;
+  silentSec = 10;
 }
 function toggleAuto(){
   autoOn = !autoOn;
