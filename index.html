@@ -393,17 +393,44 @@ let warehouseSearch='';
   function renderWarehouseList(){
   let box=document.getElementById("warehouseList");
   if(!box) return;
-  let isAdmin = userObj && userObj.isAdmin;
-  let mine=myWarehouse();
-  let stock=mine.filter(w=> !String(w.customer_phone||"").trim() && !String(w.date_install||"").trim());
-  let delivered=mine.filter(w=> String(w.customer_phone||"").trim() || String(w.date_install||"").trim());
   let allStock=allWarehouse.filter(w=> !String(w.customer_phone||"").trim() && !String(w.date_install||"").trim());
   let allDone=allWarehouse.filter(w=> String(w.customer_phone||"").trim() || String(w.date_install||"").trim());
   if(warehouseSearch.trim()){
-    delivered=delivered.filter(w=> String(w.customer_phone||"").includes(warehouseSearch.trim()));
     allDone=allDone.filter(w=> String(w.customer_phone||"").includes(warehouseSearch.trim()));
     allStock=allStock.filter(w=> String(w.serial||"").includes(warehouseSearch.trim()) || String(w.tech||"").includes(warehouseSearch.trim()));
   }
+  if(warehouseTab==='stock'||warehouseTab==='delivered') warehouseTab='all_pending';
+  let listToShow = warehouseTab==='all_done' ? allDone : allStock;
+  box.innerHTML=`<h3 style="padding:0 12px">📦 المخزن (${allWarehouse.length})</h3>
+  <div style="display:flex;gap:8px;padding:0 12px;flex-wrap:wrap">
+    <button onclick="warehouseTab='all_pending';renderWarehouseList()" style="flex:1;padding:12px;border-radius:10px;background:${warehouseTab==='all_pending'?'#7c3aed;color:#fff':'#f3e8ff'}">لم يتم تركيبه - ${allStock.length}</button>
+    <button onclick="warehouseTab='all_done';renderWarehouseList()" style="flex:1;padding:12px;border-radius:10px;background:${warehouseTab==='all_done'?'#7c3aed;color:#fff':'#f3e8ff'}">تم تركيبه - ${allDone.length}</button>
+  </div>
+  <button onclick="downloadWarehouseExcel()" style="width:calc(100% - 24px);margin:10px 12px;padding:12px;border-radius:10px;border:0;background:#111;color:#fff;font-weight:800">⬇️ تحميل شيت اكسيل</button>
+  <input placeholder="دور برقم الأرضي أو السيريال أو اسم الفني..." value="${warehouseSearch}" oninput="warehouseSearch=this.value;renderWarehouseList()" style="width:calc(100% - 24px);margin:10px 12px;padding:10px;border-radius:10px;border:1px solid #ccc">
+  <div style="padding:0 12px">${listToShow.map(w=>`<div class="warehouseCard" style="border:1px solid #ddd;border-radius:12px;padding:10px;margin-bottom:8px">
+    <b>${w.serial||''}</b> - ${w.model||''}<br>
+    الفني: ${w.tech||''} | المحافظة: ${w.province||''}<br>
+    ${warehouseTab==='all_done' ? `العميل: ${w.customer_name||''}<br>رقم العميل (أرضي): ${w.customer_phone||''}<br>تاريخ التركيب: ${w.date_install||''}` : `تاريخ الاستلام: ${w.date_received||''} - الحالة: لم يتم تركيبه`}
+  </div>`).join('') || '<p style="text-align:center;opacity:.6">مفيش حاجة هنا</p>'}</div>`;
+}
+function downloadWarehouseExcel(){
+  if(!allWarehouse.length) return alert("مفيش داتا في المخزن");
+  let rows = allWarehouse.map(w=>({
+    السيريال: w.serial||"",
+    الفني: w.tech||"",
+    الموديل: w.model||"",
+    المحافظة: w.province||"",
+    الحالة: (String(w.customer_phone||"").trim() || String(w.date_install||"").trim()) ? "تم تركيبه" : "لم يتم تركيبه",
+    اسم_العميل: w.customer_name||"",
+    رقم_العميل: w.customer_phone||"",
+    تاريخ_الاستلام: w.date_received||"",
+    تاريخ_التركيب: w.date_install||""
+  }));
+  let ws=XLSX.utils.json_to_sheet(rows);
+  let wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "المخزن");
+  XLSX.writeFile(wb, `المخزن-${todayStr()}.xlsx`);
+}
   let listToShow = stock;
   let title = `📦 المخزن (${mine.length})`;
   if(warehouseTab==='delivered') listToShow = delivered;
