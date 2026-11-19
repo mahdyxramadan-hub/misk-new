@@ -399,15 +399,96 @@ function renderWarehouse(){
 }
 let warehouseTab='stock';
 let warehouseSearch='';
+let warehousePage = 1;
+const WAREHOUSE_PER_PAGE = 50;
+
 function renderWarehouseList(){
-  let mine=myWarehouse();
-  let box=document.getElementById("warehouseList");
+  let mine = myWarehouse();
+  let box = document.getElementById("warehouseList");
   if(!box) return;
-  let stock=mine.filter(w=> !String(w.customer_phone||"").trim() && !String(w.date_install||"").trim());
-  let delivered=mine.filter(w=> String(w.customer_phone||"").trim() || String(w.date_install||"").trim());
+
+  let stock = mine.filter(w=> !String(w.customer_phone||"").trim() && !String(w.date_install||"").trim());
+  let delivered = mine.filter(w=> String(w.customer_phone||"").trim() || String(w.date_install||"").trim());
+  let list = warehouseTab === 'delivered' ? delivered : stock;
+
   if(warehouseSearch.trim()){
-    delivered=delivered.filter(w=> String(w.customer_phone||"").includes(warehouseSearch.trim()));
+    let q = warehouseSearch.trim().toLowerCase();
+    list = list.filter(w=> (String(w.serial||"")+" "+String(w.tech||"")+" "+String(w.customer_phone||"")+" "+String(w.model||"")).toLowerCase().includes(q));
   }
+
+  list = [...list].sort((a,b)=> (Number(b.sn)||0)-(Number(a.sn)||0));
+  let totalPages = Math.max(1, Math.ceil(list.length / WAREHOUSE_PER_PAGE));
+  if(warehousePage > totalPages) warehousePage = totalPages;
+  if(warehousePage < 1) warehousePage = 1;
+  let start = (warehousePage-1)*WAREHOUSE_PER_PAGE;
+  let pageRows = list.slice(start, start+WAREHOUSE_PER_PAGE);
+
+  let pagesHtml = "";
+  for(let p=1; p<=totalPages; p++){
+    if(p===1 || p===totalPages || Math.abs(p-warehousePage)<=2){
+      pagesHtml += `<button onclick="warehousePage=${p};renderWarehouseList()" style="padding:8px 12px;border-radius:10px;border:0;background:${p===warehousePage?'#4A0E68':'#eee'};color:${p===warehousePage?'#fff':'#111'};font-weight:800;cursor:pointer">${p}</button>`;
+    } else if(Math.abs(p-warehousePage)===3){
+      pagesHtml += `<span style="padding:8px">...</span>`;
+    }
+  }
+
+  box.innerHTML = `
+  <div style="padding:0 12px">
+    <h3 style="margin:10px 0">📦 المخزن (${mine.length}) - في العهدة: ${stock.length} - متسلم: ${delivered.length}</h3>
+
+    <!-- البحث لوحده فوق -->
+    <div style="display:flex;align-items:center;gap:8px;background:#fff;border:2px solid #ddd;border-radius:50px;padding:6px 14px;margin-bottom:12px">
+      <span style="font-size:20px">🔍</span>
+      <input value="${warehouseSearch.replace(/"/g,'')}" oninput="warehouseSearch=this.value;warehousePage=1;renderWarehouseList()" placeholder="بحث بسيريال / فني / رقم عميل / موديل..." style="flex:1;border:0;outline:none;font-size:15px;padding:10px 0;background:transparent">
+      ${warehouseSearch ? `<button onclick="warehouseSearch='';warehousePage=1;renderWarehouseList()" style="background:#eee;border:0;width:30px;height:30px;border-radius:50%;font-weight:800;cursor:pointer">X</button>` : ``}
+    </div>
+
+    <div style="display:flex;gap:8px;padding:0 0 10px">
+      <button onclick="warehouseTab='stock';warehousePage=1;renderWarehouseList()" style="flex:1;padding:12px;border-radius:50px;border:0;background:${warehouseTab==='stock'?'#ff7a00':'#eee'};color:${warehouseTab==='stock'?'#fff':'#111'};font-weight:800">📦 في العهدة (${stock.length})</button>
+      <button onclick="warehouseTab='delivered';warehousePage=1;renderWarehouseList()" style="flex:1;padding:12px;border-radius:50px;border:0;background:${warehouseTab==='delivered'?'#1aa34a':'#eee'};color:${warehouseTab==='delivered'?'#fff':'#111'};font-weight:800">✅ متسلم (${delivered.length})</button>
+      <button onclick="exportWarehouseExcel()" style="padding:12px 16px;border-radius:50px;border:0;background:#00a651;color:#fff;font-weight:800">⬇️ اكسيل</button>
+    </div>
+    <p style="font-size:12px;color:#666;text-align:center;margin:0 0 8px">صفحة ${warehousePage} من ${totalPages} - بيعرض ${pageRows.length} من ${list.length}</p>
+  </div>
+  <div style="margin:0 12px 12px;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #ddd;overflow-x:auto">
+  <table style="width:100%;border-collapse:collapse;font-size:12px;direction:ltr;text-align:left;min-width:650px">
+    <thead><tr style="background:#111;color:#fff">
+      <th style="padding:10px 8px;border:1px solid #333">sn</th>
+      <th style="padding:10px 8px;border:1px solid #333">date</th>
+      <th style="padding:10px 8px;border:1px solid #333">serial</th>
+      <th style="padding:10px 8px;border:1px solid #333">date install</th>
+      <th style="padding:10px 8px;border:1px solid #333">costmer phone</th>
+      <th style="padding:10px 8px;border:1px solid #333">Model</th>
+      <th style="padding:10px 8px;border:1px solid #333">Tech</th>
+    </tr></thead>
+    <tbody>
+      ${pageRows.map(w=>`
+      <tr style="border-bottom:1px solid #eee">
+        <td style="padding:9px 8px;border:1px solid #eee">${w.sn||""}</td>
+        <td style="padding:9px 8px;border:1px solid #eee">${w.date_received||w.date||""}</td>
+        <td style="padding:9px 8px;border:1px solid #eee;font-weight:800">${w.serial||""}</td>
+        <td style="padding:9px 8px;border:1px solid #eee">${w.date_install||""}</td>
+        <td style="padding:9px 8px;border:1px solid #eee">${w.customer_phone||""}</td>
+        <td style="padding:9px 8px;border:1px solid #eee">${w.model||""}</td>
+        <td style="padding:9px 8px;border:1px solid #eee">${w.tech||""}</td>
+      </tr>`).join("") || `<tr><td colspan="7" style="padding:20px;text-align:center">مفيش بيانات هنا</td></tr>`}
+    </tbody>
+  </table>
+  </div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;padding:0 12px 12px;align-items:center">
+    <button onclick="if(warehousePage>1){warehousePage--;renderWarehouseList()}" style="padding:8px 14px;border-radius:10px;border:0;background:#111;color:#fff;font-weight:800">◀ السابق</button>
+    ${pagesHtml}
+    <button onclick="if(warehousePage<${totalPages}){warehousePage++;renderWarehouseList()}" style="padding:8px 14px;border-radius:10px;border:0;background:#111;color:#fff;font-weight:800">التالي ▶</button>
+  </div>`;
+}
+
+function exportWarehouseExcel(){
+  let mine = myWarehouse();
+  if(!mine.length) return alert("مفيش بيانات");
+  let ws = XLSX.utils.json_to_sheet(mine.map(w=>({sn:w.sn, date:w.date_received||w.date, serial:w.serial, "date install":w.date_install, "costmer phone":w.customer_phone, Model:w.model, Tech:w.tech})));
+  let wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "المخزن");
+  XLSX.writeFile(wb, `المخزن-${todayStr()}.xlsx`);
+}
   box.innerHTML=`<h3 style="padding:0 12px">📦 المخزن (${mine.length})</h3>
   <div style="display:flex;gap:8px;padding:0 12px">
     <button onclick="warehouseTab='stock';warehouseSearch='';renderWarehouseList()" style="flex:1;padding:10px;border-radius:10px;background:${warehouseTab==='stock'?'#0b6b3a;color:#fff':'#eee'}">عهدتي - ${stock.length}</button>
