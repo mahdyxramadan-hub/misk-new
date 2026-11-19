@@ -540,7 +540,19 @@ async function saveSerial(id){
   await registerDeliveredInWarehouse(j, serial);
   await loadWarehouse();
   closeDetails(); renderJobs();
-  alert("✅ تم التسليم - اتسجل في المخزن عند الأدمن بالرقم الأرضي "+(j.landline||"")+" وتاريخ "+todayStr()+" واتشال من عهدتك");
+let txt="تم التسليم ✅ - السيريال: "+serial+" - العميل: "+(j.customer_name||j.customer||"")+" - بتاريخ "+todayStr();
+let phone=getFollowerPhone();
+let msgAfter="✅ تم التسليم - اتسجل في المخزن عند الأدمن بالسيريال "+serial+" وتاريخ "+todayStr()+" واتشال من عهدتك";
+let shown=false;
+let showMsg=function(){ if(shown) return; shown=true; alert(msgAfter); };
+if(!phone){ alert(txt); } else {
+let clean=phone.replace(/\D/g,"");
+if(clean.startsWith("0")) clean="20"+clean.slice(1);
+if(clean.length===10) clean="20"+clean;
+window.open("https://wa.me/"+clean+"?text="+encodeURIComponent(txt),"_blank");
+document.addEventListener("visibilitychange", function h(){ if(!document.hidden){ document.removeEventListener("visibilitychange", h); showMsg(); } });
+setTimeout(showMsg, 10000);
+}
 }
 async function addJob(){
   if(!userObj.isAdmin) return alert("الأدمن بس");
