@@ -896,10 +896,6 @@ async function loadArchive(){
 }
 async function archiveOldJobs(){
   if(!userObj.isAdmin) return alert("الأدمن بس");
-  let date=document.getElementById("manualArchiveDate").value.trim()||todayStr();
-  if(!confirm("هترشف شغل يوم "+date+"؟")) return;
-async function archiveOldJobs(){
-  if(!userObj.isAdmin) return alert("الأدمن بس");
   let date = document.getElementById("manualArchiveDate").value.trim() || todayStr();
   if(!allJobs.length) return alert("مفيش شغل عشان يترشف");
   if(!confirm("هترشف كل الشغل اللي موجود دلوقتي ؟\nالعدد: " + allJobs.length + "\nوهيتنقل لأرشيف يوم " + date + " وهيتمسح من اليومي")) return;
