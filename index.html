@@ -111,7 +111,7 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <div class="stat" id="statProblem" onclick="filterByCircle('problem')"><div class="circle c-red" id="cProblem">0</div><b>تأجيل</b><br><small>تأجيل / لم يتم الرد / رفض</small></div>
 </div>
 <div id="archiveFilter" class="hidden" style="background:#fff;margin:0 12px 12px;border-radius:16px;padding:14px">
-<b>📦 فلتر الأرشيف - كل يوم لوحده:</b><select id="archiveDate" onchange="renderJobs()"><option value="">كل الأيام</option></select>
+<b>📦 فلتر الأرشيف - كل يوم لوحده:</b><select id="archiveDate" onchange="renderArchive()"><option value="">كل الأيام</option></select>
 <div id="archiveSheetsList" style="margin-top:12px"></div>
 <div class="stats" style="padding:10px 0 0"><div class="stat"><div class="circle c-green" id="aDone">0</div><b>تم التسليم</b></div><div class="stat"><div class="circle c-blue" id="aUpdated">0</div><b>عليه ابديت</b></div><div class="stat"><div class="circle c-purple" id="aEmpty">0</div><b>فاضي</b></div></div>
 <p id="archiveSummary" style="font-size:13px;color:#666;text-align:center"></p>
@@ -665,6 +665,7 @@ function showTab(tab, el){
   if(tab==="problem") activeFilter="problem";
   if(tab==="warehouse") renderWarehouseList();
   if(tab!=="warehouse") renderJobs();
+     if(tab=="archive"){ loadArchive(); }
 }
 function showLeftAlert(){
   let box=document.getElementById("leftTechAlerts"); if(!box) return;
@@ -891,21 +892,46 @@ async function loadArchive(){
     let dates=[...new Set(archivedJobs.map(a=>a.archive_date||fmtDate(a.created_at)))];
     sel.innerHTML=`<option value="">كل الأيام</option>`+dates.map(d=>`<option value="${d}">${d}</option>`).join("");
   }
+    renderArchive();
 }
 async function archiveOldJobs(){
   if(!userObj.isAdmin) return alert("الأدمن بس");
   let date=document.getElementById("manualArchiveDate").value.trim()||todayStr();
   if(!confirm("هترشف شغل يوم "+date+"؟")) return;
-  let toArchive=allJobs.filter(j=> (j.date===date || fmtDate(j.created_at)===date) && j.status);
-  let ok=0;
-  for(let j of toArchive){
-    let arch={customer_name:j.customer_name, address:j.address, order:j.order, landline:j.landline, mobile:j.mobile, code:j.code, device:j.device, tech:getJobTech(j), tech_name:getJobTech(j), status:j.status, serial:j.serial||"", comment:j.comment||"", date:j.date||date, archive_date:date, recipient:j.recipient||"", up_down:j.up_down||""};
-    let {error}=await supabaseClient.from(ARCHIVE_TABLE).insert(arch);
+async function archiveOldJobs(){
+  if(!userObj.isAdmin) return alert("الأدمن بس");
+  let date = document.getElementById("manualArchiveDate").value.trim() || todayStr();
+  if(!allJobs.length) return alert("مفيش شغل عشان يترشف");
+  if(!confirm("هترشف كل الشغل اللي موجود دلوقتي ؟\nالعدد: " + allJobs.length + "\nوهيتنقل لأرشيف يوم " + date + " وهيتمسح من اليومي")) return;
+  let {data: ex} = await supabaseClient.from(ARCHIVE_TABLE).select("order").eq("archive_date", date);
+  let exSet = new Set((ex||[]).map(x => String(x.order)));
+  let toArchive = allJobs.filter(j => !exSet.has(String(j.order)));
+  if(!toArchive.length) return alert("الشغل ده مترشف قبل كده اصلا");
+  let rows = toArchive.map(j => ({
+    customer_name: j.customer_name, address: j.address, order: j.order,
+    landline: j.landline, mobile: j.mobile, code: j.code,
+    device: j.device, tech: getJobTech(j), tech_name: getJobTech(j),
+    status: j.status, serial: j.serial||"", comment: j.comment||"",
+    date: j.date||date, archive_date: date,
+    recipient: j.recipient||"", up_down: j.up_down||""
+  }));
+  for(let i=0;i<rows.length;i+=500){
+    let chunk = rows.slice(i, i+500);
+    let {error} = await supabaseClient.from(ARCHIVE_TABLE).insert(chunk);
     if(error){
-      let a2={...arch}; delete a2.tech_name;
-      let r2=await supabaseClient.from(ARCHIVE_TABLE).insert(a2);
-      if(r2.error){ let a3={...arch}; delete a3.tech; let r3=await supabaseClient.from(ARCHIVE_TABLE).insert(a3); if(r3.error) continue; }
+      let chunk2 = chunk.map(({tech_name, ...rest}) => rest);
+      let r2 = await supabaseClient.from(ARCHIVE_TABLE).insert(chunk2);
+      if(r2.error){ alert("خطأ في الأرشفة: " + r2.error.message); return; }
     }
+  }
+  let ids = toArchive.map(j => j.id);
+  for(let i=0;i<ids.length;i+=500){
+    await supabaseClient.from(TABLE).delete().in("id", ids.slice(i, i+500));
+  }
+  alert("تمام ✅ اترشف " + toArchive.length + " أوردر ليوم " + date + " - واليومي بقى فاضي");
+  await loadJobs();
+  await loadArchive();
+}
     await supabaseClient.from(TABLE).delete().eq("id", j.id); ok++;
   }
   alert(`تمت أرشفة ${ok} أوردر ليوم ${date}`);
