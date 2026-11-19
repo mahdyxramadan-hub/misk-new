@@ -390,11 +390,22 @@ function renderWarehouse(){
 }
 let warehouseTab='stock';
 let warehouseSearch='';
-  function renderWarehouseList(){
+function renderWarehouseList(){
   let box=document.getElementById("warehouseList");
   if(!box) return;
-  let allStock=allWarehouse.filter(w=> !String(w.customer_phone||"").trim() && !String(w.date_install||"").trim());
-  let allDone=allWarehouse.filter(w=> String(w.customer_phone||"").trim() || String(w.date_install||"").trim());
+
+  // --- فلتر: كل فني يشوف أجهزته بس، والادمن يشوف الكل ---
+  let myName = (typeof currentUser !== 'undefined' && currentUser?.name) || (typeof currentTech !== 'undefined' && currentTech?.name) || (typeof me !== 'undefined' && me?.name) || (typeof loggedUser !== 'undefined' && loggedUser?.name) || localStorage.getItem('techName') || localStorage.getItem('username') || localStorage.getItem('tech') || '';
+  let isAdmin = (typeof currentUser !== 'undefined' && (currentUser?.role === 'admin' || currentUser?.is_admin === true)) || (typeof me !== 'undefined' && (me?.role === 'admin' || me?.is_admin === true)) || localStorage.getItem('role') === 'admin' || localStorage.getItem('is_admin') === 'true';
+
+  let baseWarehouse = allWarehouse;
+  if(myName && !isAdmin){
+    baseWarehouse = allWarehouse.filter(w => String(w.tech || '').trim().toLowerCase() === String(myName).trim().toLowerCase());
+  }
+  // --- نهاية الفلتر ---
+
+  let allStock=baseWarehouse.filter(w=> !String(w.customer_phone||"").trim() && !String(w.date_install||"").trim());
+  let allDone=baseWarehouse.filter(w=> String(w.customer_phone||"").trim() || String(w.date_install||"").trim());
   if(warehouseSearch.trim()){
     allDone=allDone.filter(w=> String(w.customer_phone||"").includes(warehouseSearch.trim()));
     allStock=allStock.filter(w=> String(w.serial||"").includes(warehouseSearch.trim()) || String(w.tech||"").includes(warehouseSearch.trim()));
