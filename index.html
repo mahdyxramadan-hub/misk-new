@@ -967,7 +967,7 @@ setInterval(()=>{
   silentSec--;
   if(el) el.textContent = silentSec;
   if(silentSec <= 0){
-    silentSec = 30;
+    silentSec = 10;
     loadJobs();
   }
 }, 1000);
