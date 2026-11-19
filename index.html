@@ -147,8 +147,45 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 </div>
 </div>
 <div class="admin-box open"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">➕ اضافة شغل <span>▼</span></div><div class="admin-box-body"><input id="a_customer" placeholder="اسم العميل" autocomplete="off"><input id="a_landline" placeholder="رقم التليفون الأرضي" inputmode="numeric" autocomplete="off"><input id="a_mobile" placeholder="رقم الموبايل" inputmode="numeric" autocomplete="off"><input id="a_code" placeholder="كود كام" autocomplete="off"><input id="a_address" placeholder="العنوان" autocomplete="off"><input id="a_order" placeholder="رقم الأوردر - Tel" autocomplete="off"><select id="a_device"><option value="">اختر الجهاز - ONU أو ONT</option><option value="ONU">ONU</option><option value="ONT">ONT</option></select><select id="a_tech"><option value="">اختر اسم الفني</option></select><button class="btn" onclick="addJob()">اضافة</button></div></div>
-<div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📦 المخزن - رفع شيت الأجهزة <span>▼</span></div><div class="admin-box-body"><input type="file" id="warehouseInput" accept=".xlsx,.xls,.csv"><button class="orangeBtn" onclick="uploadWarehouseSheet()" style="width:100%;padding:13px;border-radius:50px;border:0">📦 رفع شيت المخزن - بيضيف مش بيبدل</button><p id="warehouseUploadMsg" style="font-size:13px"></p><p style="font-size:12px;color:#666">الأعمدة: A:sn - B:date - C:serial - D:date install - E:costmer phone - F:Model - G:Tech - H:Comment - بيقرا كل ورق المحافظات.</p><div id="warehouseSummary" style="font-size:13px;margin-top:8px"></div><div id="warehousePreview" style="font-size:12px"></div></div></div>
-<div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📂 رفع شيت الشغل <span>▼</span></div><div class="admin-box-body"><input type="file" id="sheetInput" accept=".xlsx,.xls,.csv" multiple><button class="orangeBtn" onclick="uploadSheetFast()" style="width:100%;padding:13px;border-radius:50px;border:0">🚀 رفع شيتات الشغل</button><div id="prog" style="height:18px;background:#eee;border-radius:10px;overflow:hidden;margin:8px 0;display:none"><div id="progBar" style="height:100%;width:0%;background:#1aa34a"></div></div><p id="uploadMsg"></p></div></div>
+  <div class="admin-box">
+  <div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📦 المخزن <span>▼</span></div>
+  <div class="admin-box-body">
+
+    <!-- جوه المخزن: إضافة سيريال -->
+    <div class="admin-box">
+      <div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">➕ إضافة سيريال <span>▼</span></div>
+      <div class="admin-box-body">
+
+        <input type="file" id="warehouseInput" accept=".xlsx,.xls,.csv">
+        <button class="orangeBtn" onclick="uploadWarehouseSheet()" style="width:100%;padding:13px;border-radius:50px;border:0">📦 رفع شيت المخزن - بيضيف مش بيبدل</button>
+        <p id="warehouseUploadMsg" style="font-size:13px"></p>
+        <p style="font-size:12px;color:#666">الأعمدة: A:sn - B:date - C:serial - D:date install - E:costmer phone - F:Model - G:Tech - H:Comment - بيقرا كل ورق المحافظات.</p>
+        <div id="warehouseSummary" style="font-size:13px;margin-top:8px"></div>
+        <div id="warehousePreview" style="font-size:12px"></div>
+
+        <hr>
+
+        <p style="font-weight:bold;margin:0">إضافة سيريال واحد</p>
+        <input id="oneSerial" placeholder="السيريال" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
+        <input id="oneTechSearch" placeholder="اكتب أول حروف الفني..." autocomplete="off" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
+        <div id="techList" style="max-height:160px;overflow:auto;border:1px solid #eee;border-radius:10px;display:none"></div>
+        <input id="oneModel" placeholder="الموديل (اختياري)" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
+        <input id="onePhone" placeholder="رقم العميل (اختياري)" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
+        <input id="oneGov" placeholder="المحافظة (اختياري)" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
+        <button onclick="addOneSerial()" style="width:100%;padding:13px;border-radius:50px;border:0;background:#222;color:#fff">✅ إضافة السيريال ده للفني</button>
+        <p id="oneSerialMsg" style="font-size:13px"></p>
+
+      </div>
+    </div>
+
+    <hr>
+    <input type="file" id="masterFile" accept=".xlsx,.csv" style="display:none" onchange="uploadMasterUsersExact(event)">
+    <button onclick="document.getElementById('masterFile').click()" style="width:100%;padding:13px;border-radius:50px;border:0;background:#222;color:#fff">👥 رفع الشيت الموحد زي ما هو</button>
+    <p id="masterUploadMsg" style="font-size:13px"></p>
+
+  </div>
+</div>
+  <div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📂 رفع شيت الشغل <span>▼</span></div><div class="admin-box-body"><input type="file" id="sheetInput" accept=".xlsx,.xls,.csv" multiple><button class="orangeBtn" onclick="uploadSheetFast()" style="width:100%;padding:13px;border-radius:50px;border:0">🚀 رفع شيتات الشغل</button><div id="prog" style="height:18px;background:#eee;border-radius:10px;overflow:hidden;margin:8px 0;display:none"><div id="progBar" style="height:100%;width:0%;background:#1aa34a"></div></div><p id="uploadMsg"></p></div></div>
 <div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📦 أرشفة - إنهاء اليوم <span>▼</span></div><div class="admin-box-body"><input type="text" id="manualArchiveDate" placeholder="مثال: 18-11-2026 - سيبه فاضي وهياخد تاريخ النهاردة"><button onclick="archiveOldJobs()" style="background:#9333ea;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">📦 أرشفة اليوم ده</button><button onclick="downloadEndOfDay()" style="background:#00a651;color:#fff;width:100%;padding:13px;border-radius:50px;border:0;margin-top:8px">📥 تحميل فولدر اليوم - شيتين على اللاب توب</button><p style="font-size:12px;color:#666">الفولدر بتاريخ اليوم جواه: شيت تم التسليم + شيت تأجيل / أبديت</p></div></div>
 <div class="admin-box"><div class="admin-box-head" style="background:#fff0f0" onclick="this.parentElement.classList.toggle('open')">🗑️ مسح أوردر واحد / مسح أرضي <span>▼</span></div><div class="admin-box-body"><input id="delOrderId" placeholder="رقم الأوردر - ID"><button onclick="deleteOneJob()" style="background:#dc3545;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">🗑️ مسح الأوردر ده</button><button onclick="deleteLandlineOnly()" style="background:#ff7a00;color:#fff;width:100%;padding:13px;border-radius:50px;border:0;margin-top:8px">🗑️ مسح الرقم الأرضي بس من الأوردر ده</button><p style="font-size:12px;color:#666">الأدمن بس - ومفيش مسح كل حاجة ولا ريسترة هنا</p></div></div>
   <div id="superDeleteBox" class="admin-box" style="display:none"><div class="admin-box-head" style="background:#7f0000;color:#fff" onclick="this.parentElement.classList.toggle('open')">🚨 SUPER ADMIN - مسح الشغل والأرشيف <span>▼</span></div><div class="admin-box-body"><p style="font-size:13px;color:#dc3545;font-weight:900">ده بيمسح الشغل + الأرشيف بس. المخزن مش هيتمسح. مفيش رجوع.</p><button onclick="deleteAllDataSuper()" style="background:#7f0000;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">🚨 مسح الشغل والأرشيف - Super Admin بس</button></div></div>
@@ -395,6 +432,67 @@ async function uploadWarehouseSheet(){
   document.getElementById("warehouseUploadMsg").innerText=`تم: ${added} جهاز جديد اتضاف + ${updated} جهاز اتحدث - الإجمالي في المخزن بقى ${allWarehouse.length+added}`;
   loadWarehouse();
 }
+   let allTechs = [];
+let selectedTech = "";
+
+async function loadTechsForSearch(){
+  let { data } = await supabaseClient.from('users').select('name, username, role').order('name');
+  allTechs = data || [];
+}
+
+function filterTechs(){
+  let q = document.getElementById("oneTechSearch").value.trim().toLowerCase();
+  let box = document.getElementById("techList");
+  if(!q){ box.style.display="none"; return; }
+  let filtered = allTechs.filter(t => (t.username||"").toLowerCase().includes(q) || (t.name||"").toLowerCase().includes(q)).slice(0,20);
+  if(!filtered.length){ box.innerHTML = "<div style='padding:10px'>مفيش فني بالاسم ده</div>"; box.style.display="block"; return; }
+  box.innerHTML = filtered.map(t => `<div onclick="pickTech('${t.username}')" style="padding:10px;border-bottom:1px solid #eee;cursor:pointer">${t.username} - ${t.name||""}</div>`).join("");
+  box.style.display="block";
+}
+
+function pickTech(username){
+  selectedTech = username;
+  document.getElementById("oneTechSearch").value = username;
+  document.getElementById("techList").style.display="none";
+}
+
+async function addOneSerial(){
+  let serialRaw = document.getElementById("oneSerial").value.trim();
+  let serial = cleanSerial(serialRaw);
+  let tech = selectedTech || document.getElementById("oneTechSearch").value.trim();
+  if(!serial) return alert("اكتب السيريال الأول");
+  if(!tech) return alert("اختار الفني من اللستة");
+  let found = allTechs.find(t => t.username === tech || t.name === tech);
+  if(!found) return alert("الفني ده مش موجود، اختاره من اللستة");
+  let techName = found.username || found.name;
+  let row = {
+    sn: "",
+    date_received: new Date().toISOString().slice(0,10),
+    serial: serial,
+    date_install: "",
+    customer_phone: document.getElementById("onePhone").value.trim(),
+    model: document.getElementById("oneModel").value.trim(),
+    tech: techName,
+    province: document.getElementById("oneGov").value.trim(),
+    status: "تم التسليم"
+  };
+  let { data: ex } = await supabaseClient.from(WAREHOUSE_TABLE).select("id").eq("serial", serial).maybeSingle();
+  let res;
+  if(ex) res = await supabaseClient.from(WAREHOUSE_TABLE).update(row).eq("serial", serial);
+  else res = await supabaseClient.from(WAREHOUSE_TABLE).insert([row]);
+  if(res.error) return alert("خطأ: " + res.error.message);
+  document.getElementById("oneSerialMsg").innerText = "تم ✅ " + serial + " اتضاف لـ " + techName;
+  document.getElementById("oneSerial").value = "";
+  document.getElementById("oneTechSearch").value = "";
+  selectedTech = "";
+  loadWarehouse();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadTechsForSearch();
+  let inp = document.getElementById("oneTechSearch");
+  if(inp) inp.addEventListener("input", filterTechs);
+});
 async function registerDeliveredInWarehouse(job, serial){
   if(!serial) return;
   let clean=cleanSerial(serial);
