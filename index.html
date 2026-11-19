@@ -167,8 +167,10 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 
         <p style="font-weight:bold;margin:0">إضافة سيريال واحد</p>
         <input id="oneSerial" placeholder="السيريال" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
-              <input id="oneTechSearch" list="techDatalist" placeholder="اكتب أول حروف الفني..." autocomplete="off" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
-              <datalist id="techDatalist"></datalist>
+       <select id="oneTechSearch" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc;background:#fff">
+  <option value="">-- اختر الفني --</option>
+</select>
+      
         <input id="oneModel" placeholder="الموديل (اختياري)" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
         <input id="onePhone" placeholder="رقم العميل (اختياري)" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
         <input id="oneGov" placeholder="المحافظة (اختياري)" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
@@ -438,8 +440,10 @@ let selectedTech = "";
 async function loadTechsForSearch(){
   let { data } = await supabaseClient.from('users').select('name, username, role').order('name');
   allTechs = data || [];
-  let dl = document.getElementById("techDatalist");
-  if(dl) dl.innerHTML = allTechs.map(t => `<option value="${t.name||t.username||""}"></option>`).join("");
+   const sel = document.getElementById("oneTechSearch");
+if(sel){
+  sel.innerHTML = '<option value="">-- اختر الفني --</option>' + allTechs.map(t => `<option value="${t.name||t.username||""}">${t.name||t.username||""}</option>`).join("");
+}
 }
 
 
