@@ -439,7 +439,7 @@ async function loadTechsForSearch(){
   let { data } = await supabaseClient.from('users').select('name, username, role').order('name');
   allTechs = data || [];
   let dl = document.getElementById("techDatalist");
-  if(dl) dl.innerHTML = allTechs.map(t => `<option value="${t.username}">${t.name||""}</option>`).join("");
+  if(dl) dl.innerHTML = allTechs.map(t => `<option value="${t.name||t.username||""}"></option>`).join("");
 }
 
 
