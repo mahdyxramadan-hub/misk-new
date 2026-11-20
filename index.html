@@ -777,10 +777,10 @@ let myJobs = jobs.filter(function(j){ return normTechKey(getJobTech(j))===normTe
 if(!list.length){ alert("مفيش أوردرات"); return; }
   let allTechs=[...new Set((window.allJobs||[]).map(j=>getJobTech(j)).filter(Boolean))];
   if(!allTechs.length) allTechs=[fromTech];
-  let techOptions=allTechs.filter(t=>normTechKey(t)!==normTechKey(fromTech))
+   let techOptions=(allTechs.filter(t=>normTechKey(t)!==normTechKey(fromTech)).length?allTechs.filter(t=>normTechKey(t)!==normTechKey(fromTech)):allTechs)
     .map(t=>'<div onclick="selectTransferTech(this,\''+t.replace(/\'/g,"")+'\')" style="padding:12px;border-bottom:1px solid #eee;cursor:pointer">'+t+'</div>').join("");
     let jobsHtml=list.map(j=>{
-let title=(j.customer||j.name||j.title||"أوردر")+" - "+(j.id||"");
+  let title=(j.customer||j.name||j.title||"أوردر")+" - "+(j.landline||j.phone||j.tel||j.ارضي||j.id||"");
 return '<label style="display:flex;gap:8px;align-items:center;padding:10px;border-bottom:1px solid #eee"><input type="checkbox" class="modal-transfer-check" data-jobid="'+j.id+'" style="width:20px;height:20px"> <span style="font-size:13px">'+title+'</span></label>';
 }).join("");  
   let m=document.createElement("div"); m.id="transferModal";
