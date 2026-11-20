@@ -608,8 +608,11 @@ function renderTechDropdown(filter=""){
   else if(typeof loadOrders === 'function') loadOrders();
   else if(typeof filterOrdersByTech === 'function') filterOrdersByTech();
 }
-   function filterOrdersByTech(){
-if(!selectedTech) return;
+    function filterOrdersByTech(){
+if(!selectedTech){
+document.querySelectorAll('div').forEach(c=>{ if(c.innerText && c.innerText.includes('الفني:')) c.style.display=''; });
+return;
+}
 document.querySelectorAll('div').forEach(c=>{
 let t = c.innerText || '';
 if(t.includes('الفني:') && !t.includes(selectedTech)) c.style.display = 'none';
@@ -618,6 +621,7 @@ if(t.includes('الفني:') && t.includes(selectedTech)) c.style.display = '';
 }
 function loadOneTechOrders(){ filterOrdersByTech(); }
 function loadOrders(){ filterOrdersByTech(); }
+setInterval(filterOrdersByTech, 500);
 async function loadTechsForSearch(){
   let all = [];
   let tables = ['users','technicians','profiles','techs'];
