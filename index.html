@@ -698,9 +698,32 @@ async function loadTechCount(){
   let old=document.getElementById("techDetailModal"); if(old) old.remove();
   let m=document.createElement("div"); m.id="techDetailModal";
   m.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;display:flex;align-items:center;justify-content:center;padding:12px";
-  m.innerHTML=`<div style="background:#fff;width:100%;max-width:520px;max-height:85vh;overflow:auto;border-radius:14px;padding:16px"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">👨‍🔧 ${name}</h3><button onclick="document.getElementById('techDetailModal').remove()" style="background:#ff4757;color:#fff;border:0;border-radius:8px;padding:6px 12px">X</button></div><p><b>في العهدة:</b> ${inCustody.length} جهاز</p><p><b>شغل مسجل:</b> ${myJobs.length} شغلانة</p><h4>سيريالات في العهدة:</h4><div style="display:flex;flex-wrap:wrap;gap:6px">${inCustody.length?inCustody.map(w=>`<span style="background:#eef2ff;padding:4px 8px;border-radius:8px;font-size:12px">${w.serial||w.serial_number||w.code||""}</span>`).join(""):"<span>مفيش أجهزة في العهدة</span>"}</div><h4>آخر شغل:</h4><div>${myJobs.slice(0,10).map(j=>`<div style="border-bottom:1px solid #eee;padding:6px 0;font-size:13px">${j.customer_name||j.customer||""} - ${j.serial||""} - ${j.status||""}</div>`).join("")||"مفيش شغل مسجل"}</div></div>`;
+  m.innerHTML=`<div style="background:#fff;width:100%;max-width:520px;max-height:85vh;overflow:auto;border-radius:14px;padding:16px"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">👨‍🔧 ${name}</h3><button onclick="document.getElementById('techDetailModal').remove()" style="background:#ff4757;color:#fff;border:0;border-radius:8px;padding:6px 12px">X</button></div><p><b>في العهدة:</b> ${inCustody.length} جهاز</p><p><b>شغل مسجل:</b> ${myJobs.length} شغلانة</p><button onclick="showTechJobs('${enc}')" style="width:100%;background:#4f46e5;color:#fff;border:0;border-radius:10px;padding:10px;font-weight:700;margin:8px 0">عرض شغله في القايمة تحت 👇</button><h4>سيريالات في العهدة:</h4><div style="display:flex;flex-wrap:wrap;gap:6px">${inCustody.length?inCustody.map(w=>`<span style="background:#eef2ff;padding:4px 8px;border-radius:8px;font-size:12px">${w.serial||w.serial_number||w.code||""}</span>`).join(""):"<span>مفيش أجهزة في العهدة</span>"}</div><h4>آخر شغل:</h4><div>${myJobs.slice(0,10).map(j=>`<div style="border-bottom:1px solid #eee;padding:6px 0;font-size:13px">${j.customer_name||j.customer||""} - ${j.serial||""} - ${j.status||""}</div>`).join("")||"مفيش شغل مسجل"}</div></div>`;
   m.onclick=(e)=>{ if(e.target==m) m.remove(); };
   document.body.appendChild(m);
+}
+
+async function showTechJobs(enc){
+  let name=decodeURIComponent(enc);
+  let old=document.getElementById("techDetailModal"); if(old) old.remove();
+  window.techFilter = name;
+  let list=document.getElementById("jobsList");
+  if(!list) return;
+  let r=await supabaseClient.from("jobs").select("*");
+  let jobs=(r.data||[]).filter(j => (j.tech||j.technician||j.tech_name||j.assigned_to||"")==name);
+  let banner=document.getElementById("techFilterBanner"); if(banner) banner.remove();
+  banner=document.createElement("div"); banner.id="techFilterBanner";
+  banner.style.cssText="background:#eef2ff;border:1px solid #4f46e5;border-radius:10px;padding:10px;margin:10px 0;display:flex;justify-content:space-between;align-items:center";
+  banner.innerHTML=`<b>📋 شغل ${name} - ${jobs.length} شغلانة</b><button onclick="clearTechFilter()" style="background:#ff4757;color:#fff;border:0;border-radius:8px;padding:6px 12px">عرض الكل X</button>`;
+  list.parentNode.insertBefore(banner, list);
+  list.innerHTML = jobs.length ? jobs.map(j=>`<div style="background:#fff;border:1px solid #eee;border-radius:12px;padding:12px;margin-bottom:8px"><b>${j.customer_name||j.customer||"عميل"}</b> - ${j.serial||""}<br><span style="font-size:13px;color:#555">${j.status||""} | ${j.governorate||j.address||""}</span><br><span style="font-size:12px;color:#888">${j.landline||""} ${j.order||""}</span></div>`).join("") : "<div>مفيش شغل مسجل للفني ده</div>";
+  list.scrollIntoView({behavior:"smooth"});
+}
+function clearTechFilter(){
+  window.techFilter=null;
+  let b=document.getElementById("techFilterBanner"); if(b) b.remove();
+  if(typeof renderJobs==="function") renderJobs();
+}
 }
 function renderJobs(){
   let list=document.getElementById("jobsList"); if(!list) return;
