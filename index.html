@@ -769,18 +769,22 @@ let myJobs = jobs.filter(function(j){ return normTechKey(getJobTech(j))===normTe
     }
   } else { html="<div>مفيش شغل مسجل للفني ده</div>"; }
   list.innerHTML=html;
-    list.querySelectorAll(":scope > div").forEach(function(card,idx){
-  if(!jobs[idx]) return;
+    function addBtns(){
+ list.querySelectorAll(":scope > div").forEach(function(card,idx){
+  if(!jobs[idx]||card.querySelector(".jobCheck")) return;
   var cb=document.createElement("input");
   cb.type="checkbox"; cb.className="jobCheck"; cb.style.cssText="width:20px;height:20px;accent-color:#16a34a;cursor:pointer";
   cb.dataset.jobId=jobs[idx].id;
   card.prepend(cb);
   var b=document.createElement("button");
-  b.textContent="نقل الأوردر";
+  b.textContent="نقل الأوردر"; b.className="transferBtn";
   b.style.cssText="display:block;width:100%;margin-top:8px;padding:8px;background:#2563eb;color:#fff;border:0;border-radius:8px;cursor:pointer";
-  b.onclick=function(){ window._currentTechJobs=[jobs[idx]]; openTransferModal(getJobTech(jobs[idx])); };
+  b.onclick=function(e){ e.stopPropagation(); window._currentTechJobs=[jobs[idx]]; openTransferModal(getJobTech(jobs[idx])); };
   card.appendChild(b);
-}); 
+ });
+}
+addBtns();
+new MutationObserver(addBtns).observe(list,{childList:true,subtree:true});
   list.scrollIntoView({behavior:"smooth"});
 }
     function openTransferModal(fromTech){
