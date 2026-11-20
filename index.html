@@ -295,6 +295,18 @@ function getRoleFromDb(t){
   if(n.includes("admin")||n.includes("ادمن")) return "admin";
   return "tech";
 }
+    async function getAllJobs(){
+  let all = [];
+  let from = 0;
+  while(true){
+    let r = await supabaseClient.from(TABLE).select("*").range(from, from + 999);
+    let data = r.data || [];
+    all = all.concat(data);
+    if(data.length < 1000) break;
+    from += 1000;
+  }
+  return all;
+}
 function myJobsBase(){ if(!userObj) return []; if(userObj.isAdmin) return [...allJobs]; return allJobs.filter(j=> normTechKey(getJobTech(j))===normTechKey(userObj.name)); }
 async function insertJobSafe(payload){
   let r1 = await supabaseClient.from(TABLE).insert(payload);
@@ -672,7 +684,8 @@ async function registerDeliveredInWarehouse(job, serial){
   else await supabaseClient.from(WAREHOUSE_TABLE).insert(payload);
 }
 async function loadJobs(){
-  let {data}=await supabaseClient.from(TABLE).select("*").order("created_at",{ascending:false}).limit(10000);
+   let data = await getAllJobs();
+data.sort((a,b)=> new Date(b.created_at)-new Date(a.created_at));
   allJobs=data||[];
   renderJobs(); loadTechCount(); showLeftAlert();
 }
