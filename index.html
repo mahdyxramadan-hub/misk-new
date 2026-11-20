@@ -685,7 +685,22 @@ async function loadTechNames(){
 async function loadTechCount(){
   let {data}=await supabaseClient.from("technicians").select("username,name,role");
   let el=document.getElementById("techCount"); if(el) el.innerText=(data||[]).length;
-  let list=document.getElementById("techList"); if(list) list.innerHTML=(data||[]).map(t=>`<div class="tech-chip"><b>${techDisplayName(t)}</b> - ${getRoleFromDb(t)}</div>`).join("");
+   let list=document.getElementById("techList"); if(list) list.innerHTML=(data||[]).map(t=>`<div class="tech-chip" style="cursor:pointer" onclick="openTechDetail('${encodeURIComponent(techDisplayName(t))}')"><b>${techDisplayName(t)}</b> - ${getRoleFromDb(t)}</div>`).join("");
+}
+    async function openTechDetail(enc){
+  let name=decodeURIComponent(enc);
+  let wh=[], jobs=[];
+  try{ let r=await supabaseClient.from("warehouse").select("*"); wh=r.data||[]; }catch(e){}
+  try{ let r=await supabaseClient.from("jobs").select("*"); jobs=r.data||[]; }catch(e){}
+  if(!wh.length){ try{ let r=await supabaseClient.from("inventory").select("*"); wh=r.data||[]; }catch(e){} }
+  let inCustody = wh.filter(w => (w.tech||w.technician||w.assigned_to||w.holder||w.custody||"")==name || (w.tech_name||"")==name);
+  let myJobs = jobs.filter(j => (j.tech||j.technician||j.tech_name||j.assigned_to||"")==name);
+  let old=document.getElementById("techDetailModal"); if(old) old.remove();
+  let m=document.createElement("div"); m.id="techDetailModal";
+  m.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;display:flex;align-items:center;justify-content:center;padding:12px";
+  m.innerHTML=`<div style="background:#fff;width:100%;max-width:520px;max-height:85vh;overflow:auto;border-radius:14px;padding:16px"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">👨‍🔧 ${name}</h3><button onclick="document.getElementById('techDetailModal').remove()" style="background:#ff4757;color:#fff;border:0;border-radius:8px;padding:6px 12px">X</button></div><p><b>في العهدة:</b> ${inCustody.length} جهاز</p><p><b>شغل مسجل:</b> ${myJobs.length} شغلانة</p><h4>سيريالات في العهدة:</h4><div style="display:flex;flex-wrap:wrap;gap:6px">${inCustody.length?inCustody.map(w=>`<span style="background:#eef2ff;padding:4px 8px;border-radius:8px;font-size:12px">${w.serial||w.serial_number||w.code||""}</span>`).join(""):"<span>مفيش أجهزة في العهدة</span>"}</div><h4>آخر شغل:</h4><div>${myJobs.slice(0,10).map(j=>`<div style="border-bottom:1px solid #eee;padding:6px 0;font-size:13px">${j.customer_name||j.customer||""} - ${j.serial||""} - ${j.status||""}</div>`).join("")||"مفيش شغل مسجل"}</div></div>`;
+  m.onclick=(e)=>{ if(e.target==m) m.remove(); };
+  document.body.appendChild(m);
 }
 function renderJobs(){
   let list=document.getElementById("jobsList"); if(!list) return;
