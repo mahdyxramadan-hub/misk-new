@@ -117,8 +117,24 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <p id="archiveSummary" style="font-size:13px;color:#666;text-align:center"></p>
 <button onclick="exportArchive()" style="background:#00a651;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">⬇️ تحميل اليوم المختار اكسيل</button>
 </div>
-<div style="padding:0 12px"><input id="searchInput" placeholder="بحث عن مهمة / رقم تسلسلي ..." oninput="onSearch()" style="background:#fff"></div>
-<div id="uploadingBanner" style="display:none;background:#ff7b00;color:#fff;padding:10px;border-radius:12px;font-size:14px;font-weight:bold;text-align:center;margin:0 12px 10px">⏳ جاري رفع الصورة...</div>
+  <div style="padding:0 12px">
+  <!-- دي خانات وهمية عشان الموبايل يتلخبط فيها ومايجيش ناحية البحث -->
+  <input type="text" name="prevent_autofill_username" style="display:none">
+  <input type="password" name="prevent_autofill_password" style="display:none">
+  <input id="searchInput" 
+    type="search" 
+    inputmode="search"
+    autocomplete="new-password"
+    autocorrect="off" 
+    autocapitalize="off" 
+    spellcheck="false"
+    name="search_landline"
+    data-lpignore="true"
+    placeholder="بحث عن مهمة / رقم تسلسلي ..." 
+    oninput="onSearch()" 
+    style="background:#fff">
+</div>
+  <div id="uploadingBanner" style="display:none;background:#ff7b00;color:#fff;padding:10px;border-radius:12px;font-size:14px;font-weight:bold;text-align:center;margin:0 12px 10px">⏳ جاري رفع الصورة...</div>
 <div style="background:#fff;margin:0 12px 12px;border-radius:12px;padding:10px;font-size:13px;line-height:1.7">صور الـ 3 صور الاول: وش الجهاز + ضهر الجهاز + الايصال والبطاقة. وبعدين سيريال + Up / Down + المستلم. لو العميل مش موجود، دوس <b>حالة الزيارة</b> واختار تأجيل / لم يتم الرد / رفض الزيارة + كومنت.</div>
 <div id="jobsList"></div>
 <div id="warehouseList" class="hidden"></div>
