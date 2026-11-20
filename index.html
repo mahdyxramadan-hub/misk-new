@@ -621,7 +621,7 @@ async function registerDeliveredInWarehouse(job, serial){
   else await supabaseClient.from(WAREHOUSE_TABLE).insert(payload);
 }
 async function loadJobs(){
-  let {data}=await supabaseClient.from(TABLE).select("*").order("created_at",{ascending:false}).limit(5000);
+  let {data}=await supabaseClient.from(TABLE).select("*").order("created_at",{ascending:false}).limit(10000);
   allJobs=data||[];
   renderJobs(); loadTechCount(); showLeftAlert();
 }
@@ -885,7 +885,7 @@ async function uploadSheetFast(){
   loadJobs();
 }
 async function loadArchive(){
-  let {data}=await supabaseClient.from(ARCHIVE_TABLE).select("*").order("created_at",{ascending:false}).limit(5000);
+  let {data}=await supabaseClient.from(ARCHIVE_TABLE).select("*").order("created_at",{ascending:false}).limit(50000);
   archivedJobs=data||[];
   let sel=document.getElementById("archiveDate");
   if(sel){
@@ -899,7 +899,7 @@ async function archiveOldJobs(){
   let date = document.getElementById("manualArchiveDate").value.trim() || todayStr();
   if(!allJobs.length) return alert("مفيش شغل عشان يترشف");
   if(!confirm("هترشف كل الشغل اللي موجود دلوقتي ؟\nالعدد: " + allJobs.length + "\nوهيتنقل لأرشيف يوم " + date + " وهيتمسح من اليومي")) return;
-  let {data: ex} = await supabaseClient.from(ARCHIVE_TABLE).select("order").eq("archive_date", date);
+  let {data: ex} = await supabaseClient.from(ARCHIVE_TABLE).select("order").eq("archive_date", date).limit(10000);
   let exSet = new Set((ex||[]).map(x => String(x.order)));
   let toArchive = allJobs.filter(j => !exSet.has(String(j.order)));
   if(!toArchive.length) return alert("الشغل ده مترشف قبل كده اصلا");
