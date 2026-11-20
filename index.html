@@ -778,6 +778,7 @@ function renderJobs(){
   let list=document.getElementById("jobsList"); if(!list) return;
   let mine=myJobsBase();
   let jobs=[...mine];
+    if(window.techFilter){ jobs=jobs.filter(function(j){ return normTechKey(getJobTech(j))===normTechKey(window.techFilter); }); }
   if(activeFilter==="done") jobs=jobs.filter(j=>j.status==="تم التسليم");
   if(activeFilter==="pending") jobs=jobs.filter(j=>j.status!=="تم التسليم" && !["تأجيل","لم يتم الرد","رفض الزيارة"].includes(j.status));
   if(activeFilter==="problem") jobs=jobs.filter(j=>["تأجيل","لم يتم الرد","رفض الزيارة"].includes(j.status));
