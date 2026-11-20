@@ -595,10 +595,18 @@ function renderTechDropdown(filter=""){
   } else {
     dd.innerHTML = list.map(t=>{
       let n = t.name||t.username||"";
-      return `<div onclick="document.getElementById('oneTechSearch').value='${n}';document.getElementById('techDropdown').style.display='none'" style="padding:10px;cursor:pointer;border-bottom:1px solid #eee">${n}</div>`;
+      return `<div onclick="selectOneTech('${n}')" ...`
     }).join("");
   }
   dd.style.display = "block";
+}
+    function selectOneTech(name){
+  selectedTech = name;
+  document.getElementById('oneTechSearch').value = name;
+  document.getElementById('techDropdown').style.display = 'none';
+  if(typeof loadOneTechOrders === 'function') loadOneTechOrders();
+  else if(typeof loadOrders === 'function') loadOrders();
+  else if(typeof filterOrdersByTech === 'function') filterOrdersByTech();
 }
 async function loadTechsForSearch(){
   let all = [];
