@@ -65,6 +65,36 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 .tech-chip b{font-size:11px;color:#111!important}
 .logout-small{background:#ff4757!important;color:#fff!important;border:0!important;padding:3px 9px!important;border-radius:12px!important;font-size:11px!important;width:auto!important;margin:0!important}
 @media(max-width:800px){.admin-layout{display:block}.admin-side{width:auto;position:static;margin:0 12px 12px}.hero-banner{height:210px}}
+ /* لاب 4 أوردرات جنب بعض / موبايل 1 تحت بعض */
+#jobsList, #jobsContainer, #techJobsList, #jobsGrid, .jobs-list, .jobs-container, #jobs {
+  display: grid !important;
+  gap: 12px !important;
+}
+@media (min-width: 1024px){
+  #jobsList, #jobsContainer, #techJobsList, #jobsGrid, .jobs-list, .jobs-container, #jobs {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+  #jobsList > *, #jobsContainer > *, #techJobsList > *, #jobsGrid > *, .jobs-list > *, .jobs-container > *, #jobs > * {
+    width: auto !important;
+    margin: 0 !important;
+    max-width: none !important;
+  }
+}
+@media (min-width: 600px) and (max-width: 1023px){
+  #jobsList, #jobsContainer, #techJobsList, #jobsGrid, .jobs-list, .jobs-container, #jobs {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  #jobsList > *, #jobsContainer > *, #techJobsList > *, #jobsGrid > *, .jobs-list > *, .jobs-container > *, #jobs > * {
+    width: auto !important;
+    margin: 0 !important;
+    max-width: none !important;
+  }
+}
+@media (max-width: 599px){
+  #jobsList, #jobsContainer, #techJobsList, #jobsGrid, .jobs-list, .jobs-container, #jobs {
+    grid-template-columns: 1fr !important;
+  }
+}  
 </style>
 </head>
 <body>
