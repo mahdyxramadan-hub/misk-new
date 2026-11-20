@@ -773,13 +773,21 @@ let myJobs = jobs.filter(function(j){ return normTechKey(getJobTech(j))===normTe
  list.querySelectorAll(":scope > div").forEach(function(card,idx){
   if(!jobs[idx]||card.querySelector(".jobCheck")) return;
   var cb=document.createElement("input");
-  cb.type="checkbox"; cb.className="jobCheck"; cb.style.cssText="width:20px;height:20px;accent-color:#16a34a;cursor:pointer";
+  cb.type="checkbox"; cb.className="jobCheck"; cb.style.cssText="width:20px;height:20px;accent-color:#16a34a;cursor:pointer;position:relative;z-index:5";
   cb.dataset.jobId=jobs[idx].id;
+  cb.onclick=function(e){ e.stopPropagation(); };
   card.prepend(cb);
   var b=document.createElement("button");
   b.textContent="نقل الأوردر"; b.className="transferBtn";
-  b.style.cssText="display:block;width:100%;margin-top:8px;padding:8px;background:#2563eb;color:#fff;border:0;border-radius:8px;cursor:pointer";
-  b.onclick=function(e){ e.stopPropagation(); window._currentTechJobs=[jobs[idx]]; openTransferModal(getJobTech(jobs[idx])); };
+  b.style.cssText="display:block;width:100%;margin-top:8px;padding:8px;background:#2563eb;color:#fff;border:0;border-radius:8px;cursor:pointer;position:relative;z-index:5";
+  b.onclick=function(e){
+    e.stopPropagation(); e.preventDefault();
+    window._currentTechJobs=[jobs[idx]];
+    openTransferModal(getJobTech(jobs[idx]));
+    setTimeout(function(){
+      document.querySelectorAll("input[type=checkbox]").forEach(function(c){ if(c.offsetParent) c.checked=true; });
+    },150);
+  };
   card.appendChild(b);
  });
 }
