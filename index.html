@@ -754,19 +754,64 @@ let myJobs = jobs.filter(function(j){ return normTechKey(getJobTech(j))===normTe
   let banner=document.getElementById("techFilterBanner"); if(banner) banner.remove();
   banner=document.createElement("div"); banner.id="techFilterBanner";
   banner.style.cssText="background:#eef2ff;border:1px solid #4f46e5;border-radius:10px;padding:10px;margin:10px 0;display:flex;justify-content:space-between;align-items:center";
-  banner.innerHTML='<b>📋 شغل '+name+' - '+jobs.length+' شغلانة</b><button onclick="clearTechFilter()" style="background:#ff4757;color:#fff;border:0;border-radius:8px;padding:6px 12px">عرض الكل X</button>';
+    banner.innerHTML='<b>📋 شغل '+name+' - '+jobs.length+' شغلانة</b>'
++'<div style="display:flex;gap:8px;margin-top:8px">'
++'<button onclick="openTransferModal(\''+name.replace(/\'/g,"")+'\')" style="flex:1;background:#dc2626;color:#fff;border:none;padding:10px;border-radius:8px;font-weight:bold">🔀 نقل الشغل</button>'
++'<button onclick="clearTechFilter()" style="flex:1;background:#eee;border:none;padding:10px;border-radius:8px">❌ إلغاء الفلتر</button>'
++'</div>';
   list.parentNode.insertBefore(banner, list);
   let html="";
   if(jobs.length){
     for(let i=0;i<jobs.length;i++){
       let j=jobs[i];
+        html+='<div style="display:flex;gap:8px;align-items:center;background:#fef2f2;padding:8px;border-radius:8px;margin-bottom:6px"><input type="checkbox" class="transfer-check" data-jobid="'+j.id+'" style="width:22px;height:22px;accent-color:#dc2626"> <b style="font-size:13px">علّم للنقل</b></div>';
       html+='<div style="background:#fff;border:1px solid #eee;border-radius:12px;padding:12px;margin-bottom:8px"><b>'+(j.customer_name||j.customer||"عميل")+'</b> - '+(j.serial||"")+'<br><span style="font-size:13px;color:#555">'+(j.status||"")+' | '+(j.governorate||j.address||"")+'</span></div>';
     }
   } else { html="<div>مفيش شغل مسجل للفني ده</div>"; }
   list.innerHTML=html;
   list.scrollIntoView({behavior:"smooth"});
 }
-
+    function openTransferModal(fromTech){
+  let old=document.getElementById("transferModal"); if(old) old.remove();
+  let checks=document.querySelectorAll(".transfer-check");
+  if(!checks.length){ alert("مفيش أوردرات"); return; }
+  let allTechs=[...new Set((window.allJobs||[]).map(j=>getJobTech(j)).filter(Boolean))];
+  if(!allTechs.length) allTechs=[fromTech];
+  let techOptions=allTechs.filter(t=>normTechKey(t)!==normTechKey(fromTech))
+    .map(t=>'<div onclick="selectTransferTech(this,\''+t.replace(/\'/g,"")+'\')" style="padding:12px;border-bottom:1px solid #eee;cursor:pointer">'+t+'</div>').join("");
+  let m=document.createElement("div"); m.id="transferModal";
+  m.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;display:flex;align-items:center;justify-content:center;padding:12px";
+  m.innerHTML='<div style="background:#fff;width:100%;max-width:520px;max-height:85vh;overflow:auto;border-radius:14px;padding:16px">'
+  +'<h3 style="margin:0">🔀 نقل الشغل من '+fromTech+'</h3>'
+  +'<label style="display:flex;gap:8px;align-items:center;background:#fef2f2;padding:10px;border-radius:8px;margin-top:10px"><input type="checkbox" onchange="toggleAllTransfer(this.checked)" style="width:20px;height:20px"> <b>تحديد الكل ('+checks.length+' أوردر)</b></label>'
+  +'<div style="margin:14px 0"><b>انقل لـ:</b><div id="transferTechList" style="border:1px solid #ddd;border-radius:10px;max-height:180px;overflow:auto;margin-top:6px">'+techOptions+'</div><p id="selectedTransferTech" style="color:#dc2626;font-weight:bold"></p></div>'
+  +'<div style="display:flex;gap:8px"><button onclick="doTransferJobs(\''+fromTech.replace(/\'/g,"")+'\')" style="flex:1;background:#dc2626;color:#fff;border:none;padding:12px;border-radius:10px;font-weight:bold">نقل المحدد</button>'
+  +'<button onclick="document.getElementById(\'transferModal\').remove()" style="flex:1;background:#eee;border:none;padding:12px;border-radius:10px">إلغاء</button></div></div>';
+  m.onclick=function(e){ if(e.target===m) m.remove(); };
+  document.body.appendChild(m);
+  window._transferTo="";
+}
+function selectTransferTech(el,tech){
+  window._transferTo=tech;
+  document.querySelectorAll("#transferTechList div").forEach(d=>d.style.background="#fff");
+  el.style.background="#fee2e2";
+  document.getElementById("selectedTransferTech").textContent="هتنقل لـ: "+tech;
+}
+function toggleAllTransfer(checked){
+  document.querySelectorAll(".transfer-check").forEach(c=>c.checked=checked);
+}
+async function doTransferJobs(fromTech){
+  let selected=[...document.querySelectorAll(".transfer-check:checked")].map(c=>c.dataset.jobid);
+  if(!selected.length){ alert("علّم على أوردر واحد على الأقل"); return; }
+  if(!window._transferTo){ alert("اختار الفني اللي هتنقله الأول"); return; }
+  if(!confirm("هتنقل "+selected.length+" أوردر من "+fromTech+" لـ "+window._transferTo+" ؟")) return;
+  for(let id of selected){
+    await supabaseClient.from("jobs").update({tech:window._transferTo}).eq("id",id);
+  }
+  alert("تم النقل ✅");
+  document.getElementById("transferModal").remove();
+  showTechJobs(encodeURIComponent(fromTech));
+}
   
 function clearTechFilter(){
   window.techFilter=null;
