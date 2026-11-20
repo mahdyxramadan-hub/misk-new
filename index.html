@@ -753,7 +753,7 @@ function clearTechFilter(){
   let b=document.getElementById("techFilterBanner"); if(b) b.remove();
   if(typeof renderJobs==="function") renderJobs();
 }
-}
+
 function renderJobs(){
   let list=document.getElementById("jobsList"); if(!list) return;
   let mine=myJobsBase();
