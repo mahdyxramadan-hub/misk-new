@@ -604,24 +604,9 @@ function renderTechDropdown(filter=""){
   selectedTech = name;
   document.getElementById('oneTechSearch').value = name;
   document.getElementById('techDropdown').style.display = 'none';
-  if(typeof loadOneTechOrders === 'function') loadOneTechOrders();
-  else if(typeof loadOrders === 'function') loadOrders();
-  else if(typeof filterOrdersByTech === 'function') filterOrdersByTech();
+  
 }
-    function filterOrdersByTech(){
-if(!selectedTech){
-document.querySelectorAll('div').forEach(c=>{ if(c.innerText && c.innerText.includes('الفني:')) c.style.display=''; });
-return;
-}
-document.querySelectorAll('div').forEach(c=>{
-let t = c.innerText || '';
-if(t.includes('الفني:') && !t.includes(selectedTech)) c.style.display = 'none';
-if(t.includes('الفني:') && t.includes(selectedTech)) c.style.display = '';
-});
-}
-function loadOneTechOrders(){ filterOrdersByTech(); }
-function loadOrders(){ filterOrdersByTech(); }
-setInterval(filterOrdersByTech, 500);
+
 async function loadTechsForSearch(){
   let all = [];
   let tables = ['users','technicians','profiles','techs'];
@@ -728,8 +713,8 @@ async function loadTechCount(){
   try{ let r=await supabaseClient.from("warehouse").select("*"); wh=r.data||[]; }catch(e){}
   try{ let r=await supabaseClient.from("jobs").select("*"); jobs=r.data||[]; }catch(e){}
   if(!wh.length){ try{ let r=await supabaseClient.from("inventory").select("*"); wh=r.data||[]; }catch(e){} }
-  let inCustody = wh.filter(function(w){ return (w.tech||w.technician||w.assigned_to||w.holder||w.custody||"")==name || (w.tech_name||"")==name; });
-  let myJobs = jobs.filter(function(j){ return (j.tech||j.technician||j.tech_name||j.assigned_to||"")==name; });
+   let inCustody = wh.filter(function(w){ return normTechKey(w.tech||w.technician||w.assigned_to||w.holder||w.custody||w.tech_name||"")===normTechKey(name); });
+let myJobs = jobs.filter(function(j){ return normTechKey(getJobTech(j))===normTechKey(name); });
   let custodyHtml = "";
   if(inCustody.length){
     for(let i=0;i<inCustody.length;i++){
@@ -765,7 +750,7 @@ async function loadTechCount(){
   let list=document.getElementById("jobsList");
   if(!list) return;
   let r=await supabaseClient.from("jobs").select("*");
-  let jobs=(r.data||[]).filter(function(j){ return (j.tech||j.technician||j.tech_name||j.assigned_to||"")==name; });
+  let jobs=(r.data||[]).filter(function(j){ return normTechKey(getJobTech(j))===normTechKey(name); });
   let banner=document.getElementById("techFilterBanner"); if(banner) banner.remove();
   banner=document.createElement("div"); banner.id="techFilterBanner";
   banner.style.cssText="background:#eef2ff;border:1px solid #4f46e5;border-radius:10px;padding:10px;margin:10px 0;display:flex;justify-content:space-between;align-items:center";
