@@ -829,13 +829,15 @@ function selectTransferTech(el,tech){
 function toggleAllTransfer(checked){
   document.querySelectorAll(".modal-transfer-check").forEach(c=>c.checked=checked);
 }
-async function doTransferJobs(fromTech){
-   let selected=[...document.querySelectorAll(".modal-transfer-check:checked")].map(c=>c.dataset.jobid);
+ async function doTransferJobs(fromTech){
+  let selected=[...document.querySelectorAll(".modal-transfer-check:checked")].map(c=>c.dataset.jobid);
   if(!selected.length){ alert("علّم على أوردر واحد على الأقل"); return; }
-  if(!window._transferTo){ alert("اختار الفني اللي هتنقله الأول"); return; }
-  if(!confirm("هتنقل "+selected.length+" أوردر من "+fromTech+" لـ "+window._transferTo+" ؟")) return;
-  for(let id of selected){
-    await supabaseClient.from("jobs").update({tech:window._transferTo}).eq("id",id);
+  if(!window._transferTo){ alert("اختر الفني اللي هتنقله الأول"); return; }
+  if(!confirm("هنقل "+selected.length+" أوردر من "+fromTech+" لـ "+window._transferTo+" ؟")) return;
+  for(let i=0;i<selected.length;i+=100){
+    let chunk=selected.slice(i,i+100);
+    let {error}=await supabaseClient.from("jobs").update({tech:window._transferTo}).in("id",chunk);
+    if(error){ alert("حصل خطأ في النقل: "+error.message); return; }
   }
   alert("تم النقل ✅");
   document.getElementById("transferModal").remove();
