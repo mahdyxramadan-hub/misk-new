@@ -479,13 +479,14 @@ function downloadWarehouseExcel(){
 }
  
 
-async function uploadWarehouseSheet(){
+   async function uploadWarehouseSheet(){
   let f=document.getElementById("warehouseInput").files[0];
   if(!f) return alert("اختار ملف المخزن الأول");
   if(!userObj.isAdmin) return alert("الأدمن بس اللي بيرفع المخزن");
   document.getElementById("warehouseUploadMsg").innerText="جاري القراءة - كل ورق المحافظات...";
   let buf=await f.arrayBuffer();
   let wb=XLSX.read(buf,{type:"array"});
+  let fileProv = f.name.replace(/\.xlsx?|\.csv/gi,"").trim();
   let rowsMap = new Map();
   wb.SheetNames.forEach(sn=>{
     let ws=wb.Sheets[sn];
@@ -494,52 +495,77 @@ async function uploadWarehouseSheet(){
       if(i===0) return;
       let serial=cleanSerial(r[2]);
       if(!serial) return;
+      let prov = (/^sheet\d*$/i.test(sn) || sn==="Sheet1") ? fileProv : sn;
       rowsMap.set(serial, {
         sn:String(r[0]||""), date_received:parseSheetDate(r[1]), serial,
         date_install:parseSheetDate(r[3]), customer_phone:String(r[4]||"").trim(),
         model:String(r[5]||"").trim(), tech:String(r[6]||"").trim(), comment:String(r[7]||"").trim(),
-        province:sn, status: String(r[3]||"").trim() ? "تم التسليم" : "في العهدة"
+        province:prov, status: String(r[3]||"").trim() ? "تم التسليم" : "في العهدة"
       });
     });
   });
   let rows=[...rowsMap.values()];
   if(!rows.length) return alert("مفيش سيريالات في الشيت ده");
-  document.getElementById("warehouseUploadMsg").innerText=`لقيت ${rows.length} سيريال - جاري الرفع على دفعات...`;
-  let added=0, updated=0;
-  let upsertOk = true;
-  for(let i=0;i<rows.length;i+=500){
-    let chunk = rows.slice(i, i+500);
-    let {error} = await supabaseClient.from(WAREHOUSE_TABLE).upsert(chunk, {onConflict:'serial'});
-    if(error){ upsertOk = false; break; }
-    document.getElementById("warehouseUploadMsg").innerText=`جاري... تم رفع ${Math.min(i+500, rows.length)} من ${rows.length} - ${Math.round((Math.min(i+500, rows.length)/rows.length)*100)}%`;
-  }
-  if(upsertOk){
-    document.getElementById("warehouseUploadMsg").innerText=`تم ✅ رفع ${rows.length} سيريال - بنفس سرعة شيت الشغل`;
-    loadWarehouse();
-    return;
-  }
   let serials = rows.map(r=>r.serial);
-  let exSet = new Set();
+  let oldMap = new Map();
   for(let i=0;i<serials.length;i+=500){
-    let chunkSerials = serials.slice(i, i+500);
-    let {data:ex} = await supabaseClient.from(WAREHOUSE_TABLE).select("serial").in("serial", chunkSerials);
-    (ex||[]).forEach(x=> exSet.add(String(x.serial)));
+    let {data:ex} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").in("serial", serials.slice(i,i+500));
+    (ex||[]).forEach(x=> oldMap.set(String(x.serial), x));
   }
-  let toInsert = rows.filter(r=>!exSet.has(r.serial));
-  let toUpdate = rows.filter(r=>exSet.has(r.serial));
-  for(let i=0;i<toInsert.length;i+=500){
-    let chunk = toInsert.slice(i, i+500);
-    let {error} = await supabaseClient.from(WAREHOUSE_TABLE).insert(chunk);
+  let finalRows = rows.map(r=>{
+    let old = oldMap.get(r.serial);
+    if(!old) return r;
+    let oldTech = String(old.tech||"").trim();
+    let newTech = String(r.tech||"").trim();
+    let oldComment = String(old.comment||"").trim();
+    let newComment = String(r.comment||"").trim();
+    let history = oldComment;
+    if(oldTech && newTech && oldTech !== newTech){
+      let moveNote = `نقل من ${oldTech} إلى ${newTech} بتاريخ ${todayStr()}`;
+      if(!history.includes(moveNote)) history = (history ? history + " | " : "") + moveNote;
+    }
+    if(newComment && !history.includes(newComment)){
+      history = (history ? history + " | " : "") + newComment;
+    }
+    return {...r, comment: history};
+  });
+  document.getElementById("warehouseUploadMsg").innerText=`لقيت ${finalRows.length} سيريال - جاري الرفع...`;
+  for(let i=0;i<finalRows.length;i+=500){
+    let chunk = finalRows.slice(i, i+500);
+    let {error} = await supabaseClient.from(WAREHOUSE_TABLE).upsert(chunk, {onConflict:'serial'});
     if(error){ alert("خطأ في الرفع: "+error.message); return; }
-    added += chunk.length;
-    document.getElementById("warehouseUploadMsg").innerText=`جاري... جديد ${added} + تحديث ${toUpdate.length} - ${Math.round(((added)/rows.length)*100)}%`;
+    document.getElementById("warehouseUploadMsg").innerText=`جاري... ${Math.min(i+500, finalRows.length)} من ${finalRows.length}`;
   }
-  for(let r of toUpdate){
-    await supabaseClient.from(WAREHOUSE_TABLE).update(r).eq("serial", r.serial);
-    updated++;
-    if(updated % 200 === 0) document.getElementById("warehouseUploadMsg").innerText=`جاري تحديث... ${updated} من ${toUpdate.length}`;
+  document.getElementById("warehouseUploadMsg").innerText=`تم ✅ ${finalRows.length} سيريال - العهدة اتحدثت من خانة الفني، والكومنت اتحفظ في قصة الجهاز`;
+  loadWarehouse();
+}
+
+async function transferTechCustody(){
+  let from = document.getElementById("custodyFromTech").value.trim();
+  let to = document.getElementById("custodyToTech").value.trim();
+  if(!from || !to) return alert("اكتب من فني وإلى فني");
+  if(!confirm(`هننقل كل أجهزة ${from} إلى ${to} ؟`)) return;
+  let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("tech", from);
+  if(!data || !data.length) return alert("مفيش أجهزة عند "+from);
+  for(let w of data){
+    let hist = (w.comment||"") + ` | نقل من ${from} إلى ${to} بتاريخ ${todayStr()}`;
+    await supabaseClient.from(WAREHOUSE_TABLE).update({tech: to, comment: hist}).eq("id", w.id);
   }
-  document.getElementById("warehouseUploadMsg").innerText=`تم ✅ ${added} جهاز جديد + ${updated} جهاز اتحدث - الإجمالي ${rows.length}`;
+  document.getElementById("custodyMsg").innerText = `تم ✅ نقل ${data.length} جهاز من ${from} إلى ${to}`;
+  loadWarehouse();
+}
+
+async function clearTechCustody(){
+  let from = document.getElementById("custodyFromTech").value.trim();
+  if(!from) return alert("اكتب اسم الفني اللي هتمسح عهدته");
+  if(!confirm(`همسح عهدة ${from} ؟ الأجهزة هترجع المخزن من غير فني`)) return;
+  let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("tech", from);
+  if(!data || !data.length) return alert("مفيش أجهزة عند "+from);
+  for(let w of data){
+    let hist = (w.comment||"") + ` | اتمسحت عهدة ${from} بتاريخ ${todayStr()}`;
+    await supabaseClient.from(WAREHOUSE_TABLE).update({tech: "", comment: hist}).eq("id", w.id);
+  }
+  document.getElementById("custodyMsg").innerText = `تم ✅ مسح عهدة ${from} - ${data.length} جهاز رجعوا المخزن`;
   loadWarehouse();
 }
 let allTechs = [];
