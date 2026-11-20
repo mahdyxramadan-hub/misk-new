@@ -775,7 +775,7 @@ let myJobs = jobs.filter(function(j){ return normTechKey(getJobTech(j))===normTe
   let old=document.getElementById("transferModal"); if(old) old.remove();
    let list = window._currentTechJobs || [];
 if(!list.length){ alert("مفيش أوردرات"); return; }
-  let allTechs=[...new Set((window.allJobs||[]).map(j=>getJobTech(j)).filter(Boolean))];
+  let allTechs=(typeof cachedTechNames!=="undefined"&&cachedTechNames.length?[...cachedTechNames]:[...new Set((typeof allJobs!=="undefined"?allJobs:[]).map(j=>getJobTech(j))).filter(Boolean)]);
   if(!allTechs.length) allTechs=[fromTech];
    let techOptions=(allTechs.filter(t=>normTechKey(t)!==normTechKey(fromTech)).length?allTechs.filter(t=>normTechKey(t)!==normTechKey(fromTech)):allTechs)
     .map(t=>'<div onclick="selectTransferTech(this,\''+t.replace(/\'/g,"")+'\')" style="padding:12px;border-bottom:1px solid #eee;cursor:pointer">'+t+'</div>').join("");
