@@ -170,7 +170,16 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
       <div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">➕ إضافة سيريال <span>▼</span></div>
       <div class="admin-box-body">
         <input type="file" id="warehouseInput" accept=".xlsx,.xls,.csv">
-        <button class="orangeBtn" onclick="uploadWarehouseSheet()" style="width:100%;padding:13px;border-radius:50px;border:0">📦 رفع شيت المخزن - بيضيف مش بيبدل</button>
+         <button class="orangeBtn" onclick="uploadWarehouseSheet()" style="width:100%;padding:13px;border-radius:50px;border:0">📦 رفع شيت المخزن - بيحدث العهدة من خانة الفني</button>
+        <hr>
+<p style="font-weight:900;margin:0">🔄 إدارة عهدة فني</p>
+<input id="custodyFromTech" placeholder="من فني - مثال: عز الدين" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
+<input id="custodyToTech" placeholder="إلى فني - مثال: الاباصيري - سيبه فاضي لو هتمسح" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
+<div style="display:flex;gap:8px">
+<button onclick="transferTechCustody()" style="flex:1;padding:12px;border-radius:50px;border:0;background:#0b7ed1;color:#fff;font-weight:800">🔄 نقل عهدة فني لفني</button>
+<button onclick="clearTechCustody()" style="flex:1;padding:12px;border-radius:50px;border:0;background:#dc3545;color:#fff;font-weight:800">🗑️ مسح عهدة فني</button>
+</div>
+<p id="custodyMsg" style="font-size:13px"></p>
         <p id="warehouseUploadMsg" style="font-size:13px"></p>
         <p style="font-size:12px;color:#666">الأعمدة: A:sn - B:date - C:serial - D:date install - E:costmer phone - F:Model - G:Tech - H:Comment - بيقرا كل ورق المحافظات.</p>
         <div id="warehouseSummary" style="font-size:13px;margin-top:8px"></div>
