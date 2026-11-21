@@ -277,7 +277,7 @@ body{background:#f3f6fc!important;color:var(--misk-text)!important}
 <button onclick="openAddTech()" style="background:#00c6ff;border:0;padding:10px;border-radius:50px;width:100%;color:#fff;font-size:14px;margin-top:8px">➕ اضافة فني</button>
 <div id="techList"></div>
 </div>
-<div class="admin-box open" id="miskReportsBox"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📊 التقارير الإدارية <span>▼</span></div><div class="admin-box-body"><p style="font-size:12px;color:#64748b;margin:0 0 10px">التقرير مبني على الأوردرات الحالية المحمّلة، ولا يشمل الأرشيف.</p><button class="btn" onclick="renderAdminReport()" style="width:100%;margin-bottom:8px">🔄 تحديث التقرير</button><button class="blueBtn" onclick="exportAdminReportCSV()" style="width:100%;padding:12px;border:0;border-radius:12px">⬇️ تصدير تقرير الفنيين CSV</button><div id="adminReportOutput" style="margin-top:12px"></div></div></div>
+<div class="admin-box open" id="miskReportsBox"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📊 التقارير الإدارية <span>▼</span></div><div class="admin-box-body"><p style="font-size:12px;color:#64748b;margin:0 0 10px">التقرير يشمل اليومي والأرشيف، مع اختيار فترة الحساب.</p><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px"><label style="flex:1;min-width:120px;font-size:12px">من تاريخ<input id="reportFrom" type="date" style="display:block;width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:8px"></label><label style="flex:1;min-width:120px;font-size:12px">إلى تاريخ<input id="reportTo" type="date" style="display:block;width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:8px"></label></div><button class="btn" onclick="renderAdminReport()" style="width:100%;margin-bottom:8px">🔄 تحديث التقرير</button><button class="blueBtn" onclick="exportAdminReportCSV()" style="width:100%;padding:12px;border:0;border-radius:12px">⬇️ تصدير تقرير الفنيين CSV</button><div id="adminReportOutput" style="margin-top:12px"></div></div></div>
 <div id="addTechModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center">
 <div style="background:#fff;width:92%;max-width:380px;padding:16px;border-radius:16px;color:#000">
 <h3 style="text-align:center;margin:0 0 12px">➕ اضافة فني جديد</h3>
@@ -316,7 +316,7 @@ body{background:#f3f6fc!important;color:var(--misk-text)!important}
 <div id="singleResult" style="margin-top:6px;font-weight:700;"></div>
 <p id="custodyMsg" style="font-size:13px"></p>
         <p id="warehouseUploadMsg" style="font-size:13px"></p>
-        <p style="font-size:12px;color:#666">الأعمدة: A:sn - B:date - C:serial - D:date install - E:costmer phone - F:Model - G:Tech - H:Comment - بيقرا كل ورق المحافظات.</p>
+        <p style="font-size:12px;color:#666">الأعمدة المعتمدة: A:sn - B:date - C:serial - D:date install - E:customer phone - F:model - G:tech - H:comment. الأعمدة الإضافية القديمة يتم تجاهلها. بيقرأ كل أوراق المحافظات، ويوحّد أسماء الفنيين مع القائمة المعتمدة عند التطابق الواضح.</p>
         <div id="warehouseSummary" style="font-size:13px;margin-top:8px"></div>
         <div id="warehousePreview" style="font-size:12px"></div>
         <hr>
@@ -400,6 +400,30 @@ document.getElementById("serverRotator")?.addEventListener("error", function(){
 });
 function norm(s){return String(s||"").trim().toLowerCase().replace(/[\u064B-\u0652]/g,"").replace(/أ|إ|آ/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/\s+/g," ")}
 function normTechKey(name){ return norm(name).replace(/[^a-z0-9\u0600-\u06FF]/g,"") }
+// توحيد اسم الفني مع القائمة المعتمدة: مطابقة كاملة أولاً، ثم اقتراح تصحيح حرف واحد فقط إذا كان فريداً.
+function techNameMatch(input, names=cachedTechNames){
+  const raw=String(input||"").trim().replace(/\s+/g," ");
+  if(!raw) return {name:"",kind:"empty"};
+  const key=normTechKey(raw);
+  const list=(names||[]).map(n=>String(n||"").trim().replace(/\s+/g," ")).filter(Boolean);
+  const exact=list.find(n=>normTechKey(n)===key);
+  if(exact) return {name:exact,kind:"exact"};
+  if(key.length<6) return {name:raw,kind:"unmatched"};
+  const distance=(a,b)=>{
+    if(Math.abs(a.length-b.length)>1) return 2;
+    let prev=Array.from({length:b.length+1},(_,i)=>i);
+    for(let i=1;i<=a.length;i++){
+      let cur=[i];
+      for(let j=1;j<=b.length;j++) cur[j]=Math.min(cur[j-1]+1,prev[j]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1));
+      prev=cur;
+    }
+    return prev[b.length];
+  };
+  const candidates=list.map(n=>({name:n,d:distance(key,normTechKey(n))})).filter(x=>x.d===1);
+  if(candidates.length===1) return {name:candidates[0].name,kind:"suggested",original:raw};
+  if(candidates.length>1) return {name:raw,kind:"ambiguous",candidates:candidates.map(x=>x.name)};
+  return {name:raw,kind:"unmatched"};
+}
 function cleanSerial(s){ return String(s||"").trim().toUpperCase().replace(/[^A-Z0-9]/g,"") }
 function fmtDate(d){ const x=new Date(d); if(isNaN(x)) return ""; return String(x.getDate()).padStart(2,"0")+"-"+String(x.getMonth()+1).padStart(2,"0")+"-"+x.getFullYear() }
 function todayStr(){ return fmtDate(new Date()) }
@@ -674,12 +698,14 @@ function downloadWarehouseExcel(){
     arr.forEach((r,i)=>{
       if(i===0) return;
       let serial=cleanSerial(r[2]);
-      if(!serial) return;
+      if(!serial || /serial|السيريال/i.test(String(r[2]||""))) return;
       let prov = (/^sheet\d*$/i.test(sn) || sn==="Sheet1") ? fileProv : sn;
+      const techRaw=String(r[6]||"").trim();
+      const techMatch=techNameMatch(techRaw);
       rowsMap.set(serial, {
         sn:String(r[0]||""), date_received:parseSheetDate(r[1]), serial,
         date_install:parseSheetDate(r[3]), customer_phone:String(r[4]||"").trim(),
-        model:String(r[5]||"").trim(), tech:String(r[6]||"").trim(), comment:String(r[7]||"").trim(),
+        model:String(r[5]||"").trim(), tech:techMatch.name, comment:String(r[7]||"").trim(),
         province:prov, status: String(r[3]||"").trim() ? "تم التسليم" : "في العهدة"
       });
     });
@@ -717,7 +743,8 @@ function downloadWarehouseExcel(){
     if(error){ alert("خطأ في الرفع: "+error.message); return; }
     document.getElementById("warehouseUploadMsg").innerText=`جاري... ${Math.min(i+500, finalRows.length)} من ${finalRows.length}`;
   }
-  document.getElementById("warehouseUploadMsg").innerText=`تم ✅ ${finalRows.length} سيريال - العهدة اتحدثت من خانة الفني، والكومنت اتحفظ في قصة الجهاز`;
+  const suggestedTechs=[...new Set(rows.map(r=>r.tech).filter(n=>n && !cachedTechNames.some(c=>normTechKey(c)===normTechKey(n))))];
+  document.getElementById("warehouseUploadMsg").innerText=`تم ✅ ${finalRows.length} سيريال - العهدة اتحدثت من خانة الفني، والكومنت اتحفظ في قصة الجهاز`+(suggestedTechs.length?`\n⚠️ أسماء تحتاج مراجعة: ${suggestedTechs.slice(0,8).join("، ")}`:"");
   loadWarehouse();
 }
 
@@ -1096,37 +1123,129 @@ function getJobStatusBucket(status){
   if(["تأجيل","لم يتم الرد","رفض الزيارة"].includes(s)) return "problem";
   return "pending";
 }
+function reportDateKey(value){
+  if(!value) return "";
+  const s=String(value).trim();
+  let m=s.match(/^(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{2,4})$/);
+  if(m){let y=+m[3];if(y<100)y+=2000;return `${y}-${String(+m[2]).padStart(2,"0")}-${String(+m[1]).padStart(2,"0")}`;}
+  const d=new Date(s); if(isNaN(d)) return "";
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
+function reportTodayKey(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;}
+function getTechOrderRate(techName){
+  const n=normTechKey(techName);
+  return n.includes("هانيامين") ? 50 : 40;
+}
+function getAdminReportRange(){
+  const today=reportTodayKey();
+  const fromEl=document.getElementById("reportFrom"),toEl=document.getElementById("reportTo");
+  if(fromEl&&!fromEl.value)fromEl.value=today.slice(0,7)+"-01";
+  if(toEl&&!toEl.value)toEl.value=today;
+  return {from:fromEl&&fromEl.value?fromEl.value:"",to:toEl&&toEl.value?toEl.value:""};
+}
+function getAdminReportRows(){
+  const current=Array.isArray(allJobs)?allJobs:[],archive=Array.isArray(archivedJobs)?archivedJobs:[];
+  const combined=[...current,...archive],seen=new Set(),rows=[];
+  combined.forEach(j=>{
+    const order=String(j.order||j.landline||"").trim().toLowerCase();
+    const serial=cleanSerial(j.serial||"");
+    const key=order?"order:"+order:(serial?"serial:"+serial:"fallback:"+String(j.customer_name||"")+"|"+String(j.date||j.archive_date||j.created_at||""));
+    if(seen.has(key))return;seen.add(key);rows.push(j);
+  });
+  return rows;
+}
 function buildAdminReport(){
-  const rows=Array.isArray(allJobs)?allJobs:[];
-  const stats={total:rows.length,done:0,pending:0,problem:0,unassigned:0};
-  const byTech=new Map();
+  const range=getAdminReportRange(),rows=getAdminReportRows();
+  const stats={total:0,done:0,pending:0,problem:0,unassigned:0,today:0,todayDone:0,month:0,monthDone:0,totalPay:0,todayPay:0,monthPay:0};
+  const byTech=new Map(),detailRows=[];const todayKey=reportTodayKey(),monthKey=todayKey.slice(0,7);
   rows.forEach(j=>{
-    const bucket=getJobStatusBucket(j.status); stats[bucket]++;
+    const dateKey=reportDateKey(j.delivered_date||j.delivered_at||j.date||j.created_at||j.archive_date);
+    if((range.from||range.to)&&!dateKey)return;
+    if(range.from&&dateKey&&dateKey<range.from)return;if(range.to&&dateKey&&dateKey>range.to)return;
+    const bucket=getJobStatusBucket(j.status);stats.total++;stats[bucket]++;
     const tech=String(getJobTech(j)||"غير مسند").trim()||"غير مسند";
-    if(tech==="غير مسند") stats.unassigned++;
-    if(!byTech.has(tech)) byTech.set(tech,{tech,total:0,done:0,pending:0,problem:0});
-    const t=byTech.get(tech); t.total++; t[bucket]++;
+    if(tech==="غير مسند")stats.unassigned++;
+    if(!byTech.has(tech))byTech.set(tech,{tech,total:0,done:0,pending:0,problem:0,today:0,todayDone:0,month:0,monthDone:0,rate:getTechOrderRate(tech),pay:0,todayPay:0,monthPay:0});
+    const t=byTech.get(tech);t.total++;t[bucket]++;
+    if(dateKey===todayKey){stats.today++;t.today++;if(bucket==="done"){stats.todayDone++;t.todayDone++;}}
+    if(dateKey.startsWith(monthKey)){stats.month++;t.month++;if(bucket==="done"){stats.monthDone++;t.monthDone++;}}
+    if(bucket==="done"){
+      const pay=t.rate;t.pay+=pay;stats.totalPay+=pay;
+      if(dateKey===todayKey){t.todayPay+=pay;stats.todayPay+=pay;}
+      if(dateKey.startsWith(monthKey)){t.monthPay+=pay;stats.monthPay+=pay;}
+      detailRows.push({date:dateKey||"غير محدد",tech,order:j.order||j.landline||"",customer:j.customer_name||"",serial:j.serial||"",status:j.status||"",rate:t.rate,pay});
+    }
   });
   const techRows=[...byTech.values()].sort((a,b)=>b.total-a.total||a.tech.localeCompare(b.tech,"ar"));
-  return {stats,techRows};
+  detailRows.sort((a,b)=>a.date.localeCompare(b.date)||a.tech.localeCompare(b.tech,"ar"));
+  return {stats,techRows,detailRows,range,sourceCount:rows.length};
 }
 function renderAdminReport(){
   const out=document.getElementById("adminReportOutput"); if(!out) return;
   if(!userObj||!userObj.isAdmin){out.innerHTML="";return;}
-  const {stats,techRows}=buildAdminReport();
-  const cards=[["إجمالي الأوردرات",stats.total,"#1d4ed8"],["تم التسليم",stats.done,"#16a34a"],["قيد الانتظار",stats.pending,"#d97706"],["حالات المشكلة",stats.problem,"#dc2626"],["غير مسندة",stats.unassigned,"#64748b"]];
+  const report=buildAdminReport();
+  const {stats,techRows}=report;
+  const cards=[
+    ["إجمالي الأوردرات",stats.total,"#1d4ed8"],
+    ["تم التسليم",stats.done,"#16a34a"],
+    ["قيد الانتظار",stats.pending,"#d97706"],
+    ["حالات المشكلة",stats.problem,"#dc2626"],
+    ["غير مسندة",stats.unassigned,"#64748b"],
+    ["أوردرات اليوم",stats.today,"#2563eb"],
+    ["تسليم اليوم",stats.todayDone,"#059669"],
+    ["أوردرات الشهر",stats.month,"#7c3aed"],
+    ["تسليم الشهر",stats.monthDone,"#0f766e"],["إجمالي المستحقات",stats.totalPay+" ج","#16a34a"],["مستحق اليوم",stats.todayPay+" ج","#059669"],["مستحق الشهر",stats.monthPay+" ج","#0f766e"]
+  ];
   const cardsHtml=cards.map(c=>`<div style="flex:1;min-width:90px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:10px;text-align:center"><small>${escapeHTML(c[0])}</small><div style="font-size:22px;font-weight:900;color:${c[2]}">${c[1]}</div></div>`).join("");
-  const tableRows=techRows.map(t=>{const rate=t.total?Math.round(t.done/t.total*100):0;return `<tr><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:right">${escapeHTML(t.tech)}</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:center">${t.total}</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:center;color:#16a34a;font-weight:bold">${t.done}</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:center;color:#d97706">${t.pending}</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:center;color:#dc2626">${t.problem}</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:center">${rate}%</td></tr>`;}).join("");
-  out.innerHTML=`<div style="display:flex;gap:6px;flex-wrap:wrap">${cardsHtml}</div><div style="overflow:auto;margin-top:12px"><table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr style="background:#eef2ff"><th style="padding:8px;text-align:right">الفني</th><th style="padding:8px">الإجمالي</th><th style="padding:8px">تسليم</th><th style="padding:8px">انتظار</th><th style="padding:8px">مشاكل</th><th style="padding:8px">نسبة التسليم</th></tr></thead><tbody>${tableRows||'<tr><td colspan="6" style="padding:10px;text-align:center">لا توجد بيانات</td></tr>'}</tbody></table></div>`;
+  const tableRows=techRows.map(t=>{const rate=t.total?Math.round(t.done/t.total*100):0;const todayRate=t.today?Math.round(t.todayDone/t.today*100):0;const monthRate=t.month?Math.round(t.monthDone/t.month*100):0;return `<tr><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:right">${escapeHTML(t.tech)}</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:center">${t.total}</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:center;color:#16a34a;font-weight:bold">${t.done}</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:center;color:#d97706">${t.pending}</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:center;color:#dc2626">${t.problem}</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:center">${rate}%</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:center">${t.today}</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:center">${todayRate}%</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:center">${t.month}</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:center">${monthRate}%</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:center;font-weight:bold;color:#166534">${t.rate} ج</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:center;font-weight:bold;color:#166534">${t.pay} ج</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:center">${t.todayPay} ج</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:center">${t.monthPay} ج</td></tr>`;}).join("");
+  out.innerHTML=`<div style="display:flex;gap:6px;flex-wrap:wrap">${cardsHtml}</div><div style="overflow:auto;margin-top:12px"><table style="width:100%;border-collapse:collapse;font-size:12px;min-width:1100px"><thead><tr style="background:#eef2ff"><th style="padding:8px;text-align:right">الفني</th><th style="padding:8px">الإجمالي</th><th style="padding:8px">تسليم</th><th style="padding:8px">انتظار</th><th style="padding:8px">مشاكل</th><th style="padding:8px">نسبة التسليم</th><th style="padding:8px">أوردرات اليوم</th><th style="padding:8px">نسبة اليوم</th><th style="padding:8px">أوردرات الشهر</th><th style="padding:8px">نسبة الشهر</th><th style="padding:8px">سعر الأوردر</th><th style="padding:8px">المستحقات</th><th style="padding:8px">مستحق اليوم</th><th style="padding:8px">مستحق الشهر</th></tr></thead><tbody>${tableRows||'<tr><td colspan="14" style="padding:10px;text-align:center">لا توجد بيانات</td></tr>'}</tbody></table></div><p style="font-size:11px;color:#64748b;margin-top:8px">الفترة: ${escapeHTML(report.range.from||"بداية غير محددة")} إلى ${escapeHTML(report.range.to||"نهاية غير محددة")} — التقرير يجمع اليومي والأرشيف ويستبعد التكرار برقم الأوردر. سعر الأوردر المُسلّم 40 جنيه، و50 جنيه لهاني أمين. الأوردرات التي لا يوجد لها تاريخ تدخل في الإجمالي عند عدم تحديد حدود تاريخية، ولا تدخل في فلترة الفترة إذا كان التاريخ غير معروف.</p><div style="margin-top:12px;padding:12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px"><b>📋 تفاصيل الأوردرات المستحقة ضمن الفترة</b><div style="overflow:auto;max-height:320px;margin-top:8px"><table style="width:100%;border-collapse:collapse;font-size:11px;min-width:650px"><thead><tr style="background:#e2e8f0"><th style="padding:6px">التاريخ</th><th style="padding:6px">الفني</th><th style="padding:6px">الأوردر</th><th style="padding:6px">العميل</th><th style="padding:6px">السيريال</th><th style="padding:6px">السعر</th></tr></thead><tbody>${report.detailRows.map(d=>`<tr><td style="padding:6px;border-bottom:1px solid #eee">${escapeHTML(d.date)}</td><td style="padding:6px;border-bottom:1px solid #eee">${escapeHTML(d.tech)}</td><td style="padding:6px;border-bottom:1px solid #eee">${escapeHTML(d.order)}</td><td style="padding:6px;border-bottom:1px solid #eee">${escapeHTML(d.customer)}</td><td style="padding:6px;border-bottom:1px solid #eee">${escapeHTML(d.serial)}</td><td style="padding:6px;border-bottom:1px solid #eee;font-weight:bold">${d.pay} ج</td></tr>`).join("")||'<tr><td colspan="6" style="padding:8px;text-align:center">لا توجد أوردرات مُسلّمة في الفترة المحددة</td></tr>'}</tbody></table></div></div><div style="margin-top:12px;padding:12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px"><b>🔎 فحص سلامة البيانات</b><p style="font-size:11px;color:#64748b;margin:5px 0">فحص فقط — لا يقوم بحذف أو تعديل أي بيانات.</p><button class="orangeBtn" onclick="renderDataIntegrityReport()" style="width:100%;padding:11px;border:0;border-radius:12px">فحص الأوردرات والسيريالات</button><div id="dataIntegrityOutput" style="margin-top:10px"></div></div>`;
 }
+function buildDataIntegrityReport(){
+  const rows=Array.isArray(allJobs)?allJobs:[];
+  const issues=[]; const orders=new Map(),serials=new Map();
+  rows.forEach(j=>{
+    const order=String(j.order||j.landline||"").trim();
+    const serial=cleanSerial(j.serial||"");
+    const id=String(j.id||"");
+    const tech=String(getJobTech(j)||"").trim();
+    const status=String(j.status||"").trim();
+    if(!order) issues.push({type:"رقم أوردر ناقص",order:"—",serial:serial||"—",customer:j.customer_name||"",tech:tech||"—",id});
+    else {const k=order.toLowerCase();if(!orders.has(k))orders.set(k,[]);orders.get(k).push(j);}
+    if(serial){if(!serials.has(serial))serials.set(serial,[]);serials.get(serial).push(j);}
+    if(!tech) issues.push({type:"فني غير مسند",order:order||"—",serial:serial||"—",customer:j.customer_name||"",tech:"—",id});
+    if(!status) issues.push({type:"حالة ناقصة",order:order||"—",serial:serial||"—",customer:j.customer_name||"",tech:tech||"—",id});
+    if(status==="تم التسليم"&&!serial) issues.push({type:"سيريال ناقص لأوردر مُسلّم",order:order||"—",serial:"—",customer:j.customer_name||"",tech:tech||"—",id});
+  });
+  orders.forEach(list=>{if(list.length>1)list.forEach(j=>issues.push({type:"رقم أوردر مكرر",order:j.order||j.landline||"—",serial:j.serial||"—",customer:j.customer_name||"",tech:getJobTech(j)||"—",id:j.id||""}));});
+  serials.forEach(list=>{if(list.length>1)list.forEach(j=>issues.push({type:"سيريال مكرر",order:j.order||j.landline||"—",serial:j.serial||"—",customer:j.customer_name||"",tech:getJobTech(j)||"—",id:j.id||""}));});
+  return {total:rows.length,issues};
+}
+function renderDataIntegrityReport(){
+  if(!userObj||!userObj.isAdmin)return alert("الفحص متاح للأدمن فقط");
+  const out=document.getElementById("dataIntegrityOutput");if(!out)return;
+  const report=buildDataIntegrityReport();
+  if(!report.issues.length){out.innerHTML=`<div style="padding:10px;border-radius:10px;background:#dcfce7;color:#166534;font-weight:bold">لم تظهر مشكلات في الفحص المبدئي لـ ${report.total} أوردر.</div>`;return;}
+  const counts={};report.issues.forEach(i=>counts[i.type]=(counts[i.type]||0)+1);
+  const summary=Object.entries(counts).map(([k,v])=>`${escapeHTML(k)}: ${v}`).join(" • ");
+  const body=report.issues.slice(0,100).map(i=>`<tr><td style="padding:6px;border-bottom:1px solid #eee">${escapeHTML(i.type)}</td><td style="padding:6px;border-bottom:1px solid #eee">${escapeHTML(i.order)}</td><td style="padding:6px;border-bottom:1px solid #eee">${escapeHTML(i.serial)}</td><td style="padding:6px;border-bottom:1px solid #eee">${escapeHTML(i.customer)}</td><td style="padding:6px;border-bottom:1px solid #eee">${escapeHTML(i.tech)}</td></tr>`).join("");
+  out.innerHTML=`<div style="padding:10px;border-radius:10px;background:#fff7ed;color:#9a3412;font-weight:bold">${summary}<br><small>إجمالي الملاحظات: ${report.issues.length}</small></div><div style="overflow:auto;max-height:300px;margin-top:8px"><table style="width:100%;border-collapse:collapse;font-size:11px;min-width:520px"><thead><tr style="background:#ffedd5"><th style="padding:6px">الملاحظة</th><th style="padding:6px">الأوردر</th><th style="padding:6px">السيريال</th><th style="padding:6px">العميل</th><th style="padding:6px">الفني</th></tr></thead><tbody>${body}</tbody></table></div><button class="blueBtn" onclick="exportDataIntegrityCSV()" style="width:100%;padding:10px;border:0;border-radius:10px;margin-top:8px">تصدير ملاحظات الفحص CSV</button>${report.issues.length>100?`<small>يتم عرض أول 100 ملاحظة فقط؛ التصدير يشمل الكل.</small>`:""}`;
+}
+function exportDataIntegrityCSV(){
+  if(!userObj||!userObj.isAdmin)return alert("الفحص متاح للأدمن فقط");
+  const {issues}=buildDataIntegrityReport();
+  const rows=[["نوع الملاحظة","رقم الأوردر","السيريال","العميل","الفني","ID"],...issues.map(i=>[i.type,i.order,i.serial,i.customer,i.tech,i.id])];
+  const csv="\uFEFF"+rows.map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");
+  const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="MISK_Data_Integrity_"+todayStr().replace(/-/g,"_")+".csv";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+}
+
 function exportAdminReportCSV(){
   if(!userObj||!userObj.isAdmin) return alert("التقرير متاح للأدمن فقط");
   const {stats,techRows}=buildAdminReport();
-  const header=["الفني","إجمالي الأوردرات","تم التسليم","قيد الانتظار","حالات المشكلة","نسبة التسليم"];
-  const lines=[header,...techRows.map(t=>[t.tech,t.total,t.done,t.pending,t.problem,t.total?Math.round(t.done/t.total*100)+"%":"0%"]),[],["الإجمالي",stats.total,stats.done,stats.pending,stats.problem,stats.total?Math.round(stats.done/stats.total*100)+"%":"0%"]];
+  const header=["الفني","إجمالي الأوردرات","تم التسليم","قيد الانتظار","حالات المشكلة","نسبة التسليم","أوردرات اليوم","تسليم اليوم","أوردرات الشهر","تسليم الشهر","سعر الأوردر","إجمالي المستحقات","مستحق اليوم","مستحق الشهر"];
+  const lines=[header,...techRows.map(t=>[t.tech,t.total,t.done,t.pending,t.problem,t.total?Math.round(t.done/t.total*100)+"%":"0%",t.today,t.today?Math.round(t.todayDone/t.today*100)+"%":"0%",t.month,t.month?Math.round(t.monthDone/t.month*100)+"%":"0%",t.rate,t.pay,t.todayPay,t.monthPay]),[],["تفاصيل المستحقات حسب الأوردر"],["التاريخ","الفني","الأوردر","العميل","السيريال","الحالة","سعر الأوردر","المستحق"],...buildAdminReport().detailRows.map(d=>[d.date,d.tech,d.order,d.customer,d.serial,d.status,d.rate,d.pay]),[],["الفترة من",buildAdminReport().range.from,"إلى",buildAdminReport().range.to],[],["الإجمالي",stats.total,stats.done,stats.pending,stats.problem,stats.total?Math.round(stats.done/stats.total*100)+"%":"0%",stats.today,stats.today?Math.round(stats.todayDone/stats.today*100)+"%":"0%",stats.month,stats.month?Math.round(stats.monthDone/stats.month*100)+"%":"0%","",stats.totalPay,stats.todayPay,stats.monthPay]];
   const csv="\uFEFF"+lines.map(row=>row.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");
   const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
-  const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="MISK_Tech_Report_"+todayStr().replace(/-/g,"_")+".csv";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+  const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="MISK_Operations_Report_"+todayStr().replace(/-/g,"_")+".csv";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
 }
 
 function renderJobs(){
@@ -1346,9 +1465,9 @@ async function uploadSheetFast(){
   if(msg) msg.innerText="جاري تجهيز الملفات...";
   if(prog) prog.style.display="block";
   if(progBar) progBar.style.width="0%";
-  let totalInserted=0, skippedExisting=0, skippedInFiles=0, failedRows=0;
+  let totalInserted=0, skippedExisting=0, skippedInFiles=0, failedRows=0, techNameCorrections=0;
   const seenOrders=new Set();
-  const errors=[];
+  const errors=[], techReviewNames=new Set();
   try{
     for(let fileIndex=0;fileIndex<files.length;fileIndex++){
       const f=files[fileIndex];
@@ -1365,10 +1484,14 @@ async function uploadSheetFast(){
         const orderKey=order.toLowerCase();
         if(seenOrders.has(orderKey)){skippedInFiles++;continue;}
         seenOrders.add(orderKey);
+        const techRaw=String(r[16]||"").trim();
+        const techMatch=techNameMatch(techRaw);
+        if(techMatch.kind==="suggested") techNameCorrections++;
+        if(techMatch.kind==="unmatched"||techMatch.kind==="ambiguous") techReviewNames.add(techRaw+(techMatch.kind==="ambiguous"?` (محتمل: ${techMatch.candidates.join(" / ")})`:""));
         toInsert.push({
           customer_name:customer,address:String(r[10]||""),order,landline:order,
           mobile:String(r[2]||""),device:String(r[4]||""),code:String(r[7]||""),
-          tech:String(r[16]||"").trim(),tech_name:String(r[16]||"").trim(),
+          tech:techMatch.name,tech_name:techMatch.name,
           tech_phone:String(r[17]||"").trim(),status:"جديد",date:todayStr(),
           comment:String(r[14]||""),serial:String(r[13]||"")
         });
@@ -1413,8 +1536,9 @@ async function uploadSheetFast(){
     if(btnAuto){btnAuto.textContent="إيقاف";btnAuto.style.background="#fee2e2";btnAuto.style.color="#dc2626";}
   }
   const summary=`نتيجة الرفع: ${totalInserted} أوردر تم رفعهم، ${skippedExisting} مكرر في قاعدة البيانات، ${skippedInFiles} مكرر داخل الملفات، ${failedRows} صف فشل.`;
-  if(msg)msg.innerText=errors.length?summary+"\n⚠️ لم يكتمل الرفع: "+errors.join(" | "):summary+"\n✅ اكتملت العملية";
-  if(errors.length)alert(summary+"\n\nتفاصيل الخطأ:\n"+errors.join("\n"));
+  const techNotes=(techNameCorrections?`\n✅ تم توحيد ${techNameCorrections} اسم فني بتصحيح بسيط.`:"")+(techReviewNames.size?`\n⚠️ أسماء فنيين تحتاج مراجعة: ${[...techReviewNames].slice(0,10).join("، ")}`:"");
+  if(msg)msg.innerText=errors.length?summary+techNotes+"\n⚠️ لم يكتمل الرفع: "+errors.join(" | "):summary+techNotes+"\n✅ اكتملت العملية";
+  if(errors.length)alert(summary+techNotes+"\n\nتفاصيل الخطأ:\n"+errors.join("\n"));
   if(totalInserted>0)await loadJobs();
   if(input)input.value="";
 }
@@ -1436,6 +1560,7 @@ async function loadArchive(){
     sel.innerHTML=`<option value="">كل الأيام</option>`+dates.map(d=>`<option value="${escapeAttr(d)}">${escapeHTML(d)}</option>`).join("");
   }
     renderArchive();
+    if(userObj&&userObj.isAdmin) renderAdminReport();
 }
 async function archiveOldJobs(){
   if(!userObj || !userObj.isAdmin) return alert("الأدمن بس");
@@ -1864,5 +1989,5 @@ setInterval(()=>{
   }
 }, 1000);
 </script>
-</body>
+<!-- MISK FIX15: normalize full technician names on daily/warehouse import; ignore obsolete stock columns. -->\n</body>
 </html>
