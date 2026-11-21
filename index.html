@@ -351,14 +351,23 @@ function getRoleFromDb(t){
   if(n.includes("admin")||n.includes("ادمن")) return "admin";
   return "tech";
 }
-    async function getAllJobs(){
+    function escapeHTML(value){
+  return String(value ?? "").replace(/[&<>\"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch]));
+}
+function escapeAttr(value){ return escapeHTML(value); }
+async function getAllJobs(){
   let all = [];
   let from = 0;
   while(true){
-    let r = await supabaseClient.from(TABLE).select("*").range(from, from + 999);
-    let data = r.data || [];
-    all = all.concat(data);
-    if(data.length < 1000) break;
+    const {data, error} = await supabaseClient
+      .from(TABLE)
+      .select("*")
+      .range(from, from + 999);
+
+    if(error) throw error;
+    const page = data || [];
+    all = all.concat(page);
+    if(page.length < 1000) break;
     from += 1000;
   }
   return all;
@@ -404,7 +413,8 @@ async function login(e){
     let isAdmin = (role==="admin"||role==="super_admin");
     userObj = {id: found.id, username: found.username, name: display, role: role, isAdmin: isAdmin, isSuper: role==="super_admin"};
     localStorage.setItem('misk_user', JSON.stringify(userObj));
-    localStorage.setItem('misk_pass', p);
+    // لا نخزن كلمة المرور في المتصفح
+    localStorage.removeItem('misk_pass');
     afterLogin();
   }catch(err){
     if(msgEl) msgEl.innerText = 'خطأ: ' + err.message;
@@ -452,22 +462,35 @@ async function doChangePass(){
   let {error} = await supabaseClient.from("technicians").update({password:np}).eq("id", userObj.id);
   if(error) return alert("خطأ: "+error.message);
   localStorage.setItem("misk_pass_changed_"+userObj.username,"1");
-  localStorage.setItem("misk_pass", np);
+  localStorage.removeItem("misk_pass");
   closePassModal(); alert("تم تغيير الباسورد");
 }
 function closePassModal(){ document.getElementById("passModal").style.display="none" }
-  async function loadWarehouse(){
-  let all=[];
-  let from=0;
-  while(true){
-    let {data}=await supabaseClient.from(WAREHOUSE_TABLE).select("*").order("created_at",{ascending:false}).range(from, from+999);
-    let d=data||[];
-    all=all.concat(d);
-    if(d.length<1000) break;
-    from+=1000;
-  }
-  allWarehouse=all;
-  renderWarehouse();
+  let warehouseLoading = false;
+async function loadWarehouse(){
+  if(warehouseLoading) return;
+  warehouseLoading=true;
+  try{
+    let all=[];
+    let from=0;
+    while(true){
+      const {data,error}=await supabaseClient.from(WAREHOUSE_TABLE).select("*").order("created_at",{ascending:false}).range(from, from+999);
+      if(error) throw error;
+      const page=data||[];
+      all=all.concat(page);
+      if(page.length<1000) break;
+      from+=1000;
+    }
+    allWarehouse=all;
+    renderWarehouse();
+  }catch(error){
+    console.error("MISK: failed to load warehouse",error);
+    const msg="تعذر تحميل المخزن. البيانات السابقة محفوظة؛ راجع الاتصال أو صلاحيات قاعدة البيانات.";
+    const box=document.getElementById("warehouseList");
+    if(box && !allWarehouse.length) box.innerHTML=`<p style="text-align:center;color:#dc3545;padding:18px">${escapeHTML(msg)}</p>`;
+    const summary=document.getElementById("warehouseSummary");
+    if(summary) summary.innerText=msg;
+  }finally{ warehouseLoading=false; }
 }
 function myWarehouse(){
   if(userObj.isAdmin) return allWarehouse;
@@ -487,7 +510,7 @@ box.innerHTML = "";
     } else box.innerHTML="";
   }
   let prev=document.getElementById("warehousePreview");
-  if(prev) prev.innerHTML=mine.slice(0,5).map(w=>`<div style="font-size:12px;line-height:2">📦 ${w.serial} - ${w.model||""} - ${w.tech||""} - ${w.date_received||""}</div>`).join("")+(mine.length>5?`<div style="font-size:12px">... و ${mine.length-5} جهاز تاني</div>`:"");
+  if(prev) prev.innerHTML=mine.slice(0,5).map(w=>`<div style="font-size:12px;line-height:2">📦 ${escapeHTML(w.serial)} - ${escapeHTML(w.model||"")} - ${escapeHTML(w.tech||"")} - ${escapeHTML(w.date_received||"")}</div>`).join("")+(mine.length>5?`<div style="font-size:12px">... و ${mine.length-5} جهاز تاني</div>`:"");
   if(activeTab==="warehouse") renderWarehouseList();
 }
   let warehouseTab='all_pending';
@@ -530,16 +553,16 @@ function renderWarehouseList(){
     <button onclick="warehouseTab='all_done';renderWarehouseList()" style="flex:1;padding:12px;border-radius:10px;background:${warehouseTab==='all_done'?'#7c3aed;color:#fff':'#f3e8ff'}">تم تركيبه - ${allDone.length}</button>
   </div>
   <button onclick="downloadWarehouseExcel()" style="width:calc(100% - 24px);margin:10px 12px;padding:12px;border-radius:10px;border:0;background:#111;color:#fff;font-weight:800">⬇️ تحميل شيت اكسيل</button>
-  <input placeholder="دور برقم الأرضي أو السيريال أو اسم الفني..." value="${String(warehouseSearch).replace(/"/g,'&quot;')}" oninput="warehouseSearch=this.value;renderWarehouseList()" style="width:calc(100% - 24px);margin:10px 12px;padding:10px;border-radius:10px;border:1px solid #ccc">
+  <input placeholder="دور برقم الأرضي أو السيريال أو اسم الفني..." value="${escapeAttr(warehouseSearch)}" oninput="warehouseSearch=this.value;renderWarehouseList()" style="width:calc(100% - 24px);margin:10px 12px;padding:10px;border-radius:10px;border:1px solid #ccc">
   <div style="padding:0 12px">${listToShow.map(w=>`<div class="warehouseCard" style="border:1px solid #ddd;border-radius:12px;padding:10px;margin-bottom:8px">
-    <b>${w.serial||''}</b> - ${w.model||''}<br>
-    الفني: ${w.tech||''} | المحافظة: ${w.province||''}<br>
-    ${warehouseTab==='all_done' ? `العميل: ${w.customer_name||''}<br>رقم العميل (أرضي): ${w.customer_phone||''}<br>تاريخ التركيب: ${w.date_install||''}` : `تاريخ الاستلام: ${w.date_received||''} - الحالة: لم يتم تركيبه`}
+    <b>${escapeHTML(w.serial||'')}</b> - ${escapeHTML(w.model||'')}<br>
+    الفني: ${escapeHTML(w.tech||'')} | المحافظة: ${escapeHTML(w.province||'')}<br>
+    ${warehouseTab==='all_done' ? `العميل: ${escapeHTML(w.customer_name||'')}<br>رقم العميل (أرضي): ${escapeHTML(w.customer_phone||'')}<br>تاريخ التركيب: ${escapeHTML(w.date_install||'')}` : `تاريخ الاستلام: ${escapeHTML(w.date_received||'')} - الحالة: لم يتم تركيبه`}
   </div>`).join('') || '<p style="text-align:center;opacity:.6">مفيش حاجة هنا</p>'}</div>`;
 }
 function downloadWarehouseExcel(){
   if(!allWarehouse.length) return alert("مفيش داتا في المخزن");
-  let rows = allWarehouse.map(w=>({
+  let rows = (window._warehouseForExcel || (userObj && userObj.isAdmin ? allWarehouse : myWarehouse())).map(w=>({
     السيريال: w.serial||"",
     الفني: w.tech||"",
     الموديل: w.model||"",
@@ -586,7 +609,8 @@ function downloadWarehouseExcel(){
   let serials = rows.map(r=>r.serial);
   let oldMap = new Map();
   for(let i=0;i<serials.length;i+=500){
-    let {data:ex} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").in("serial", serials.slice(i,i+500));
+    let {data:ex,error:lookupError} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").in("serial", serials.slice(i,i+500));
+    if(lookupError){ alert("تعذر مقارنة السيريالات الموجودة: "+lookupError.message); return; }
     (ex||[]).forEach(x=> oldMap.set(String(x.serial), x));
   }
   let finalRows = rows.map(r=>{
@@ -621,15 +645,25 @@ async function transferTechCustody(){
   let from = document.getElementById("custodyFromTech").value.trim();
   let to = document.getElementById("custodyToTech").value.trim();
   if(!from || !to) return alert("اكتب من فني وإلى فني");
+  if(normTechKey(from)===normTechKey(to)) return alert("اختار فني مختلف عن الفني الحالي");
   if(!confirm(`هننقل كل أجهزة ${from} إلى ${to} ؟`)) return;
-  let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("tech", from);
+  const {data,error}=await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("tech", from);
+  if(error) return alert("تعذر قراءة العهدة: "+error.message);
   if(!data || !data.length) return alert("مفيش أجهزة عند "+from);
-  for(let w of data){
-    let hist = (w.comment||"") + ` | نقل من ${from} إلى ${to} بتاريخ ${todayStr()}`;
-    await supabaseClient.from(WAREHOUSE_TABLE).update({tech: to, comment: hist}).eq("id", w.id);
+  for(let i=0;i<data.length;i+=100){
+    const chunk=data.slice(i,i+100);
+    for(const w of chunk){
+      const hist=(w.comment||"")+` | نقل من ${from} إلى ${to} بتاريخ ${todayStr()}`;
+      const {error:updateError}=await supabaseClient.from(WAREHOUSE_TABLE).update({tech:to,comment:hist}).eq("id",w.id);
+      if(updateError){
+        document.getElementById("custodyMsg").innerText=`توقف النقل بعد ${i} جهاز. الخطأ: ${updateError.message}`;
+        await loadWarehouse();
+        return;
+      }
+    }
   }
-  document.getElementById("custodyMsg").innerText = `تم ✅ نقل ${data.length} جهاز من ${from} إلى ${to}`;
-  loadWarehouse();
+  document.getElementById("custodyMsg").innerText=`تم ✅ نقل ${data.length} جهاز من ${from} إلى ${to}`;
+  await loadWarehouse();
 }
  async function transferOneSerial(){
   const serial = document.getElementById('singleSerial').value.trim();
@@ -637,8 +671,9 @@ async function transferTechCustody(){
   const res = document.getElementById('singleResult');
   if(!serial || !toTech){ res.textContent = 'اكتب السيريال واسم الفني الجديد'; return; }
 
-  let { data: old } = await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("serial", serial).single();
-  if(!old){ res.textContent = 'السيريال ده مش موجود في المخزن'; return; }
+  let {data:old,error:lookupError}=await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("serial",serial).single();
+  if(lookupError){ res.textContent=lookupError.code==='PGRST116' ? 'السيريال ده مش موجود في المخزن' : 'تعذر البحث: '+lookupError.message; return; }
+  if(!old){ res.textContent='السيريال ده مش موجود في المخزن'; return; }
 
   let d = (typeof todayStr === 'function' ? todayStr() : todayStr);
   let hist = (old.comment || "") + ` | نقل من ${old.tech} إلى ${toTech} بتاريخ ${d}`;
@@ -656,7 +691,8 @@ async function clearTechCustody(){
   let from = document.getElementById("custodyFromTech").value.trim();
   if(!from) return alert("اكتب اسم الفني اللي هتمسح عهدته");
   if(!confirm(`همسح عهدة ${from} ؟ الأجهزة هترجع المخزن من غير فني`)) return;
-  let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("tech", from);
+  let {data,error} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("tech", from);
+  if(error) return alert("تعذر تحميل العهدة: "+error.message);
   if(!data || !data.length) return alert("مفيش أجهزة عند "+from);
   for(let w of data){
     let hist = (w.comment||"") + ` | اتمسحت عهدة ${from} بتاريخ ${todayStr()}`;
@@ -760,37 +796,56 @@ document.addEventListener("DOMContentLoaded", () => {
   loadTechsForSearch();
 });
 async function registerDeliveredInWarehouse(job, serial){
-  if(!serial) return;
-  let clean=cleanSerial(serial);
-    let {data:ex}=await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("serial", clean).maybeSingle();
-  let payload={
+  if(!serial) throw new Error("السيريال غير موجود");
+  const clean=cleanSerial(serial);
+  const {data:ex,error:lookupError}=await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("serial",clean).maybeSingle();
+  if(lookupError) throw lookupError;
+  const payload={
     serial:clean, model:job.device||ex?.model||"",
-    tech: getJobTech(job)||ex?.tech||userObj.name,
-    customer_phone: job.landline||job.mobile||ex?.customer_phone||"",
-    customer_name: job.customer_name||ex?.customer_name||"",
-    date_install: todayStr(), date_received: ex?.date_received||todayStr(),
-    comment: (ex?.comment||"")+" | تم التسليم يوم "+todayStr()+" - أوردر "+(job.order||""),
-    status:"تم التسليم", province: ex?.province||""
+    tech:getJobTech(job)||ex?.tech||userObj.name,
+    customer_phone:job.landline||job.mobile||ex?.customer_phone||"",
+    customer_name:job.customer_name||ex?.customer_name||"",
+    date_install:todayStr(), date_received:ex?.date_received||todayStr(),
+    comment:((ex?.comment||"").trim()+" | تم التسليم يوم "+todayStr()+" - أوردر "+(job.order||"")).trim(),
+    status:"تم التسليم", province:ex?.province||""
   };
-  if(ex) await supabaseClient.from(WAREHOUSE_TABLE).update(payload).eq("id", ex.id);
-  else await supabaseClient.from(WAREHOUSE_TABLE).insert(payload);
+  const result=ex ? await supabaseClient.from(WAREHOUSE_TABLE).update(payload).eq("id",ex.id) : await supabaseClient.from(WAREHOUSE_TABLE).insert(payload);
+  if(result.error) throw result.error;
+  return true;
 }
+let jobsLoading = false;
 async function loadJobs(){
-   let data = await getAllJobs();
-data.sort((a,b)=> new Date(b.created_at)-new Date(a.created_at));
-  allJobs=data||[];
-  renderJobs(); loadTechCount(); showLeftAlert();
+  // منع تداخل التحديثات التلقائية واليدوية
+  if(jobsLoading) return;
+  jobsLoading = true;
+  try{
+    const data = await getAllJobs();
+    data.sort((a,b)=> new Date(b.created_at)-new Date(a.created_at));
+    allJobs = data;
+    renderJobs();
+    loadTechCount();
+    showLeftAlert();
+  }catch(error){
+    console.error("MISK: failed to load jobs", error);
+    // لا نمسح البيانات القديمة عند فشل الاتصال أو صلاحيات Supabase
+    if(!allJobs.length){
+      const list = document.getElementById("jobsList");
+      if(list) list.innerHTML = `<p style="text-align:center;color:#dc3545;padding:18px">تعذر تحميل الأوردرات. راجع الاتصال أو صلاحيات قاعدة البيانات ثم اضغط تحديث.</p>`;
+    }
+  }finally{
+    jobsLoading = false;
+  }
 }
 async function loadTechNames(){
   let {data}=await supabaseClient.from("technicians").select("username,name,role").order("name");
   cachedTechNames=(data||[]).filter(t=> getRoleFromDb(t)==="tech").map(t=>techDisplayName(t)).filter(n=> n);
   let sel=document.getElementById("a_tech");
-  if(sel) sel.innerHTML=`<option value="">اختر اسم الفني</option>`+cachedTechNames.map(n=>`<option value="${n}">${n}</option>`).join("");
+  if(sel) sel.innerHTML=`<option value="">اختر اسم الفني</option>`+cachedTechNames.map(n=>`<option value="${escapeAttr(n)}">${escapeHTML(n)}</option>`).join("");
 }
 async function loadTechCount(){
   let {data}=await supabaseClient.from("technicians").select("username,name,role");
   let el=document.getElementById("techCount"); if(el) el.innerText=(data||[]).length;
-   let list=document.getElementById("techList"); if(list) list.innerHTML=(data||[]).map(t=>`<div class="tech-chip" style="cursor:pointer" onclick="openTechDetail('${encodeURIComponent(techDisplayName(t))}')"><b>${techDisplayName(t)}</b> - ${getRoleFromDb(t)}</div>`).join("");
+   let list=document.getElementById("techList"); if(list) list.innerHTML=(data||[]).map(t=>`<div class="tech-chip" style="cursor:pointer" onclick="openTechDetail('${encodeURIComponent(techDisplayName(t))}')"><b>${escapeHTML(techDisplayName(t))}</b> - ${escapeHTML(getRoleFromDb(t))}</div>`).join("");
 }
   async function openTechDetail(enc){
   let name=decodeURIComponent(enc);
@@ -804,21 +859,21 @@ let myJobs = jobs.filter(function(j){ return normTechKey(getJobTech(j))===normTe
   if(inCustody.length){
     for(let i=0;i<inCustody.length;i++){
       let s = inCustody[i].serial || inCustody[i].serial_number || inCustody[i].code || "";
-      custodyHtml += '<span style="background:#eef2ff;padding:4px 8px;border-radius:8px;font-size:12px;display:inline-block;margin:2px">'+s+'</span>';
+      custodyHtml += '<span style="background:#eef2ff;padding:4px 8px;border-radius:8px;font-size:12px;display:inline-block;margin:2px">'+escapeHTML(s)+'</span>';
     }
   } else { custodyHtml = '<span>مفيش أجهزة في العهدة</span>'; }
   let jobsHtml = "";
   if(myJobs.length){
     for(let i=0;i<Math.min(10, myJobs.length);i++){
       let j = myJobs[i];
-      jobsHtml += '<div style="border-bottom:1px solid #eee;padding:6px 0;font-size:13px">'+(j.customer_name||j.customer||"")+' - '+(j.serial||"")+' - '+(j.status||"")+'</div>';
+      jobsHtml += '<div style="border-bottom:1px solid #eee;padding:6px 0;font-size:13px">'+escapeHTML(j.customer_name||j.customer||"")+' - '+escapeHTML(j.serial||"")+' - '+escapeHTML(j.status||"")+'</div>';
     }
   } else { jobsHtml = 'مفيش شغل مسجل'; }
   let old=document.getElementById("techDetailModal"); if(old) old.remove();
   let m=document.createElement("div"); m.id="techDetailModal";
   m.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;display:flex;align-items:center;justify-content:center;padding:12px";
   m.innerHTML='<div style="background:#fff;width:100%;max-width:520px;max-height:85vh;overflow:auto;border-radius:14px;padding:16px">'
-    +'<div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">👨‍🔧 '+name+'</h3><button onclick="document.getElementById(\'techDetailModal\').remove()" style="background:#ff4757;color:#fff;border:0;border-radius:8px;padding:6px 12px">X</button></div>'
+    +'<div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">👨‍🔧 '+escapeHTML(name)+'</h3><button onclick="document.getElementById(\'techDetailModal\').remove()" style="background:#ff4757;color:#fff;border:0;border-radius:8px;padding:6px 12px">X</button></div>'
     +'<p><b>في العهدة:</b> '+inCustody.length+' جهاز</p>'
     +'<p><b>شغل مسجل:</b> '+myJobs.length+' شغلانة</p>'
     +'<button onclick="showTechJobs(\''+enc+'\')" style="width:100%;background:#4f46e5;color:#fff;border:0;border-radius:10px;padding:10px;font-weight:700;margin:8px 0">عرض شغله في القايمة تحت 👇</button>'
@@ -834,14 +889,15 @@ let myJobs = jobs.filter(function(j){ return normTechKey(getJobTech(j))===normTe
   window.techFilter = name;
   let list=document.getElementById("jobsList");
   if(!list) return;
-  let r=await supabaseClient.from("jobs").select("*");
-  let jobs=(r.data||[]).filter(function(j){ return normTechKey(getJobTech(j))===normTechKey(name); });
+  let jobs=[];
+  try{ jobs=(await getAllJobs()).filter(function(j){ return normTechKey(getJobTech(j))===normTechKey(name); }); }
+  catch(error){ alert("تعذر تحميل شغل الفني: "+error.message); return; }
   let banner=document.getElementById("techFilterBanner"); if(banner) banner.remove();
   banner=document.createElement("div"); banner.id="techFilterBanner";
   banner.style.cssText="background:#eef2ff;border:1px solid #4f46e5;border-radius:10px;padding:10px;margin:10px 0;display:flex;justify-content:space-between;align-items:center";
-    banner.innerHTML='<b>📋 شغل '+name+' - '+jobs.length+' شغلانة</b>'
+    banner.innerHTML='<b>📋 شغل '+escapeHTML(name)+' - '+jobs.length+' شغلانة</b>'
 +'<div style="display:flex;gap:8px;margin-top:8px">'
-+'<button onclick="openTransferModal(\''+name.replace(/\'/g,"")+'\')" style="flex:1;background:#dc2626;color:#fff;border:none;padding:10px;border-radius:8px;font-weight:bold">🔀 نقل الشغل</button>'
++'<button onclick="openTransferModal(\''+encodeURIComponent(name)+'\')" style="flex:1;background:#dc2626;color:#fff;border:none;padding:10px;border-radius:8px;font-weight:bold">🔀 نقل الشغل</button>'
 +'<button onclick="clearTechFilter()" style="flex:1;background:#eee;border:none;padding:10px;border-radius:8px">❌ إلغاء الفلتر</button>'
 +'</div>';
   list.parentNode.insertBefore(banner, list);
@@ -850,7 +906,7 @@ let myJobs = jobs.filter(function(j){ return normTechKey(getJobTech(j))===normTe
     for(let i=0;i<jobs.length;i++){
       let j=jobs[i];
      window._currentTechJobs = jobs;     
-      html+='<div style="background:#fff;border:1px solid #eee;border-radius:12px;padding:12px;margin-bottom:8px"><b>'+(j.customer_name||j.customer||"عميل")+'</b> - '+(j.serial||"")+'<br><span style="font-size:13px;color:#555">'+(j.status||"")+' | '+(j.governorate||j.address||"")+'</span></div>';
+      html+='<div style="background:#fff;border:1px solid #eee;border-radius:12px;padding:12px;margin-bottom:8px"><b>'+escapeHTML(j.customer_name||j.customer||"عميل")+'</b> - '+escapeHTML(j.serial||"")+'<br><span style="font-size:13px;color:#555">'+escapeHTML(j.status||"")+' | '+escapeHTML(j.governorate||j.address||"")+'</span></div>';
     }
   } else { html="<div>مفيش شغل مسجل للفني ده</div>"; }
   list.innerHTML=html;
@@ -948,7 +1004,7 @@ function renderJobs(){
   document.getElementById("cPending").innerText=mine.filter(j=>j.status!=="تم التسليم" && !["تأجيل","لم يتم الرد","رفض الزيارة"].includes(j.status)).length;
   document.getElementById("cProblem").innerText=mine.filter(j=>["تأجيل","لم يتم الرد","رفض الزيارة"].includes(j.status)).length;
   let show=jobs.slice(0, visibleCount);
-  list.innerHTML=show.map(j=>`<div class="job" onclick="openDetails('${j.id}')"><h3>${j.customer_name||""} - ${j.order||""}</h3><div style="font-weight:bold;color:#0b6cff">🆔 الكود: ${j.code||"—"}</div><div class="meta">📍 ${j.address||""}<br>📞 الأرضي: ${j.landline||""} | 📱 ${j.mobile||""}<br>👷 الفني: ${getJobTech(j)||""} | 📦 الجهاز: ${j.device||""}<br>🔢 السيريال: ${j.serial||"لسه"} | الحالة: <b>${j.status||"جديد"}</b><br>💬 ${j.comment||""}</div><span class="badge">${j.status||"جديد"}</span></div>`).join("") || `<p style="text-align:center">مفيش شغل هنا</p>`;
+  list.innerHTML=show.map(j=>`<div class="job" onclick="openDetails('${escapeAttr(j.id)}')"><h3>${escapeHTML(j.customer_name||"")} - ${escapeHTML(j.order||"")}</h3><div style="font-weight:bold;color:#0b6cff">🆔 الكود: ${escapeHTML(j.code||"—")}</div><div class="meta">📍 ${escapeHTML(j.address||"")}<br>📞 الأرضي: ${escapeHTML(j.landline||"")} | 📱 ${escapeHTML(j.mobile||"")}<br>👷 الفني: ${escapeHTML(getJobTech(j)||"")} | 📦 الجهاز: ${escapeHTML(j.device||"")}<br>🔢 السيريال: ${escapeHTML(j.serial||"لسه")} | الحالة: <b>${escapeHTML(j.status||"جديد")}</b><br>💬 ${escapeHTML(j.comment||"")}</div><span class="badge">${escapeHTML(j.status||"جديد")}</span></div>`).join("") || `<p style="text-align:center">مفيش شغل هنا</p>`;
   document.getElementById("loadMoreWrap").innerHTML= jobs.length>visibleCount ? `<button class="btn" onclick="visibleCount+=20;renderJobs()">عرض المزيد (${jobs.length-visibleCount} باقي)</button>` : "";
 }
 function onSearch(){ searchQ=document.getElementById("searchInput").value; renderJobs() }
@@ -977,7 +1033,7 @@ function openDetails(id){
   document.getElementById("details").style.display="block";
   document.getElementById("dTitle").innerText=j.customer_name||"";
   document.getElementById("dCustomer").innerText=j.customer_name||"";
-  document.getElementById("dMeta").innerHTML=`العنوان: ${j.address||""}<br>الأوردر: ${j.order||""}<br>الأرضي: ${j.landline||""}<br>الموبايل: ${j.mobile||""}<br>الفني: ${getJobTech(j)||""}<br>الجهاز: ${j.device||""}<br>الحالة: ${j.status||""}`;
+  document.getElementById("dMeta").innerHTML=`العنوان: ${escapeHTML(j.address||"")}<br>الأوردر: ${escapeHTML(j.order||"")}<br>الأرضي: ${escapeHTML(j.landline||"")}<br>الموبايل: ${escapeHTML(j.mobile||"")}<br>الفني: ${escapeHTML(getJobTech(j)||"")}<br>الجهاز: ${escapeHTML(j.device||"")}<br>الحالة: ${escapeHTML(j.status||"")}`;
   document.getElementById("dComment").innerText=j.comment||"";
   document.getElementById("dSerial").value=j.serial||"";
   renderPhotos(j);
@@ -990,7 +1046,7 @@ function renderPhotos(j){
   let slots=["وش الجهاز","ضهر الجهاز","الايصال والبطاقة"];
   box.innerHTML=slots.map((s,i)=>{
     let url=j["photo"+(i+1)];
-    return `<div class="imgbox" onclick="openPhotoCam(${i})">${url?`<img src="${url}" class="photoThumb" onclick="event.stopPropagation();showPhoto('${url}')">`:`📷 ${s}<br><small>دوس للتصوير</small>`}</div>`;
+    return `<div class="imgbox" onclick="openPhotoCam(${i})">${url?`<img src="${escapeAttr(url)}" class="photoThumb" onclick="event.stopPropagation();showPhoto(this.src)">`:`📷 ${escapeHTML(s)}<br><small>دوس للتصوير</small>`}</div>`;
   }).join("");
 }
 function showPhoto(url){ document.getElementById("photoModalImg").src=url; document.getElementById("photoModal").style.display="flex"; photoRot=0 }
@@ -1031,20 +1087,21 @@ async function confirmStatus(){
   alert("تم حفظ الحالة: "+st);
 }
 async function isSerialInWarehouse(serial){
-  serial = String(serial || '').trim();
+  serial=String(serial||"").trim();
   if(!serial) return false;
-  if(Array.isArray(allWarehouse) && allWarehouse.length){
-    const found = allWarehouse.some(w => String(w.serial || w.Serial || w.code || '').trim() === serial);
-    if(found) return true;
-  }
-  const { data } = await supabaseClient.from(WAREHOUSE_TABLE).select('serial').eq('serial', serial).maybeSingle();
+  if(Array.isArray(allWarehouse) && allWarehouse.some(w=>String(w.serial||w.Serial||w.code||"").trim()===serial)) return true;
+  const {data,error}=await supabaseClient.from(WAREHOUSE_TABLE).select("serial").eq("serial",serial).maybeSingle();
+  if(error) throw error;
   return !!data;
 }
   async function saveSerial(id){
   let j=allJobs.find(x=>String(x.id)===String(id)); if(!j) return;
   let serial=cleanSerial(document.getElementById("dSerial").value);
   if(!serial) return alert("اكتب السيريال الأول");
-    if(!(await isSerialInWarehouse(serial))) return alert("السيريال ده مش موجود في المخزن! راجع السيريال");
+    let serialExists;
+  try{ serialExists=await isSerialInWarehouse(serial); }
+  catch(error){ return alert("تعذر التحقق من السيريال بسبب مشكلة اتصال: "+error.message); }
+  if(!serialExists) return alert("السيريال ده مش موجود في المخزن! راجع السيريال");
   let up=j.up_down||upDownMap[id];
   let rec=j.recipient||recipientMap[id];
   if(!up) return alert("اختار Up / Down الأول");
@@ -1059,7 +1116,13 @@ async function isSerialInWarehouse(serial){
     if(r2.error) return alert("خطأ في الحفظ: "+r2.error.message);
   }
   Object.assign(j, payload);
-  await registerDeliveredInWarehouse(j, serial);
+  try{
+    await registerDeliveredInWarehouse(j, serial);
+  }catch(error){
+    await loadJobs();
+    alert("تم حفظ التسليم في الأوردر، لكن تحديث المخزن فشل. لازم مراجعة السيريال يدويًا. الخطأ: "+error.message);
+    closeDetails(); renderJobs(); return;
+  }
   await loadWarehouse();
   closeDetails(); renderJobs();
   let txt="تم التسليم ✅ - السيريال: "+serial+" - العميل: "+(j.customer_name||j.customer||"")+" - بتاريخ "+todayStr();
@@ -1196,49 +1259,67 @@ async function uploadSheetFast(){
   loadJobs();
 }
 async function loadArchive(){
-  let {data}=await supabaseClient.from(ARCHIVE_TABLE).select("*").order("created_at",{ascending:false}).limit(50000);
-  archivedJobs=data||[];
+  try{
+    let {data,error}=await supabaseClient.from(ARCHIVE_TABLE).select("*").order("created_at",{ascending:false}).limit(50000);
+    if(error) throw error;
+    archivedJobs=data||[];
+  }catch(error){
+    console.error("MISK: failed to load archive",error);
+    const box=document.getElementById("archiveList");
+    if(box && !archivedJobs.length) box.innerHTML=`<p style="text-align:center;color:#dc3545;padding:18px">تعذر تحميل الأرشيف. راجع الاتصال أو صلاحيات قاعدة البيانات.</p>`;
+    return;
+  }
   let sel=document.getElementById("archiveDate");
   if(sel){
     let dates=[...new Set(archivedJobs.map(a=>a.archive_date||fmtDate(a.created_at)))];
-    sel.innerHTML=`<option value="">كل الأيام</option>`+dates.map(d=>`<option value="${d}">${d}</option>`).join("");
+    sel.innerHTML=`<option value="">كل الأيام</option>`+dates.map(d=>`<option value="${escapeAttr(d)}">${escapeHTML(d)}</option>`).join("");
   }
     renderArchive();
 }
 async function archiveOldJobs(){
-  if(!userObj.isAdmin) return alert("الأدمن بس");
-  let date = document.getElementById("manualArchiveDate").value.trim() || todayStr();
+  if(!userObj || !userObj.isAdmin) return alert("الأدمن بس");
+  const date=document.getElementById("manualArchiveDate").value.trim()||todayStr();
   if(!allJobs.length) return alert("مفيش شغل عشان يترشف");
-  if(!confirm("هترشف كل الشغل اللي موجود دلوقتي ؟\nالعدد: " + allJobs.length + "\nوهيتنقل لأرشيف يوم " + date + " وهيتمسح من اليومي")) return;
-  let {data: ex} = await supabaseClient.from(ARCHIVE_TABLE).select("order").eq("archive_date", date).limit(10000);
-  let exSet = new Set((ex||[]).map(x => String(x.order)));
-  let toArchive = allJobs.filter(j => !exSet.has(String(j.order)));
-  if(!toArchive.length) return alert("الشغل ده مترشف قبل كده اصلا");
-  let rows = toArchive.map(j => ({
-    customer_name: j.customer_name, address: j.address, order: j.order,
-    landline: j.landline, mobile: j.mobile, code: j.code,
-    device: j.device, tech: getJobTech(j), tech_name: getJobTech(j),
-    status: j.status, serial: j.serial||"", comment: j.comment||"",
-    date: j.date||date, archive_date: date,
-        recipient: j.recipient||"", up_down: j.up_down||"", photo1: j.photo1||"", photo2: j.photo2||"", photo3: j.photo3||"", delivered_at: j.delivered_at||"", delivered_date: j.delivered_date||""
+  if(!confirm("هترشف كل الشغل اللي موجود دلوقتي ؟\nالعدد: "+allJobs.length+"\nوهيتنقل لأرشيف يوم "+date+" وهيتمسح من اليومي")) return;
+  let existingOrders=[]; let offset=0;
+  while(true){
+    const {data:page,error:readError}=await supabaseClient.from(ARCHIVE_TABLE).select("order").eq("archive_date",date).range(offset,offset+999);
+    if(readError) return alert("تعذر فحص الأرشيف قبل النقل: "+readError.message+"\nلم يتم حذف أي أوردر.");
+    const rows=page||[]; existingOrders=existingOrders.concat(rows);
+    if(rows.length<1000) break; offset+=1000;
+  }
+  const exSet=new Set(existingOrders.map(x=>String(x.order||"")));
+  const toArchive=allJobs.filter(j=>!j.order || !exSet.has(String(j.order)));
+  if(!toArchive.length) return alert("الشغل ده مترشف قبل كده بالفعل");
+  const rows=toArchive.map(j=>({
+    customer_name:j.customer_name,address:j.address,order:j.order,landline:j.landline,mobile:j.mobile,code:j.code,
+    device:j.device,tech:getJobTech(j),tech_name:getJobTech(j),status:j.status,serial:j.serial||"",comment:j.comment||"",
+    date:j.date||date,archive_date:date,recipient:j.recipient||"",up_down:j.up_down||"",
+    photo1:j.photo1||"",photo2:j.photo2||"",photo3:j.photo3||"",delivered_at:j.delivered_at||"",delivered_date:j.delivered_date||""
   }));
-  for(let i=0;i<rows.length;i+=500){
-    let chunk = rows.slice(i, i+500);
-    let {error} = await supabaseClient.from(ARCHIVE_TABLE).insert(chunk);
+  let archivedIds=[];
+  for(let i=0;i<rows.length;i+=250){
+    const chunk=rows.slice(i,i+250);
+    let {error}=await supabaseClient.from(ARCHIVE_TABLE).insert(chunk);
     if(error){
-      let chunk2 = chunk.map(({tech_name, ...rest}) => rest);
-      let r2 = await supabaseClient.from(ARCHIVE_TABLE).insert(chunk2);
-      if(r2.error){ alert("خطأ في الأرشفة: " + r2.error.message); return; }
+      const chunk2=chunk.map(({tech_name,...rest})=>rest);
+      const retry=await supabaseClient.from(ARCHIVE_TABLE).insert(chunk2);
+      if(retry.error){
+        alert("خطأ في الأرشفة: "+retry.error.message+"\nتم الاحتفاظ بالأوردرات في اليومي؛ راجع الأرشيف قبل إعادة المحاولة.");
+        return;
+      }
+    }
+    archivedIds=archivedIds.concat(toArchive.slice(i,i+chunk.length).map(j=>j.id));
+  }
+  for(let i=0;i<archivedIds.length;i+=250){
+    const {error}=await supabaseClient.from(TABLE).delete().in("id",archivedIds.slice(i,i+250));
+    if(error){
+      alert("الأرشفة تمت، لكن حذف بعض الأوردرات من اليومي فشل. البيانات محفوظة في الأرشيف واليومي؛ راجع التكرار. الخطأ: "+error.message);
+      await loadJobs(); await loadArchive(); return;
     }
   }
-  let ids = toArchive.map(j => j.id);
-  for(let i=0;i<ids.length;i+=500){
-    await supabaseClient.from(TABLE).delete().in("id", ids.slice(i, i+500));
-  }
-  alert("تمام ✅ اترشف " + toArchive.length + " أوردر ليوم " + date + " - واليومي بقى فاضي");
-  await loadJobs();
-  await loadArchive();
-
+  alert("تمت الأرشفة بنجاح ✅ عدد "+toArchive.length+" أوردر ليوم "+date);
+  await loadJobs(); await loadArchive();
 }
   function getArchiveRows(date){
   date = date || document.getElementById("archiveDate").value || todayStr();
@@ -1253,7 +1334,7 @@ function renderArchive(){
   // املى قايمة التواريخ
   let dates = [...new Set(all.map(a => a.archive_date || fmtDate(a.created_at)).filter(Boolean))].sort().reverse();
   let cur = sel.value;
-  sel.innerHTML = `<option value="">كل الأيام</option>` + dates.map(d => `<option value="${d}" ${d===cur?"selected":""}>${d}</option>`).join("");
+  sel.innerHTML = `<option value="">كل الأيام</option>` + dates.map(d => `<option value="${escapeAttr(d)}" ${d===cur?"selected":""}>${escapeHTML(d)}</option>`).join("");
 
   let date = cur || todayStr();
   let rows = getArchiveRows(date);
@@ -1266,7 +1347,7 @@ function renderArchive(){
   if(document.getElementById("aUpdated")) document.getElementById("aUpdated").innerText = updated;
   if(document.getElementById("aEmpty")) document.getElementById("aEmpty").innerText = empty;
   if(document.getElementById("archiveSummary")) document.getElementById("archiveSummary").innerText = `اليوم ${date} - الاجمالي: ${rows.length} | تم: ${done} | ابديت: ${updated} | فاضي: ${empty}`;
-    if(document.getElementById("archiveSheetsList")) document.getElementById("archiveSheetsList").innerHTML = rows.length ? rows.map((r,idx) => `<div style="font-size:13px;padding:8px;border-bottom:1px solid #eee">👤 ${r.customer_name||""} - ${r.order||""} | ${r.status||"جديد"} | ${r.serial||"لسه"}<div style="display:flex;gap:6px;margin-top:6px">${[r.photo1,r.photo2,r.photo3].filter(Boolean).map(p=>`<img src="${p}" onclick="window.open('${p}','_blank')" style="width:70px;height:70px;object-fit:cover;border-radius:8px;cursor:pointer;border:1px solid #ddd">`).join("")}</div><button onclick="shareArchiveTicket(${idx})" style="margin-top:6px;background:#25D366;color:#fff;border:0;padding:6px 12px;border-radius:8px;cursor:pointer">📤 شير التيكت بالصور</button></div>`).join("") : `<p style="text-align:center;color:#999">مفيش شغل في اليوم ده</p>`;
+    if(document.getElementById("archiveSheetsList")) document.getElementById("archiveSheetsList").innerHTML = rows.length ? rows.map((r,idx) => `<div style="font-size:13px;padding:8px;border-bottom:1px solid #eee">👤 ${escapeHTML(r.customer_name||"")} - ${escapeHTML(r.order||"")} | ${escapeHTML(r.status||"جديد")} | ${escapeHTML(r.serial||"لسه")}<div style="display:flex;gap:6px;margin-top:6px">${[r.photo1,r.photo2,r.photo3].filter(Boolean).map(p=>`<img src="${escapeAttr(p)}" onclick="window.open(this.src,'_blank')" style="width:70px;height:70px;object-fit:cover;border-radius:8px;cursor:pointer;border:1px solid #ddd">`).join("")}</div><button onclick="shareArchiveTicket(${idx})" style="margin-top:6px;background:#25D366;color:#fff;border:0;padding:6px 12px;border-radius:8px;cursor:pointer">📤 شير التيكت بالصور</button></div>`).join("") : `<p style="text-align:center;color:#999">مفيش شغل في اليوم ده</p>`;
 }
   async function shareArchiveTicket(idx){
   let date = document.getElementById("archiveDate").value || todayStr();
@@ -1511,6 +1592,8 @@ function tickClock(){
 }
 setInterval(tickClock, 1000); tickClock();
 window.addEventListener("load", ()=>{
+  // إزالة أي كلمة مرور قديمة محفوظة من إصدارات سابقة
+  localStorage.removeItem("misk_pass");
   let saved=localStorage.getItem("misk_user");
   if(saved){
     try{ userObj=JSON.parse(saved); afterLogin(); }catch(e){ localStorage.removeItem("misk_user") }
@@ -1554,7 +1637,7 @@ async function saveTechnician(){
 function silentRefreshNow(){
   if(!userObj) return;
   loadJobs(); loadWarehouse();
-  silentSec = 10;
+  silentSec=10;
 }
 function toggleAuto(){
   autoOn = !autoOn;
@@ -1575,6 +1658,7 @@ setInterval(()=>{
   if(silentSec <= 0){
     silentSec = 10;
     loadJobs();
+    loadWarehouse();
   }
 }, 1000);
 </script>
