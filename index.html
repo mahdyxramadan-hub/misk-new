@@ -547,5 +547,61 @@ async function doStatusSerialFromBox(){
 
 setTimeout(makeSerialActionBox, 1000);
 </script>
+ <script>
+// === أكورديون ذكي - كل قسم مقفول ويفتح لوحده ===
+function makeAccordion(){
+  if(document.getElementById("accStyle")) return;
+
+  // ستايل السهم
+  let st = document.createElement("style");
+  st.id = "accStyle";
+  st.innerHTML = `.acc-head{cursor:pointer!important;user-select:none}.acc-head::after{content:" ▼";font-size:14px}.acc-head.open::after{content:" ▲"}`;
+  document.head.appendChild(st);
+
+  // كل العناوين اللي عايزين نخليها أكورديون
+  let titles = ["التحكم في السيريال","اضافة شغل","المخزن","الفنيين","الأوردرات","العهدة","التحكم"];
+
+  document.querySelectorAll("h1,h2,h3,h4,div,b,button").forEach(head=>{
+    let txt = (head.innerText||"").trim();
+    // لو العنوان ده من اللي احنا عايزينهم، ولسه متعملش أكورديون
+    if(titles.some(t=> txt.includes(t)) && txt.length < 60 && !head.classList.contains("acc-head") && head.children.length < 3){
+      head.classList.add("acc-head");
+      // الجسم اللي بعد العنوان على طول هو اللي هنخفيه
+      let body = head.nextElementSibling;
+      // لو مفيش اخو، دور على الأب
+      if(!body) body = head.parentElement;
+      if(!body || body===head) return;
+
+      // اقفله في الأول، ما عدا أول واحد
+      body.style.display = "none";
+      body.classList.add("acc-body");
+
+      head.onclick = function(e){
+        e.stopPropagation();
+        let isOpen = body.style.display !== "none";
+        // اقفل كل الأجسام التانية الأول
+        document.querySelectorAll(".acc-body").forEach(b=> b.style.display="none");
+        document.querySelectorAll(".acc-head").forEach(h=> h.classList.remove("open"));
+        // لو كان مقفول افتحه، لو كان مفتوح سيبه مقفول
+        if(!isOpen){
+          body.style.display = "";
+          head.classList.add("open");
+          head.scrollIntoView({behavior:"smooth", block:"start"});
+        }
+      };
+    }
+  });
+
+  // رسالة فوق توضح
+  if(!document.getElementById("accHint")){
+    let hint = document.createElement("div");
+    hint.id = "accHint";
+    hint.style.cssText = "background:#fff3cd;padding:10px;text-align:center;font-weight:bold;border-radius:10px;margin:10px";
+    hint.innerText = "👆 دوس على أي عنوان عشان يفتح لوحده، والباقي هيقفل لوحده";
+    document.body.insertBefore(hint, document.body.firstChild);
+  }
+}
+setTimeout(makeAccordion, 800);
+</script>
 </body>
 </html>
