@@ -14,7 +14,6 @@
 body{margin:0;background:#f4f0fa;color:#111;padding-bottom:85px}
 button{cursor:pointer}
 .hidden{display:none}
-#jobsList.hidden,#warehouseList.hidden,#archiveFilter.hidden{display:none}
 input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:50px;font-size:15px}
 .hero-banner{width:100%;height:260px;overflow:hidden;position:relative;background:#111}
 .hero-banner img{width:100%;height:100%;object-fit:cover;display:block}
@@ -34,14 +33,10 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 .badge{display:inline-block;background:#eef;border-radius:20px;padding:3px 8px;font-size:11px;font-weight:800}
 .serial{width:100%;padding:13px;border:2px solid #4A0E68;border-radius:50px;text-align:center;font-size:16px;font-weight:800}
 .row{display:flex;gap:8px;margin-top:8px}.row button{flex:1;padding:13px;border-radius:50px;font-weight:800;border:0}
-.row button.saveBtn{background:#1aa34a;color:#fff}
-.row button.blueBtn{background:#0b7ed1;color:#fff}
-.row button.whiteBtn{background:#fff;color:#1aa34a;border:2px solid #1aa34a}
-.row button.orangeBtn{background:#ff7a00;color:#fff}
-.saveBtn{background:#1aa34a;color:#fff}
-.blueBtn{background:#0b7ed1;color:#fff}
-.whiteBtn{background:#fff;color:#1aa34a;border:2px solid #1aa34a}
-.orangeBtn{background:#ff7a00;color:#fff}
+.saveBtn{background:#1aa34a!important;color:#fff!important}
+.blueBtn{background:#0b7ed1!important;color:#fff!important}
+.whiteBtn{background:#fff!important;color:#1aa34a!important;border:2px solid #1aa34a!important}
+.orangeBtn{background:#ff7a00!important;color:#fff!important}
 .bigSave{width:100%;background:#1aa34a;color:#fff;border:0;padding:17px;border-radius:50px;font-weight:900;font-size:18px;margin-top:12px}
 .tabs{position:fixed;bottom:0;right:0;left:0;background:#fff;display:flex;border-top:1px solid #eee;padding:10px 0;z-index:10}
 .tabs div{flex:1;text-align:center;font-size:12px;color:#777}.tabs div.active{color:#4A0E68;font-weight:800}
@@ -66,15 +61,40 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 .admin-box.open .admin-box-head{background:#4A0E68;color:#fff}
 .warehouseCard{background:#fff;margin:0 12px 12px;border:2px solid #ff7a00;border-radius:16px;padding:14px}
 #techList{max-height:170px;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:8px;text-align:right}
-.tech-chip{background:#fff;border:1px solid #dbe4ff;border-radius:10px;padding:6px 7px;font-size:11px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#111}
-.tech-chip b{font-size:11px;color:#111}
-button.logout-small{background:#ff4757;color:#fff;border:0;padding:3px 9px;border-radius:12px;font-size:11px;width:auto;margin:0}
+.tech-chip{background:#fff;border:1px solid #dbe4ff;border-radius:10px;padding:6px 7px;font-size:11px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#111!important}
+.tech-chip b{font-size:11px;color:#111!important}
+.logout-small{background:#ff4757!important;color:#fff!important;border:0!important;padding:3px 9px!important;border-radius:12px!important;font-size:11px!important;width:auto!important;margin:0!important}
 @media(max-width:800px){.admin-layout{display:block}.admin-side{width:auto;position:static;margin:0 12px 12px}.hero-banner{height:210px}}
-#jobsList, #jobsContainer, #techJobsList, #jobsGrid, .jobs-list, .jobs-container, #jobs { display:grid; gap:12px; padding:0 12px; }
-#jobsList > *, #jobsContainer > *, #techJobsList > *, #jobsGrid > *, .jobs-list > *, .jobs-container > *, #jobs > * { margin:0; width:auto; max-width:none; }
-@media (min-width: 1024px){ #jobsList, #jobsContainer, #techJobsList, #jobsGrid, .jobs-list, .jobs-container, #jobs { grid-template-columns: repeat(4, 1fr); } }
-@media (min-width: 600px) and (max-width: 1023px){ #jobsList, #jobsContainer, #techJobsList, #jobsGrid, .jobs-list, .jobs-container, #jobs { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 599px){ #jobsList, #jobsContainer, #techJobsList, #jobsGrid, .jobs-list, .jobs-container, #jobs { grid-template-columns: 1fr; } }
+ /* لاب 4 أوردرات جنب بعض / موبايل 1 تحت بعض */
+#jobsList, #jobsContainer, #techJobsList, #jobsGrid, .jobs-list, .jobs-container, #jobs {
+  display: grid !important;
+  gap: 12px !important;
+}
+@media (min-width: 1024px){
+  #jobsList, #jobsContainer, #techJobsList, #jobsGrid, .jobs-list, .jobs-container, #jobs {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+  #jobsList > *, #jobsContainer > *, #techJobsList > *, #jobsGrid > *, .jobs-list > *, .jobs-container > *, #jobs > * {
+    width: auto !important;
+    margin: 0 !important;
+    max-width: none !important;
+  }
+}
+@media (min-width: 600px) and (max-width: 1023px){
+  #jobsList, #jobsContainer, #techJobsList, #jobsGrid, .jobs-list, .jobs-container, #jobs {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  #jobsList > *, #jobsContainer > *, #techJobsList > *, #jobsGrid > *, .jobs-list > *, .jobs-container > *, #jobs > * {
+    width: auto !important;
+    margin: 0 !important;
+    max-width: none !important;
+  }
+}
+@media (max-width: 599px){
+  #jobsList, #jobsContainer, #techJobsList, #jobsGrid, .jobs-list, .jobs-container, #jobs {
+    grid-template-columns: 1fr !important;
+  }
+}  
 </style>
 </head>
 <body>
@@ -127,12 +147,24 @@ button.logout-small{background:#ff4757;color:#fff;border:0;padding:3px 9px;borde
 <p id="archiveSummary" style="font-size:13px;color:#666;text-align:center"></p>
 <button onclick="exportArchive()" style="background:#00a651;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">⬇️ تحميل اليوم المختار اكسيل</button>
 </div>
-<div style="padding:0 12px">
-<input type="text" name="prevent_autofill_username" style="display:none">
-<input type="password" name="prevent_autofill_password" style="display:none">
-<input id="searchInput" type="search" inputmode="search" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" name="search_landline" data-lpignore="true" placeholder="بحث عن مهمة / رقم تسلسلي ..." oninput="onSearch()" style="background:#fff">
+  <div style="padding:0 12px">
+  <!-- دي خانات وهمية عشان الموبايل يتلخبط فيها ومايجيش ناحية البحث -->
+  <input type="text" name="prevent_autofill_username" style="display:none">
+  <input type="password" name="prevent_autofill_password" style="display:none">
+  <input id="searchInput" 
+    type="search" 
+    inputmode="search"
+    autocomplete="new-password"
+    autocorrect="off" 
+    autocapitalize="off" 
+    spellcheck="false"
+    name="search_landline"
+    data-lpignore="true"
+    placeholder="بحث عن مهمة / رقم تسلسلي ..." 
+    oninput="onSearch()" 
+    style="background:#fff">
 </div>
-<div id="uploadingBanner" style="display:none;background:#ff7b00;color:#fff;padding:10px;border-radius:12px;font-size:14px;font-weight:bold;text-align:center;margin:0 12px 10px">⏳ جاري رفع الصورة...</div>
+  <div id="uploadingBanner" style="display:none;background:#ff7b00;color:#fff;padding:10px;border-radius:12px;font-size:14px;font-weight:bold;text-align:center;margin:0 12px 10px">⏳ جاري رفع الصورة...</div>
 <div style="background:#fff;margin:0 12px 12px;border-radius:12px;padding:10px;font-size:13px;line-height:1.7">صور الـ 3 صور الاول: وش الجهاز + ضهر الجهاز + الايصال والبطاقة. وبعدين سيريال + Up / Down + المستلم. لو العميل مش موجود، دوس <b>حالة الزيارة</b> واختار تأجيل / لم يتم الرد / رفض الزيارة + كومنت.</div>
 <div id="jobsList"></div>
 <div id="warehouseList" class="hidden"></div>
@@ -161,43 +193,55 @@ button.logout-small{background:#ff4757;color:#fff;border:0;padding:3px 9px;borde
 </div>
 </div>
 <div class="admin-box open"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">➕ اضافة شغل <span>▼</span></div><div class="admin-box-body"><input id="a_customer" placeholder="اسم العميل" autocomplete="off"><input id="a_landline" placeholder="رقم التليفون الأرضي" inputmode="numeric" autocomplete="off"><input id="a_mobile" placeholder="رقم الموبايل" inputmode="numeric" autocomplete="off"><input id="a_code" placeholder="كود كام" autocomplete="off"><input id="a_address" placeholder="العنوان" autocomplete="off"><input id="a_order" placeholder="رقم الأوردر - Tel" autocomplete="off"><select id="a_device"><option value="">اختر الجهاز - ONU أو ONT</option><option value="ONU">ONU</option><option value="ONT">ONT</option></select><select id="a_tech"><option value="">اختر اسم الفني</option></select><button class="btn" onclick="addJob()">اضافة</button></div></div>
-<div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📦 المخزن <span>▼</span></div><div class="admin-box-body">
-<div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">➕ إضافة سيريال <span>▼</span></div><div class="admin-box-body">
-<input type="file" id="warehouseInput" accept=".xlsx,.xls,.csv">
-<button class="orangeBtn" onclick="uploadWarehouseSheet()" style="width:100%;padding:13px;border-radius:50px;border:0">📦 رفع شيت المخزن - بيحدث العهدة من خانة الفني</button><hr>
-<p style="font-weight:900;margin:0">📦 إدارة عهدة فني</p>
-<textarea id="custodyPasteSerials" placeholder="الصق السيريالات هنا .. كل سيريال في سطر - انسخ من الواتساب والصق" style="width:100%;height:90px;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc;font-size:14px"></textarea>
-<div id="custodyPastedList" style="background:#f5f5f5;border-radius:10px;padding:8px;margin-bottom:8px;font-size:13px;max-height:150px;overflow:auto"></div>
-<select id="custodyFromTech" onchange="showFromTechSerials()" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc"><option value="">-- من فني -- اختار --</option></select>
-<div id="fromTechSerials" style="background:#f5f5f5;border-radius:10px;padding:8px;margin-bottom:8px;font-size:13px;max-height:150px;overflow:auto"></div>
-<select id="custodyToTech" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc"><option value="">-- إلى فني -- اختار --</option></select>
-<div style="display:flex;gap:8px"><button onclick="transferTechCustody()" style="flex:1;padding:12px;border-radius:50px;border:0;background:#2196F3;color:#fff;font-weight:bold">نقل عهدة</button><button onclick="clearTechCustody()" style="flex:1;padding:12px;border-radius:50px;border:0;background:#e91e63;color:#fff">مسح عهدة فني</button></div>
-<p id="custodyMsg" style="font-size:13px"></p>
-<p id="warehouseUploadMsg" style="font-size:13px"></p>
-<p style="font-size:12px;color:#666">الأعمدة: A:sn - B:date - C:serial - D:date install - E:costmer phone - F:Model - G:Tech - H:Comment - بيقرا كل ورق المحافظات.</p>
-<div id="warehouseSummary" style="font-size:13px;margin-top:8px"></div>
-<div id="warehousePreview" style="font-size:12px"></div><hr>
-<p style="font-weight:bold;margin:0">إضافة سيريال واحد</p>
-<input id="oneSerial" placeholder="السيريال" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
-<div style="position:relative">
-<input id="oneTechSearch" placeholder="اكتب اسم الفني أو اختار من القايمة ▼" autocomplete="off" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
-<div id="techDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;max-height:220px;overflow-y:auto;background:#fff;border:1px solid #ccc;border-radius:10px;z-index:999;box-shadow:0 4px 12px rgba(0,0,0,0.15)"></div>
+  <div class="admin-box">
+  <div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📦 المخزن <span>▼</span></div>
+  <div class="admin-box-body">
+    <div class="admin-box">
+      <div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">➕ إضافة سيريال <span>▼</span></div>
+      <div class="admin-box-body">
+        <input type="file" id="warehouseInput" accept=".xlsx,.xls,.csv">
+         <button class="orangeBtn" onclick="uploadWarehouseSheet()" style="width:100%;padding:13px;border-radius:50px;border:0">📦 رفع شيت المخزن - بيحدث العهدة من خانة الفني</button>
+        <hr>
+<p style="font-weight:900;margin:0">🔄 إدارة عهدة فني</p>
+<input id="custodyFromTech" placeholder="من فني - مثال: عز الدين" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
+<input id="custodyToTech" placeholder="إلى فني - مثال: الاباصيري - سيبه فاضي لو هتمسح" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
+<div style="display:flex;gap:8px">
+<button onclick="transferTechCustody()" style="flex:1;padding:12px;border-radius:50px;border:0;background:#0b7ed1;color:#fff;font-weight:800">🔄 نقل عهدة فني لفني</button>
+<button onclick="clearTechCustody()" style="flex:1;padding:12px;border-radius:50px;border:0;background:#dc3545;color:#fff;font-weight:800">🗑️ مسح عهدة فني</button>
 </div>
-<input id="oneModel" placeholder="الموديل (اختياري)" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
-<input id="onePhone" placeholder="رقم العميل (اختياري)" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
-<input id="oneGov" placeholder="المحافظة (اختياري)" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
-<button onclick="addOneSerial()" style="width:100%;padding:13px;border-radius:50px;border:0;background:#222;color:#fff">✅ إضافة السيريال ده للفني</button>
-<p id="oneSerialMsg" style="font-size:13px"></p>
-</div></div><hr>
-<input type="file" id="masterFile" accept=".xlsx,.csv" style="display:none" onchange="uploadMasterUsersExact(event)">
-<button onclick="document.getElementById('masterFile').click()" style="width:100%;padding:13px;border-radius:50px;border:0;background:#222;color:#fff">👥 رفع الشيت الموحد زي ما هو</button>
-<p id="masterUploadMsg" style="font-size:13px"></p>
-</div></div>
-<div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📂 رفع شيت الشغل <span>▼</span></div><div class="admin-box-body"><input type="file" id="sheetInput" accept=".xlsx,.xls,.csv" multiple><button class="orangeBtn" onclick="uploadSheetFast()" style="width:100%;padding:13px;border-radius:50px;border:0">🚀 رفع شيتات الشغل</button><div id="prog" style="height:18px;background:#eee;border-radius:10px;overflow:hidden;margin:8px 0;display:none"><div id="progBar" style="height:100%;width:0%;background:#1aa34a"></div></div><p id="uploadMsg"></p></div></div>
+<p id="custodyMsg" style="font-size:13px"></p>
+        <p id="warehouseUploadMsg" style="font-size:13px"></p>
+        <p style="font-size:12px;color:#666">الأعمدة: A:sn - B:date - C:serial - D:date install - E:costmer phone - F:Model - G:Tech - H:Comment - بيقرا كل ورق المحافظات.</p>
+        <div id="warehouseSummary" style="font-size:13px;margin-top:8px"></div>
+        <div id="warehousePreview" style="font-size:12px"></div>
+        <hr>
+        <p style="font-weight:bold;margin:0">إضافة سيريال واحد</p>
+        <input id="oneSerial" placeholder="السيريال" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
+        <div style="position:relative">
+  <input id="oneTechSearch" placeholder="اكتب اسم الفني أو اختار من القايمة ▼" autocomplete="off" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
+  <div id="techDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;max-height:220px;overflow-y:auto;background:#fff;border:1px solid #ccc;border-radius:10px;z-index:999;box-shadow:0 4px 12px rgba(0,0,0,0.15)"></div>
+</div>
+        <input id="oneModel" placeholder="الموديل (اختياري)" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
+        <input id="onePhone" placeholder="رقم العميل (اختياري)" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
+        <input id="oneGov" placeholder="المحافظة (اختياري)" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
+        <button onclick="addOneSerial()" style="width:100%;padding:13px;border-radius:50px;border:0;background:#222;color:#fff">✅ إضافة السيريال ده للفني</button>
+        <p id="oneSerialMsg" style="font-size:13px"></p>
+      </div>
+    </div>
+    <hr>
+    <input type="file" id="masterFile" accept=".xlsx,.csv" style="display:none" onchange="uploadMasterUsersExact(event)">
+    <button onclick="document.getElementById('masterFile').click()" style="width:100%;padding:13px;border-radius:50px;border:0;background:#222;color:#fff">👥 رفع الشيت الموحد زي ما هو</button>
+    <p id="masterUploadMsg" style="font-size:13px"></p>
+  </div>
+</div>
+  <div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📂 رفع شيت الشغل <span>▼</span></div><div class="admin-box-body"><input type="file" id="sheetInput" accept=".xlsx,.xls,.csv" multiple><button class="orangeBtn" onclick="uploadSheetFast()" style="width:100%;padding:13px;border-radius:50px;border:0">🚀 رفع شيتات الشغل</button><div id="prog" style="height:18px;background:#eee;border-radius:10px;overflow:hidden;margin:8px 0;display:none"><div id="progBar" style="height:100%;width:0%;background:#1aa34a"></div></div><p id="uploadMsg"></p></div></div>
 <div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📦 أرشفة - إنهاء اليوم <span>▼</span></div><div class="admin-box-body"><input type="text" id="manualArchiveDate" placeholder="مثال: 18-11-2026 - سيبه فاضي وهياخد تاريخ النهاردة"><button onclick="archiveOldJobs()" style="background:#9333ea;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">📦 أرشفة اليوم ده</button><button onclick="downloadEndOfDay()" style="background:#00a651;color:#fff;width:100%;padding:13px;border-radius:50px;border:0;margin-top:8px">📥 تحميل فولدر اليوم - شيتين على اللاب توب</button><p style="font-size:12px;color:#666">الفولدر بتاريخ اليوم جواه: شيت تم التسليم + شيت تأجيل / أبديت</p></div></div>
 <div class="admin-box"><div class="admin-box-head" style="background:#fff0f0" onclick="this.parentElement.classList.toggle('open')">🗑️ مسح أوردر واحد / مسح أرضي <span>▼</span></div><div class="admin-box-body"><input id="delOrderId" placeholder="رقم الأوردر - ID"><button onclick="deleteOneJob()" style="background:#dc3545;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">🗑️ مسح الأوردر ده</button><button onclick="deleteLandlineOnly()" style="background:#ff7a00;color:#fff;width:100%;padding:13px;border-radius:50px;border:0;margin-top:8px">🗑️ مسح الرقم الأرضي بس من الأوردر ده</button><p style="font-size:12px;color:#666">الأدمن بس - ومفيش مسح كل حاجة ولا ريسترة هنا</p></div></div>
-<div id="superDeleteBox" class="admin-box" style="display:none"><div class="admin-box-head" style="background:#7f0000;color:#fff" onclick="this.parentElement.classList.toggle('open')">🚨 SUPER ADMIN - مسح الشغل والأرشيف <span>▼</span></div><div class="admin-box-body"><p style="font-size:13px;color:#dc3545;font-weight:900">ده بيمسح الشغل + الأرشيف بس. المخزن مش هيتمسح. مفيش رجوع.</p><button onclick="deleteAllDataSuper()" style="background:#7f0000;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">🚨 مسح الشغل والأرشيف - Super Admin بس</button></div></div>
-</div></div></div></div>
+  <div id="superDeleteBox" class="admin-box" style="display:none"><div class="admin-box-head" style="background:#7f0000;color:#fff" onclick="this.parentElement.classList.toggle('open')">🚨 SUPER ADMIN - مسح الشغل والأرشيف <span>▼</span></div><div class="admin-box-body"><p style="font-size:13px;color:#dc3545;font-weight:900">ده بيمسح الشغل + الأرشيف بس. المخزن مش هيتمسح. مفيش رجوع.</p><button onclick="deleteAllDataSuper()" style="background:#7f0000;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">🚨 مسح الشغل والأرشيف - Super Admin بس</button></div></div>
+</div>
+</div>
+</div>
+</div>
 <div class="tabs" id="bottomNav">
 <div class="active" onclick="showTab('all',this)"><span style="font-size:20px;display:block">🏠</span>الرئيسية</div>
 <div onclick="showTab('pending',this)"><span style="font-size:20px;display:block">📋</span>المهام</div>
@@ -222,6 +266,7 @@ button.logout-small{background:#ff4757;color:#fff;border:0;padding:3px 9px;borde
 <div id="photoCamModal"><div class="box"><h3 id="photoCamTitle">📷 صور وش الجهاز</h3><p id="photoCamMsg" style="font-weight:bold">هتصور ازاي؟ اختار:</p><button style="background:#007bff;color:#fff" onclick="capturePhoto()">📷 صوّر بالكاميرا - كاميرا التليفون</button><button style="background:#ff7a00;color:#fff" onclick="openPhotoFile()">🖼️ اختار من الاستوديو</button><button style="background:#333;color:#fff" onclick="closePhotoCam()">✖️ اقفل من غير حفظ</button></div></div>
 <div id="sendLockModal"><div class="box" style="max-width:420px"><h2 style="margin:0">🔒 مطلوب منك عشان تكمل</h2><p id="lockCustomer" style="font-weight:bold"></p><div id="lockNetWarn" style="background:#ffe6e6;border:1px solid #dc3545;color:#dc3545;padding:10px;border-radius:12px;font-size:14px;font-weight:bold;margin:8px 0;display:none">⚠️ مفيش نت عندك - الرسالة متحفظة - اول ما النت يرجع ابعتها</div><p id="lockStatus" style="font-size:14px;line-height:1.8"></p><button id="btnSendBoth" style="background:#25D366;color:#fff" onclick="sendToFollowerOnly()">👤 ارسال للمتابع - واتساب ماسنجر + الصور</button><p style="font-size:12px;color:#666">هيفتح مشاركة فيها النص + الـ 3 صور جاهزين - اختار واتساب ماسنجر ودوس ارسال</p><div id="lockConfirmBox" style="display:none;background:#fff7e6;border:1px solid #ff7b00;border-radius:12px;padding:12px;margin-top:8px"><p id="lockConfirmText" style="font-weight:bold;margin:0 0 8px"></p><div class="row"><button onclick="confirmSendYes()" style="background:#00a651;color:#fff">✅ ايوه بعت للمتابع</button><button onclick="confirmSendNo()" style="background:#dc3545;color:#fff">❌ لا لسه</button></div></div><button onclick="closeLockBack()" style="background:#333;color:#fff;margin-top:14px">⬅️ رجوع - هبعت بعدين</button></div></div>
 <div id="istighfarOverlay" style="position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:30000;display:none;align-items:center;justify-content:center;text-align:center;padding:20px"><div style="background:#071126;border:2px solid #22c55e;border-radius:20px;padding:24px;max-width:420px;width:100%"><div style="font-size:42px">🤲</div><h2 id="istTitle" style="color:#fff;margin:8px 0">أستغفر الله العظيم</h2><p id="istText" style="color:#cfe3ff;line-height:1.8">أستغفر الله العظيم الذي لا إله إلا هو الحي القيوم وأتوب إليه<br><span id="istCount" style="font-size:28px;font-weight:900;color:#22c55e">10</span></p><p style="color:#8aa3c7;font-size:12px">ثواني ونكمل...</p></div></div>
+</div>
 <div id="azkarModal"><div class="box" style="text-align:right;max-height:88vh;overflow-y:auto"><h3 style="margin:0 0 10px">📖 الأذكار وحصن المسلم</h3><div id="azkarFull" style="line-height:2;font-size:15px"></div><button onclick="closeAzkar()" style="background:#333;color:#fff">✖️ اقفل</button></div></div>
 <div id="passModal"><div class="box"><h3 style="margin:0 0 8px">🔐 تريد تغيير الباسورد؟</h3><p style="font-size:14px;line-height:1.7">لو حابب تغير الباسورد بتاعك، اكتب الجديد هنا. لو مش حابب دوس تخطي.</p><input id="newPassInput" type="password" placeholder="الباسورد الجديد"><button onclick="doChangePass()" style="background:#00a651;color:#fff">✅ تغيير الباسورد</button><button onclick="closePassModal()" style="background:#333;color:#fff">⏭️ تخطي - مش عايز أغير</button></div></div>
 <script>
@@ -238,347 +283,1245 @@ let silentSec = 10;
 let autoOn = true;
 let heroIdx = 0;
 let heroImgs = ["server1.jpg","server2.jpg","server3.jpg","server4.jpg"];
-function rotateHero(){ let img = document.getElementById("serverRotator"); if(!img) return; heroIdx = (heroIdx+1) % heroImgs.length; img.src = heroImgs[heroIdx]; }
+function rotateHero(){
+  let img = document.getElementById("serverRotator");
+  if(!img) return;
+  heroIdx = (heroIdx+1) % heroImgs.length;
+  img.src = heroImgs[heroIdx];
+}
 setInterval(rotateHero, 4000);
-document.getElementById("serverRotator")?.addEventListener("error", function(){ this.src = "server1.jpg"; });
+document.getElementById("serverRotator")?.addEventListener("error", function(){
+  this.src = "server1.jpg";
+});
 function norm(s){return String(s||"").trim().toLowerCase().replace(/[\u064B-\u0652]/g,"").replace(/أ|إ|آ/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/\s+/g," ")}
 function normTechKey(name){ return norm(name).replace(/[^a-z0-9\u0600-\u06FF]/g,"") }
 function cleanSerial(s){ return String(s||"").trim().toUpperCase().replace(/[^A-Z0-9]/g,"") }
 function fmtDate(d){ const x=new Date(d); if(isNaN(x)) return ""; return String(x.getDate()).padStart(2,"0")+"-"+String(x.getMonth()+1).padStart(2,"0")+"-"+x.getFullYear() }
 function todayStr(){ return fmtDate(new Date()) }
-function parseSheetDate(v){ if(!v) return ""; if(typeof v==="number"){ const d=new Date(Math.round((v-25569)*86400*1000)); return fmtDate(d) } let s=String(v).trim(); let m=s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/); if(m){ let y=+m[3]; if(y<100) y+=2000; return String(m[1]).padStart(2,"0")+"-"+String(m[2]).padStart(2,"0")+"-"+y } let d=new Date(s); if(!isNaN(d)) return fmtDate(d); return s; }
-function daysBetween(dateStr){ if(!dateStr) return 9999; let p=dateStr.split("-"); if(p.length!==3) return 9999; let d=new Date(+p[2], +p[1]-1, +p[0]); if(isNaN(d)) return 9999; return Math.floor((new Date().setHours(0,0,0,0)-d.getTime())/86400000); }
+function parseSheetDate(v){
+  if(!v) return "";
+  if(typeof v==="number"){ const d=new Date(Math.round((v-25569)*86400*1000)); return fmtDate(d) }
+  let s=String(v).trim();
+  let m=s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+  if(m){ let y=+m[3]; if(y<100) y+=2000; return String(m[1]).padStart(2,"0")+"-"+String(m[2]).padStart(2,"0")+"-"+y }
+  let d=new Date(s); if(!isNaN(d)) return fmtDate(d);
+  return s;
+}
+function daysBetween(dateStr){
+  if(!dateStr) return 9999;
+  let p=dateStr.split("-"); if(p.length!==3) return 9999;
+  let d=new Date(+p[2], +p[1]-1, +p[0]); if(isNaN(d)) return 9999;
+  return Math.floor((new Date().setHours(0,0,0,0)-d.getTime())/86400000);
+}
 function getVal(id){ return (document.getElementById(id)?.value || "").trim() }
 function techDisplayName(t){ return (t.name || t.username || "").trim() }
 function getJobTech(j){ return (j.tech || j.tech_name || j.Tech || "").trim() }
-function getRoleFromDb(t){ let r = String(t.role||"").trim().toLowerCase(); if(r==="super_admin"||r==="superadmin"||r==="super admin") return "super_admin"; if(r==="admin") return "admin"; if(r==="tech"||r==="technician") return "tech"; let n = norm(t.name||"")+" "+norm(t.username||""); if(n.includes("admin")||n.includes("ادمن")) return "admin"; return "tech"; }
-async function getAllJobs(){ let all = []; let from = 0; while(true){ let r = await supabaseClient.from(TABLE).select("*").range(from, from + 999); let data = r.data || []; all = all.concat(data); if(data.length < 1000) break; from += 1000; } return all; }
+function getRoleFromDb(t){
+  let r = String(t.role||"").trim().toLowerCase();
+  if(r==="super_admin"||r==="superadmin"||r==="super admin") return "super_admin";
+  if(r==="admin") return "admin";
+  if(r==="tech"||r==="technician") return "tech";
+  let n = norm(t.name||"")+" "+norm(t.username||"");
+  if(n.includes("admin")||n.includes("ادمن")) return "admin";
+  return "tech";
+}
+    async function getAllJobs(){
+  let all = [];
+  let from = 0;
+  while(true){
+    let r = await supabaseClient.from(TABLE).select("*").range(from, from + 999);
+    let data = r.data || [];
+    all = all.concat(data);
+    if(data.length < 1000) break;
+    from += 1000;
+  }
+  return all;
+}
 function myJobsBase(){ if(!userObj) return []; if(userObj.isAdmin) return [...allJobs]; return allJobs.filter(j=> normTechKey(getJobTech(j))===normTechKey(userObj.name)); }
-async function insertJobSafe(payload){ let r1 = await supabaseClient.from(TABLE).insert(payload); if(!r1.error) return r1; let p2 = {...payload}; delete p2.tech_name; let r2 = await supabaseClient.from(TABLE).insert(p2); if(!r2.error) return r2; let p3 = {...payload}; delete p3.tech; let r3 = await supabaseClient.from(TABLE).insert(p3); return r3; }
-async function login(e){ if(e) e.preventDefault(); let u = document.getElementById('user').value.trim().toLowerCase(); let p = document.getElementById('pass').value.trim(); let msgEl = document.getElementById('loginMsg'); if(msgEl) msgEl.innerText = 'جاري...'; try{ let res = await supabaseClient.from('technicians').select('*'); if(res.error || !res.data){ if(msgEl) msgEl.innerText = 'خطأ: ' + (res.error ? res.error.message : 'مفيش داتا'); return false; } let found = res.data.find(t => { let userInDb = String(t.username || '').trim().toLowerCase(); let nameInDb = String(t.name || '').trim().toLowerCase().replace(/[\s_]+/g,''); let phoneInDb = String(t.phone || '').trim(); let inputClean = u.replace(/[\s_]+/g,''); let passInDb = String(t.password || '').trim(); let userMatch = (userInDb === u) || (nameInDb === inputClean) || (userInDb.replace(/[\s_]+/g,'') === inputClean) || (phoneInDb === u); return userMatch && passInDb === p; }); if(!found){ if(msgEl) msgEl.innerText = 'الاسم مش موجود'; return false; } let display = techDisplayName(found); let role = getRoleFromDb(found); let isAdmin = (role==="admin"||role==="super_admin"); userObj = {id: found.id, username: found.username, name: display, role: role, isAdmin: isAdmin, isSuper: role==="super_admin"}; localStorage.setItem('misk_user', JSON.stringify(userObj)); localStorage.setItem('misk_pass', p); afterLogin(); }catch(err){ if(msgEl) msgEl.innerText = 'خطأ: ' + err.message; console.log(err); } return false; }
-function afterLogin(){ let lp = document.getElementById("loginPage"); if(lp) lp.classList.add("hidden"); let ap = document.getElementById("appPage"); if(ap) ap.classList.remove("hidden"); let w = document.getElementById("welcome"); let ti = document.getElementById("techInfo"); let isAdmin = userObj.isAdmin; let isSuper = userObj.role === 'super_admin'; let displayName = (userObj.name || userObj.username || "Mahdy").trim(); if (w) w.innerText = "أهلاً " + displayName; if (ti) { if (isSuper) ti.innerText = "Super Admin - " + displayName; else if (isAdmin) ti.innerText = "ادمن - " + displayName; else ti.innerText = "فني - " + displayName; } let aa = document.getElementById("adminAdd"); if(aa) aa.classList.toggle("hidden", !isAdmin); let an = document.getElementById("archiveNav"); if(an) an.style.display = isAdmin ? "" : "none"; let sdb = document.getElementById("superDeleteBox"); if(sdb) sdb.style.display = isSuper ? "block" : "none"; if(isAdmin) loadTechNames(); loadJobs(); loadWarehouse(); loadArchive(); let pm = document.getElementById("passModal"); if(pm && !localStorage.getItem("misk_pass_changed_"+userObj.username)) pm.style.display="flex"; }
-function logout(){ Object.keys(localStorage).forEach(k=>{ if(k.startsWith("misk_")) localStorage.removeItem(k); }); sessionStorage.clear(); location.reload(); }
-async function doChangePass(){ let np=document.getElementById("newPassInput").value.trim(); if(!np) return alert("اكتب الباسورد الجديد"); let {error} = await supabaseClient.from("technicians").update({password:np}).eq("id", userObj.id); if(error) return alert("خطأ: "+error.message); localStorage.setItem("misk_pass_changed_"+userObj.username,"1"); localStorage.setItem("misk_pass", np); closePassModal(); alert("تم تغيير الباسورد"); }
-function closePassModal(){ document.getElementById("passModal").style.display="none" }
-async function loadWarehouse(){ let {data}=await supabaseClient.from(WAREHOUSE_TABLE).select("*").order("created_at",{ascending:false}).limit(20000); allWarehouse=data||[]; renderWarehouse(); }
-function myWarehouse(){ if(userObj.isAdmin) return allWarehouse; return allWarehouse.filter(w=> normTechKey(w.tech)===normTechKey(userObj.name) && !String(w.customer_phone||"").trim() && !String(w.date_install||"").trim()); }
-function renderWarehouse(){ let mine=myWarehouse(); let delivered=allWarehouse.filter(w=> String(w.customer_phone||"").trim() || String(w.date_install||"").trim()); let el=document.getElementById("warehouseSummary"); if(el) el.innerText = userObj.isAdmin ? `إجمالي المخزن: ${allWarehouse.length} - في العهدة: ${allWarehouse.length-delivered.length} - متسلم: ${delivered.length}` : `عهدتك: ${mine.length} جهاز - اللي معاك بس، المتسلم اتشال من عندك`; let old=mine.filter(w=> daysBetween(w.date_received||w.date||"")>=60); let box=document.getElementById("stockAlerts"); if(box){ if(old.length){ box.innerHTML=`<div style="background:#fff3cd;border:2px solid #ff7a00;margin:0 12px 12px;border-radius:16px;padding:14px"><h3 style="margin:0">⚠️ جرد - أجهزة بقالها 60 يوم ومركبتش (${old.length})</h3>`+old.map(w=>`<div style="font-size:13px;line-height:2">🔴 سيريال <b>${w.serial}</b> - متسلم بتاريخ <b>${w.date_received||w.date||""}</b> - لم يتم التركيب حتى الآن - الفني: ${w.tech||""} - ${w.comment||""}</div>`).join("")+`</div>`; } else box.innerHTML=""; } let prev=document.getElementById("warehousePreview"); if(prev) prev.innerHTML=mine.slice(0,5).map(w=>`<div style="font-size:12px;line-height:2">📦 ${w.serial} - ${w.model||""} - ${w.tech||""} - ${w.date_received||""}</div>`).join("")+(mine.length>5?`<div style="font-size:12px">... و ${mine.length-5} جهاز تاني</div>`:""); if(activeTab==="warehouse") renderWarehouseList(); }
-let warehouseTab='all_pending';
-let warehouseSearch='';
-function renderWarehouseList(){ let box=document.getElementById("warehouseList"); if(!box) return; let saved = null; try{ saved = JSON.parse(localStorage.getItem('misk_user') || 'null'); }catch(e){ saved = null; } let myName = (saved && saved.name) || (typeof userObj !== 'undefined' && userObj && userObj.name) || ''; let myUsername = (saved && saved.username) || (typeof userObj !== 'undefined' && userObj && userObj.username) || ''; let isAdmin = (saved && (saved.isAdmin === true || saved.role === 'admin' || saved.role === 'super_admin')) || (typeof userObj !== 'undefined' && userObj && (userObj.isAdmin === true || userObj.role === 'admin' || userObj.role === 'super_admin')); let baseWarehouse = allWarehouse; if(!isAdmin){ if(!myName && !myUsername){ baseWarehouse = []; } else { baseWarehouse = allWarehouse.filter(w => { let t = String(w.tech || '').trim().toLowerCase(); return t === String(myName).trim().toLowerCase() || (myUsername && t === String(myUsername).trim().toLowerCase()); }); } } window._warehouseForExcel = baseWarehouse; let allStock=baseWarehouse.filter(w=> !String(w.customer_phone||"").trim() && !String(w.date_install||"").trim()); let allDone=baseWarehouse.filter(w=> String(w.customer_phone||"").trim() || String(w.date_install||"").trim()); if(warehouseSearch.trim()){ let s = warehouseSearch.trim(); allDone=allDone.filter(w=> String(w.customer_phone||"").includes(s) || String(w.serial||"").includes(s) || String(w.tech||"").includes(s)); allStock=allStock.filter(w=> String(w.serial||"").includes(s) || String(w.tech||"").includes(s)); } if(warehouseTab==='stock'||warehouseTab==='delivered') warehouseTab='all_pending'; let listToShow = warehouseTab==='all_done' ? allDone : allStock; box.innerHTML=`<h3 style="padding:0 12px">📦 المخزن (${baseWarehouse.length})</h3><div style="display:flex;gap:8px;padding:0 12px;flex-wrap:wrap"><button onclick="warehouseTab='all_pending';renderWarehouseList()" style="flex:1;padding:12px;border-radius:10px;background:${warehouseTab==='all_pending'?'#7c3aed;color:#fff':'#f3e8ff'}">لم يتم تركيبه - ${allStock.length}</button><button onclick="warehouseTab='all_done';renderWarehouseList()" style="flex:1;padding:12px;border-radius:10px;background:${warehouseTab==='all_done'?'#7c3aed;color:#fff':'#f3e8ff'}">تم تركيبه - ${allDone.length}</button></div><button onclick="downloadWarehouseExcel()" style="width:calc(100% - 24px);margin:10px 12px;padding:12px;border-radius:10px;border:0;background:#111;color:#fff;font-weight:800">⬇️ تحميل شيت اكسيل</button><input placeholder="دور برقم الأرضي أو السيريال أو اسم الفني..." value="${String(warehouseSearch).replace(/"/g,'&quot;')}" oninput="warehouseSearch=this.value;renderWarehouseList()" style="width:calc(100% - 24px);margin:10px 12px;padding:10px;border-radius:10px;border:1px solid #ccc"><div style="padding:0 12px">${listToShow.map(w=>`<div class="warehouseCard" style="border:1px solid #ddd;border-radius:12px;padding:10px;margin-bottom:8px"><b>${w.serial||''}</b> - ${w.model||''}<br>الفني: ${w.tech||''} | المحافظة: ${w.province||''}<br>${warehouseTab==='all_done' ? `العميل: ${w.customer_name||''}<br>رقم العميل (أرضي): ${w.customer_phone||''}<br>تاريخ التركيب: ${w.date_install||''}` : `تاريخ الاستلام: ${w.date_received||''} - الحالة: لم يتم تركيبه`}</div>`).join('') || '<p style="text-align:center;opacity:.6">مفيش حاجة هنا</p>'}</div>`; }
-function downloadWarehouseExcel(){ if(!allWarehouse.length) return alert("مفيش داتا في المخزن"); let rows = allWarehouse.map(w=>({ السيريال: w.serial||"", الفني: w.tech||"", الموديل: w.model||"", المحافظة: w.province||"", الحالة: (String(w.customer_phone||"").trim() || String(w.date_install||"").trim()) ? "تم تركيبه" : "لم يتم تركيبه", اسم_العميل: w.customer_name||"", رقم_العميل: w.customer_phone||"", تاريخ_الاستلام: w.date_received||"", تاريخ_التركيب: w.date_install||"" })); let ws=XLSX.utils.json_to_sheet(rows); let wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "المخزن"); XLSX.writeFile(wb, `المخزن-${todayStr()}.xlsx`); }
-async function uploadWarehouseSheet(){ let f=document.getElementById("warehouseInput").files[0]; if(!f) return alert("اختار ملف المخزن الأول"); if(!userObj.isAdmin) return alert("الأدمن بس اللي بيرفع المخزن"); document.getElementById("warehouseUploadMsg").innerText="جاري القراءة - كل ورق المحافظات..."; let buf=await f.arrayBuffer(); let wb=XLSX.read(buf,{type:"array"}); let fileProv = f.name.replace(/\.xlsx?|\.csv/gi,"").trim(); let rowsMap = new Map(); wb.SheetNames.forEach(sn=>{ let ws=wb.Sheets[sn]; let arr=XLSX.utils.sheet_to_json(ws,{header:1,defval:""}); arr.forEach((r,i)=>{ if(i===0) return; let serial=cleanSerial(r[2]); if(!serial) return; let prov = (/^sheet\d*$/i.test(sn) || sn==="Sheet1") ? fileProv : sn; rowsMap.set(serial, { sn:String(r[0]||""), date_received:parseSheetDate(r[1]), serial, date_install:parseSheetDate(r[3]), customer_phone:String(r[4]||"").trim(), model:String(r[5]||"").trim(), tech:String(r[6]||"").trim(), comment:String(r[7]||"").trim(), province:prov, status: String(r[3]||"").trim() ? "تم التسليم" : "في العهدة" }); }); }); let rows=[...rowsMap.values()]; if(!rows.length) return alert("مفيش سيريالات في الشيت ده"); let serials = rows.map(r=>r.serial); let oldMap = new Map(); for(let i=0;i<serials.length;i+=500){ let {data:ex} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").in("serial", serials.slice(i,i+500)); (ex||[]).forEach(x=> oldMap.set(String(x.serial), x)); } let finalRows = rows.map(r=>{ let old = oldMap.get(r.serial); if(!old) return r; let oldTech = String(old.tech||"").trim(); let newTech = String(r.tech||"").trim(); let oldComment = String(old.comment||"").trim(); let newComment = String(r.comment||"").trim(); let history = oldComment; if(oldTech && newTech && oldTech !== newTech){ let moveNote = `نقل من ${oldTech} إلى ${newTech} بتاريخ ${todayStr()}`; if(!history.includes(moveNote)) history = (history ? history + " | " : "") + moveNote; } if(newComment && !history.includes(newComment)){ history = (history ? history + " | " : "") + newComment; } return {...r, comment: history}; }); document.getElementById("warehouseUploadMsg").innerText=`لقيت ${finalRows.length} سيريال - جاري الرفع...`; for(let i=0;i<finalRows.length;i+=500){ let chunk = finalRows.slice(i, i+500); let {error} = await supabaseClient.from(WAREHOUSE_TABLE).upsert(chunk, {onConflict:'serial'}); if(error){ alert("خطأ في الرفع: "+error.message); return; } document.getElementById("warehouseUploadMsg").innerText=`جاري... ${Math.min(i+500, finalRows.length)} من ${finalRows.length}`; } document.getElementById("warehouseUploadMsg").innerText=`تم ✅ ${finalRows.length} سيريال - العهدة اتحدثت من خانة الفني، والكومنت اتحفظ في قصة الجهاز`; loadWarehouse(); }
-async function fillCustodyTechs(){ let techs = []; let bad = ["ONT","ONU","Router","راوتر","Switch","سويتش","كل الأنواع","كل الانواع","-- اختر الفني --","-- اختار --","-- اختر --","اختار","اختر"]; document.querySelectorAll('select').forEach(sel=>{ let id = (sel.id + " " + sel.name + " " + sel.className).toLowerCase(); if(!id.includes("tech") && !id.includes("فني")) return; if(sel.id === "custodyFromTech" || sel.id === "custodyToTech") return; sel.querySelectorAll('option').forEach(o=>{ let v = (o.value||o.textContent||"").trim(); if(v && !bad.includes(v) && !v.includes("اختار") && !v.includes("اختر")) techs.push(v); }); }); if(window.allTechs && allTechs.length){ allTechs.forEach(t=>{ let v = (typeof t === "string" ? t : (t.name || t.username || "")).trim(); if(v && !bad.includes(v) && !v.includes("اختار") && !v.includes("اختر")) techs.push(v); }); } try{ let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("tech"); if(data) data.forEach(r=>{ let v = (r.tech||"").trim(); if(v && !bad.includes(v)) techs.push(v); }); }catch(e){} techs = [...new Set(techs)].sort(); let fromSel = document.getElementById("custodyFromTech"); let toSel = document.getElementById("custodyToTech"); if(!fromSel || !toSel) return; let curFrom = fromSel.value, curTo = toSel.value; fromSel.innerHTML = '<option value="">-- من فني -- اختار --</option>' + techs.map(t=>`<option value="${t}">${t}</option>`).join(""); toSel.innerHTML = '<option value="">-- إلى فني -- اختار --</option>' + techs.map(t=>`<option value="${t}">${t}</option>`).join(""); if(techs.includes(curFrom)) fromSel.value = curFrom; if(techs.includes(curTo)) toSel.value = curTo; showPastedSerials(); }
-function getPastedSerials(){ let el = document.getElementById("custodyPasteSerials"); if(!el) return []; return el.value.split(/[\n,;،\s]+/).map(s=>s.trim()).filter(Boolean); }
- function autoDetectFromTech(){}
-function showPastedSerials(){ let div = document.getElementById("custodyPastedList"); if(!div) return; let list = getPastedSerials(); if(!list.length){ div.innerHTML = ""; return; } div.innerHTML = `سيريالات ملصوقة: <b>${list.length}</b><br>` + list.map(s=>`<span style="display:inline-block;background:#fff;border:1px solid #ddd;border-radius:6px;padding:2px 6px;margin:2px">${s}</span>`).join(""); autoDetectFromTech(); }
-async function showFromTechSerials(){ let from = document.getElementById("custodyFromTech").value.trim(); let div = document.getElementById("fromTechSerials"); if(!from){ div.innerHTML=""; return; } let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("tech", from); if(!data || !data.length){ div.innerHTML = "مفيش أجهزة عند الفني ده"; return; } div.innerHTML = `أجهزة عند <b>${from}</b> : ${data.length}<br>` + data.map(r=>`<label style="display:block;background:#fff;border:1px solid #ddd;border-radius:6px;padding:3px 6px;margin:2px"><input type="checkbox" class="custodyCheck" value="${r.id}" checked> ${r.serial||""} - ${r.model||""}</label>`).join(""); }
-async function transferTechCustody(){ let from = document.getElementById("custodyFromTech").value.trim(); let to = document.getElementById("custodyToTech").value.trim(); if(!to) return alert("اختار إلى فني"); let pasted = getPastedSerials(); if(!from && pasted.length){ let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("tech").in("serial", pasted); if(data && data.length) from = (data[0].tech||"").trim(); } let checks = document.querySelectorAll('.custodyCheck:checked'); if(!pasted.length && !checks.length) return alert("الصق سيريالات أو اختار من قايمة الفني"); if(!from && !pasted.length) return alert("اختار من فني أو الصق سيريالات"); if(from && from === to) return alert("من فني وإلى فني لازم يكونوا مختلفين"); let serialsToMove = []; if(pasted.length) serialsToMove = pasted; else serialsToMove = [...checks].map(c=> c.parentElement.innerText.trim().split(" - ")[0].trim()); if(!confirm(`هننقل ${serialsToMove.length} جهاز إلى ${to} ؟`)) return; let moved = 0, notFound = []; for(let serial of serialsToMove){ let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("serial", serial).maybeSingle(); if(!data){ let {error: insErr} = await supabaseClient.from(WAREHOUSE_TABLE).insert([{serial: serial, tech: to, comment: "إضافة عهدة جديدة | نقل من " + (from || "المخزن")}]); if(!insErr){ moved++; continue; } notFound.push(serial); continue; } let hist = (data.comment||"") + ` | نقل من ${data.tech||from||""} إلى ${to} بتاريخ ${todayStr()}`; await supabaseClient.from(WAREHOUSE_TABLE).update({tech: to, comment: hist}).eq("id", data.id); moved++; } document.getElementById("custodyMsg").innerText = `تم نقل ✅ ${moved} جهاز إلى ${to}` + (notFound.length ? ` | مش موجود: ${notFound.join(", ")}` : ""); document.getElementById("custodyPasteSerials").value = ""; await fillCustodyTechs(); showFromTechSerials(); loadWarehouse(); }
-</script>
-<script>
-async function clearTechCustody(){ let from=document.getElementById("custodyFromTech").value.trim(); if(!from) return alert("اختار من فني"); if(!confirm(`همسح عهدة ${from} كلها؟`)) return; let {error}=await supabaseClient.from(WAREHOUSE_TABLE).update({tech:""}).eq("tech",from); if(error) return alert("خطأ: "+error.message); document.getElementById("custodyMsg").innerText=`تم مسح عهدة ${from}`; await fillCustodyTechs(); showFromTechSerials(); loadWarehouse(); }
-async function addOneSerial(){ let serial=cleanSerial(document.getElementById("oneSerial").value); let tech=document.getElementById("oneTechSearch").value.trim(); let model=document.getElementById("oneModel").value.trim(); let phone=document.getElementById("onePhone").value.trim(); let gov=document.getElementById("oneGov").value.trim(); let msg=document.getElementById("oneSerialMsg"); if(!serial) return alert("اكتب السيريال"); if(!tech) return alert("اختار الفني"); let {data:ex}=await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("serial",serial).maybeSingle(); if(ex){ let {error}=await supabaseClient.from(WAREHOUSE_TABLE).update({tech,model:model||ex.model,province:gov||ex.province,comment:(ex.comment||"")+" | نقل إلى "+tech+" بتاريخ "+todayStr()}).eq("id",ex.id); if(error) return alert(error.message); msg.innerText=`تم نقل ${serial} إلى ${tech}`; } else { let {error}=await supabaseClient.from(WAREHOUSE_TABLE).insert([{serial,tech,model,province:gov,date_received:todayStr(),comment:"إضافة يدوية"}]); if(error) return alert(error.message); msg.innerText=`تم إضافة ${serial} إلى ${tech}`; } document.getElementById("oneSerial").value=""; loadWarehouse(); fillCustodyTechs(); }
-function renderTechDropdown(filter=""){ let dd=document.getElementById("techDropdown"); if(!dd) return; let list=(cachedTechNames||[]).filter(t=>norm(t).includes(norm(filter))); if(!filter) list=cachedTechNames||[]; if(!list.length){ dd.style.display="none"; return; } dd.innerHTML=list.map(t=>`<div onclick="selectTechFromDropdown('${t.replace(/'/g,"\\'")}')" style="padding:10px;border-bottom:1px solid #eee;cursor:pointer">${t}</div>`).join(""); dd.style.display="block"; }
-function selectTechFromDropdown(name){ let inp=document.getElementById("oneTechSearch"); if(inp) inp.value=name; let dd=document.getElementById("techDropdown"); if(dd) dd.style.display="none"; }
-document.addEventListener("click",e=>{ let dd=document.getElementById("techDropdown"); let inp=document.getElementById("oneTechSearch"); if(dd && inp && !dd.contains(e.target) && e.target!==inp) dd.style.display="none"; });
-async function saveTechnician(){ let name=getVal("techName"), phone=getVal("techPhone"), pass=getVal("techPass"), line=getVal("techLine"), gov=getVal("techGov"); if(!name||!phone||!pass) return alert("اكمل البيانات"); let {data:ex}=await supabaseClient.from("technicians").select("*").eq("username",phone).maybeSingle(); if(ex) return alert("الفني ده موجود"); let {error}=await supabaseClient.from("technicians").insert([{name,username:phone,phone,password:pass,line,gov,role:"tech"}]); if(error) return alert(error.message); document.getElementById("techMsg").innerText="تم ✅"; loadTechNames(); setTimeout(closeAddTech,800); }
-function openAddTech(){ document.getElementById("addTechModal").style.display="flex"; }
-function closeAddTech(){ document.getElementById("addTechModal").style.display="none"; }
-async function loadTechNames(){ let {data}=await supabaseClient.from("technicians").select("*").order("name"); let techs=(data||[]).filter(t=>getRoleFromDb(t)==="tech"); cachedTechNames=techs.map(t=>techDisplayName(t)); window.allTechs=techs; let sel=document.getElementById("a_tech"); if(sel) sel.innerHTML='<option value="">اختر اسم الفني</option>'+cachedTechNames.map(t=>`<option value="${t}">${t}</option>`).join(""); renderTechList(techs); fillCustodyTechs(); let tc=document.getElementById("techCount"); if(tc) tc.innerText=cachedTechNames.length; }
-function renderTechList(techs){ let el=document.getElementById("techList"); if(!el) return; el.innerHTML=techs.map(t=>{ let nm=techDisplayName(t); let cnt=allJobs.filter(j=>normTechKey(getJobTech(j))===normTechKey(nm)).length; return `<div class="tech-chip" onclick="openTechJobs('${nm.replace(/'/g,"\\'")}')" style="cursor:pointer"><b>${nm}</b><br>شغل: ${cnt} - ${t.phone||""}</div>` }).join("")||"مفيش فنيين"; }
-function openTechJobs(name){ let m=document.getElementById("techJobsModal"); if(!m){ m=document.createElement("div"); m.id="techJobsModal"; m.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center;padding:12px"; m.innerHTML=`<div style="background:#fff;width:100%;max-width:900px;max-height:90vh;overflow:auto;border-radius:16px;padding:16px"><div style="display:flex;justify-content:space-between"><h3 id="techJobsTitle"></h3><button onclick="closeTechJobs()" style="background:#333;color:#fff;border:0;padding:8px 14px;border-radius:20px">✖️</button></div><div id="techJobsList"></div></div>`; document.body.appendChild(m); } m.style.display="flex"; document.getElementById("techJobsTitle").innerText="شغل الفني: "+name; showTechJobs(name); }
-function closeTechJobs(){ let m=document.getElementById("techJobsModal"); if(m) m.style.display="none"; }
-function showTechJobs(name){ let el=document.getElementById("techJobsList"); if(!el) return; let list=allJobs.filter(j=>normTechKey(getJobTech(j))===normTechKey(name)); if(!list.length){ el.innerHTML="<p style='text-align:center'>مفيش شغل للفني ده</p>"; return; } el.innerHTML=list.map(j=>`<div class="job"><h3>${j.customer||""}</h3><div class="meta">📞 ${j.landline||""} - 📱 ${j.mobile||""}<br>📍 ${j.address||""}<br>أوردر: ${j.order_id||j.id} - ${j.device||""}<br>حالة: ${j.status||"قيد الانتظار"} - ${j.visit_status||""}</div><button class="btn" onclick="openDetails(${j.id})">فتح التفاصيل</button></div>`).join(""); }
-function showTab(tab,el){ activeTab=tab; document.querySelectorAll(".tabs div").forEach(d=>d.classList.remove("active")); if(el) el.classList.add("active"); let jl=document.getElementById("jobsList"), wl=document.getElementById("warehouseList"), af=document.getElementById("archiveFilter"); if(tab==="warehouse"){ if(jl) jl.classList.add("hidden"); if(wl) wl.classList.remove("hidden"); if(af) af.classList.add("hidden"); renderWarehouseList(); } else if(tab==="archive"){ if(jl) jl.classList.add("hidden"); if(wl) wl.classList.add("hidden"); if(af) af.classList.remove("hidden"); renderArchive(); } else { if(jl) jl.classList.remove("hidden"); if(wl) wl.classList.add("hidden"); if(af) af.classList.add("hidden"); activeFilter=tab==="all"?"all":tab; visibleCount=10; renderJobs(); } }
-function filteredJobs(){ let base=myJobsBase(); if(activeFilter==="done") base=base.filter(j=>j.status==="done"); else if(activeFilter==="pending") base=base.filter(j=>j.status!=="done"&&j.status!=="problem"); else if(activeFilter==="problem") base=base.filter(j=>j.status==="problem"); if(searchQ){ let q=norm(searchQ); base=base.filter(j=>norm(j.customer+" "+j.landline+" "+j.mobile+" "+j.address+" "+j.order_id+" "+j.serial).includes(q)); } return base; }
-function renderJobs(){ let el=document.getElementById("jobsList"); if(!el) return; let list=filteredJobs(); let total=list.length; let show=list.slice(0,visibleCount); let cd=document.getElementById("cDone"), cp=document.getElementById("cPending"), cpr=document.getElementById("cProblem"); let all=myJobsBase(); if(cd) cd.innerText=all.filter(j=>j.status==="done").length; if(cp) cp.innerText=all.filter(j=>j.status!=="done"&&j.status!=="problem").length; if(cpr) cpr.innerText=all.filter(j=>j.status==="problem").length; if(!show.length){ el.innerHTML="<p style='text-align:center;padding:20px'>مفيش شغل هنا</p>"; } else { el.innerHTML=show.map(j=>`<div class="job" style="border-color:${j.status==="done"?"#1aa34a":j.status==="problem"?"#d32f2f":"#ff7a00"}"><h3>${j.customer||""} - ${j.landline||""}</h3><div class="meta">📱 ${j.mobile||""}<br>📍 ${j.address||""}<br>أوردر: ${j.order_id||""} - ${j.device||""} - فني: ${getJobTech(j)}<br>سيريال: ${j.serial||"---"} - ${j.up_down||""} - ${j.recipient||""}<br>حالة: ${j.status||"قيد الانتظار"} - ${j.visit_status||""}</div><button class="btn" onclick="openDetails(${j.id})">فتح التفاصيل</button></div>`).join(""); } let lm=document.getElementById("loadMoreWrap"); if(lm) lm.innerHTML=total>visibleCount?`<button class="btn" onclick="visibleCount+=10;renderJobs()">عرض المزيد (${total-visibleCount} باقي)</button>`:""; }
-function onSearch(){ searchQ=document.getElementById("searchInput").value; visibleCount=10; renderJobs(); }
-function filterByCircle(type){ if(type==="done") activeFilter="done"; else if(type==="pending") activeFilter="pending"; else if(type==="problem") activeFilter="problem"; else activeFilter="all"; showTab(activeFilter==="all"?"all":activeFilter, null); renderJobs(); }
-async function loadJobs(){ allJobs=await getAllJobs(); renderJobs(); renderTechList(window.allTechs||[]); }
-async function addJob(){ let payload={customer:getVal("a_customer"),landline:getVal("a_landline"),mobile:getVal("a_mobile"),code:getVal("a_code"),address:getVal("a_address"),order_id:getVal("a_order"),device:getVal("a_device"),tech:getVal("a_tech"),tech_name:getVal("a_tech"),status:"pending",created_at:new Date().toISOString()}; if(!payload.customer||!payload.landline) return alert("اكتب اسم العميل والأرضي"); let r=await insertJobSafe(payload); if(r.error) return alert(r.error.message); alert("تم ✅"); loadJobs(); }
-async function deleteOneJob(){ let id=getVal("delOrderId"); if(!id) return alert("اكتب رقم الأوردر"); if(!confirm("متأكد؟")) return; let {error}=await supabaseClient.from(TABLE).delete().or(`id.eq.${id},order_id.eq.${id}`); if(error) return alert(error.message); alert("تم المسح"); loadJobs(); }
-async function deleteLandlineOnly(){ let id=getVal("delOrderId"); if(!id) return alert("اكتب رقم الأوردر"); let {error}=await supabaseClient.from(TABLE).update({landline:""}).or(`id.eq.${id},order_id.eq.${id}`); if(error) return alert(error.message); alert("تم مسح الأرضي"); loadJobs(); }
-async function deleteAllDataSuper(){ if(!userObj.isSuper) return alert("Super Admin بس"); if(!confirm("هتمسح الشغل والأرشيف كله؟ مفيش رجوع")) return; await supabaseClient.from(TABLE).delete().neq("id",0); await supabaseClient.from(ARCHIVE_TABLE).delete().neq("id",0); alert("تم المسح"); loadJobs(); loadArchive(); }
-function openDetails(id){ currentDetailId=id; let j=allJobs.find(x=>x.id===id)||archivedJobs.find(x=>x.id===id); if(!j) return; document.getElementById("dTitle").innerText=j.customer||""; document.getElementById("dCustomer").innerText=j.customer||""; document.getElementById("dMeta").innerHTML=`📞 ${j.landline||""} - 📱 ${j.mobile||""}<br>📍 ${j.address||""}<br>أوردر: ${j.order_id||""} - ${j.device||""} - فني: ${getJobTech(j)}`; document.getElementById("dComment").innerText=j.comment||""; document.getElementById("dSerial").value=j.serial||""; let ph=document.getElementById("dPhotos"); ph.innerHTML=["front","back","receipt"].map((k,i)=>`<div class="imgbox" onclick="openPhotoCam('${k}')">${j["photo_"+k]?`<img src="${j["photo_"+k]}" class="photoThumb" onclick="event.stopPropagation();showPhotoModal('${j["photo_"+k]}')">`:`📷 صورة ${i+1}<br>${k==="front"?"وش الجهاز":k==="back"?"ضهر الجهاز":"الايصال والبطاقة"}`}</div>`).join(""); document.getElementById("details").style.display="block"; }
-function closeDetails(){ document.getElementById("details").style.display="none"; }
-function openPhotoCam(slot){ currentPhotoSlot=slot; document.getElementById("photoCamTitle").innerText="📷 صور "+(slot==="front"?"وش الجهاز":slot==="back"?"ضهر الجهاز":"الايصال والبطاقة"); document.getElementById("photoCamModal").style.display="flex"; }
-function closePhotoCam(){ document.getElementById("photoCamModal").style.display="none"; }
-function capturePhoto(){ document.getElementById("photoInput").click(); }
-function openPhotoFile(){ document.getElementById("photoGalleryInput").click(); }
-function showPhotoModal(src){ let m=document.getElementById("photoModal"); document.getElementById("photoModalImg").src=src; m.style.display="flex"; }
-function rotatePhotoModal(){ photoRot=(photoRot+90)%360; document.getElementById("photoModalImg").style.transform=`rotate(${photoRot}deg)`; }
-async function handlePhotoFile(file){ if(!file||!currentDetailId) return; document.getElementById("uploadingBanner").style.display="block"; let name=`${currentDetailId}_${currentPhotoSlot}_${Date.now()}.jpg`; let {error}=await supabaseClient.storage.from(BUCKET).upload(name,file,{upsert:true}); if(error){ alert(error.message); document.getElementById("uploadingBanner").style.display="none"; return; } let {data}=supabaseClient.storage.from(BUCKET).getPublicUrl(name); let col="photo_"+currentPhotoSlot; await supabaseClient.from(TABLE).update({[col]:data.publicUrl}).eq("id",currentDetailId); document.getElementById("uploadingBanner").style.display="none"; closePhotoCam(); openDetails(currentDetailId); loadJobs(); }
-document.getElementById("photoInput")?.addEventListener("change",e=>handlePhotoFile(e.target.files[0]));
-document.getElementById("photoGalleryInput")?.addEventListener("change",e=>handlePhotoFile(e.target.files[0]));
-function openUpDownOnly(id,name){ currentUpDownJobId=id; document.getElementById("upDownCustomer").innerText=name; document.getElementById("upDownModal").style.display="flex"; }
-function closeUpDown(){ document.getElementById("upDownModal").style.display="none"; }
-function chooseUpDown(v){ if(currentUpDownJobId) upDownMap[currentUpDownJobId]=v; let b=document.getElementById("dUpDownBtn"); if(b) b.innerText="⬆️ Up / ⬇️ Down: "+v; closeUpDown(); }
-function openRecipientOnly(id,name){ currentRecipientJobId=id; document.getElementById("recipientCustomer").innerText=name; document.getElementById("recipientModal").style.display="flex"; }
-function chooseRecipient(v){ if(v==="الرجوع"){ document.getElementById("recipientModal").style.display="none"; return; } if(currentRecipientJobId) recipientMap[currentRecipientJobId]=v; let b=document.getElementById("dRecipientBtn"); if(b) b.innerText="👤 المستلم: "+v; document.getElementById("recipientModal").style.display="none"; }
-function clearRecipientChoice(){ if(currentRecipientJobId) delete recipientMap[currentRecipientJobId]; document.getElementById("recipientModal").style.display="none"; }
-function openStatusModal(id,name){ currentStatusJobId=id; currentStatusCustomer=name; document.getElementById("statusCustomer").innerText=name; document.getElementById("statusModal").style.display="flex"; }
-function closeStatusModal(){ document.getElementById("statusModal").style.display="none"; }
-function selectStatusOption(v){ document.getElementById("selectedStatusLabel").innerText="اخترت: "+v; document.getElementById("statusModal").dataset.status=v; }
-async function confirmStatus(){
-let st = document.getElementById("statusModal").dataset.status;
-let cmt = document.getElementById("statusComment").value.trim();
-if(!st) return alert("اختار الحالة - تأجيل / لم يتم الرد / رفض");
-let payload = {status:"problem", visit_status:st, comment:cmt};
-let {error} = await supabaseClient.from(TABLE).update(payload).eq("id", currentStatusJobId);
-if(error) return alert(error.message);
-closeStatusModal();
-document.getElementById("statusComment").value = "";
-document.getElementById("selectedStatusLabel").innerText = "";
-alert("تم حفظ الحالة: " + st);
-loadJobs();
+async function insertJobSafe(payload){
+  let r1 = await supabaseClient.from(TABLE).insert(payload);
+  if(!r1.error) return r1;
+  let p2 = {...payload}; delete p2.tech_name;
+  let r2 = await supabaseClient.from(TABLE).insert(p2);
+  if(!r2.error) return r2;
+  let p3 = {...payload}; delete p3.tech;
+  let r3 = await supabaseClient.from(TABLE).insert(p3);
+  return r3;
 }
-function openManatee(id){ window.open("https://manatee.example.com","_blank"); }
-async function saveSerial(id){ let serial=cleanSerial(document.getElementById("dSerial").value); if(!serial) return alert("اكتب السيريال"); if(!upDownMap[id] && !confirm("مخترتش Up/Down، تكمل؟")) return; if(!recipientMap[id] && !confirm("مخترتش المستلم، تكمل؟")) return; let j=allJobs.find(x=>x.id===id); if(!j) return; if(!j.photo_front||!j.photo_back||!j.photo_receipt){ if(!confirm("في صور ناقصة، تكمل؟")) return; } currentLockId=id; pendingLockPayload={serial,up_down:upDownMap[id]||"",recipient:recipientMap[id]||""}; document.getElementById("lockCustomer").innerText=j.customer||""; document.getElementById("lockStatus").innerHTML=`سيريال: ${serial}<br>Up/Down: ${pendingLockPayload.up_down||"---"}<br>المستلم: ${pendingLockPayload.recipient||"---"}`; document.getElementById("sendLockModal").style.display="flex"; }
-function closeLockBack(){ document.getElementById("sendLockModal").style.display="none"; }
-async function sendToFollowerOnly(){ let f=document.getElementById("followerPhone").value.trim(); let j=allJobs.find(x=>x.id===currentLockId); let txt=`عميل: ${j.customer}\nأرضي: ${j.landline}\nسيريال: ${pendingLockPayload.serial}\nUp/Down: ${pendingLockPayload.up_down}\nالمستلم: ${pendingLockPayload.recipient}\nالمتابع: ${f}`; try{ await navigator.share({text:txt}); }catch(e){ navigator.clipboard?.writeText(txt); alert("انسخ النص وابعت للمتابع"); } document.getElementById("lockConfirmBox").style.display="block"; }
-async function confirmSendYes(){ await supabaseClient.from(TABLE).update({serial:pendingLockPayload.serial,up_down:pendingLockPayload.up_down,recipient:pendingLockPayload.recipient,status:"done"}).eq("id",currentLockId); document.getElementById("sendLockModal").style.display="none"; document.getElementById("lockConfirmBox").style.display="none"; alert("تم ✅"); closeDetails(); loadJobs(); }
-function confirmSendNo(){ document.getElementById("lockConfirmBox").style.display="none"; }
-function saveFollowerPhone(){ localStorage.setItem("misk_follower",document.getElementById("followerPhone").value); }
-function clearFollowerPhone(){ document.getElementById("followerPhone").value=""; localStorage.removeItem("misk_follower"); }
-function getLiveLocation(){ if(!navigator.geolocation) return alert("مفيش GPS"); navigator.geolocation.getCurrentPosition(p=>{ document.getElementById("mapLocText").innerText=`📍 ${p.coords.latitude.toFixed(5)}, ${p.coords.longitude.toFixed(5)}`; },()=>alert("مقدرتش اجيب المكان")); }
-function doAttendance(){ document.getElementById("attendTime").innerText=new Date().toLocaleTimeString("ar-EG"); alert("تم تسجيل الحضور: "+new Date().toLocaleTimeString()); }
-function showAzkar(){
-document.getElementById("azkarFull").innerHTML = `
-<b>أذكار الصباح والمساء</b><br><br>
-<b>آية الكرسي:</b> الله لا إله إلا هو الحي القيوم لا تأخذه سنة ولا نوم له ما في السماوات وما في الأرض<br><br>
-<b>المعوذات 3 مرات:</b> قل هو الله أحد - قل أعوذ برب الفلق - قل أعوذ برب الناس<br><br>
-سبحان الله وبحمده 100 مرة<br>
-لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير 100 مرة<br>
-أستغفر الله العظيم وأتوب إليه 100 مرة<br>
-اللهم صل وسلم على نبينا محمد 10 مرات<br>
-أصبحنا وأصبح الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له<br>
-يا حي يا قيوم برحمتك أستغيث أصلح لي شأني كله ولا تكلني إلى نفسي طرفة عين<br>
-`;
-document.getElementById("azkarModal").style.display="flex";
-}
-function closeAzkar(){ document.getElementById("azkarModal").style.display="none"; }
-async function loadArchive(){ let {data}=await supabaseClient.from(ARCHIVE_TABLE).select("*").order("created_at",{ascending:false}).limit(5000); archivedJobs=data||[]; let sel=document.getElementById("archiveDate"); if(sel){ let dates=[...new Set(archivedJobs.map(j=>j.archive_date||fmtDate(j.created_at)))]; sel.innerHTML='<option value="">كل الأيام</option>'+dates.map(d=>`<option value="${d}">${d}</option>`).join(""); } renderArchive(); }
-function renderArchive(){ let d=document.getElementById("archiveDate")?.value||""; let list=d?archivedJobs.filter(j=>(j.archive_date||fmtDate(j.created_at))===d):archivedJobs; document.getElementById("aDone").innerText=list.filter(j=>j.status==="done").length; document.getElementById("aUpdated").innerText=list.filter(j=>j.status==="problem").length; document.getElementById("aEmpty").innerText=list.filter(j=>!j.serial).length; document.getElementById("archiveSummary").innerText=`إجمالي: ${list.length}`; document.getElementById("archiveSheetsList").innerHTML=list.slice(0,20).map(j=>`<div style="font-size:13px;line-height:2">${j.customer} - ${j.landline} - ${j.status} - ${j.visit_status||""}</div>`).join("")||"مفيش أرشيف"; }
-function exportArchive(){ if(!archivedJobs.length) return alert("مفيش أرشيف"); let rows=archivedJobs.map(j=>({العميل:j.customer,الأرضي:j.landline,السيريال:j.serial,الحالة:j.status,حالة_الزيارة:j.visit_status||"",الفني:getJobTech(j),التاريخ:j.archive_date||""})); let ws=XLSX.utils.json_to_sheet(rows); let wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,"أرشيف"); XLSX.writeFile(wb,`ارشيف-${todayStr()}.xlsx`); }
-async function archiveOldJobs(){ let dt=document.getElementById("manualArchiveDate").value.trim()||todayStr(); if(!confirm(`هنأرشف شغل ${dt} ؟`)) return; let toArch=allJobs.filter(j=>fmtDate(j.created_at)===dt); if(!toArch.length) return alert("مفيش شغل في اليوم ده"); let payload=toArch.map(j=>({...j,archive_date:dt})); await supabaseClient.from(ARCHIVE_TABLE).insert(payload); await supabaseClient.from(TABLE).delete().in("id",toArch.map(j=>j.id)); alert(`تم أرشفة ${toArch.length}`); loadJobs(); loadArchive(); }
-async function downloadEndOfDay(){
-let dt = todayStr();
-let done = archivedJobs.filter(j=>j.status==="done");
-let prob = archivedJobs.filter(j=>j.status==="problem");
-if(!done.length && !prob.length) return alert("مفيش أرشيف لليوم ده");
-let zip = new JSZip();
-let ws1 = XLSX.utils.json_to_sheet(done.map(j=>({العميل:j.customer,الأرضي:j.landline,الموبايل:j.mobile,السيريال:j.serial,الفني:getJobTech(j),التاريخ:j.archive_date||""})));
-let wb1 = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb1, ws1, "تم التسليم");
-let b1 = XLSX.write(wb1, {bookType:"xlsx", type:"array"});
-zip.file(`تم التسليم-${dt}.xlsx`, b1);
-let ws2 = XLSX.utils.json_to_sheet(prob.map(j=>({العميل:j.customer,الأرضي:j.landline,الحالة:j.visit_status||j.status,الكومنت:j.comment||"",الفني:getJobTech(j),التاريخ:j.archive_date||""})));
-let wb2 = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb2, ws2, "تأجيل");
-let b2 = XLSX.write(wb2, {bookType:"xlsx", type:"array"});
-zip.file(`تأجيل-ابدیت-${dt}.xlsx`, b2);
-let blob = await zip.generateAsync({type:"blob"});
-let a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `فولدر اليوم-${dt}.zip`; a.click();
-}
-async function uploadSheetFast(){
-let files = document.getElementById("sheetInput").files;
-if(!files.length) return alert("اختار شيت");
-for(let f of files){
-let buf = await f.arrayBuffer();
-let wb = XLSX.read(buf, {type:"array"});
-let rows = [];
-wb.SheetNames.forEach(sn=>{
-let arr = XLSX.utils.sheet_to_json(wb.Sheets[sn], {header:1, defval:""});
-arr.forEach((r,i)=>{
-if(i===0) return;
-if(!r[0] && !r[1]) return;
-rows.push({
-customer:String(r[0]||"").trim(),
-landline:String(r[1]||"").trim(),
-mobile:String(r[2]||"").trim(),
-code:String(r[3]||"").trim(),
-address:String(r[4]||"").trim(),
-order_id:String(r[5]||"").trim(),
-device:String(r[6]||"").trim(),
-tech:String(r[7]||"").trim(),
-tech_name:String(r[7]||"").trim(),
-serial:cleanSerial(r[8]||""),
-comment:String(r[9]||"").trim(),
-status:"pending"
-});
-});
-});
-for(let i=0;i<rows.length;i+=500){
-let {error} = await supabaseClient.from(TABLE).insert(rows.slice(i,i+500));
-if(error) return alert("خطأ في الرفع: "+error.message);
-}
-}
-alert("تم رفع الشيتات ✅");
-loadJobs();
-}
-async function uploadMasterUsersExact(e){ let f=e.target.files[0]; if(!f) return; let buf=await f.arrayBuffer(); let wb=XLSX.read(buf,{type:"array"}); let rows=[]; wb.SheetNames.forEach(sn=>{ let arr=XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,defval:""}); arr.forEach((r,i)=>{ if(i===0) return; if(!r[0]) return; rows.push({name:String(r[0]||""),username:String(r[1]||""),phone:String(r[1]||""),password:String(r[2]||""),role:"tech"}); }); }); if(rows.length) await supabaseClient.from("technicians").upsert(rows,{onConflict:"username"}); document.getElementById("masterUploadMsg").innerText=`تم ${rows.length}`; loadTechNames(); }
-function silentRefreshNow(){ loadJobs(); loadWarehouse(); }
-function toggleAuto(){ autoOn=!autoOn; document.getElementById("autoBtn").innerText=autoOn?"إيقاف":"تشغيل"; }
-setInterval(()=>{ if(!autoOn) return; silentSec--; if(silentSec<=0){ silentSec=10; silentRefreshNow(); } let el=document.getElementById("silentCount"); if(el) el.innerText=silentSec; },1000);
-setInterval(()=>{ let c=document.getElementById("loginClock"); if(c) c.innerText=new Date().toLocaleTimeString("ar-EG",{hour:"2-digit",minute:"2-digit"}); let d=document.getElementById("loginDate"); if(d) d.innerText=new Date().toLocaleDateString("ar-EG"); },1000);
-document.getElementById("oneTechSearch")?.addEventListener("input",e=>renderTechDropdown(e.target.value));
-document.getElementById("custodyPasteSerials")?.addEventListener("input",showPastedSerials);
-(function(){ let s=localStorage.getItem("misk_user"); if(s){ try{ userObj=JSON.parse(s); afterLogin(); }catch(e){} } let f=localStorage.getItem("misk_follower"); if(f) document.getElementById("followerPhone").value=f; })();
-</script>
-<script>if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }</script>
- <script>
-// === إصلاح تكرار السيريال - يمسح المكرر ويمنع تكراره تاني ===
-async function cleanDuplicateSerials(){
-  let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").order("id",{ascending:false});
-  if(!data) return;
-  let seen = {};
-  let toDelete = [];
-  for(let row of data){
-    let s = cleanSerial(row.serial);
-    if(!s) continue;
-    if(seen[s]){
-      // لو اللي متسجل قبل كده ليه فني، وده ملهوش فني، نمسح ده
-      // ولو العكس، نمسح القديم ونخلي الجديد
-      if(!row.tech && seen[s].tech){ toDelete.push(row.id); }
-      else if(row.tech && !seen[s].tech){ toDelete.push(seen[s].id); seen[s]=row; }
-      else { toDelete.push(row.id); }
-    } else { seen[s]=row; }
-  }
-  if(toDelete.length){
-    for(let i=0;i<toDelete.length;i+=100){
-      await supabaseClient.from(WAREHOUSE_TABLE).delete().in("id", toDelete.slice(i,i+100));
+async function login(e){
+  if(e) e.preventDefault();
+  let u = document.getElementById('user').value.trim().toLowerCase();
+  let p = document.getElementById('pass').value.trim();
+  let msgEl = document.getElementById('loginMsg');
+  if(msgEl) msgEl.innerText = 'جاري...';
+  try{
+    let res = await supabaseClient.from('technicians').select('*');
+    if(res.error || !res.data){
+      if(msgEl) msgEl.innerText = 'خطأ: ' + (res.error ? res.error.message : 'مفيش داتا');
+      return false;
     }
-    console.log("تم مسح مكرر: "+toDelete.length);
-    return toDelete.length;
+    let found = res.data.find(t => {
+      let userInDb = String(t.username || '').trim().toLowerCase();
+      let nameInDb = String(t.name || '').trim().toLowerCase().replace(/[\s_]+/g,'');
+      let phoneInDb = String(t.phone || '').trim();
+      let inputClean = u.replace(/[\s_]+/g,'');
+      let passInDb = String(t.password || '').trim();
+      let userMatch = (userInDb === u) || (nameInDb === inputClean) || (userInDb.replace(/[\s_]+/g,'') === inputClean) || (phoneInDb === u);
+      return userMatch && passInDb === p;
+    });
+    if(!found){
+      if(msgEl) msgEl.innerText = 'الاسم مش موجود';
+      return false;
+    }
+    let display = techDisplayName(found);
+    let role = getRoleFromDb(found);
+    let isAdmin = (role==="admin"||role==="super_admin");
+    userObj = {id: found.id, username: found.username, name: display, role: role, isAdmin: isAdmin, isSuper: role==="super_admin"};
+    localStorage.setItem('misk_user', JSON.stringify(userObj));
+    localStorage.setItem('misk_pass', p);
+    afterLogin();
+  }catch(err){
+    if(msgEl) msgEl.innerText = 'خطأ: ' + err.message;
+    console.log(err);
   }
-  return 0;
+  return false;
+}
+function afterLogin(){
+  let lp = document.getElementById("loginPage");
+  if(lp) lp.classList.add("hidden");
+  let ap = document.getElementById("appPage");
+  if(ap) ap.classList.remove("hidden");
+  let w = document.getElementById("welcome");
+  let ti = document.getElementById("techInfo");
+  let isAdmin = userObj.isAdmin;
+  let isSuper = userObj.role === 'super_admin';
+  let displayName = (userObj.name || userObj.username || "Mahdy").trim();
+  if (w) w.innerText = "أهلاً " + displayName;
+  if (ti) {
+    if (isSuper) ti.innerText = "Super Admin - " + displayName;
+    else if (isAdmin) ti.innerText = "ادمن - " + displayName;
+    else ti.innerText = "فني - " + displayName;
+  }
+  let aa = document.getElementById("adminAdd");
+  if(aa) aa.classList.toggle("hidden", !isAdmin);
+  let an = document.getElementById("archiveNav");
+  if(an) an.style.display = isAdmin ? "" : "none";
+  let sdb = document.getElementById("superDeleteBox");
+  if(sdb) sdb.style.display = isSuper ? "block" : "none";
+  if(isAdmin) loadTechNames();
+  loadJobs(); loadWarehouse(); loadArchive();
+  let pm = document.getElementById("passModal");
+  if(pm && !localStorage.getItem("misk_pass_changed_"+userObj.username)) pm.style.display="flex";
+}
+function logout(){
+  Object.keys(localStorage).forEach(k=>{
+    if(k.startsWith("misk_")) localStorage.removeItem(k);
+  });
+  sessionStorage.clear();
+  location.reload();
+}
+async function doChangePass(){
+  let np=document.getElementById("newPassInput").value.trim();
+  if(!np) return alert("اكتب الباسورد الجديد");
+  let {error} = await supabaseClient.from("technicians").update({password:np}).eq("id", userObj.id);
+  if(error) return alert("خطأ: "+error.message);
+  localStorage.setItem("misk_pass_changed_"+userObj.username,"1");
+  localStorage.setItem("misk_pass", np);
+  closePassModal(); alert("تم تغيير الباسورد");
+}
+function closePassModal(){ document.getElementById("passModal").style.display="none" }
+async function loadWarehouse(){
+  let {data}=await supabaseClient.from(WAREHOUSE_TABLE).select("*").order("created_at",{ascending:false}).limit(20000);
+  allWarehouse=data||[];
+  renderWarehouse();
+}
+function myWarehouse(){
+  if(userObj.isAdmin) return allWarehouse;
+  return allWarehouse.filter(w=> normTechKey(w.tech)===normTechKey(userObj.name) && !String(w.customer_phone||"").trim() && !String(w.date_install||"").trim());
+}
+function renderWarehouse(){
+  let mine=myWarehouse();
+  let delivered=allWarehouse.filter(w=> String(w.customer_phone||"").trim() || String(w.date_install||"").trim());
+  let el=document.getElementById("warehouseSummary");
+  if(el) el.innerText = userObj.isAdmin ? `إجمالي المخزن: ${allWarehouse.length} - في العهدة: ${allWarehouse.length-delivered.length} - متسلم: ${delivered.length}` : `عهدتك: ${mine.length} جهاز - اللي معاك بس، المتسلم اتشال من عندك`;
+  let old=mine.filter(w=> daysBetween(w.date_received||w.date||"")>=60);
+  let box=document.getElementById("stockAlerts");
+  if(box){
+    if(old.length){
+      box.innerHTML=`<div style="background:#fff3cd;border:2px solid #ff7a00;margin:0 12px 12px;border-radius:16px;padding:14px"><h3 style="margin:0">⚠️ جرد - أجهزة بقالها 60 يوم ومركبتش (${old.length})</h3>`+old.map(w=>`<div style="font-size:13px;line-height:2">🔴 سيريال <b>${w.serial}</b> - متسلم بتاريخ <b>${w.date_received||w.date||""}</b> - لم يتم التركيب حتى الآن - الفني: ${w.tech||""} - ${w.comment||""}</div>`).join("")+`</div>`;
+    } else box.innerHTML="";
+  }
+  let prev=document.getElementById("warehousePreview");
+  if(prev) prev.innerHTML=mine.slice(0,5).map(w=>`<div style="font-size:12px;line-height:2">📦 ${w.serial} - ${w.model||""} - ${w.tech||""} - ${w.date_received||""}</div>`).join("")+(mine.length>5?`<div style="font-size:12px">... و ${mine.length-5} جهاز تاني</div>`:"");
+  if(activeTab==="warehouse") renderWarehouseList();
+}
+  let warehouseTab='all_pending';
+let warehouseSearch='';
+function renderWarehouseList(){
+  let box=document.getElementById("warehouseList");
+  if(!box) return;
+
+  // --- فلتر: كل فني يشوف أجهزته بس، والادمن يشوف الكل ---
+  let saved = null;
+  try{ saved = JSON.parse(localStorage.getItem('misk_user') || 'null'); }catch(e){ saved = null; }
+  let myName = (saved && saved.name) || (typeof userObj !== 'undefined' && userObj && userObj.name) || '';
+  let myUsername = (saved && saved.username) || (typeof userObj !== 'undefined' && userObj && userObj.username) || '';
+  let isAdmin = (saved && (saved.isAdmin === true || saved.role === 'admin' || saved.role === 'super_admin')) || (typeof userObj !== 'undefined' && userObj && (userObj.isAdmin === true || userObj.role === 'admin' || userObj.role === 'super_admin'));
+  let baseWarehouse = allWarehouse;
+  if(!isAdmin){
+    if(!myName && !myUsername){
+      baseWarehouse = [];
+    } else {
+      baseWarehouse = allWarehouse.filter(w => { let t = String(w.tech || '').trim().toLowerCase(); return t === String(myName).trim().toLowerCase() || (myUsername && t === String(myUsername).trim().toLowerCase()); });
+    }
+  }
+  // --- نهاية الفلتر ---
+
+  // عشان دالة الاكسيل تستخدم المتفلتر مش الكل
+  window._warehouseForExcel = baseWarehouse;
+
+  let allStock=baseWarehouse.filter(w=> !String(w.customer_phone||"").trim() && !String(w.date_install||"").trim());
+  let allDone=baseWarehouse.filter(w=> String(w.customer_phone||"").trim() || String(w.date_install||"").trim());
+  if(warehouseSearch.trim()){
+    let s = warehouseSearch.trim();
+    allDone=allDone.filter(w=> String(w.customer_phone||"").includes(s) || String(w.serial||"").includes(s) || String(w.tech||"").includes(s));
+    allStock=allStock.filter(w=> String(w.serial||"").includes(s) || String(w.tech||"").includes(s));
+  }
+  if(warehouseTab==='stock'||warehouseTab==='delivered') warehouseTab='all_pending';
+  let listToShow = warehouseTab==='all_done' ? allDone : allStock;
+  box.innerHTML=`<h3 style="padding:0 12px">📦 المخزن (${baseWarehouse.length})</h3>
+  <div style="display:flex;gap:8px;padding:0 12px;flex-wrap:wrap">
+    <button onclick="warehouseTab='all_pending';renderWarehouseList()" style="flex:1;padding:12px;border-radius:10px;background:${warehouseTab==='all_pending'?'#7c3aed;color:#fff':'#f3e8ff'}">لم يتم تركيبه - ${allStock.length}</button>
+    <button onclick="warehouseTab='all_done';renderWarehouseList()" style="flex:1;padding:12px;border-radius:10px;background:${warehouseTab==='all_done'?'#7c3aed;color:#fff':'#f3e8ff'}">تم تركيبه - ${allDone.length}</button>
+  </div>
+  <button onclick="downloadWarehouseExcel()" style="width:calc(100% - 24px);margin:10px 12px;padding:12px;border-radius:10px;border:0;background:#111;color:#fff;font-weight:800">⬇️ تحميل شيت اكسيل</button>
+  <input placeholder="دور برقم الأرضي أو السيريال أو اسم الفني..." value="${String(warehouseSearch).replace(/"/g,'&quot;')}" oninput="warehouseSearch=this.value;renderWarehouseList()" style="width:calc(100% - 24px);margin:10px 12px;padding:10px;border-radius:10px;border:1px solid #ccc">
+  <div style="padding:0 12px">${listToShow.map(w=>`<div class="warehouseCard" style="border:1px solid #ddd;border-radius:12px;padding:10px;margin-bottom:8px">
+    <b>${w.serial||''}</b> - ${w.model||''}<br>
+    الفني: ${w.tech||''} | المحافظة: ${w.province||''}<br>
+    ${warehouseTab==='all_done' ? `العميل: ${w.customer_name||''}<br>رقم العميل (أرضي): ${w.customer_phone||''}<br>تاريخ التركيب: ${w.date_install||''}` : `تاريخ الاستلام: ${w.date_received||''} - الحالة: لم يتم تركيبه`}
+  </div>`).join('') || '<p style="text-align:center;opacity:.6">مفيش حاجة هنا</p>'}</div>`;
+}
+function downloadWarehouseExcel(){
+  if(!allWarehouse.length) return alert("مفيش داتا في المخزن");
+  let rows = allWarehouse.map(w=>({
+    السيريال: w.serial||"",
+    الفني: w.tech||"",
+    الموديل: w.model||"",
+    المحافظة: w.province||"",
+    الحالة: (String(w.customer_phone||"").trim() || String(w.date_install||"").trim()) ? "تم تركيبه" : "لم يتم تركيبه",
+    اسم_العميل: w.customer_name||"",
+    رقم_العميل: w.customer_phone||"",
+    تاريخ_الاستلام: w.date_received||"",
+    تاريخ_التركيب: w.date_install||""
+  }));
+  let ws=XLSX.utils.json_to_sheet(rows);
+  let wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "المخزن");
+  XLSX.writeFile(wb, `المخزن-${todayStr()}.xlsx`);
+}
+ 
+
+   async function uploadWarehouseSheet(){
+  let f=document.getElementById("warehouseInput").files[0];
+  if(!f) return alert("اختار ملف المخزن الأول");
+  if(!userObj.isAdmin) return alert("الأدمن بس اللي بيرفع المخزن");
+  document.getElementById("warehouseUploadMsg").innerText="جاري القراءة - كل ورق المحافظات...";
+  let buf=await f.arrayBuffer();
+  let wb=XLSX.read(buf,{type:"array"});
+  let fileProv = f.name.replace(/\.xlsx?|\.csv/gi,"").trim();
+  let rowsMap = new Map();
+  wb.SheetNames.forEach(sn=>{
+    let ws=wb.Sheets[sn];
+    let arr=XLSX.utils.sheet_to_json(ws,{header:1,defval:""});
+    arr.forEach((r,i)=>{
+      if(i===0) return;
+      let serial=cleanSerial(r[2]);
+      if(!serial) return;
+      let prov = (/^sheet\d*$/i.test(sn) || sn==="Sheet1") ? fileProv : sn;
+      rowsMap.set(serial, {
+        sn:String(r[0]||""), date_received:parseSheetDate(r[1]), serial,
+        date_install:parseSheetDate(r[3]), customer_phone:String(r[4]||"").trim(),
+        model:String(r[5]||"").trim(), tech:String(r[6]||"").trim(), comment:String(r[7]||"").trim(),
+        province:prov, status: String(r[3]||"").trim() ? "تم التسليم" : "في العهدة"
+      });
+    });
+  });
+  let rows=[...rowsMap.values()];
+  if(!rows.length) return alert("مفيش سيريالات في الشيت ده");
+  let serials = rows.map(r=>r.serial);
+  let oldMap = new Map();
+  for(let i=0;i<serials.length;i+=500){
+    let {data:ex} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").in("serial", serials.slice(i,i+500));
+    (ex||[]).forEach(x=> oldMap.set(String(x.serial), x));
+  }
+  let finalRows = rows.map(r=>{
+    let old = oldMap.get(r.serial);
+    if(!old) return r;
+    let oldTech = String(old.tech||"").trim();
+    let newTech = String(r.tech||"").trim();
+    let oldComment = String(old.comment||"").trim();
+    let newComment = String(r.comment||"").trim();
+    let history = oldComment;
+    if(oldTech && newTech && oldTech !== newTech){
+      let moveNote = `نقل من ${oldTech} إلى ${newTech} بتاريخ ${todayStr()}`;
+      if(!history.includes(moveNote)) history = (history ? history + " | " : "") + moveNote;
+    }
+    if(newComment && !history.includes(newComment)){
+      history = (history ? history + " | " : "") + newComment;
+    }
+    return {...r, comment: history};
+  });
+  document.getElementById("warehouseUploadMsg").innerText=`لقيت ${finalRows.length} سيريال - جاري الرفع...`;
+  for(let i=0;i<finalRows.length;i+=500){
+    let chunk = finalRows.slice(i, i+500);
+    let {error} = await supabaseClient.from(WAREHOUSE_TABLE).upsert(chunk, {onConflict:'serial'});
+    if(error){ alert("خطأ في الرفع: "+error.message); return; }
+    document.getElementById("warehouseUploadMsg").innerText=`جاري... ${Math.min(i+500, finalRows.length)} من ${finalRows.length}`;
+  }
+  document.getElementById("warehouseUploadMsg").innerText=`تم ✅ ${finalRows.length} سيريال - العهدة اتحدثت من خانة الفني، والكومنت اتحفظ في قصة الجهاز`;
+  loadWarehouse();
 }
 
-// نمنع التكرار في إضافة سيريال واحد
-async function addOneSerial(){
-  let serial=cleanSerial(document.getElementById("oneSerial").value);
-  let tech=document.getElementById("oneTechSearch").value.trim();
-  let model=document.getElementById("oneModel").value.trim();
-  let gov=document.getElementById("oneGov").value.trim();
-  let msg=document.getElementById("oneSerialMsg");
-  if(!serial) return alert("اكتب السيريال");
-  if(!tech) return alert("اختار الفني");
-  let {data:all} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("serial", serial);
-  if(all && all.length){
-    // لو موجود قبل كده، نحدث أول واحد ونمسح الباقي
-    let first = all[0];
-    await supabaseClient.from(WAREHOUSE_TABLE).update({tech, model:model||first.model, province:gov||first.province, comment:(first.comment||"")+" | نقل إلى "+tech+" بتاريخ "+todayStr()}).eq("id", first.id);
-    let others = all.slice(1).map(r=>r.id);
-    if(others.length) await supabaseClient.from(WAREHOUSE_TABLE).delete().in("id", others);
-    msg.innerText = `تم نقل ${serial} إلى ${tech} - ومسح ${others.length} تكرار`;
-  } else {
-    let {error} = await supabaseClient.from(WAREHOUSE_TABLE).insert([{serial, tech, model, province:gov, date_received:todayStr(), comment:"إضافة يدوية"}]);
-    if(error) return alert(error.message);
-    msg.innerText = `تم إضافة ${serial} إلى ${tech}`;
-  }
-  document.getElementById("oneSerial").value="";
-  loadWarehouse(); fillCustodyTechs();
-}
-
-// نمنع التكرار في النقل الجماعي
 async function transferTechCustody(){
   let from = document.getElementById("custodyFromTech").value.trim();
   let to = document.getElementById("custodyToTech").value.trim();
-  if(!from || !to) return alert("اختار من وإلى");
-  if(from === to) return alert("نفس الفني");
-  let {data:rows} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("tech", from);
-  if(!rows || !rows.length) return alert("مفيش عهدة للفني ده");
-  // امسح أي سيريالات عند الفني الجديد هتتكرر، عشان ننقل من غير تكرار
-  let serials = rows.map(r=>r.serial);
-  let {data:existing} = await supabaseClient.from(WAREHOUSE_TABLE).select("id,serial").in("serial", serials).eq("tech", to);
-  if(existing && existing.length){
-    await supabaseClient.from(WAREHOUSE_TABLE).delete().in("id", existing.map(r=>r.id));
+  if(!from || !to) return alert("اكتب من فني وإلى فني");
+  if(!confirm(`هننقل كل أجهزة ${from} إلى ${to} ؟`)) return;
+  let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("tech", from);
+  if(!data || !data.length) return alert("مفيش أجهزة عند "+from);
+  for(let w of data){
+    let hist = (w.comment||"") + ` | نقل من ${from} إلى ${to} بتاريخ ${todayStr()}`;
+    await supabaseClient.from(WAREHOUSE_TABLE).update({tech: to, comment: hist}).eq("id", w.id);
   }
-  await supabaseClient.from(WAREHOUSE_TABLE).update({tech:to}).eq("tech", from);
-  alert(`تم نقل ${rows.length} سيريال من ${from} إلى ${to} من غير تكرار ✅`);
-  loadWarehouse(); fillCustodyTechs(); showFromTechSerials();
-}
-
-// أول ما الصفحة تفتح، نظف المكرر اللي فات لوحده
-setTimeout(async ()=>{
-  let n = await cleanDuplicateSerials();
-  if(n>0){ alert(`تم مسح ${n} سيريال مكرر ✅\nدلوقتي كل سيريال مع فني واحد بس`); loadWarehouse(); }
-}, 1500);
-</script>
-  <script>
-// === صندوق التحكم في السيريال - بالزراير مش بالكونسول ===
-function makeSerialActionBox(){
-  if(document.getElementById("serialActionBox")) return;
-  let box = document.createElement("div");
-  box.id = "serialActionBox";
-  box.style.cssText = "background:#fff3cd;border:2px solid #ff7a00;border-radius:14px;padding:12px;margin:10px 0;";
-  box.innerHTML = `
-    <b style="font-size:15px">🎛️ التحكم في السيريال</b><br>
-    <input id="serialActionInput" placeholder="اكتب السيريال هنا..." style="width:100%;padding:10px;margin:8px 0;border:1px solid #ccc;border-radius:10px;font-size:15px">
-    <div style="display:flex;gap:8px">
-      <button onclick="doDeleteSerialFromBox()" style="flex:1;background:#d32f2f;color:#fff;border:0;padding:12px;border-radius:10px;font-weight:bold">🗑️ امسح من السيستم كله</button>
-      <button onclick="doStatusSerialFromBox()" style="flex:1;background:#1aa34a;color:#fff;border:0;padding:12px;border-radius:10px;font-weight:bold">📍 اكتب هو فين</button>
-    </div>
-    <div id="serialActionMsg" style="font-size:13px;margin-top:6px;color:#333"></div>
-  `;
-  let target = document.getElementById("warehouseList") || document.body;
-  target.parentNode.insertBefore(box, target);
-}
-
-async function doDeleteSerialFromBox(){
-  let serial = cleanSerial(document.getElementById("serialActionInput").value);
-  if(!serial) return alert("اكتب السيريال الأول");
-  if(!confirm(`متأكد؟؟ هتمسح ${serial} من السيستم كله؟`)) return;
-  let {error} = await supabaseClient.from(WAREHOUSE_TABLE).delete().eq("serial", serial);
-  if(error) return alert("خطأ: " + error.message);
-  document.getElementById("serialActionMsg").innerText = `تم مسح ${serial} من السيستم كله ✅`;
-  document.getElementById("serialActionInput").value = "";
+  document.getElementById("custodyMsg").innerText = `تم ✅ نقل ${data.length} جهاز من ${from} إلى ${to}`;
   loadWarehouse();
 }
 
-async function doStatusSerialFromBox(){
-  let serial = cleanSerial(document.getElementById("serialActionInput").value);
-  if(!serial) return alert("اكتب السيريال الأول");
-  let st = prompt(`السيريال ${serial} هيفضل في السيستم، قولي هو فين؟`, "تم رجوعه الى المخزن");
-  if(!st) return;
-  await supabaseClient.from(WAREHOUSE_TABLE).update({tech:"", comment: st + " - " + todayStr()}).eq("serial", serial);
-  document.getElementById("serialActionMsg").innerText = `تمام ✅ ${serial} مكتوب عليه: ${st}`;
-  document.getElementById("serialActionInput").value = "";
+async function clearTechCustody(){
+  let from = document.getElementById("custodyFromTech").value.trim();
+  if(!from) return alert("اكتب اسم الفني اللي هتمسح عهدته");
+  if(!confirm(`همسح عهدة ${from} ؟ الأجهزة هترجع المخزن من غير فني`)) return;
+  let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("tech", from);
+  if(!data || !data.length) return alert("مفيش أجهزة عند "+from);
+  for(let w of data){
+    let hist = (w.comment||"") + ` | اتمسحت عهدة ${from} بتاريخ ${todayStr()}`;
+    await supabaseClient.from(WAREHOUSE_TABLE).update({tech: "", comment: hist}).eq("id", w.id);
+  }
+  document.getElementById("custodyMsg").innerText = `تم ✅ مسح عهدة ${from} - ${data.length} جهاز رجعوا المخزن`;
   loadWarehouse();
 }
-
-setTimeout(makeSerialActionBox, 1000);
-</script>
- <script>
-// === زراير ذكية لكل السيستم - بتنزل بس مش بتخفي ===
-function makeSmartBar(){
-  if(document.getElementById("smartBar")) return;
-  let bar = document.createElement("div");
-  bar.id = "smartBar";
-  bar.style.cssText = "position:fixed;bottom:10px;left:8px;right:8px;z-index:9999;display:flex;gap:6px;overflow-x:auto;padding:6px;background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.3)";
-  bar.innerHTML = `
-    <button onclick="goSys('المخزن')" style="flex:1;min-width:70px;padding:12px 6px;border:0;border-radius:12px;background:#ff7a00;color:#fff;font-weight:bold">📦 مخزن</button>
-    <button onclick="goSys('سيريال')" style="flex:1;min-width:70px;padding:12px 6px;border:0;border-radius:12px;background:#7b1fa2;color:#fff;font-weight:bold">🔢 سيريال</button>
-    <button onclick="goSys('الفني')" style="flex:1;min-width:70px;padding:12px 6px;border:0;border-radius:12px;background:#1e88e5;color:#fff;font-weight:bold">👨‍🔧 فنيين</button>
-    <button onclick="goSys('اوردر')" style="flex:1;min-width:70px;padding:12px 6px;border:0;border-radius:12px;background:#2e7d32;color:#fff;font-weight:bold">📋 اوردر</button>
-    <button onclick="goSys('اضافة شغل')" style="flex:1;min-width:80px;padding:12px 6px;border:0;border-radius:12px;background:#ef6c00;color:#fff;font-weight:bold">➕ شغل</button>
-    <button onclick="goSys('عهد')" style="flex:1;min-width:70px;padding:12px 6px;border:0;border-radius:12px;background:#5d4037;color:#fff;font-weight:bold">🔧 عهدة</button>
-  `;
-  document.body.appendChild(bar);
-  // مسافة تحت عشان الزراير متغطيش على اخر حاجة
-  document.body.style.paddingBottom = "80px";
-}
-function goSys(word){
-  let all = [...document.querySelectorAll("h1,h2,h3,h4,b,div,section,button")];
-  let target = all.find(el=> el.children.length<3 && (el.innerText||"").trim().includes(word));
-  if(target){
-    target.scrollIntoView({behavior:"smooth", block:"start"});
-    let old = target.style.background;
-    target.style.background = "#ffe082";
-    setTimeout(()=> target.style.background = old, 2000);
+let allTechs = [];
+let selectedTech = "";
+function renderTechDropdown(filter=""){
+  const dd = document.getElementById("techDropdown");
+  const inp = document.getElementById("oneTechSearch");
+  if(!dd || !inp) return;
+  let list = (allTechs||[]).filter(t=>{
+    let n = (t.name||t.username||"").toLowerCase();
+    return n.includes(filter.toLowerCase());
+  });
+  if(list.length===0){
+    dd.innerHTML = '<div style="padding:10px;color:#888">لا يوجد فني بهذا الاسم</div>';
   } else {
-    alert("مش لاقي قسم اسمه: "+word);
+    dd.innerHTML = list.map(t=>{
+      let n = t.name||t.username||"";
+      return `<div onclick="selectOneTech('${n}')" ...`
+    }).join("");
+  }
+  dd.style.display = "block";
+}
+    function selectOneTech(name){
+  selectedTech = name;
+  document.getElementById('oneTechSearch').value = name;
+  document.getElementById('techDropdown').style.display = 'none';
+  
+}
+
+async function loadTechsForSearch(){
+  let all = [];
+  let tables = ['users','technicians','profiles','techs'];
+  for(let tbl of tables){
+    try{
+      let { data } = await supabaseClient.from(tbl).select('*');
+      if(data && data.length>0){
+        data.forEach(r=>{
+          let n = r.name || r.username || r.full_name || r.tech_name || r.technician || "";
+          if(n) all.push({name:n, username:n});
+        });
+        if(all.length>0) break;
+      }
+    }catch(e){}
+  }
+  if(all.length===0){
+    document.querySelectorAll('select option').forEach(o=>{
+      let v = (o.value||o.textContent||"").trim();
+      if(v && v!=="-- اختر الفني --" && v!=="") all.push({name:v, username:v});
+    });
+  }
+  let seen = {};
+  allTechs = all.filter(t=>{ if(seen[t.name]) return false; seen[t.name]=1; return true; });
+  const inp = document.getElementById("oneTechSearch");
+  if(!inp) return;
+  inp.addEventListener("focus", ()=> renderTechDropdown(inp.value));
+  inp.addEventListener("input", ()=> renderTechDropdown(inp.value));
+  inp.addEventListener("click", ()=> renderTechDropdown(inp.value));
+  document.addEventListener("click", (e)=>{
+    if(!e.target.closest("#oneTechSearch") && !e.target.closest("#techDropdown")){
+      let dd = document.getElementById("techDropdown");
+      if(dd) dd.style.display = "none";
+    }
+  });
+}
+async function addOneSerial(){
+  let serialRaw = document.getElementById("oneSerial").value.trim();
+  let serial = cleanSerial(serialRaw);
+  let tech = document.getElementById("oneTechSearch").value.trim();
+  if(!serial) return alert("اكتب السيريال الأول");
+  if(!tech) return alert("اختار الفني من اللستة");
+  let found = allTechs.find(t => t.username === tech || t.name === tech);
+  let techName = found ? (found.username || found.name) : tech;
+  let row = {
+    sn: "",
+    date_received: todayStr(),
+    serial: serial,
+    date_install: "",
+    customer_phone: document.getElementById("onePhone").value.trim(),
+    model: document.getElementById("oneModel").value.trim(),
+    tech: techName,
+    province: document.getElementById("oneGov").value.trim(),
+    status: "في العهدة"
+  };
+  let { data: ex } = await supabaseClient.from(WAREHOUSE_TABLE).select("id").eq("serial", serial).maybeSingle();
+  let res;
+  if(ex) res = await supabaseClient.from(WAREHOUSE_TABLE).update(row).eq("serial", serial);
+  else res = await supabaseClient.from(WAREHOUSE_TABLE).insert([row]);
+  if(res.error) return alert("خطأ: " + res.error.message);
+  document.getElementById("oneSerialMsg").innerText = "تم ✅ " + serial + " اتضاف لـ " + techName;
+  document.getElementById("oneSerial").value = "";
+  document.getElementById("oneTechSearch").value = "";
+  loadWarehouse();
+}
+document.addEventListener("DOMContentLoaded", () => {
+  loadTechsForSearch();
+});
+async function registerDeliveredInWarehouse(job, serial){
+  if(!serial) return;
+  let clean=cleanSerial(serial);
+    let {data:ex}=await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("serial", clean).maybeSingle();
+  let payload={
+    serial:clean, model:job.device||ex?.model||"",
+    tech: getJobTech(job)||ex?.tech||userObj.name,
+    customer_phone: job.landline||job.mobile||ex?.customer_phone||"",
+    customer_name: job.customer_name||ex?.customer_name||"",
+    date_install: todayStr(), date_received: ex?.date_received||todayStr(),
+    comment: (ex?.comment||"")+" | تم التسليم يوم "+todayStr()+" - أوردر "+(job.order||""),
+    status:"تم التسليم", province: ex?.province||""
+  };
+  if(ex) await supabaseClient.from(WAREHOUSE_TABLE).update(payload).eq("id", ex.id);
+  else await supabaseClient.from(WAREHOUSE_TABLE).insert(payload);
+}
+async function loadJobs(){
+   let data = await getAllJobs();
+data.sort((a,b)=> new Date(b.created_at)-new Date(a.created_at));
+  allJobs=data||[];
+  renderJobs(); loadTechCount(); showLeftAlert();
+}
+async function loadTechNames(){
+  let {data}=await supabaseClient.from("technicians").select("username,name,role").order("name");
+  cachedTechNames=(data||[]).filter(t=> getRoleFromDb(t)==="tech").map(t=>techDisplayName(t)).filter(n=> n);
+  let sel=document.getElementById("a_tech");
+  if(sel) sel.innerHTML=`<option value="">اختر اسم الفني</option>`+cachedTechNames.map(n=>`<option value="${n}">${n}</option>`).join("");
+}
+async function loadTechCount(){
+  let {data}=await supabaseClient.from("technicians").select("username,name,role");
+  let el=document.getElementById("techCount"); if(el) el.innerText=(data||[]).length;
+   let list=document.getElementById("techList"); if(list) list.innerHTML=(data||[]).map(t=>`<div class="tech-chip" style="cursor:pointer" onclick="openTechDetail('${encodeURIComponent(techDisplayName(t))}')"><b>${techDisplayName(t)}</b> - ${getRoleFromDb(t)}</div>`).join("");
+}
+  async function openTechDetail(enc){
+  let name=decodeURIComponent(enc);
+  let wh=[], jobs=[];
+  try{ let r=await supabaseClient.from("warehouse").select("*"); wh=r.data||[]; }catch(e){}
+  try{ let r=await supabaseClient.from("jobs").select("*"); jobs=r.data||[]; }catch(e){}
+  if(!wh.length){ try{ let r=await supabaseClient.from("inventory").select("*"); wh=r.data||[]; }catch(e){} }
+   let inCustody = wh.filter(function(w){ return normTechKey(w.tech||w.technician||w.assigned_to||w.holder||w.custody||w.tech_name||"")===normTechKey(name); });
+let myJobs = jobs.filter(function(j){ return normTechKey(getJobTech(j))===normTechKey(name); });
+  let custodyHtml = "";
+  if(inCustody.length){
+    for(let i=0;i<inCustody.length;i++){
+      let s = inCustody[i].serial || inCustody[i].serial_number || inCustody[i].code || "";
+      custodyHtml += '<span style="background:#eef2ff;padding:4px 8px;border-radius:8px;font-size:12px;display:inline-block;margin:2px">'+s+'</span>';
+    }
+  } else { custodyHtml = '<span>مفيش أجهزة في العهدة</span>'; }
+  let jobsHtml = "";
+  if(myJobs.length){
+    for(let i=0;i<Math.min(10, myJobs.length);i++){
+      let j = myJobs[i];
+      jobsHtml += '<div style="border-bottom:1px solid #eee;padding:6px 0;font-size:13px">'+(j.customer_name||j.customer||"")+' - '+(j.serial||"")+' - '+(j.status||"")+'</div>';
+    }
+  } else { jobsHtml = 'مفيش شغل مسجل'; }
+  let old=document.getElementById("techDetailModal"); if(old) old.remove();
+  let m=document.createElement("div"); m.id="techDetailModal";
+  m.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;display:flex;align-items:center;justify-content:center;padding:12px";
+  m.innerHTML='<div style="background:#fff;width:100%;max-width:520px;max-height:85vh;overflow:auto;border-radius:14px;padding:16px">'
+    +'<div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">👨‍🔧 '+name+'</h3><button onclick="document.getElementById(\'techDetailModal\').remove()" style="background:#ff4757;color:#fff;border:0;border-radius:8px;padding:6px 12px">X</button></div>'
+    +'<p><b>في العهدة:</b> '+inCustody.length+' جهاز</p>'
+    +'<p><b>شغل مسجل:</b> '+myJobs.length+' شغلانة</p>'
+    +'<button onclick="showTechJobs(\''+enc+'\')" style="width:100%;background:#4f46e5;color:#fff;border:0;border-radius:10px;padding:10px;font-weight:700;margin:8px 0">عرض شغله في القايمة تحت 👇</button>'
+    +'<h4>سيريالات في العهدة:</h4><div>'+custodyHtml+'</div>'
+    +'<h4>آخر شغل:</h4><div>'+jobsHtml+'</div></div>';
+  m.onclick=function(e){ if(e.target==m) m.remove(); };
+  document.body.appendChild(m);
+}
+
+   async function showTechJobs(enc){
+  let name=decodeURIComponent(enc);
+  let old=document.getElementById("techDetailModal"); if(old) old.remove();
+  window.techFilter = name;
+  let list=document.getElementById("jobsList");
+  if(!list) return;
+  let r=await supabaseClient.from("jobs").select("*");
+  let jobs=(r.data||[]).filter(function(j){ return normTechKey(getJobTech(j))===normTechKey(name); });
+  let banner=document.getElementById("techFilterBanner"); if(banner) banner.remove();
+  banner=document.createElement("div"); banner.id="techFilterBanner";
+  banner.style.cssText="background:#eef2ff;border:1px solid #4f46e5;border-radius:10px;padding:10px;margin:10px 0;display:flex;justify-content:space-between;align-items:center";
+    banner.innerHTML='<b>📋 شغل '+name+' - '+jobs.length+' شغلانة</b>'
++'<div style="display:flex;gap:8px;margin-top:8px">'
++'<button onclick="openTransferModal(\''+name.replace(/\'/g,"")+'\')" style="flex:1;background:#dc2626;color:#fff;border:none;padding:10px;border-radius:8px;font-weight:bold">🔀 نقل الشغل</button>'
++'<button onclick="clearTechFilter()" style="flex:1;background:#eee;border:none;padding:10px;border-radius:8px">❌ إلغاء الفلتر</button>'
++'</div>';
+  list.parentNode.insertBefore(banner, list);
+  let html="";
+  if(jobs.length){
+    for(let i=0;i<jobs.length;i++){
+      let j=jobs[i];
+     window._currentTechJobs = jobs;     
+      html+='<div style="background:#fff;border:1px solid #eee;border-radius:12px;padding:12px;margin-bottom:8px"><b>'+(j.customer_name||j.customer||"عميل")+'</b> - '+(j.serial||"")+'<br><span style="font-size:13px;color:#555">'+(j.status||"")+' | '+(j.governorate||j.address||"")+'</span></div>';
+    }
+  } else { html="<div>مفيش شغل مسجل للفني ده</div>"; }
+  list.innerHTML=html;
+    function addBtns(){
+ list.querySelectorAll(":scope > div").forEach(function(card,idx){
+  if(!jobs[idx]||card.querySelector(".jobCheck")) return;
+  var cb=document.createElement("input");
+  cb.type="checkbox"; cb.className="jobCheck"; cb.style.cssText="width:20px;height:20px;accent-color:#16a34a;cursor:pointer;position:relative;z-index:5";
+  cb.dataset.jobId=jobs[idx].id;
+  cb.onclick=function(e){ e.stopPropagation(); };
+  card.prepend(cb);
+  var b=document.createElement("button");
+  b.textContent="نقل الأوردر"; b.className="transferBtn";
+  b.style.cssText="display:block;width:100%;margin-top:8px;padding:8px;background:#2563eb;color:#fff;border:0;border-radius:8px;cursor:pointer;position:relative;z-index:5";
+  b.onclick=function(e){
+    e.stopPropagation(); e.preventDefault();
+    window._currentTechJobs=[jobs[idx]];
+    openTransferModal(getJobTech(jobs[idx]));
+    setTimeout(function(){
+      document.querySelectorAll("input[type=checkbox]").forEach(function(c){ if(c.offsetParent) c.checked=true; });
+    },150);
+  };
+  card.appendChild(b);
+ });
+}
+addBtns();
+new MutationObserver(addBtns).observe(list,{childList:true,subtree:true});
+  list.scrollIntoView({behavior:"smooth"});
+}
+    function openTransferModal(fromTech){
+  let old=document.getElementById("transferModal"); if(old) old.remove();
+   let list = window._currentTechJobs || [];
+if(!list.length){ alert("مفيش أوردرات"); return; }
+  let allTechs=(typeof cachedTechNames!=="undefined"&&cachedTechNames.length?[...cachedTechNames]:[...new Set((typeof allJobs!=="undefined"?allJobs:[]).map(j=>getJobTech(j))).filter(Boolean)]);
+  if(!allTechs.length) allTechs=[fromTech];
+   let techOptions=(allTechs.filter(t=>normTechKey(t)!==normTechKey(fromTech)).length?allTechs.filter(t=>normTechKey(t)!==normTechKey(fromTech)):allTechs)
+    .map(t=>'<div onclick="selectTransferTech(this,\''+t.replace(/\'/g,"")+'\')" style="padding:12px;border-bottom:1px solid #eee;cursor:pointer">'+t+'</div>').join("");
+    let jobsHtml=list.map(j=>{
+  let title=(j.customer||j.name||j.title||"أوردر")+" - "+(j.landline||j.phone||j.tel||j.ارضي||j.id||"");
+return '<label style="display:flex;gap:8px;align-items:center;padding:10px;border-bottom:1px solid #eee"><input type="checkbox" class="modal-transfer-check" data-jobid="'+j.id+'" style="width:20px;height:20px"> <span style="font-size:13px">'+title+'</span></label>';
+}).join("");  
+  let m=document.createElement("div"); m.id="transferModal";
+  m.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;display:flex;align-items:center;justify-content:center;padding:12px";
+  m.innerHTML='<div style="background:#fff;width:100%;max-width:520px;max-height:85vh;overflow:auto;border-radius:14px;padding:16px">'
+     +'<h3 style="margin:0">🔀 نقل الشغل من '+fromTech+'</h3>'
+     +'<label style="display:flex;gap:8px;align-items:center;background:#fef2f2;padding:10px;border-radius:8px;margin-top:10px"><input type="checkbox" onchange="toggleAllTransfer(this.checked)" style="width:20px;height:20px"> <b>تحديد الكل ('+list.length+' أوردر)</b></label>'
++'<div style="border:1px solid #ddd;border-radius:10px;max-height:200px;overflow:auto;margin-top:10px">'+jobsHtml+'</div>'
+  +'<div style="margin:14px 0"><b>انقل لـ:</b><div id="transferTechList" style="border:1px solid #ddd;border-radius:10px;max-height:180px;overflow:auto;margin-top:6px">'+techOptions+'</div><p id="selectedTransferTech" style="color:#dc2626;font-weight:bold"></p></div>'
+  +'<div style="display:flex;gap:8px"><button onclick="doTransferJobs(\''+fromTech.replace(/\'/g,"")+'\')" style="flex:1;background:#dc2626;color:#fff;border:none;padding:12px;border-radius:10px;font-weight:bold">نقل المحدد</button>'
+  +'<button onclick="document.getElementById(\'transferModal\').remove()" style="flex:1;background:#eee;border:none;padding:12px;border-radius:10px">إلغاء</button></div></div>';
+  m.onclick=function(e){ if(e.target===m) m.remove(); };
+  document.body.appendChild(m);
+  window._transferTo="";
+}
+function selectTransferTech(el,tech){
+  window._transferTo=tech;
+  document.querySelectorAll("#transferTechList div").forEach(d=>d.style.background="#fff");
+  el.style.background="#fee2e2";
+  document.getElementById("selectedTransferTech").textContent="هتنقل لـ: "+tech;
+}
+function toggleAllTransfer(checked){
+  document.querySelectorAll(".modal-transfer-check").forEach(c=>c.checked=checked);
+}
+ async function doTransferJobs(fromTech){
+  let selected=[...document.querySelectorAll(".modal-transfer-check:checked")].map(c=>c.dataset.jobid);
+  if(!selected.length){ alert("علّم على أوردر واحد على الأقل"); return; }
+  if(!window._transferTo){ alert("اختر الفني اللي هتنقله الأول"); return; }
+  if(!confirm("هنقل "+selected.length+" أوردر من "+fromTech+" لـ "+window._transferTo+" ؟")) return;
+  for(let i=0;i<selected.length;i+=100){
+    let chunk=selected.slice(i,i+100);
+    let {error}=await supabaseClient.from("jobs").update({tech:window._transferTo}).in("id",chunk);
+    if(error){ alert("حصل خطأ في النقل: "+error.message); return; }
+  }
+  alert("تم النقل ✅");
+  document.getElementById("transferModal").remove();
+  showTechJobs(encodeURIComponent(fromTech));
+}
+  
+function clearTechFilter(){
+  window.techFilter=null;
+  let b=document.getElementById("techFilterBanner"); if(b) b.remove();
+  if(typeof renderJobs==="function") renderJobs();
+}
+
+function renderJobs(){
+  let list=document.getElementById("jobsList"); if(!list) return;
+  let mine=myJobsBase();
+  let jobs=[...mine];
+    if(window.techFilter){ jobs=jobs.filter(function(j){ return normTechKey(getJobTech(j))===normTechKey(window.techFilter); }); }
+  if(activeFilter==="done") jobs=jobs.filter(j=>j.status==="تم التسليم");
+  if(activeFilter==="pending") jobs=jobs.filter(j=>j.status!=="تم التسليم" && !["تأجيل","لم يتم الرد","رفض الزيارة"].includes(j.status));
+  if(activeFilter==="problem") jobs=jobs.filter(j=>["تأجيل","لم يتم الرد","رفض الزيارة"].includes(j.status));
+  if(searchQ) jobs=jobs.filter(j=> (j.customer_name+" "+j.serial+" "+j.order+" "+j.landline+" "+(j.code||"")).toLowerCase().includes(searchQ.toLowerCase()));
+  document.getElementById("cDone").innerText=mine.filter(j=>j.status==="تم التسليم").length;
+  document.getElementById("cPending").innerText=mine.filter(j=>j.status!=="تم التسليم" && !["تأجيل","لم يتم الرد","رفض الزيارة"].includes(j.status)).length;
+  document.getElementById("cProblem").innerText=mine.filter(j=>["تأجيل","لم يتم الرد","رفض الزيارة"].includes(j.status)).length;
+  let show=jobs.slice(0, visibleCount);
+  list.innerHTML=show.map(j=>`<div class="job" onclick="openDetails('${j.id}')"><h3>${j.customer_name||""} - ${j.order||""}</h3><div style="font-weight:bold;color:#0b6cff">🆔 الكود: ${j.code||"—"}</div><div class="meta">📍 ${j.address||""}<br>📞 الأرضي: ${j.landline||""} | 📱 ${j.mobile||""}<br>👷 الفني: ${getJobTech(j)||""} | 📦 الجهاز: ${j.device||""}<br>🔢 السيريال: ${j.serial||"لسه"} | الحالة: <b>${j.status||"جديد"}</b><br>💬 ${j.comment||""}</div><span class="badge">${j.status||"جديد"}</span></div>`).join("") || `<p style="text-align:center">مفيش شغل هنا</p>`;
+  document.getElementById("loadMoreWrap").innerHTML= jobs.length>visibleCount ? `<button class="btn" onclick="visibleCount+=20;renderJobs()">عرض المزيد (${jobs.length-visibleCount} باقي)</button>` : "";
+}
+function onSearch(){ searchQ=document.getElementById("searchInput").value; renderJobs() }
+function filterByCircle(f){ activeFilter=f; visibleCount=10; renderJobs() }
+function showTab(tab, el){
+  activeTab=tab;
+  document.querySelectorAll(".tabs div").forEach(d=>d.classList.remove("active"));
+  if(el) el.classList.add("active");
+  document.getElementById("jobsList").classList.toggle("hidden", tab==="warehouse");
+  document.getElementById("warehouseList").classList.toggle("hidden", tab!=="warehouse");
+  document.getElementById("archiveFilter").classList.toggle("hidden", tab!=="archive");
+  if(tab==="all") activeFilter="all";
+  if(tab==="pending") activeFilter="pending";
+  if(tab==="problem") activeFilter="problem";
+  if(tab==="warehouse") renderWarehouseList();
+  if(tab!=="warehouse") renderJobs();
+     if(tab=="archive"){ loadArchive(); }
+}
+function showLeftAlert(){
+  let box=document.getElementById("leftTechAlerts"); if(!box) return;
+  box.innerHTML="";
+}
+function openDetails(id){
+  let j=allJobs.find(x=>String(x.id)===String(id)); if(!j) return;
+  currentDetailId=j.id;
+  document.getElementById("details").style.display="block";
+  document.getElementById("dTitle").innerText=j.customer_name||"";
+  document.getElementById("dCustomer").innerText=j.customer_name||"";
+  document.getElementById("dMeta").innerHTML=`العنوان: ${j.address||""}<br>الأوردر: ${j.order||""}<br>الأرضي: ${j.landline||""}<br>الموبايل: ${j.mobile||""}<br>الفني: ${getJobTech(j)||""}<br>الجهاز: ${j.device||""}<br>الحالة: ${j.status||""}`;
+  document.getElementById("dComment").innerText=j.comment||"";
+  document.getElementById("dSerial").value=j.serial||"";
+  renderPhotos(j);
+  document.getElementById("dUpDownBtn").innerText=j.up_down ? `⬆️ Up / ⬇️ Down: ${j.up_down} ✅` : "⬆️ Up / ⬇️ Down *";
+  document.getElementById("dRecipientBtn").innerText=j.recipient ? `👤 المستلم: ${j.recipient} ✅` : "👤 المستلم *";
+}
+function closeDetails(){ document.getElementById("details").style.display="none" }
+function renderPhotos(j){
+  let box=document.getElementById("dPhotos");
+  let slots=["وش الجهاز","ضهر الجهاز","الايصال والبطاقة"];
+  box.innerHTML=slots.map((s,i)=>{
+    let url=j["photo"+(i+1)];
+    return `<div class="imgbox" onclick="openPhotoCam(${i})">${url?`<img src="${url}" class="photoThumb" onclick="event.stopPropagation();showPhoto('${url}')">`:`📷 ${s}<br><small>دوس للتصوير</small>`}</div>`;
+  }).join("");
+}
+function showPhoto(url){ document.getElementById("photoModalImg").src=url; document.getElementById("photoModal").style.display="flex"; photoRot=0 }
+function rotatePhotoModal(){ photoRot=(photoRot+90)%360; document.getElementById("photoModalImg").style.transform=`rotate(${photoRot}deg)` }
+function openPhotoCam(i){ currentPhotoSlot=i; document.getElementById("photoCamTitle").innerText="📷 صور "+["وش الجهاز","ضهر الجهاز","الايصال والبطاقة"][i]; document.getElementById("photoCamModal").style.display="flex" }
+function closePhotoCam(){ document.getElementById("photoCamModal").style.display="none" }
+function capturePhoto(){ document.getElementById("photoInput").click() }
+function openPhotoFile(){ document.getElementById("photoGalleryInput").click() }
+function openUpDownOnly(id, cust){ currentUpDownJobId=id; document.getElementById("upDownCustomer").innerText=cust; document.getElementById("upDownModal").style.display="flex" }
+function closeUpDown(){ document.getElementById("upDownModal").style.display="none" }
+function chooseUpDown(v){ upDownMap[currentUpDownJobId]=v; document.getElementById("upDownModal").style.display="none"; let j=allJobs.find(x=>String(x.id)===String(currentUpDownJobId)); if(j) j.up_down=v; document.getElementById("dUpDownBtn").innerText=`⬆️ Up / ⬇️ Down: ${v} ✅`; alert("تم تسجيل: "+v) }
+function openRecipientOnly(id, cust){ currentRecipientJobId=id; document.getElementById("recipientCustomer").innerText=cust; document.getElementById("recipientModal").style.display="flex" }
+function chooseRecipient(v){
+  if(v==="الرجوع"){ document.getElementById("recipientModal").style.display="none"; return }
+  recipientMap[currentRecipientJobId]=v; document.getElementById("recipientModal").style.display="none";
+  let j=allJobs.find(x=>String(x.id)===String(currentRecipientJobId)); if(j) j.recipient=v;
+  document.getElementById("dRecipientBtn").innerText=`👤 المستلم: ${v} ✅`; alert("المستلم: "+v);
+}
+function clearRecipientChoice(){ delete recipientMap[currentRecipientJobId]; document.getElementById("recipientModal").style.display="none"; document.getElementById("dRecipientBtn").innerText="👤 المستلم *"; alert("تم مسح المستلم") }
+function openStatusModal(id, cust){
+  currentStatusJobId=id; currentStatusCustomer=cust;
+  document.getElementById("statusCustomer").innerText=cust;
+  document.getElementById("selectedStatusLabel").innerText="";
+  document.getElementById("statusComment").value="";
+  document.getElementById("statusModal").style.display="flex";
+}
+function closeStatusModal(){ document.getElementById("statusModal").style.display="none" }
+function selectStatusOption(s){ document.getElementById("selectedStatusLabel").innerText="المختار: "+s; document.getElementById("selectedStatusLabel").dataset.val=s }
+async function confirmStatus(){
+  let st=document.getElementById("selectedStatusLabel").dataset.val;
+  let cm=document.getElementById("statusComment").value.trim();
+  if(!st) return alert("اختار الحالة الأول");
+  let j=allJobs.find(x=>String(x.id)===String(currentStatusJobId)); if(!j) return;
+  let {error}=await supabaseClient.from(TABLE).update({status:st, comment:cm}).eq("id", j.id);
+  if(error) return alert("خطأ: "+error.message);
+  j.status=st; j.comment=cm;
+  closeStatusModal(); closeDetails(); renderJobs();
+  alert("تم حفظ الحالة: "+st);
+}
+async function isSerialInWarehouse(serial){
+  serial = String(serial || '').trim();
+  if(!serial) return false;
+  if(Array.isArray(allWarehouse) && allWarehouse.length){
+    const found = allWarehouse.some(w => String(w.serial || w.Serial || w.code || '').trim() === serial);
+    if(found) return true;
+  }
+  const { data } = await supabaseClient.from(WAREHOUSE_TABLE).select('serial').eq('serial', serial).maybeSingle();
+  return !!data;
+}
+  async function saveSerial(id){
+  let j=allJobs.find(x=>String(x.id)===String(id)); if(!j) return;
+  let serial=cleanSerial(document.getElementById("dSerial").value);
+  if(!serial) return alert("اكتب السيريال الأول");
+    if(!(await isSerialInWarehouse(serial))) return alert("السيريال ده مش موجود في المخزن! راجع السيريال");
+  let up=j.up_down||upDownMap[id];
+  let rec=j.recipient||recipientMap[id];
+  if(!up) return alert("اختار Up / Down الأول");
+  if(!rec) return alert("اختار المستلم الأول");
+  if(!j.photo1) return alert("📷 صور وش الجهاز الأول - اجباري");
+  if(!j.photo2) return alert("📷 صور ضهر الجهاز الأول - اجباري");
+  if(!j.photo3) return alert("📷 صور الايصال والبطاقة الأول - اجباري");
+  let payload={serial, up_down:up, recipient:rec, status:"تم التسليم"};
+  let r1=await supabaseClient.from(TABLE).update({...payload, delivered_at:new Date().toISOString(), delivered_date:todayStr()}).eq("id", id);
+  if(r1.error){
+    let r2=await supabaseClient.from(TABLE).update(payload).eq("id", id);
+    if(r2.error) return alert("خطأ في الحفظ: "+r2.error.message);
+  }
+  Object.assign(j, payload);
+  await registerDeliveredInWarehouse(j, serial);
+  await loadWarehouse();
+  closeDetails(); renderJobs();
+  let txt="تم التسليم ✅ - السيريال: "+serial+" - العميل: "+(j.customer_name||j.customer||"")+" - بتاريخ "+todayStr();
+  let phone=getFollowerPhone();
+  let msgAfter="✅ تم التسليم - اتسجل في المخزن عند الأدمن بالسيريال "+serial+" وتاريخ "+todayStr()+" واتشال من عهدتك";
+  let shown=false;
+  let showMsg=function(){ if(shown) return; shown=true; alert(msgAfter); };
+  if(!phone){ alert(txt); } else {
+    let clean=phone.replace(/\D/g,"");
+    if(clean.startsWith("0")) clean="20"+clean.slice(1);
+    if(clean.length===10) clean="20"+clean;
+    window.open("https://wa.me/"+clean+"?text="+encodeURIComponent(txt),"_blank");
+    document.addEventListener("visibilitychange", function h(){ if(!document.hidden){ document.removeEventListener("visibilitychange", h); showMsg(); } });
+    setTimeout(showMsg, 10000);
   }
 }
-makeSmartBar();
+async function addJob(){
+  if(!userObj.isAdmin) return alert("الأدمن بس");
+  let techVal=getVal("a_tech");
+  let payload={
+    customer_name:getVal("a_customer"),
+    landline:getVal("a_landline"),
+    mobile:getVal("a_mobile"),
+    code:getVal("a_code"),
+    address:getVal("a_address"),
+    order:getVal("a_order"),
+    device:getVal("a_device"),
+    tech:techVal,
+    tech_name:techVal,
+    status:"جديد", date:todayStr()
+  };
+  if(!payload.customer_name||!payload.tech) return alert("اكتب اسم العميل واختار الفني");
+  if(!payload.order) return alert("اكتب رقم الأوردر");
+  let r = await insertJobSafe(payload);
+  if(r.error){
+    let payload2 = {
+      customer_name: payload.customer_name,
+      address: payload.address,
+      order: payload.order,
+      landline: payload.landline,
+      device: payload.device,
+      tech: payload.tech,
+      tech_name: payload.tech,
+      status:"جديد", date:todayStr(),
+      comment: "موبايل: "+payload.mobile+" | كود: "+payload.code
+    };
+    let r2 = await insertJobSafe(payload2);
+    if(r2.error){ alert("مش اتحفظ، السبب: "+r2.error.message); return; }
+  }
+  alert("تمت الإضافة ✅ - هتلاقيه في قيد الانتظار");
+  ["a_customer","a_landline","a_mobile","a_code","a_address","a_order"].forEach(id=>{ let e=document.getElementById(id); if(e) e.value=""; });
+  activeFilter="pending"; visibleCount=10;
+  await loadJobs();
+  showTab('pending', document.querySelectorAll(".tabs div")[1]);
+}
+async function uploadSheetFast(){
+  let files=document.getElementById("sheetInput").files;
+  if(!files.length) return alert("اختار ملف الأول");
+  autoOn = false;
+  let btnAuto = document.getElementById("autoBtn");
+  if(btnAuto){ btnAuto.textContent="تشغيل"; btnAuto.style.background="#dcfce7"; btnAuto.style.color="#166534"; }
+  document.getElementById("uploadMsg").innerText="جاري الرفع...";
+  let prog = document.getElementById("prog");
+  let progBar = document.getElementById("progBar");
+  if(prog) prog.style.display="block";
+  let total=0, skipped=0;
+  try{
+    for(let f of files){
+      let buf=await f.arrayBuffer();
+      let wb=XLSX.read(buf,{type:"array"});
+      let ws = wb.Sheets["Sheet1"] || wb.Sheets[wb.SheetNames[0]];
+      let arr = XLSX.utils.sheet_to_json(ws,{header:1,defval:""});
+      let toInsert=[];
+      for(let i=1;i<arr.length;i++){
+        let r=arr[i];
+        let customer=String(r[3]||"").trim();
+        let order=String(r[1]||"").trim();
+        if(!customer || !order) continue;
+        if(customer==="Name") continue;
+        let techVal=String(r[16]||"").trim();
+        let techPhone=String(r[17]||"").trim();
+        toInsert.push({
+          customer_name: customer,
+          address: String(r[10]||""),
+          order: order,
+          landline: order,
+          mobile: String(r[2]||""),
+          device: String(r[4]||""),
+          code: String(r[7]||""),
+          tech: techVal,
+          tech_name: techVal,
+          tech_phone: techPhone,
+          status: "جديد",
+          date: todayStr(),
+          comment: String(r[14]||""),
+          serial: String(r[13]||"")
+        });
+      }
+      if(toInsert.length){
+        let orders = [...new Set(toInsert.map(x=>x.order))];
+        let exSet = new Set();
+        for(let i=0;i<orders.length;i+=500){
+          let chunkOrders = orders.slice(i, i+500);
+          let {data:ex} = await supabaseClient.from(TABLE).select("order").in("order", chunkOrders);
+          (ex||[]).forEach(x=> exSet.add(String(x.order)));
+        }
+        let filtered=[];
+        for(let x of toInsert){ if(exSet.has(String(x.order))) skipped++; else filtered.push(x); }
+        toInsert=filtered;
+      }
+      for(let i=0;i<toInsert.length;i+=500){
+        let chunk = toInsert.slice(i, i+500);
+        let {error} = await supabaseClient.from(TABLE).insert(chunk);
+        if(error){
+          let chunk2 = chunk.map(({tech_name, tech_phone, ...rest})=>rest);
+          let r2 = await supabaseClient.from(TABLE).insert(chunk2);
+          if(r2.error){
+            let chunk3 = chunk.map(({tech, ...rest})=>rest);
+            let r3 = await supabaseClient.from(TABLE).insert(chunk3);
+            if(!r3.error) total+=chunk3.length;
+            else { alert("خطأ: "+r3.error.message); console.log(r3.error); }
+          } else total+=chunk2.length;
+        } else total+=chunk.length;
+        if(progBar) progBar.style.width = Math.round(((i+chunk.length)/Math.max(1,toInsert.length))*100)+"%";
+        document.getElementById("uploadMsg").innerText=`جاري... تم رفع ${total} - ملف ${f.name}`;
+      }
+    }
+  }catch(e){ alert("خطأ في الرفع: "+e.message); console.log(e); }
+  if(prog) prog.style.display="none";
+  if(progBar) progBar.style.width="0%";
+  document.getElementById("uploadMsg").innerText=`تم رفع ${total} أوردر - وتخطينا ${skipped} مكرر ✅`;
+  autoOn = true;
+  if(btnAuto){ btnAuto.textContent="إيقاف"; btnAuto.style.background="#fee2e2"; btnAuto.style.color="#dc2626"; }
+  loadJobs();
+}
+async function loadArchive(){
+  let {data}=await supabaseClient.from(ARCHIVE_TABLE).select("*").order("created_at",{ascending:false}).limit(50000);
+  archivedJobs=data||[];
+  let sel=document.getElementById("archiveDate");
+  if(sel){
+    let dates=[...new Set(archivedJobs.map(a=>a.archive_date||fmtDate(a.created_at)))];
+    sel.innerHTML=`<option value="">كل الأيام</option>`+dates.map(d=>`<option value="${d}">${d}</option>`).join("");
+  }
+    renderArchive();
+}
+async function archiveOldJobs(){
+  if(!userObj.isAdmin) return alert("الأدمن بس");
+  let date = document.getElementById("manualArchiveDate").value.trim() || todayStr();
+  if(!allJobs.length) return alert("مفيش شغل عشان يترشف");
+  if(!confirm("هترشف كل الشغل اللي موجود دلوقتي ؟\nالعدد: " + allJobs.length + "\nوهيتنقل لأرشيف يوم " + date + " وهيتمسح من اليومي")) return;
+  let {data: ex} = await supabaseClient.from(ARCHIVE_TABLE).select("order").eq("archive_date", date).limit(10000);
+  let exSet = new Set((ex||[]).map(x => String(x.order)));
+  let toArchive = allJobs.filter(j => !exSet.has(String(j.order)));
+  if(!toArchive.length) return alert("الشغل ده مترشف قبل كده اصلا");
+  let rows = toArchive.map(j => ({
+    customer_name: j.customer_name, address: j.address, order: j.order,
+    landline: j.landline, mobile: j.mobile, code: j.code,
+    device: j.device, tech: getJobTech(j), tech_name: getJobTech(j),
+    status: j.status, serial: j.serial||"", comment: j.comment||"",
+    date: j.date||date, archive_date: date,
+        recipient: j.recipient||"", up_down: j.up_down||"", photo1: j.photo1||"", photo2: j.photo2||"", photo3: j.photo3||"", delivered_at: j.delivered_at||"", delivered_date: j.delivered_date||""
+  }));
+  for(let i=0;i<rows.length;i+=500){
+    let chunk = rows.slice(i, i+500);
+    let {error} = await supabaseClient.from(ARCHIVE_TABLE).insert(chunk);
+    if(error){
+      let chunk2 = chunk.map(({tech_name, ...rest}) => rest);
+      let r2 = await supabaseClient.from(ARCHIVE_TABLE).insert(chunk2);
+      if(r2.error){ alert("خطأ في الأرشفة: " + r2.error.message); return; }
+    }
+  }
+  let ids = toArchive.map(j => j.id);
+  for(let i=0;i<ids.length;i+=500){
+    await supabaseClient.from(TABLE).delete().in("id", ids.slice(i, i+500));
+  }
+  alert("تمام ✅ اترشف " + toArchive.length + " أوردر ليوم " + date + " - واليومي بقى فاضي");
+  await loadJobs();
+  await loadArchive();
+
+}
+  function getArchiveRows(date){
+  date = date || document.getElementById("archiveDate").value || todayStr();
+  let all = (typeof archivedJobs !== "undefined" && archivedJobs.length) ? archivedJobs : (typeof jobs !== "undefined" ? jobs : []);
+  return all.filter(a => (a.archive_date || fmtDate(a.created_at)) === date);
+}
+
+function renderArchive(){
+  let sel = document.getElementById("archiveDate");
+  if(!sel) return;
+  let all = (typeof archivedJobs !== "undefined" && archivedJobs.length) ? archivedJobs : (typeof jobs !== "undefined" ? jobs : []);
+  // املى قايمة التواريخ
+  let dates = [...new Set(all.map(a => a.archive_date || fmtDate(a.created_at)).filter(Boolean))].sort().reverse();
+  let cur = sel.value;
+  sel.innerHTML = `<option value="">كل الأيام</option>` + dates.map(d => `<option value="${d}" ${d===cur?"selected":""}>${d}</option>`).join("");
+
+  let date = cur || todayStr();
+  let rows = getArchiveRows(date);
+
+  let done = rows.filter(r => r.status === "تم التسليم").length;
+  let updated = rows.filter(r => r.comment && r.comment.trim() !== "" && r.status !== "تم التسليم").length;
+  let empty = rows.filter(r => !r.serial || r.serial === "لسه" || !r.status || r.status === "جديد").length;
+
+  if(document.getElementById("aDone")) document.getElementById("aDone").innerText = done;
+  if(document.getElementById("aUpdated")) document.getElementById("aUpdated").innerText = updated;
+  if(document.getElementById("aEmpty")) document.getElementById("aEmpty").innerText = empty;
+  if(document.getElementById("archiveSummary")) document.getElementById("archiveSummary").innerText = `اليوم ${date} - الاجمالي: ${rows.length} | تم: ${done} | ابديت: ${updated} | فاضي: ${empty}`;
+    if(document.getElementById("archiveSheetsList")) document.getElementById("archiveSheetsList").innerHTML = rows.length ? rows.map((r,idx) => `<div style="font-size:13px;padding:8px;border-bottom:1px solid #eee">👤 ${r.customer_name||""} - ${r.order||""} | ${r.status||"جديد"} | ${r.serial||"لسه"}<div style="display:flex;gap:6px;margin-top:6px">${[r.photo1,r.photo2,r.photo3].filter(Boolean).map(p=>`<img src="${p}" onclick="window.open('${p}','_blank')" style="width:70px;height:70px;object-fit:cover;border-radius:8px;cursor:pointer;border:1px solid #ddd">`).join("")}</div><button onclick="shareArchiveTicket(${idx})" style="margin-top:6px;background:#25D366;color:#fff;border:0;padding:6px 12px;border-radius:8px;cursor:pointer">📤 شير التيكت بالصور</button></div>`).join("") : `<p style="text-align:center;color:#999">مفيش شغل في اليوم ده</p>`;
+}
+  async function shareArchiveTicket(idx){
+  let date = document.getElementById("archiveDate").value || todayStr();
+  let rows = getArchiveRows(date);
+  let r = rows[idx]; if(!r) return;
+  let txt = `📋 تيكت - ${r.customer_name||""}\nالأوردر: ${r.order||""}\nالأرضي: ${r.landline||""}\nالموبايل: ${r.mobile||""}\nالفني: ${getJobTech(r)}\nالسيريال: ${r.serial||"لسه"}\nالحالة: ${r.status||"جديد"}\nالكومنت: ${r.comment||""}\nالتاريخ: ${r.archive_date||""}\n\nالصور:\n${[r.photo1,r.photo2,r.photo3].filter(Boolean).join("\n")}`;
+  let photos = [r.photo1,r.photo2,r.photo3].filter(Boolean);
+  try{
+    if(navigator.share && photos.length){
+      let files = [];
+      for(let u of photos){
+        try{ let res = await fetch(u); let blob = await res.blob(); files.push(new File([blob], "photo.jpg", {type: blob.type||"image/jpeg"})); }catch(e){}
+      }
+      if(files.length && navigator.canShare && navigator.canShare({files})){
+        await navigator.share({title: "تيكت "+r.order, text: txt, files});
+        return;
+      }
+    }
+    if(navigator.share){ await navigator.share({title: "تيكت "+r.order, text: txt}); return; }
+  }catch(e){}
+  try{ await navigator.clipboard.writeText(txt); alert("اتنسخ التيكت بالصور ✅ - الصقه في الواتساب"); }
+  catch(e){ prompt("انسخ التيكت:", txt); }
+}
+
+function exportArchive(mode){
+  let date = document.getElementById("archiveDate").value || todayStr();
+  let rows = getArchiveRows(date);
+  if(!rows.length) return alert("مفيش أرشيف لليوم ده");
+
+  if(!mode){
+    let choice = prompt("هتحمل ايه من يوم " + date + " ؟\n1 = الكل\n2 = تم التسليم بس\n3 = عليه ابديت بس\n4 = فاضي بس", "1");
+    if(choice === "2") mode = "done";
+    else if(choice === "3") mode = "updated";
+    else if(choice === "4") mode = "empty";
+    else mode = "all";
+  }
+
+  if(mode === "done") rows = rows.filter(r => r.status === "تم التسليم");
+  if(mode === "updated") rows = rows.filter(r => r.comment && r.comment.trim() !== "" && r.status !== "تم التسليم");
+  if(mode === "empty") rows = rows.filter(r => !r.serial || r.serial === "لسه" || !r.status || r.status === "جديد");
+
+  if(!rows.length) return alert("مفيش شغل بالنوع ده في اليوم ده");
+
+  let ws = XLSX.utils.json_to_sheet(rows.map(r => ({العميل:r.customer_name, الأوردر:r.order, الأرضي:r.landline, الموبايل:r.mobile, الفني:getJobTech(r), السيريال:r.serial, الحالة:r.status, الكومنت:r.comment, التاريخ:(r.archive_date||fmtDate(r.created_at))})));
+  let wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "ارشيف");
+  XLSX.writeFile(wb, `ارشيف-${date}-${mode}.xlsx`);
+}
+async function downloadEndOfDay(){
+  if(!userObj.isAdmin) return alert("الأدمن بس");
+  let date=todayStr();
+  let done=allJobs.filter(j=>j.status==="تم التسليم");
+  let updated=allJobs.filter(j=>["تأجيل","لم يتم الرد","رفض الزيارة"].includes(j.status) || (j.comment||"").trim()!=="");
+  if(!done.length && !updated.length) return alert("مفيش شغل النهاردة عشان ينزل");
+  let zip=new JSZip();
+  let folder=zip.folder("انهاء-اليوم-"+date);
+  let ws1=XLSX.utils.json_to_sheet(done.map(r=>({العميل:r.customer_name, الأوردر:r.order, الأرضي:r.landline, الموبايل:r.mobile, الفني:getJobTech(r), السيريال:r.serial, الجهاز:r.device, تاريخ_القفل:r.delivered_date||date, المستلم:r.recipient, Up_Down:r.up_down})));
+  let wb1=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb1, ws1, "تم التسليم");
+  let wb1Bin=XLSX.write(wb1,{bookType:"xlsx", type:"array"});
+  folder.file(`تم-التسليم-${date}.xlsx`, wb1Bin);
+  let ws2=XLSX.utils.json_to_sheet(updated.map(r=>({العميل:r.customer_name, الأوردر:r.order, الأرضي:r.landline, الفني:getJobTech(r), الحالة:r.status, الكومنت:r.comment, السيريال:r.serial||""})));
+  let wb2=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb2, ws2, "تأجيل-ابدیت");
+  let wb2Bin=XLSX.write(wb2,{bookType:"xlsx", type:"array"});
+  folder.file(`تأجيل-ابدیت-${date}.xlsx`, wb2Bin);
+  let blob=await zip.generateAsync({type:"blob"});
+  let a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=`انهاء-اليوم-${date}.zip`; a.click();
+  alert(`✅ نزل فولدر ${date} جواه شيتين:\n1. تم التسليم (${done.length})\n2. تأجيل / أبديت (${updated.length})\nعلى اللاب توب`);
+}
+async function deleteOneJob(){
+  if(!userObj.isAdmin) return alert("الأدمن بس");
+  let order=document.getElementById("delOrderId").value.trim();
+  if(!order) return alert("اكتب رقم الأوردر");
+  if(!confirm("متأكد تمسح الأوردر رقم "+order+"؟")) return;
+  let {data}=await supabaseClient.from(TABLE).select("id").eq("order", order);
+  if(!data || !data.length) return alert("رقم الأوردر ده مش موجود");
+  for(let r of data) await supabaseClient.from(TABLE).delete().eq("id", r.id);
+  alert("تم مسح الأوردر رقم "+order); loadJobs();
+}
+async function deleteLandlineOnly(){
+  if(!userObj.isAdmin) return alert("الأدمن بس");
+  let order=document.getElementById("delOrderId").value.trim();
+  if(!order) return alert("اكتب رقم الأوردر");
+  if(!confirm("تمسح الرقم الأرضي بس من الأوردر رقم "+order+"؟")) return;
+  await supabaseClient.from(TABLE).update({landline:""}).eq("order", order);
+  alert("تم مسح الرقم الأرضي بس من الأوردر "+order); loadJobs();
+}
+async function deleteTableAll(tableName){
+  let totalDeleted = 0;
+  for(let round=0; round<20; round++){
+    let {data, error} = await supabaseClient.from(tableName).select("id").limit(1000);
+    if(error) throw error;
+    if(!data || !data.length) break;
+    let ids = data.map(x=>x.id);
+    let {error: delErr} = await supabaseClient.from(tableName).delete().in("id", ids);
+    if(delErr) throw delErr;
+    totalDeleted += ids.length;
+    if(ids.length < 1000) break;
+  }
+  return totalDeleted;
+}
+async function deleteAllDataSuper(){
+  if(!userObj || !userObj.isSuper) return alert("Super Admin بس");
+  if(!confirm("متأكد تمسح كل حاجة؟ كل الشغل + الأرشيف + المخزن هيتمسح")) return;
+  if(!confirm("تأكيد أخير - مفيش رجوع - امسح كل حاجة؟")) return;
+  try{
+    await deleteTableAll(TABLE);
+    await deleteTableAll(ARCHIVE_TABLE);
+    await deleteTableAll(WAREHOUSE_TABLE);
+  }catch(e){
+    return alert("خطأ في مسح كل حاجة: "+e.message+" - اتأكد ان صلاحية Delete مفتوحة في Supabase للـ 3 جداول");
+  }
+  allJobs=[]; archivedJobs=[]; allWarehouse=[];
+  renderJobs(); renderWarehouse();
+  alert("تم مسح كل حاجة ✅ - الشغل والأرشيف والمخزن بقوا فاضيين");
+}
+function saveFollowerPhone(){
+  let v=document.getElementById("followerPhone").value.trim();
+  try{ localStorage.setItem("misk_follower_"+todayStr(), v); }catch(e){}
+  try{ localStorage.setItem("misk_follower_phone", v); }catch(e){}
+  document.getElementById("followerMsg").innerText=v ? "✅ اتحفظ رقم المتابع: "+v : "";
+}
+function clearFollowerPhone(){
+  try{ localStorage.removeItem("misk_follower_"+todayStr()); }catch(e){}
+  try{ localStorage.removeItem("misk_follower_phone"); }catch(e){}
+  document.getElementById("followerPhone").value="";
+  document.getElementById("followerMsg").innerText="تم مسح رقم المتابع";
+}
+function getFollowerPhone(){
+  try{
+    return localStorage.getItem("misk_follower_"+todayStr()) || localStorage.getItem("misk_follower_phone") || "";
+  }catch(e){ return ""; }
+}
+function loadFollowerPhone(){
+  let v = getFollowerPhone();
+  let el = document.getElementById("followerPhone");
+  if(el && v){
+    el.value = v;
+    document.getElementById("followerMsg").innerText = "✅ اتحفظ رقم المتابع: " + v;
+  }
+}
+loadFollowerPhone();
+function doAttendance(){
+  let now=new Date().toLocaleTimeString("ar-EG");
+  document.getElementById("attendTime").innerText=now;
+  alert("تم تسجيل الحضور: "+now);
+}
+function getLiveLocation(){
+  if(!navigator.geolocation) return alert("المتصفح مش بيدعم اللوكيشن");
+  navigator.geolocation.getCurrentPosition(p=>{
+    document.getElementById("mapLocText").innerText=`📍 ${p.coords.latitude.toFixed(5)}, ${p.coords.longitude.toFixed(5)}`;
+  }, ()=>alert("افتح اللوكيشن من المتصفح"));
+}
+function openManatee(id){ window.open("https://play.google.com/store/search?q=manatee+barcode+scanner&c=apps","_blank") }
+function openAzkar(){ document.getElementById("azkarFull").innerHTML=`<b>أذكار الصباح والمساء</b><br>أعوذ بالله من الشيطان الرجيم<br>اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ<br><br>سبحان الله وبحمده - 100 مرة<br>أستغفر الله العظيم وأتوب إليه<br>اللهم صل وسلم على نبينا محمد`; document.getElementById("azkarModal").style.display="flex" }
+function closeAzkar(){ document.getElementById("azkarModal").style.display="none" }
+function showAzkar(){ openAzkar() }
+function sendToFollowerOnly(){
+  let txt=`تم التسليم - ${document.getElementById("dCustomer").innerText} - السيريال: ${document.getElementById("dSerial").value}`;
+  let phone = getFollowerPhone();
+  if(!phone){ alert("اكتب رقم المتابع الاول فوق"); return; }
+  let clean = phone.replace(/\D/g, "");
+  if(clean.startsWith("0")) clean = "20" + clean.slice(1);
+  if(clean.length === 10) clean = "20" + clean;
+  let waLink = "https://wa.me/" + clean + "?text=" + encodeURIComponent(txt);
+  window.open(waLink, "_blank");
+  document.getElementById("lockConfirmBox").style.display="block";
+}
+function confirmSendYes(){ document.getElementById("sendLockModal").style.display="none"; alert("تمام ✅") }
+function confirmSendNo(){ document.getElementById("sendLockModal").style.display="none" }
+function closeLockBack(){ document.getElementById("sendLockModal").style.display="none" }
+async function compressImage(file){
+  return new Promise((res)=>{
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = ()=>{
+      const max = 1000;
+      let w = img.width, h = img.height;
+      if(w > max){ h = h * max / w; w = max; }
+      if(h > max){ w = w * max / h; h = max; }
+      const c = document.createElement("canvas");
+      c.width = w; c.height = h;
+      c.getContext("2d").drawImage(img,0,0,w,h);
+      URL.revokeObjectURL(url);
+      c.toBlob(b=>res(b), "image/jpeg", 0.75);
+    };
+    img.src = url;
+  });
+}
+async function uploadPhoto(file, jobId, slot){
+  const compressed = await compressImage(file);
+  file = new File([compressed], "photo.jpg", {type:"image/jpeg"});
+  let name=`${jobId}_${slot}_${Date.now()}.jpg`;
+  let {error}=await supabaseClient.storage.from(BUCKET).upload(name, file);
+  if(error){ alert("خطأ في الرفع: " + error.message); return null; }
+  let {data}=supabaseClient.storage.from(BUCKET).getPublicUrl(name);
+  return data.publicUrl;
+}
+document.getElementById("photoInput")?.addEventListener("change", async e=>{
+  let f=e.target.files[0]; if(!f) return;
+  const tempUrl = URL.createObjectURL(f);
+  let j = allJobs.find(x=>String(x.id)===String(currentDetailId));
+  if(j){ j["photo"+(currentPhotoSlot+1)] = tempUrl; renderPhotos(j); }
+  e.target.value = "";
+  document.getElementById("uploadingBanner").style.display="block";
+  let url=await uploadPhoto(f, currentDetailId, currentPhotoSlot);
+  if(url){
+    let j=allJobs.find(x=>String(x.id)===String(currentDetailId));
+    let upRes=await supabaseClient.from(TABLE).update({["photo"+(currentPhotoSlot+1)]:url}).eq("id", currentDetailId);
+    if(upRes.error) alert("الصورة اترفعت بس متحفظتش - جرب تاني: "+upRes.error.message);
+    if(j) j["photo"+(currentPhotoSlot+1)]=url;
+    renderPhotos(j);
+  } else {
+    alert("الصورة متحملتش - اتأكد من النت وجرب تاني");
+  }
+  document.getElementById("uploadingBanner").style.display="none";
+  closePhotoCam();
+});
+document.getElementById("photoGalleryInput")?.addEventListener("change", async e=>{
+  let f=e.target.files[0]; if(!f) return;
+  const tempUrl = URL.createObjectURL(f);
+  let j = allJobs.find(x=>String(x.id)===String(currentDetailId));
+  if(j){ j["photo"+(currentPhotoSlot+1)] = tempUrl; renderPhotos(j); }
+  e.target.value = "";
+  document.getElementById("uploadingBanner").style.display="block";
+  let url=await uploadPhoto(f, currentDetailId, currentPhotoSlot);
+  if(url){
+    let j=allJobs.find(x=>String(x.id)===String(currentDetailId));
+    let upRes=await supabaseClient.from(TABLE).update({["photo"+(currentPhotoSlot+1)]:url}).eq("id", currentDetailId);
+    if(upRes.error) alert("الصورة اترفعت بس متحفظتش - جرب تاني: "+upRes.error.message);
+    if(j) j["photo"+(currentPhotoSlot+1)]=url;
+    renderPhotos(j);
+  } else {
+    alert("الصورة متحملتش - اتأكد من النت وجرب تاني");
+  }
+  document.getElementById("uploadingBanner").style.display="none";
+  closePhotoCam();
+});
+function tickClock(){
+  let n=new Date();
+  let clock=document.getElementById("loginClock"); if(clock) clock.innerText=String(n.getHours()).padStart(2,"0")+":"+String(n.getMinutes()).padStart(2,"0");
+  let d=document.getElementById("loginDate"); if(d) d.innerText=todayStr();
+  let a=document.getElementById("attendTime"); if(a) a.innerText=n.toLocaleTimeString("ar-EG");
+}
+setInterval(tickClock, 1000); tickClock();
+window.addEventListener("load", ()=>{
+  let saved=localStorage.getItem("misk_user");
+  if(saved){
+    try{ userObj=JSON.parse(saved); afterLogin(); }catch(e){ localStorage.removeItem("misk_user") }
+  }
+  let fp=getFollowerPhone();
+  if(fp) document.getElementById("followerPhone").value=fp;
+  if(fp) document.getElementById("followerMsg").innerText="✅ رقم المتابع المحفوظ: "+fp;
+});
+if("serviceWorker" in navigator){ navigator.serviceWorker.register("sw.js").catch(()=>{}) }
+</script>
+<script>
+function normName(s){ return String(s||'').trim().toLowerCase().replace(/\s+/g,' '); }
+function getCustodyForTech(techName){
+  const devices = window.warehouseDevices || JSON.parse(localStorage.getItem('warehouseDevices')||'[]');
+  const n = normName(techName);
+  return devices.filter(d => normName(d.Tech || d.tech) === n);
+}
+function openAddTech(){ document.getElementById('addTechModal').style.display='flex'; }
+function closeAddTech(){ document.getElementById('addTechModal').style.display='none'; }
+async function saveTechnician(){
+  const name = document.getElementById('techName').value.trim();
+  const phone = document.getElementById('techPhone').value.trim();
+  const pass = document.getElementById('techPass').value.trim() || phone;
+  const line = document.getElementById('techLine').value.trim();
+  const gov = document.getElementById('techGov').value.trim();
+  if(!name || !phone){ alert('اكتب اسم الفني ورقم الموبايل'); return; }
+  let {error} = await supabaseClient.from('technicians').insert({username: name, name: name, password: pass, phone: phone, line: line, governorate: gov, role: 'tech'});
+  if(error){
+    let {error:err2} = await supabaseClient.from('technicians').update({name:name, password:pass, phone:phone, line:line, governorate:gov}).eq('username', name);
+    if(err2){
+      let {error:err3} = await supabaseClient.from('technicians').update({name:name, password:pass, phone:phone, line:line, governorate:gov}).eq('phone', phone);
+      if(err3){ alert('خطأ: '+err3.message); return; }
+    }
+  }
+  const custody = getCustodyForTech(name);
+  document.getElementById('techMsg').textContent = 'تم اضافة ' + name + ' ✅ - على عهدته دلوقتي ' + custody.length + ' جهاز - اليوزر: ' + name + ' أو ' + phone + ' - الباسورد: ' + pass;
+  loadTechCount(); loadTechNames();
+  setTimeout(closeAddTech, 1500);
+}
+
+function silentRefreshNow(){
+  if(!userObj) return;
+  loadJobs(); loadWarehouse();
+  silentSec = 10;
+}
+function toggleAuto(){
+  autoOn = !autoOn;
+  const b = document.getElementById("autoBtn");
+  if(b){
+    b.textContent = autoOn ? "إيقاف" : "تشغيل";
+    b.style.background = autoOn ? "#fee2e2" : "#dcfce7";
+    b.style.color = autoOn ? "#dc2626" : "#166534";
+  }
+}
+setInterval(()=>{
+  if(!userObj || !autoOn) return;
+  const ae = document.activeElement;
+  if(ae && (ae.tagName==="INPUT" || ae.tagName==="TEXTAREA" || ae.tagName==="SELECT")) return;
+  const el = document.getElementById("silentCount");
+  silentSec--;
+  if(el) el.textContent = silentSec;
+  if(silentSec <= 0){
+    silentSec = 10;
+    loadJobs();
+  }
+}, 1000);
 </script>
 </body>
 </html>
