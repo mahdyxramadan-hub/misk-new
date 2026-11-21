@@ -594,10 +594,18 @@ function downloadWarehouseExcel(){
   loadWarehouse();
 }
 
- async function fillCustodyTechs(){
-  let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("tech");
-  if(!data) return;
-  let techs = [...new Set(data.map(r=> (r.tech||"").trim()).filter(Boolean))].sort();
+async function fillCustodyTechs(){
+  let techs = [];
+  // 1 - من قايمة الفنيين الاساسية
+  if(window.allTechs && allTechs.length){
+    techs = allTechs.map(t=> (t.name || t.username || "").trim()).filter(Boolean);
+  }
+  // 2 - لو فاضية، من المخزن
+  if(!techs.length){
+    let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("tech");
+    if(data) techs = [...new Set(data.map(r=> (r.tech||"").trim()).filter(Boolean))];
+  }
+  techs = [...new Set(techs)].sort();
   let fromSel = document.getElementById("custodyFromTech");
   let toSel = document.getElementById("custodyToTech");
   if(!fromSel || !toSel) return;
@@ -607,6 +615,22 @@ function downloadWarehouseExcel(){
   if(techs.includes(curFrom)) fromSel.value = curFrom;
   if(techs.includes(curTo)) toSel.value = curTo;
   showPastedSerials();
+}
+
+async function autoDetectFromTech(){
+  let list = getPastedSerials();
+  if(!list.length) return;
+  let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("tech,serial").in("serial", list);
+  if(!data || !data.length) return;
+  let owners = [...new Set(data.map(r=> (r.tech||"").trim()).filter(Boolean))];
+  if(owners.length === 1){
+    let fromSel = document.getElementById("custodyFromTech");
+    if(fromSel && !fromSel.value) fromSel.value = owners[0];
+    document.getElementById("custodyMsg").innerText = `السيريالات دي عهدة: ${owners[0]}`;
+    showFromTechSerials();
+  } else if(owners.length > 1){
+    document.getElementById("custodyMsg").innerText = `السيريالات دي من أكتر من فني: ${owners.join(" - ")}`;
+  }
 }
 function getPastedSerials(){
   let el = document.getElementById("custodyPasteSerials");
@@ -619,6 +643,7 @@ function showPastedSerials(){
   let list = getPastedSerials();
   if(!list.length){ div.innerHTML = ""; return; }
   div.innerHTML = `سيريالات ملصوقة: <b>${list.length}</b><br>` + list.map(s=>`<span style="display:inline-block;background:#fff;border:1px solid #ddd;border-radius:6px;padding:2px 6px;margin:2px">${s}</span>`).join("");
+  autoDetectFromTech();
 }
 async function showFromTechSerials(){
   let from = document.getElementById("custodyFromTech").value.trim();
@@ -633,6 +658,10 @@ async function transferTechCustody(){
   let to = document.getElementById("custodyToTech").value.trim();
   if(!to) return alert("اختار إلى فني");
   let pasted = getPastedSerials();
+  if(!from && pasted.length){
+    let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("tech").in("serial", pasted);
+    if(data && data.length) from = (data[0].tech||"").trim();
+  }
   let checks = document.querySelectorAll('.custodyCheck:checked');
   if(!pasted.length && !checks.length) return alert("الصق سيريالات أو اختار من قايمة الفني");
   if(!from && !pasted.length) return alert("اختار من فني أو الصق سيريالات");
