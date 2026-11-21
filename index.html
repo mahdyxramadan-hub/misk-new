@@ -294,5 +294,23 @@ setInterval(tickClock,1000);tickClock();
 window.addEventListener("load",()=>{let saved=localStorage.getItem("misk_user");if(saved){try{userObj=JSON.parse(saved);afterLogin()}catch(e){localStorage.removeItem("misk_user")}}let fp=getFollowerPhone();if(fp){document.getElementById("followerPhone").value=fp;document.getElementById("followerMsg").innerText="✅ رقم المتابع المحفوظ: "+fp}});
 setInterval(()=>{if(!userObj||!autoOn)return;const ae=document.activeElement;if(ae&&(ae.tagName==="INPUT"||ae.tagName==="TEXTAREA"||ae.tagName==="SELECT"))return;silentSec--;if(silentSec<=0){silentSec=10;loadJobs()}},1000);
 </script>
+  <script>
+try{
+  setInterval(function(){
+    var isAdmin = false;
+    try{
+      var u = localStorage.getItem('user') || localStorage.getItem('currentUser') || '';
+      if(u.includes('admin') || u.includes('ادمن') || u.includes('mahdy')) isAdmin = true;
+    }catch(e){}
+    if(isAdmin) return;
+    document.querySelectorAll('button, a, div').forEach(function(el){
+      var t = (el.innerText||'').trim();
+      if(t === 'إضافة شغل' || t === 'اضافة شغل' || t === 'الفنيين' || t === 'الفنيون'){
+        el.style.display = 'none';
+      }
+    });
+  }, 500);
+}catch(e){}
+</script>
 </body>
 </html>
