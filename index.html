@@ -548,60 +548,37 @@ async function doStatusSerialFromBox(){
 setTimeout(makeSerialActionBox, 1000);
 </script>
  <script>
-// === أكورديون ذكي - كل قسم مقفول ويفتح لوحده ===
-function makeAccordion(){
-  if(document.getElementById("accStyle")) return;
-
-  // ستايل السهم
-  let st = document.createElement("style");
-  st.id = "accStyle";
-  st.innerHTML = `.acc-head{cursor:pointer!important;user-select:none}.acc-head::after{content:" ▼";font-size:14px}.acc-head.open::after{content:" ▲"}`;
-  document.head.appendChild(st);
-
-  // كل العناوين اللي عايزين نخليها أكورديون
-  let titles = ["التحكم في السيريال","اضافة شغل","المخزن","الفنيين","الأوردرات","العهدة","التحكم"];
-
-  document.querySelectorAll("h1,h2,h3,h4,div,b,button").forEach(head=>{
-    let txt = (head.innerText||"").trim();
-    // لو العنوان ده من اللي احنا عايزينهم، ولسه متعملش أكورديون
-    if(titles.some(t=> txt.includes(t)) && txt.length < 60 && !head.classList.contains("acc-head") && head.children.length < 3){
-      head.classList.add("acc-head");
-      // الجسم اللي بعد العنوان على طول هو اللي هنخفيه
-      let body = head.nextElementSibling;
-      // لو مفيش اخو، دور على الأب
-      if(!body) body = head.parentElement;
-      if(!body || body===head) return;
-
-      // اقفله في الأول، ما عدا أول واحد
-      body.style.display = "none";
-      body.classList.add("acc-body");
-
-      head.onclick = function(e){
-        e.stopPropagation();
-        let isOpen = body.style.display !== "none";
-        // اقفل كل الأجسام التانية الأول
-        document.querySelectorAll(".acc-body").forEach(b=> b.style.display="none");
-        document.querySelectorAll(".acc-head").forEach(h=> h.classList.remove("open"));
-        // لو كان مقفول افتحه، لو كان مفتوح سيبه مقفول
-        if(!isOpen){
-          body.style.display = "";
-          head.classList.add("open");
-          head.scrollIntoView({behavior:"smooth", block:"start"});
-        }
-      };
-    }
-  });
-
-  // رسالة فوق توضح
-  if(!document.getElementById("accHint")){
-    let hint = document.createElement("div");
-    hint.id = "accHint";
-    hint.style.cssText = "background:#fff3cd;padding:10px;text-align:center;font-weight:bold;border-radius:10px;margin:10px";
-    hint.innerText = "👆 دوس على أي عنوان عشان يفتح لوحده، والباقي هيقفل لوحده";
-    document.body.insertBefore(hint, document.body.firstChild);
+// === زراير ذكية لكل السيستم - بتنزل بس مش بتخفي ===
+function makeSmartBar(){
+  if(document.getElementById("smartBar")) return;
+  let bar = document.createElement("div");
+  bar.id = "smartBar";
+  bar.style.cssText = "position:fixed;bottom:10px;left:8px;right:8px;z-index:9999;display:flex;gap:6px;overflow-x:auto;padding:6px;background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.3)";
+  bar.innerHTML = `
+    <button onclick="goSys('المخزن')" style="flex:1;min-width:70px;padding:12px 6px;border:0;border-radius:12px;background:#ff7a00;color:#fff;font-weight:bold">📦 مخزن</button>
+    <button onclick="goSys('سيريال')" style="flex:1;min-width:70px;padding:12px 6px;border:0;border-radius:12px;background:#7b1fa2;color:#fff;font-weight:bold">🔢 سيريال</button>
+    <button onclick="goSys('الفني')" style="flex:1;min-width:70px;padding:12px 6px;border:0;border-radius:12px;background:#1e88e5;color:#fff;font-weight:bold">👨‍🔧 فنيين</button>
+    <button onclick="goSys('اوردر')" style="flex:1;min-width:70px;padding:12px 6px;border:0;border-radius:12px;background:#2e7d32;color:#fff;font-weight:bold">📋 اوردر</button>
+    <button onclick="goSys('اضافة شغل')" style="flex:1;min-width:80px;padding:12px 6px;border:0;border-radius:12px;background:#ef6c00;color:#fff;font-weight:bold">➕ شغل</button>
+    <button onclick="goSys('عهد')" style="flex:1;min-width:70px;padding:12px 6px;border:0;border-radius:12px;background:#5d4037;color:#fff;font-weight:bold">🔧 عهدة</button>
+  `;
+  document.body.appendChild(bar);
+  // مسافة تحت عشان الزراير متغطيش على اخر حاجة
+  document.body.style.paddingBottom = "80px";
+}
+function goSys(word){
+  let all = [...document.querySelectorAll("h1,h2,h3,h4,b,div,section,button")];
+  let target = all.find(el=> el.children.length<3 && (el.innerText||"").trim().includes(word));
+  if(target){
+    target.scrollIntoView({behavior:"smooth", block:"start"});
+    let old = target.style.background;
+    target.style.background = "#ffe082";
+    setTimeout(()=> target.style.background = old, 2000);
+  } else {
+    alert("مش لاقي قسم اسمه: "+word);
   }
 }
-setTimeout(makeAccordion, 800);
+makeSmartBar();
 </script>
 </body>
 </html>
