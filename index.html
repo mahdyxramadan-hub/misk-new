@@ -297,13 +297,10 @@ setInterval(()=>{if(!userObj||!autoOn)return;const ae=document.activeElement;if(
 <script>
 try{
   setInterval(function(){
-    document.querySelectorAll('*').forEach(function(el){
-      var t = (el.innerText||'').trim();
-      if(el.children.length === 0){
-        if(t.includes('إضافة شغل') || t.includes('اضافة شغل') || t.includes('الفنيين')){
-          el.style.display = 'none';
-          if(el.parentElement) el.parentElement.style.display = 'none';
-        }
+    document.querySelectorAll('button, a').forEach(function(el){
+      var t = (el.innerText||'');
+      if(t.includes('إضافة شغل') || t.includes('اضافة شغل') || t.includes('الفنيين')){
+        el.style.display = 'none';
       }
     });
   }, 500);
