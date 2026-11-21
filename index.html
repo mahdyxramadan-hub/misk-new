@@ -202,13 +202,24 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
         <input type="file" id="warehouseInput" accept=".xlsx,.xls,.csv">
          <button class="orangeBtn" onclick="uploadWarehouseSheet()" style="width:100%;padding:13px;border-radius:50px;border:0">📦 رفع شيت المخزن - بيحدث العهدة من خانة الفني</button>
         <hr>
-<p style="font-weight:900;margin:0">🔄 إدارة عهدة فني</p>
- <select id="custodyFromTech" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc"><option value="">-- من فني - اختار --</option></select>
-  <div id="fromTechSerials" style="background:#f5f5f5;border-radius:10px;padding:8px;margin-bottom:8px;font-size:13px">اختار الفني عشان تشوف السيريالات اللي معاه</div>
-  <select id="custodyToTech" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc"><option value="">-- إلى فني - اختار --</option></select>     
+  <p style="font-weight:900;margin:0">📦 إدارة عهدة فني</p>
+
+<textarea id="custodyPasteSerials" placeholder="الصق السيريالات هنا .. كل سيريال في سطر - انسخ من الواتساب والصق" style="width:100%;height:90px;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc;font-size:14px"></textarea>
+<div id="custodyPastedList" style="background:#f5f5f5;border-radius:10px;padding:8px;margin-bottom:8px;font-size:13px;max-height:150px;overflow:auto"></div>
+
+<select id="custodyFromTech" onchange="showFromTechSerials()" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
+  <option value="">-- من فني -- اختار --</option>
+</select>
+
+<div id="fromTechSerials" style="background:#f5f5f5;border-radius:10px;padding:8px;margin-bottom:8px;font-size:13px;max-height:150px;overflow:auto"></div>
+
+<select id="custodyToTech" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
+  <option value="">-- إلى فني -- اختار --</option>
+</select>
+
 <div style="display:flex;gap:8px">
-<button onclick="transferTechCustody()" style="flex:1;padding:12px;border-radius:50px;border:0;background:#0b7ed1;color:#fff;font-weight:800">🔄 نقل عهدة فني لفني</button>
-<button onclick="clearTechCustody()" style="flex:1;padding:12px;border-radius:50px;border:0;background:#dc3545;color:#fff;font-weight:800">🗑️ مسح عهدة فني</button>
+  <button onclick="transferTechCustody()" style="flex:1;padding:12px;border-radius:50px;border:0;background:#2196F3;color:#fff;font-weight:bold">نقل عهدة</button>
+  <button onclick="clearTechCustody()" style="flex:1;padding:12px;border-radius:50px;border:0;background:#e91e63;color:#fff">مسح عهدة فني</button>
 </div>
 <p id="custodyMsg" style="font-size:13px"></p>
         <p id="warehouseUploadMsg" style="font-size:13px"></p>
@@ -583,76 +594,88 @@ function downloadWarehouseExcel(){
   loadWarehouse();
 }
 
-  async function fillCustodyTechs(){
-  let fromSel = document.getElementById('custodyFromTech');
-  let toSel = document.getElementById('custodyToTech');
+ async function fillCustodyTechs(){
+  let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("tech");
+  if(!data) return;
+  let techs = [...new Set(data.map(r=> (r.tech||"").trim()).filter(Boolean))].sort();
+  let fromSel = document.getElementById("custodyFromTech");
+  let toSel = document.getElementById("custodyToTech");
   if(!fromSel || !toSel) return;
-  let names = [];
-  if(typeof cachedTechNames !== 'undefined' && cachedTechNames.length){
-    cachedTechNames.forEach(t => { let n = typeof t === 'string' ? t : (t.name || t.tech || ''); if(n) names.push(n); });
-  }
-  try{
-    let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select('tech');
-    if(data) data.forEach(r => { if(r.tech && !names.includes(r.tech)) names.push(r.tech); });
-  }catch(e){}
-  names = [...new Set(names)].sort();
-  fromSel.innerHTML = '<option value="">-- من فني - اختار --</option>';
-  toSel.innerHTML = '<option value="">-- إلى فني - اختار --</option>';
-  names.forEach(n => {
-    fromSel.innerHTML += `<option value="${n}">${n}</option>`;
-    toSel.innerHTML += `<option value="${n}">${n}</option>`;
-  });
-  fromSel.onchange = showFromTechSerials;
+  let curFrom = fromSel.value, curTo = toSel.value;
+  fromSel.innerHTML = '<option value="">-- من فني -- اختار --</option>' + techs.map(t=>`<option value="${t}">${t}</option>`).join("");
+  toSel.innerHTML = '<option value="">-- إلى فني -- اختار --</option>' + techs.map(t=>`<option value="${t}">${t}</option>`).join("");
+  if(techs.includes(curFrom)) fromSel.value = curFrom;
+  if(techs.includes(curTo)) toSel.value = curTo;
+  showPastedSerials();
+}
+function getPastedSerials(){
+  let el = document.getElementById("custodyPasteSerials");
+  if(!el) return [];
+  return el.value.split(/[\n,;،\s]+/).map(s=>s.trim()).filter(Boolean);
+}
+function showPastedSerials(){
+  let div = document.getElementById("custodyPastedList");
+  if(!div) return;
+  let list = getPastedSerials();
+  if(!list.length){ div.innerHTML = ""; return; }
+  div.innerHTML = `سيريالات ملصوقة: <b>${list.length}</b><br>` + list.map(s=>`<span style="display:inline-block;background:#fff;border:1px solid #ddd;border-radius:6px;padding:2px 6px;margin:2px">${s}</span>`).join("");
 }
 async function showFromTechSerials(){
-  let from = document.getElementById('custodyFromTech').value;
-  let box = document.getElementById('fromTechSerials');
-  if(!from){ box.innerHTML = 'اختار الفني عشان تشوف السيريالات اللي معاه'; return; }
-  box.innerHTML = 'جاري التحميل...';
-  let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select('*').eq('tech', from);
-  if(!data || !data.length){ box.innerHTML = 'مفيش سيريالات مع الفني ده'; return; }
-  box.innerHTML = `<b>${data.length} سيريال مع ${from}:</b><br>` + data.map(w => {
-    let s = w.serial || w.Serial || w.sn || '';
-    return `<label style="display:block;padding:4px 0"><input type="checkbox" class="custodyCheck" value="${w.id}" data-serial="${s}"> ${s}</label>`;
-  }).join('');
+  let from = document.getElementById("custodyFromTech").value.trim();
+  let div = document.getElementById("fromTechSerials");
+  if(!from){ div.innerHTML=""; return; }
+  let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("tech", from);
+  if(!data || !data.length){ div.innerHTML = "مفيش أجهزة عند الفني ده"; return; }
+  div.innerHTML = `أجهزة عند <b>${from}</b> : ${data.length}<br>` + data.map(r=>`<label style="display:block;background:#fff;border:1px solid #ddd;border-radius:6px;padding:3px 6px;margin:2px"><input type="checkbox" class="custodyCheck" value="${r.id}" checked> ${r.serial||""} - ${r.model||""}</label>`).join("");
 }
-   let _oldLoadWarehouse = loadWarehouse;
+async function transferTechCustody(){
+  let from = document.getElementById("custodyFromTech").value.trim();
+  let to = document.getElementById("custodyToTech").value.trim();
+  if(!to) return alert("اختار إلى فني");
+  let pasted = getPastedSerials();
+  let checks = document.querySelectorAll('.custodyCheck:checked');
+  if(!pasted.length && !checks.length) return alert("الصق سيريالات أو اختار من قايمة الفني");
+  if(!from && !pasted.length) return alert("اختار من فني أو الصق سيريالات");
+  if(from && from === to) return alert("من فني وإلى فني لازم يكونوا مختلفين");
+  let serialsToMove = [];
+  if(pasted.length) serialsToMove = pasted;
+  else serialsToMove = [...checks].map(c=> c.parentElement.innerText.trim().split(" - ")[0].trim());
+  if(!confirm(`هننقل ${serialsToMove.length} جهاز إلى ${to} ؟`)) return;
+  let moved = 0, notFound = [];
+  for(let serial of serialsToMove){
+    let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("serial", serial).maybeSingle();
+    if(!data){ notFound.push(serial); continue; }
+    let hist = (data.comment||"") + ` | نقل من ${data.tech||from||""} إلى ${to} بتاريخ ${todayStr()}`;
+    await supabaseClient.from(WAREHOUSE_TABLE).update({tech: to, comment: hist}).eq("id", data.id);
+    moved++;
+  }
+  document.getElementById("custodyMsg").innerText = `تم نقل ✅ ${moved} جهاز إلى ${to}` + (notFound.length ? ` | مش موجود: ${notFound.join(", ")}` : "");
+  document.getElementById("custodyPasteSerials").value = "";
+  await fillCustodyTechs();
+  showFromTechSerials();
+  loadWarehouse();
+}
+async function clearTechCustody(){
+  let from = document.getElementById("custodyFromTech").value.trim();
+  if(!from) return alert("اختار الفني اللي هتمسح عهدته");
+  if(!confirm(`هنمسح عهدة ${from} ؟`)) return;
+  let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("tech", from);
+  if(!data || !data.length) return alert("مفيش أجهزة عند الفني ده");
+  for(let w of data){
+    let hist = (w.comment||"") + ` | مسح عهدة ${from} بتاريخ ${todayStr()}`;
+    await supabaseClient.from(WAREHOUSE_TABLE).update({tech: "", comment: hist}).eq("id", w.id);
+  }
+  document.getElementById("custodyMsg").innerText = `تم مسح عهدة ✅ ${from}`;
+  await fillCustodyTechs();
+  showFromTechSerials();
+  loadWarehouse();
+}
+let _oldLoadWarehouse = loadWarehouse;
 loadWarehouse = async function(){
   await _oldLoadWarehouse();
   fillCustodyTechs();
 };
- async function transferTechCustody(){
-  let from = document.getElementById("custodyFromTech").value.trim();
-  let to = document.getElementById("custodyToTech").value.trim();
-  if(!from || !to) return alert("اكتب من فني وإلى فني");
-  if(from === to) return alert("من فني وإلى فني لازم يكونوا مختلفين");
-  let checks = document.querySelectorAll('.custodyCheck:checked');
-  if(!checks.length) return alert("اختار سيريال واحد على الأقل");
-  if(!confirm(`هننقل ${checks.length} جهاز من ${from} إلى ${to} ؟`)) return;
-  for(let c of checks){
-    let wId = c.value;
-    let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("id", wId).single();
-    if(!data) continue;
-    let hist = (data.comment||"") + ` | نقل من ${from} إلى ${to} بتاريخ ${todayStr()}`;
-    await supabaseClient.from(WAREHOUSE_TABLE).update({tech: to, comment: hist}).eq("id", wId);
-  }
-  document.getElementById("custodyMsg").innerText = `تم نقل ✅ ${checks.length} جهاز من ${from} إلى ${to}`;
-  loadWarehouse();
-  showFromTechSerials();
-}
-async function clearTechCustody(){
-  let from = document.getElementById("custodyFromTech").value.trim();
-  if(!from) return alert("اكتب اسم الفني اللي هتمسح عهدته");
-  if(!confirm(`همسح عهدة ${from} ؟ الأجهزة هترجع المخزن من غير فني`)) return;
-  let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("tech", from);
-  if(!data || !data.length) return alert("مفيش أجهزة عند "+from);
-  for(let w of data){
-    let hist = (w.comment||"") + ` | اتمسحت عهدة ${from} بتاريخ ${todayStr()}`;
-    await supabaseClient.from(WAREHOUSE_TABLE).update({tech: "", comment: hist}).eq("id", w.id);
-  }
-  document.getElementById("custodyMsg").innerText = `تم ✅ مسح عهدة ${from} - ${data.length} جهاز رجعوا المخزن`;
-  loadWarehouse();
-}
+document.getElementById("custodyPasteSerials")?.addEventListener("input", showPastedSerials);
 let allTechs = [];
 let selectedTech = "";
 function renderTechDropdown(filter=""){
