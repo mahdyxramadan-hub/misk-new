@@ -594,18 +594,23 @@ function downloadWarehouseExcel(){
   loadWarehouse();
 }
 
- async function fillCustodyTechs(){
+  async function fillCustodyTechs(){
   let techs = [];
+  document.querySelectorAll('select option').forEach(o=>{
+    let v = (o.value||o.textContent||"").trim();
+    if(v && v!=="-- اختر الفني --" && v!=="" && !v.includes("اختار") && !v.includes("اختر")) techs.push(v);
+  });
   if(window.allTechs && allTechs.length){
-    techs = allTechs.map(t=>{
+    techs = [...techs, ...allTechs.map(t=>{
       if(typeof t === "string") return t.trim();
-      return (t.name || t.username || t.tech || t.full_name || "").trim();
-    }).filter(Boolean);
+      return (t.name || t.username || "").trim();
+    }).filter(Boolean)];
   }
   try{
     let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("tech");
     if(data) techs = [...techs, ...data.map(r=> (r.tech||"").trim()).filter(Boolean)];
   }catch(e){}
+
   techs = [...new Set(techs)].sort();
   let fromSel = document.getElementById("custodyFromTech");
   let toSel = document.getElementById("custodyToTech");
