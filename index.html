@@ -424,5 +424,84 @@ document.getElementById("custodyPasteSerials")?.addEventListener("input",showPas
 (function(){ let s=localStorage.getItem("misk_user"); if(s){ try{ userObj=JSON.parse(s); afterLogin(); }catch(e){} } let f=localStorage.getItem("misk_follower"); if(f) document.getElementById("followerPhone").value=f; })();
 </script>
 <script>if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }</script>
+ <script>
+// === إصلاح تكرار السيريال - يمسح المكرر ويمنع تكراره تاني ===
+async function cleanDuplicateSerials(){
+  let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").order("id",{ascending:false});
+  if(!data) return;
+  let seen = {};
+  let toDelete = [];
+  for(let row of data){
+    let s = cleanSerial(row.serial);
+    if(!s) continue;
+    if(seen[s]){
+      // لو اللي متسجل قبل كده ليه فني، وده ملهوش فني، نمسح ده
+      // ولو العكس، نمسح القديم ونخلي الجديد
+      if(!row.tech && seen[s].tech){ toDelete.push(row.id); }
+      else if(row.tech && !seen[s].tech){ toDelete.push(seen[s].id); seen[s]=row; }
+      else { toDelete.push(row.id); }
+    } else { seen[s]=row; }
+  }
+  if(toDelete.length){
+    for(let i=0;i<toDelete.length;i+=100){
+      await supabaseClient.from(WAREHOUSE_TABLE).delete().in("id", toDelete.slice(i,i+100));
+    }
+    console.log("تم مسح مكرر: "+toDelete.length);
+    return toDelete.length;
+  }
+  return 0;
+}
+
+// نمنع التكرار في إضافة سيريال واحد
+async function addOneSerial(){
+  let serial=cleanSerial(document.getElementById("oneSerial").value);
+  let tech=document.getElementById("oneTechSearch").value.trim();
+  let model=document.getElementById("oneModel").value.trim();
+  let gov=document.getElementById("oneGov").value.trim();
+  let msg=document.getElementById("oneSerialMsg");
+  if(!serial) return alert("اكتب السيريال");
+  if(!tech) return alert("اختار الفني");
+  let {data:all} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("serial", serial);
+  if(all && all.length){
+    // لو موجود قبل كده، نحدث أول واحد ونمسح الباقي
+    let first = all[0];
+    await supabaseClient.from(WAREHOUSE_TABLE).update({tech, model:model||first.model, province:gov||first.province, comment:(first.comment||"")+" | نقل إلى "+tech+" بتاريخ "+todayStr()}).eq("id", first.id);
+    let others = all.slice(1).map(r=>r.id);
+    if(others.length) await supabaseClient.from(WAREHOUSE_TABLE).delete().in("id", others);
+    msg.innerText = `تم نقل ${serial} إلى ${tech} - ومسح ${others.length} تكرار`;
+  } else {
+    let {error} = await supabaseClient.from(WAREHOUSE_TABLE).insert([{serial, tech, model, province:gov, date_received:todayStr(), comment:"إضافة يدوية"}]);
+    if(error) return alert(error.message);
+    msg.innerText = `تم إضافة ${serial} إلى ${tech}`;
+  }
+  document.getElementById("oneSerial").value="";
+  loadWarehouse(); fillCustodyTechs();
+}
+
+// نمنع التكرار في النقل الجماعي
+async function transferTechCustody(){
+  let from = document.getElementById("custodyFromTech").value.trim();
+  let to = document.getElementById("custodyToTech").value.trim();
+  if(!from || !to) return alert("اختار من وإلى");
+  if(from === to) return alert("نفس الفني");
+  let {data:rows} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("tech", from);
+  if(!rows || !rows.length) return alert("مفيش عهدة للفني ده");
+  // امسح أي سيريالات عند الفني الجديد هتتكرر، عشان ننقل من غير تكرار
+  let serials = rows.map(r=>r.serial);
+  let {data:existing} = await supabaseClient.from(WAREHOUSE_TABLE).select("id,serial").in("serial", serials).eq("tech", to);
+  if(existing && existing.length){
+    await supabaseClient.from(WAREHOUSE_TABLE).delete().in("id", existing.map(r=>r.id));
+  }
+  await supabaseClient.from(WAREHOUSE_TABLE).update({tech:to}).eq("tech", from);
+  alert(`تم نقل ${rows.length} سيريال من ${from} إلى ${to} من غير تكرار ✅`);
+  loadWarehouse(); fillCustodyTechs(); showFromTechSerials();
+}
+
+// أول ما الصفحة تفتح، نظف المكرر اللي فات لوحده
+setTimeout(async ()=>{
+  let n = await cleanDuplicateSerials();
+  if(n>0){ alert(`تم مسح ${n} سيريال مكرر ✅\nدلوقتي كل سيريال مع فني واحد بس`); loadWarehouse(); }
+}, 1500);
+</script>
 </body>
 </html>
