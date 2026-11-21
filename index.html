@@ -129,8 +129,8 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <div class="admin-main">
 <div id="followerCard" style="background:#fff;margin:12px;border:2px solid #0b7ed1;border-radius:16px;padding:14px">
 <h3 style="margin:0">👤 رقم المتابع بتاع النهاردة - اجباري</h3>
-<input id="followerPhone" placeholder="010xxxxxxxxx" inputmode="numeric" oninput="saveFollowerPhone()" style="border:2px solid #0b7ed1;text-align:center">
-<p id="followerMsg" style="font-size:13px;color:red"></p>
+  <input id="followerPhone" type="tel" autocomplete="new-password" name="follower_phone_today_xyz" placeholder="010xxxxxxxx" inputmode="numeric" ...
+ <p id="followerMsg" style="font-size:13px;color:red"></p>
 <button onclick="clearFollowerPhone()" style="background:#dc3545;color:#fff;border:0;padding:10px;border-radius:50px;width:100%">🗑️ مسح رقم المتابع</button>
 </div>
 <div id="leftTechAlerts"></div>
@@ -430,9 +430,17 @@ async function doChangePass(){
   closePassModal(); alert("تم تغيير الباسورد");
 }
 function closePassModal(){ document.getElementById("passModal").style.display="none" }
-async function loadWarehouse(){
-  let {data}=await supabaseClient.from(WAREHOUSE_TABLE).select("*").order("created_at",{ascending:false}).limit(20000);
-  allWarehouse=data||[];
+  async function loadWarehouse(){
+  let all=[];
+  let from=0;
+  while(true){
+    let {data}=await supabaseClient.from(WAREHOUSE_TABLE).select("*").order("created_at",{ascending:false}).range(from, from+999);
+    let d=data||[];
+    all=all.concat(d);
+    if(d.length<1000) break;
+    from+=1000;
+  }
+  allWarehouse=all;
   renderWarehouse();
 }
 function myWarehouse(){
