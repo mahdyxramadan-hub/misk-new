@@ -2,7 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#00a651">
+
+ <meta name="theme-color" content="#00a651">
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Misk - WE</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -264,6 +265,7 @@ body{background:#f3f6fc!important;color:var(--misk-text)!important}
 </div>
   <div id="uploadingBanner" style="display:none;background:#ff7b00;color:#fff;padding:10px;border-radius:12px;font-size:14px;font-weight:bold;text-align:center;margin:0 12px 10px">⏳ جاري رفع الصورة...</div>
 <div style="background:#fff;margin:0 12px 12px;border-radius:12px;padding:10px;font-size:13px;line-height:1.7">صور الـ 3 صور الاول: وش الجهاز + ضهر الجهاز + الايصال والبطاقة. وبعدين سيريال + Up / Down + المستلم. لو العميل مش موجود، دوس <b>حالة الزيارة</b> واختار تأجيل / لم يتم الرد / رفض الزيارة + كومنت.</div>
+<div id="techCycleReport" style="display:none;background:#fff;margin:0 12px 14px;border:1px solid #dbe4f0;border-radius:16px;padding:14px;box-shadow:0 4px 14px #0f172a08"></div>
 <div id="jobsList"></div>
 <div id="warehouseList" class="hidden"></div>
 <div id="loadMoreWrap" style="padding:0 12px"></div>
@@ -277,7 +279,7 @@ body{background:#f3f6fc!important;color:var(--misk-text)!important}
 <button onclick="openAddTech()" style="background:#00c6ff;border:0;padding:10px;border-radius:50px;width:100%;color:#fff;font-size:14px;margin-top:8px">➕ اضافة فني</button>
 <div id="techList"></div>
 </div>
-<div class="admin-box open" id="miskReportsBox"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📊 التقارير الإدارية <span>▼</span></div><div class="admin-box-body"><p style="font-size:12px;color:#64748b;margin:0 0 10px">التقرير يشمل اليومي والأرشيف، مع اختيار فترة الحساب.</p><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px"><label style="flex:1;min-width:120px;font-size:12px">من تاريخ<input id="reportFrom" type="date" style="display:block;width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:8px"></label><label style="flex:1;min-width:120px;font-size:12px">إلى تاريخ<input id="reportTo" type="date" style="display:block;width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:8px"></label></div><button class="btn" onclick="renderAdminReport()" style="width:100%;margin-bottom:8px">🔄 تحديث التقرير</button><button class="blueBtn" onclick="exportAdminReportCSV()" style="width:100%;padding:12px;border:0;border-radius:12px">⬇️ تصدير تقرير الفنيين CSV</button><div id="adminReportOutput" style="margin-top:12px"></div></div></div>
+<div class="admin-box open" id="techLedgerAdminBox"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">💰 كشف حساب الفنيين - صرف / سلفة / خصم <span>▼</span></div><div class="admin-box-body"><p style="font-size:12px;color:#64748b">سجل مالي منفصل عن مستحقات الأوردرات. كل حركة مرتبطة بدورة 21 إلى 20.</p><select id="ledgerTechSelect" style="width:100%;padding:10px;margin:5px 0"><option value="">اختر الفني</option></select><div style="display:flex;gap:6px"><select id="ledgerType" style="flex:1;padding:10px"><option value="payment">صرف مستحقات</option><option value="advance">سلفة</option><option value="deduction">خصم</option><option value="adjustment">تسوية إضافية</option></select><input id="ledgerAmount" type="number" min="0.01" step="0.01" placeholder="المبلغ" style="flex:1;padding:10px"></div><input id="ledgerNote" placeholder="ملاحظات / سبب الحركة" style="width:100%;padding:10px;margin:5px 0"><div style="display:flex;gap:6px"><label style="flex:1;font-size:12px">بداية الدورة<input id="ledgerCycleFrom" type="date" style="display:block;width:100%;padding:8px"></label><label style="flex:1;font-size:12px">نهاية الدورة<input id="ledgerCycleTo" type="date" style="display:block;width:100%;padding:8px"></label></div><button class="saveBtn" onclick="addTechnicianLedgerEntry()" style="width:100%;padding:12px;border:0;border-radius:12px;margin-top:8px">➕ تسجيل الحركة المالية</button><div id="ledgerAdminMsg" style="font-size:12px;margin-top:8px"></div><button class="btn" onclick="loadAdminTechnicianLedger()" style="width:100%;margin-top:8px">📖 عرض كشف حساب الفني</button><button class="blueBtn" onclick="exportAdminTechnicianLedgerCSV()" style="width:100%;padding:10px;border:0;border-radius:10px;margin-top:6px">⬇️ تصدير كشف الحساب CSV</button><div id="adminLedgerView" style="margin-top:10px"></div></div></div><div class="admin-box open" id="miskReportsBox"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📊 التقارير الإدارية <span>▼</span></div><div class="admin-box-body"><p style="font-size:12px;color:#64748b;margin:0 0 10px">التقرير يشمل اليومي والأرشيف، مع اختيار فترة الحساب.</p><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px"><label style="flex:1;min-width:120px;font-size:12px">من تاريخ<input id="reportFrom" type="date" style="display:block;width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:8px"></label><label style="flex:1;min-width:120px;font-size:12px">إلى تاريخ<input id="reportTo" type="date" style="display:block;width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:8px"></label></div><button class="btn" onclick="renderAdminReport()" style="width:100%;margin-bottom:8px">🔄 تحديث التقرير</button><button class="blueBtn" onclick="exportAdminReportCSV()" style="width:100%;padding:12px;border:0;border-radius:12px">⬇️ تصدير تقرير الفنيين CSV</button><div id="adminReportOutput" style="margin-top:12px"></div></div></div>
 <div id="addTechModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center">
 <div style="background:#fff;width:92%;max-width:380px;padding:16px;border-radius:16px;color:#000">
 <h3 style="text-align:center;margin:0 0 12px">➕ اضافة فني جديد</h3>
@@ -340,6 +342,8 @@ body{background:#f3f6fc!important;color:var(--misk-text)!important}
   </div>
 </div>
   <div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📂 رفع شيت الشغل <span>▼</span></div><div class="admin-box-body"><input type="file" id="sheetInput" accept=".xlsx,.xls,.csv" multiple><button class="orangeBtn" onclick="uploadSheetFast()" style="width:100%;padding:13px;border-radius:50px;border:0">🚀 رفع شيتات الشغل</button><div id="prog" style="height:18px;background:#eee;border-radius:10px;overflow:hidden;margin:8px 0;display:none"><div id="progBar" style="height:100%;width:0%;background:#1aa34a"></div></div><p id="uploadMsg"></p></div></div>
+<div id="sheetReviewModal" style="display:none;position:fixed;inset:0;z-index:50000;background:#0009;overflow:auto;padding:16px"><div style="max-width:850px;margin:20px auto;background:#fff;border-radius:18px;padding:18px;box-shadow:0 15px 50px #0004"><h2 style="margin-top:0;color:#243d78">🔎 مراجعة الأوردرات قبل الرفع</h2><div id="sheetReviewSummary" style="line-height:1.9"></div><div id="sheetReviewWarnings" style="margin:10px 0;color:#9a3412"></div><div style="max-height:300px;overflow:auto;border:1px solid #ddd;border-radius:10px"><table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr style="background:#f1f5f9"><th style="padding:8px">الأوردر</th><th style="padding:8px">العميل</th><th style="padding:8px">الفني</th><th style="padding:8px">الحالة</th></tr></thead><tbody id="sheetReviewRows"></tbody></table></div><div style="display:flex;gap:8px;margin-top:14px"><button onclick="confirmSheetUpload()" style="flex:1;background:#16803c;color:#fff;border:0;padding:12px;border-radius:12px;font-weight:bold">✅ تأكيد ورفع الأوردرات</button><button onclick="cancelSheetReview()" style="flex:1;background:#555;color:#fff;border:0;padding:12px;border-radius:12px;font-weight:bold">إلغاء</button></div></div></div>
+<div id="sheetReviewModal" style="display:none;position:fixed;inset:0;z-index:50000;background:rgba(0,0,0,.65);overflow:auto;padding:14px"><div style="max-width:850px;margin:20px auto;background:#fff;border-radius:18px;padding:18px;box-shadow:0 15px 50px #0004"><h2 style="margin-top:0;color:#243d78">🔎 مراجعة الأوردرات قبل الرفع</h2><div id="sheetReviewSummary" style="line-height:1.9"></div><div id="sheetReviewWarnings" style="margin:10px 0;color:#9a3412"></div><div style="max-height:300px;overflow:auto;border:1px solid #ddd;border-radius:10px"><table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr style="background:#f1f5f9"><th style="padding:8px">الأوردر</th><th style="padding:8px">العميل</th><th style="padding:8px">الفني</th><th style="padding:8px">الحالة</th></tr></thead><tbody id="sheetReviewRows"></tbody></table></div><div style="display:flex;gap:8px;margin-top:14px"><button onclick="confirmSheetUpload()" style="flex:1;background:#16803c;color:#fff;border:0;padding:12px;border-radius:12px;font-weight:bold">✅ تأكيد ورفع الأوردرات</button><button onclick="cancelSheetReview()" style="flex:1;background:#555;color:#fff;border:0;padding:12px;border-radius:12px;font-weight:bold">إلغاء</button></div></div></div>
 <div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📦 أرشفة - إنهاء اليوم <span>▼</span></div><div class="admin-box-body"><input type="text" id="manualArchiveDate" placeholder="مثال: 18-11-2026 - سيبه فاضي وهياخد تاريخ النهاردة"><button onclick="archiveOldJobs()" style="background:#9333ea;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">📦 أرشفة اليوم ده</button><button onclick="downloadEndOfDay()" style="background:#00a651;color:#fff;width:100%;padding:13px;border-radius:50px;border:0;margin-top:8px">📥 تحميل فولدر اليوم - شيتين على اللاب توب</button><p style="font-size:12px;color:#666">الفولدر بتاريخ اليوم جواه: شيت تم التسليم + شيت تأجيل / أبديت</p></div></div>
 <div class="admin-box"><div class="admin-box-head" style="background:#fff0f0" onclick="this.parentElement.classList.toggle('open')">🗑️ مسح أوردر واحد / مسح أرضي <span>▼</span></div><div class="admin-box-body"><input id="delOrderId" placeholder="رقم الأوردر - ID"><button onclick="deleteOneJob()" style="background:#dc3545;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">🗑️ مسح الأوردر ده</button><button onclick="deleteLandlineOnly()" style="background:#ff7a00;color:#fff;width:100%;padding:13px;border-radius:50px;border:0;margin-top:8px">🗑️ مسح الرقم الأرضي بس من الأوردر ده</button><p style="font-size:12px;color:#666">الأدمن بس - ومفيش مسح كل حاجة ولا ريسترة هنا</p></div></div>
   <div id="superDeleteBox" class="admin-box" style="display:none"><div class="admin-box-head" style="background:#7f0000;color:#fff" onclick="this.parentElement.classList.toggle('open')">🚨 SUPER ADMIN - مسح الشغل والأرشيف <span>▼</span></div><div class="admin-box-body"><p style="font-size:13px;color:#dc3545;font-weight:900">ده بيمسح الشغل + الأرشيف بس. المخزن مش هيتمسح. مفيش رجوع.</p><button onclick="deleteAllDataSuper()" style="background:#7f0000;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">🚨 مسح الشغل والأرشيف - Super Admin بس</button></div></div>
@@ -400,6 +404,7 @@ document.getElementById("serverRotator")?.addEventListener("error", function(){
 });
 function norm(s){return String(s||"").trim().toLowerCase().replace(/[\u064B-\u0652]/g,"").replace(/أ|إ|آ/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/\s+/g," ")}
 function normTechKey(name){ return norm(name).replace(/[^a-z0-9\u0600-\u06FF]/g,"") }
+function normOrderKey(value){ return String(value||"").trim().toLowerCase().replace(/\s+/g,"") }
 // توحيد اسم الفني مع القائمة المعتمدة: مطابقة كاملة أولاً، ثم اقتراح تصحيح حرف واحد فقط إذا كان فريداً.
 function techNameMatch(input, names=cachedTechNames){
   const raw=String(input||"").trim().replace(/\s+/g," ");
@@ -526,6 +531,7 @@ async function login(e){
   return false;
 }
 function afterLogin(){
+  if(userObj?.isAdmin){loadLedgerTechOptions();ledgerCycleInputs();}
   // الدور والصلاحيات يتم اعتمادها من سجل الفني بقاعدة البيانات، وليس من بيانات المتصفح وحدها.
   let lp = document.getElementById("loginPage");
   if(lp) lp.classList.add("hidden");
@@ -651,7 +657,20 @@ function renderWarehouseList(){
   }
   if(warehouseTab==='stock'||warehouseTab==='delivered') warehouseTab='all_pending';
   let listToShow = warehouseTab==='all_done' ? allDone : allStock;
-  box.innerHTML=`<h3 style="padding:0 12px">📦 المخزن (${baseWarehouse.length})</h3>
+  const serialCounts={};
+  baseWarehouse.forEach(w=>{const k=String(w.serial||'').trim().toUpperCase();if(k)serialCounts[k]=(serialCounts[k]||0)+1;});
+  const duplicateCount=Object.values(serialCounts).filter(n=>n>1).length;
+  const techStats={};
+  baseWarehouse.forEach(w=>{const t=String(w.tech||'غير محدد').trim()||'غير محدد';if(!techStats[t])techStats[t]={stock:0,installed:0,total:0};techStats[t].total++;if(String(w.customer_phone||'').trim()||String(w.date_install||'').trim())techStats[t].installed++;else techStats[t].stock++;});
+  const statsHtml=`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;padding:10px 12px">
+    <div style="background:#f3e8ff;border-radius:12px;padding:12px;text-align:center"><b style="font-size:20px">${baseWarehouse.length}</b><div>إجمالي الأجهزة</div></div>
+    <div style="background:#e0f2fe;border-radius:12px;padding:12px;text-align:center"><b style="font-size:20px">${allStock.length}</b><div>في العهدة / المخزن</div></div>
+    <div style="background:#dcfce7;border-radius:12px;padding:12px;text-align:center"><b style="font-size:20px">${allDone.length}</b><div>تم تركيبها</div></div>
+    <div style="background:#fee2e2;border-radius:12px;padding:12px;text-align:center"><b style="font-size:20px">${duplicateCount}</b><div>سيريالات مكررة</div></div>
+  </div>
+  ${Object.keys(techStats).length?`<div style="margin:0 12px 12px;border:1px solid #e5e7eb;border-radius:12px;padding:10px"><b>📊 توزيع الأجهزة حسب الفني</b><div style="max-height:220px;overflow:auto;margin-top:6px">${Object.entries(techStats).sort((a,b)=>b[1].total-a[1].total).map(([t,v])=>`<div style="display:flex;justify-content:space-between;gap:8px;padding:6px;border-bottom:1px solid #eee"><span>${escapeHTML(t)}</span><span>عهدة ${v.stock} | تركيب ${v.installed} | الإجمالي ${v.total}</span></div>`).join('')}</div></div>`:''}
+  ${duplicateCount?`<div style="margin:0 12px 10px;padding:10px;border-radius:10px;background:#fff1f2;color:#9f1239">⚠️ يوجد ${duplicateCount} سيريال مكرر في البيانات الظاهرة. راجع السيريالات قبل اعتماد الجرد.</div>`:''}`;
+  box.innerHTML=`<h3 style="padding:0 12px">📦 المخزن (${baseWarehouse.length})</h3>${statsHtml}
   <div style="display:flex;gap:8px;padding:0 12px;flex-wrap:wrap">
     <button onclick="warehouseTab='all_pending';renderWarehouseList()" style="flex:1;padding:12px;border-radius:10px;background:${warehouseTab==='all_pending'?'#7c3aed;color:#fff':'#f3e8ff'}">لم يتم تركيبه - ${allStock.length}</button>
     <button onclick="warehouseTab='all_done';renderWarehouseList()" style="flex:1;padding:12px;border-radius:10px;background:${warehouseTab==='all_done'?'#7c3aed;color:#fff':'#f3e8ff'}">تم تركيبه - ${allDone.length}</button>
@@ -692,6 +711,7 @@ function downloadWarehouseExcel(){
   let wb=XLSX.read(buf,{type:"array"});
   let fileProv = f.name.replace(/\.xlsx?|\.csv/gi,"").trim();
   let rowsMap = new Map();
+  let duplicateSerials=0, techCorrections=0;
   wb.SheetNames.forEach(sn=>{
     let ws=wb.Sheets[sn];
     let arr=XLSX.utils.sheet_to_json(ws,{header:1,defval:""});
@@ -702,6 +722,8 @@ function downloadWarehouseExcel(){
       let prov = (/^sheet\d*$/i.test(sn) || sn==="Sheet1") ? fileProv : sn;
       const techRaw=String(r[6]||"").trim();
       const techMatch=techNameMatch(techRaw);
+      if(techMatch.kind==="suggested") techCorrections++;
+      if(rowsMap.has(serial)) duplicateSerials++;
       rowsMap.set(serial, {
         sn:String(r[0]||""), date_received:parseSheetDate(r[1]), serial,
         date_install:parseSheetDate(r[3]), customer_phone:String(r[4]||"").trim(),
@@ -744,7 +766,7 @@ function downloadWarehouseExcel(){
     document.getElementById("warehouseUploadMsg").innerText=`جاري... ${Math.min(i+500, finalRows.length)} من ${finalRows.length}`;
   }
   const suggestedTechs=[...new Set(rows.map(r=>r.tech).filter(n=>n && !cachedTechNames.some(c=>normTechKey(c)===normTechKey(n))))];
-  document.getElementById("warehouseUploadMsg").innerText=`تم ✅ ${finalRows.length} سيريال - العهدة اتحدثت من خانة الفني، والكومنت اتحفظ في قصة الجهاز`+(suggestedTechs.length?`\n⚠️ أسماء تحتاج مراجعة: ${suggestedTechs.slice(0,8).join("، ")}`:"");
+  document.getElementById("warehouseUploadMsg").innerText=`تم ✅ ${finalRows.length} سيريال - العهدة اتحدثت من خانة الفني، والكومنت اتحفظ في قصة الجهاز`+(duplicateSerials?`\n⚠️ سيريالات مكررة داخل الملف: ${duplicateSerials} (تم اعتماد آخر صف لكل سيريال)`:"")+(techCorrections?`\nتم توحيد ${techCorrections} اسم فني بتصحيح حرف واحد`:"")+(suggestedTechs.length?`\n⚠️ أسماء تحتاج مراجعة: ${suggestedTechs.slice(0,8).join("، ")}`:"");
   loadWarehouse();
 }
 
@@ -932,7 +954,7 @@ async function registerDeliveredInWarehouse(job, serial){
     customer_phone:job.landline||job.mobile||ex?.customer_phone||"",
     customer_name:job.customer_name||ex?.customer_name||"",
     date_install:todayStr(), date_received:ex?.date_received||todayStr(),
-    comment:((ex?.comment||"").trim()+" | تم التسليم يوم "+todayStr()+" - أوردر "+(job.order||"")).trim(),
+    comment:((ex?.comment||"").trim()+(ex?.tech && getJobTech(job) && normTechKey(ex.tech)!==normTechKey(getJobTech(job)) ? ` | اختلاف عهدة: الجهاز كان مع ${ex.tech} وتم تسليمه للأوردر الفني ${getJobTech(job)} بتاريخ ${todayStr()}` : "")+" | تم التسليم يوم "+todayStr()+" - أوردر "+(job.order||"")).trim(),
     status:"تم التسليم", province:ex?.province||""
   };
   const result=ex ? await supabaseClient.from(WAREHOUSE_TABLE).update(payload).eq("id",ex.id) : await supabaseClient.from(WAREHOUSE_TABLE).insert(payload);
@@ -1248,6 +1270,49 @@ function exportAdminReportCSV(){
   const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="MISK_Operations_Report_"+todayStr().replace(/-/g,"_")+".csv";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
 }
 
+// دورة حساب الفني: من يوم 21 إلى يوم 20 من الشهر التالي.
+function getTechCycleRange(referenceDate=new Date()){
+  const d=new Date(referenceDate.getFullYear(),referenceDate.getMonth(),referenceDate.getDate());
+  let start,end;
+  if(d.getDate()>=21){start=new Date(d.getFullYear(),d.getMonth(),21);end=new Date(d.getFullYear(),d.getMonth()+1,20);}
+  else{start=new Date(d.getFullYear(),d.getMonth()-1,21);end=new Date(d.getFullYear(),d.getMonth(),20);}
+  const key=x=>`${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`;
+  return {from:key(start),to:key(end),label:`${start.getDate()}-${String(start.getMonth()+1).padStart(2,'0')}-${start.getFullYear()} إلى ${end.getDate()}-${String(end.getMonth()+1).padStart(2,'0')}-${end.getFullYear()}`};
+}
+function renderTechCycleReport(){
+  const box=document.getElementById('techCycleReport');
+  if(!box)return;
+  if(!userObj||userObj.isAdmin){box.style.display='none';box.innerHTML='';return;}
+  box.style.display='block';
+  const cycle=getTechCycleRange();
+  const name=String(userObj.name||userObj.username||'').trim();
+  const rows=getAdminReportRows().filter(j=>normTechKey(getJobTech(j))===normTechKey(name));
+  const inCycle=rows.filter(j=>{const k=reportDateKey(j.date||j.archive_date||j.created_at);return k&&k>=cycle.from&&k<=cycle.to;});
+  const total=inCycle.length,done=inCycle.filter(j=>getJobStatusBucket(j.status)==='done').length;
+  const pending=inCycle.filter(j=>getJobStatusBucket(j.status)==='pending').length;
+  const problem=inCycle.filter(j=>getJobStatusBucket(j.status)==='problem').length;
+  const rate=getTechOrderRate(name),pay=done*rate;
+  const dayMap=new Map();
+  inCycle.forEach(j=>{const k=reportDateKey(j.date||j.archive_date||j.created_at);if(!dayMap.has(k))dayMap.set(k,{date:k,total:0,done:0,pending:0,problem:0,pay:0});const d=dayMap.get(k);d.total++;const b=getJobStatusBucket(j.status);d[b]++;if(b==='done')d.pay+=rate;});
+  const days=[...dayMap.values()].sort((a,b)=>b.date.localeCompare(a.date));
+  const fmt=k=>{const m=String(k||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);return m?`${m[3]}-${m[2]}-${m[1]}`:k||'—';};
+  const cards=[['إجمالي الأوردرات',total,'#1d4ed8'],['تم التسليم',done,'#16a34a'],['قيد الانتظار',pending,'#d97706'],['حالات المشكلة',problem,'#dc2626'],['نسبة التسليم',`${total?Math.round(done/total*100):0}%`,'#7c3aed'],['المستحق حتى الآن',`${pay} ج`,'#166534']];
+  box.innerHTML=`<h3 style="margin:0 0 4px;color:#1e3a8a">📊 تقريرك اليومي — دورة الحساب</h3><div style="font-size:12px;color:#64748b;margin-bottom:10px">${escapeHTML(cycle.label)} | التقرير بيتحدث مع تحديث الأوردرات</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:7px">${cards.map(c=>`<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:11px;padding:9px;text-align:center"><small>${escapeHTML(c[0])}</small><div style="font-size:20px;font-weight:900;color:${c[2]}">${c[1]}</div></div>`).join('')}</div><div style="margin-top:12px"><b>📅 ملخص كل يوم</b><div style="overflow:auto;margin-top:6px"><table style="width:100%;border-collapse:collapse;font-size:12px;min-width:550px"><thead><tr style="background:#eef2ff"><th style="padding:7px">التاريخ</th><th style="padding:7px">إجمالي</th><th style="padding:7px">تسليم</th><th style="padding:7px">انتظار</th><th style="padding:7px">مشاكل</th><th style="padding:7px">المستحق</th></tr></thead><tbody>${days.map(d=>`<tr><td style="padding:7px;border-bottom:1px solid #eee">${escapeHTML(fmt(d.date))}</td><td style="padding:7px;text-align:center;border-bottom:1px solid #eee">${d.total}</td><td style="padding:7px;text-align:center;color:#16a34a;border-bottom:1px solid #eee">${d.done}</td><td style="padding:7px;text-align:center;color:#d97706;border-bottom:1px solid #eee">${d.pending}</td><td style="padding:7px;text-align:center;color:#dc2626;border-bottom:1px solid #eee">${d.problem}</td><td style="padding:7px;text-align:center;font-weight:bold;border-bottom:1px solid #eee">${d.pay} ج</td></tr>`).join('')||'<tr><td colspan="6" style="padding:10px;text-align:center">لا توجد أوردرات في الدورة الحالية حتى الآن</td></tr>'}</tbody></table></div></div><div style="margin-top:10px"><b>📋 تفاصيل أوردرات الدورة</b><div style="max-height:260px;overflow:auto;margin-top:6px"><table style="width:100%;border-collapse:collapse;font-size:11px;min-width:500px"><thead><tr style="background:#f1f5f9"><th style="padding:6px">التاريخ</th><th style="padding:6px">الأوردر</th><th style="padding:6px">العميل</th><th style="padding:6px">الحالة</th><th style="padding:6px">المستحق</th></tr></thead><tbody>${inCycle.slice().sort((a,b)=>reportDateKey(b.date||b.archive_date||b.created_at).localeCompare(reportDateKey(a.date||a.archive_date||a.created_at))).map(j=>{const isDone=getJobStatusBucket(j.status)==='done';return `<tr><td style="padding:6px;border-bottom:1px solid #eee">${escapeHTML(fmt(reportDateKey(j.date||j.archive_date||j.created_at)))}</td><td style="padding:6px;border-bottom:1px solid #eee">${escapeHTML(j.order||j.landline||'—')}</td><td style="padding:6px;border-bottom:1px solid #eee">${escapeHTML(j.customer_name||'—')}</td><td style="padding:6px;border-bottom:1px solid #eee">${escapeHTML(j.status||'جديد')}</td><td style="padding:6px;border-bottom:1px solid #eee;font-weight:bold">${isDone?rate+' ج':'—'}</td></tr>`}).join('')||'<tr><td colspan="5" style="padding:8px;text-align:center">لا توجد بيانات</td></tr>'}</tbody></table></div></div><div id="techLedgerSummary" style="margin-top:12px;padding:12px;border:1px solid #dbe4f0;border-radius:12px;background:#f8fafc"><b>💰 كشف حسابك خلال الدورة</b><div id="techLedgerOutput" style="margin-top:8px">جاري تحميل الحركات المالية…</div></div>`;
+  loadTechnicianLedgerForCurrentUser(cycle);
+}
+
+
+// كشف حساب الفنيين: يتطلب جدول Supabase technician_ledger (SQL مرفق مع النسخة).
+function ledgerTypeLabel(type){return ({payment:"صرف مستحقات",advance:"سلفة",deduction:"خصم",adjustment:"تسوية"})[type]||type;}
+function ledgerCycleInputs(){const c=getTechCycleRange();const f=document.getElementById('ledgerCycleFrom'),t=document.getElementById('ledgerCycleTo');if(f&&!f.value)f.value=c.from;if(t&&!t.value)t.value=c.to;}
+async function loadLedgerTechOptions(){const sel=document.getElementById('ledgerTechSelect');if(!sel||!userObj?.isAdmin)return;try{const {data,error}=await supabaseClient.from('technicians').select('id,name,username,role').order('name');if(error)throw error;sel.innerHTML='<option value="">اختر الفني</option>'+(data||[]).filter(x=>getRoleFromDb(x)==='tech').map(x=>`<option value="${escapeAttr(x.id)}" data-name="${escapeAttr(x.name||x.username||'')}">${escapeHTML(x.name||x.username||'')}</option>`).join('');}catch(e){sel.innerHTML='<option value="">تعذر تحميل الفنيين</option>';const m=document.getElementById('ledgerAdminMsg');if(m)m.textContent='تعذر تحميل قائمة الفنيين: '+(e.message||e);}}
+let currentAdminLedgerRows=[];
+function ledgerAdminDateKey(j){return reportDateKey(j.date||j.archive_date||j.created_at);}
+async function loadAdminTechnicianLedger(){if(!userObj?.isAdmin)return alert('عرض كشف الحساب للإدارة فقط');const sel=document.getElementById('ledgerTechSelect'),from=document.getElementById('ledgerCycleFrom')?.value,to=document.getElementById('ledgerCycleTo')?.value,view=document.getElementById('adminLedgerView');if(!sel?.value)return alert('اختار الفني');if(!from||!to||from>to)return alert('راجع تاريخ بداية ونهاية الدورة');if(view)view.innerHTML='جاري تحميل كشف الحساب…';try{const {data,error}=await supabaseClient.from('technician_ledger').select('*').eq('technician_id',sel.value).eq('cycle_start',from).eq('cycle_end',to).order('created_at',{ascending:false});if(error)throw error;currentAdminLedgerRows=data||[];const name=sel.selectedOptions[0]?.dataset.name||sel.selectedOptions[0]?.textContent.trim()||'';const jobs=getAdminReportRows().filter(j=>normTechKey(getJobTech(j))===normTechKey(name)&&ledgerAdminDateKey(j)>=from&&ledgerAdminDateKey(j)<=to&&getJobStatusBucket(j.status)==='done');const earned=jobs.length*getTechOrderRate(name);let paid=0,adv=0,ded=0,adj=0;currentAdminLedgerRows.forEach(r=>{const a=Number(r.amount)||0;if(r.entry_type==='payment')paid+=a;else if(r.entry_type==='advance')adv+=a;else if(r.entry_type==='deduction')ded+=a;else if(r.entry_type==='adjustment')adj+=a;});const balance=earned-paid-adv-ded+adj;const cards=[['مستحق الأوردرات',earned],['صرف',paid],['سلف',adv],['خصومات',ded],['تسويات',adj],['الرصيد',balance]];if(view)view.innerHTML='<h4 style="margin:5px 0">كشف حساب '+escapeHTML(name)+' | '+escapeHTML(from)+' إلى '+escapeHTML(to)+'</h4><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:6px">'+cards.map(c=>'<div style="padding:8px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:9px;text-align:center"><small>'+escapeHTML(c[0])+'</small><b style="display:block">'+Number(c[1]).toLocaleString('ar-EG')+' ج</b></div>').join('')+'</div><div style="overflow:auto;margin-top:8px"><table style="width:100%;border-collapse:collapse;font-size:11px;min-width:500px"><thead><tr style="background:#e2e8f0"><th style="padding:6px">التاريخ</th><th style="padding:6px">الحركة</th><th style="padding:6px">المبلغ</th><th style="padding:6px">ملاحظات</th><th style="padding:6px">مسجل بواسطة</th></tr></thead><tbody>'+currentAdminLedgerRows.map(r=>'<tr><td style="padding:6px;border-bottom:1px solid #eee">'+escapeHTML((r.created_at||'').slice(0,10))+'</td><td style="padding:6px;border-bottom:1px solid #eee">'+escapeHTML(ledgerTypeLabel(r.entry_type))+'</td><td style="padding:6px;border-bottom:1px solid #eee">'+Number(r.amount||0).toLocaleString('ar-EG')+' ج</td><td style="padding:6px;border-bottom:1px solid #eee">'+escapeHTML(r.note||'—')+'</td><td style="padding:6px;border-bottom:1px solid #eee">'+escapeHTML(r.created_by_name||'—')+'</td></tr>').join('')||'<tr><td colspan="5" style="padding:8px;text-align:center">لا توجد حركات مسجلة لهذه الدورة</td></tr>'+'</tbody></table></div>'; }catch(e){currentAdminLedgerRows=[];if(view)view.innerHTML='<div style="color:#b45309">تعذر تحميل كشف الحساب: '+escapeHTML(e.message||String(e))+'</div>';}}
+function exportAdminTechnicianLedgerCSV(){if(!userObj?.isAdmin)return alert('التصدير للإدارة فقط');if(!currentAdminLedgerRows.length)return alert('اعرض كشف الحساب أولًا');const rows=[['التاريخ','نوع الحركة','المبلغ','ملاحظات','مسجل بواسطة'],...currentAdminLedgerRows.map(r=>[(r.created_at||'').slice(0,10),ledgerTypeLabel(r.entry_type),r.amount,r.note||'',r.created_by_name||''])];const csv='\ufeff'+rows.map(row=>row.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='MISK_Technician_Ledger.csv';a.click();URL.revokeObjectURL(url);}
+async function addTechnicianLedgerEntry(){if(!userObj?.isAdmin)return alert('التسجيل متاح للإدارة فقط');const sel=document.getElementById('ledgerTechSelect'),type=document.getElementById('ledgerType')?.value,amount=Number(document.getElementById('ledgerAmount')?.value),note=document.getElementById('ledgerNote')?.value.trim()||'',from=document.getElementById('ledgerCycleFrom')?.value,to=document.getElementById('ledgerCycleTo')?.value;const opt=sel?.selectedOptions?.[0];if(!sel?.value||!opt)return alert('اختار الفني');if(!Number.isFinite(amount)||amount<=0)return alert('اكتب مبلغ صحيح أكبر من صفر');if(!from||!to||from>to)return alert('راجع تاريخ بداية ونهاية الدورة');const payload={technician_id:sel.value,technician_name:opt.dataset.name||opt.textContent.trim(),entry_type:type,amount,note,cycle_start:from,cycle_end:to,created_by:userObj.id,created_by_name:userObj.name};const msg=document.getElementById('ledgerAdminMsg');if(msg)msg.textContent='جاري التسجيل…';try{const {error}=await supabaseClient.from('technician_ledger').insert(payload);if(error)throw error;if(msg)msg.textContent='تم تسجيل الحركة. إذا لم تظهر، تأكد من إنشاء الجدول والصلاحيات.';document.getElementById('ledgerAmount').value='';document.getElementById('ledgerNote').value='';loadAdminTechnicianLedger();renderJobs();}catch(e){if(msg)msg.textContent='فشل التسجيل: '+(e.message||e)+' — تأكد من تنفيذ SQL المرفق.';}}
+async function loadTechnicianLedgerForCurrentUser(cycle){const out=document.getElementById('techLedgerOutput');if(!out||!userObj||userObj.isAdmin)return;try{const {data,error}=await supabaseClient.from('technician_ledger').select('*').eq('technician_id',userObj.id).eq('cycle_start',cycle.from).eq('cycle_end',cycle.to).order('created_at',{ascending:false});if(error)throw error;const rows=data||[];let paid=0,adv=0,ded=0,adj=0;rows.forEach(r=>{const n=Number(r.amount)||0;if(r.entry_type==='payment')paid+=n;else if(r.entry_type==='advance')adv+=n;else if(r.entry_type==='deduction')ded+=n;else if(r.entry_type==='adjustment')adj+=n;});const earned=(getAdminReportRows().filter(j=>normTechKey(getJobTech(j))===normTechKey(userObj.name)&&(()=>{const k=reportDateKey(j.date||j.archive_date||j.created_at);return k&&k>=cycle.from&&k<=cycle.to;})()&&getJobStatusBucket(j.status)==='done').length)*getTechOrderRate(userObj.name);const balance=earned-paid-adv-ded+adj;const cards=[['مستحق الأوردرات',earned],['صرف',paid],['سلف',adv],['خصومات',ded],['تسويات',adj],['الرصيد',balance]];out.innerHTML='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:6px">'+cards.map(c=>`<div style="padding:9px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;text-align:center"><small>${escapeHTML(c[0])}</small><b style="display:block;color:${c[0]==='الرصيد'?'#166534':'#334155'}">${c[1].toLocaleString('ar-EG')} ج</b></div>`).join('')+'</div><div style="overflow:auto;margin-top:8px"><table style="width:100%;border-collapse:collapse;font-size:11px;min-width:500px"><thead><tr style="background:#e2e8f0"><th style="padding:6px">التاريخ</th><th style="padding:6px">نوع الحركة</th><th style="padding:6px">المبلغ</th><th style="padding:6px">ملاحظات</th></tr></thead><tbody>'+(rows.map(r=>`<tr><td style="padding:6px;border-bottom:1px solid #eee">${escapeHTML((r.created_at||'').slice(0,10))}</td><td style="padding:6px;border-bottom:1px solid #eee">${escapeHTML(ledgerTypeLabel(r.entry_type))}</td><td style="padding:6px;border-bottom:1px solid #eee">${Number(r.amount||0).toLocaleString('ar-EG')} ج</td><td style="padding:6px;border-bottom:1px solid #eee">${escapeHTML(r.note||'—')}</td></tr>`).join('')||'<tr><td colspan="4" style="padding:8px;text-align:center">لا توجد حركات مسجلة في الدورة</td></tr>')+'</tbody></table></div>';}catch(e){out.innerHTML='<div style="color:#b45309;font-size:12px">كشف الحساب غير متاح حاليًا. غالبًا جدول technician_ledger لم يتم إنشاؤه بعد. '+escapeHTML(e.message||String(e))+'</div>';}}
+
 function renderJobs(){
   let list=document.getElementById("jobsList"); if(!list) return;
   let mine=myJobsBase();
@@ -1263,6 +1328,7 @@ function renderJobs(){
   let show=jobs.slice(0, visibleCount);
   list.innerHTML=show.map(j=>`<div class="job" onclick="openDetails('${escapeAttr(j.id)}')"><h3>${escapeHTML(j.customer_name||"")} - ${escapeHTML(j.order||"")}</h3><div style="font-weight:bold;color:#0b6cff">🆔 الكود: ${escapeHTML(j.code||"—")}</div><div class="meta">📍 ${escapeHTML(j.address||"")}<br>📞 الأرضي: ${escapeHTML(j.landline||"")} | 📱 ${escapeHTML(j.mobile||"")}<br>👷 الفني: ${escapeHTML(getJobTech(j)||"")} | 📦 الجهاز: ${escapeHTML(j.device||"")}<br>🔢 السيريال: ${escapeHTML(j.serial||"لسه")} | الحالة: <b>${escapeHTML(j.status||"جديد")}</b><br>💬 ${escapeHTML(j.comment||"")}</div><span class="badge">${escapeHTML(j.status||"جديد")}</span></div>`).join("") || `<p style="text-align:center">مفيش شغل هنا</p>`;
   document.getElementById("loadMoreWrap").innerHTML= jobs.length>visibleCount ? `<button class="btn" onclick="visibleCount+=20;renderJobs()">عرض المزيد (${jobs.length-visibleCount} باقي)</button>` : "";
+  renderTechCycleReport();
   if(userObj&&userObj.isAdmin) renderAdminReport();
 }
 function onSearch(){ searchQ=document.getElementById("searchInput").value; renderJobs() }
@@ -1368,10 +1434,22 @@ async function isSerialInWarehouse(serial){
   let j=allJobs.find(x=>String(x.id)===String(id)); if(!j) return;
   let serial=cleanSerial(document.getElementById("dSerial").value);
   if(!serial) return alert("اكتب السيريال الأول");
-    let serialExists;
-  try{ serialExists=await isSerialInWarehouse(serial); }
-  catch(error){ return alert("تعذر التحقق من السيريال بسبب مشكلة اتصال: "+error.message); }
-  if(!serialExists) return alert("السيريال ده مش موجود في المخزن! راجع السيريال");
+    let serialExists, serialStock;
+  try{
+    serialExists=await isSerialInWarehouse(serial);
+    const {data:stock,error:stockError}=await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("serial",serial).maybeSingle();
+    if(stockError) throw stockError;
+    serialStock=stock;
+  }catch(error){ return alert("تعذر التحقق من السيريال أو عهدته بسبب مشكلة اتصال: "+error.message); }
+  if(!serialExists || !serialStock) return alert("السيريال ده مش موجود في المخزن! راجع السيريال");
+  const alreadyUsed=allJobs.find(x=>String(x.serial||"").trim()===serial && String(x.id)!==String(id) && (String(x.status||"").includes("تسليم")||x.delivered_at||x.delivered_date));
+  if(alreadyUsed) return alert("السيريال ده مسجل بالفعل في أوردر آخر: "+(alreadyUsed.order||alreadyUsed.id)+". ممنوع استخدامه مرتين.");
+  const jobTech=String(getJobTech(j)||"").trim(), stockTech=String(serialStock.tech||"").trim();
+  const stockDelivered=String(serialStock.customer_phone||"").trim()||String(serialStock.date_install||"").trim();
+  if(stockDelivered) return alert("السيريال ده مسجل إنه تم تركيبه/تسليمه بالفعل. راجع المخزن قبل استخدامه.");
+  if(jobTech && stockTech && normTechKey(jobTech)!==normTechKey(stockTech)){
+    if(!userObj.isAdmin || !confirm(`⚠️ السيريال على عهدة ${stockTech} والأوردر للفني ${jobTech}. هل أنت متأكد من إتمام التسليم؟ سيتم تسجيل اختلاف العهدة في سجل الجهاز.`)) return;
+  }
   let up=j.up_down||upDownMap[id];
   let rec=j.recipient||recipientMap[id];
   if(!up) return alert("اختار Up / Down الأول");
@@ -1449,98 +1527,95 @@ async function addJob(){
   showTab('pending', document.querySelectorAll(".tabs div")[1]);
 }
 let sheetUploadBusy = false;
+let pendingSheetUpload = null;
 async function uploadSheetFast(){
-  const input=document.getElementById("sheetInput");
-  const files=input?.files;
-  if(!files || !files.length) return alert("اختار ملف الأول");
-  if(!userObj || !userObj.isAdmin) return alert("الأدمن بس اللي يرفع شيتات الشغل");
-  if(sheetUploadBusy) return alert("في عملية رفع شغالة بالفعل، استنى لما تخلص");
-  sheetUploadBusy=true;
-  autoOn=false;
+  const input=document.getElementById("sheetInput"), files=input?.files;
+  if(!files||!files.length) return alert("اختار ملف الأول");
+  if(!userObj||!userObj.isAdmin) return alert("الأدمن بس اللي يرفع شيتات الشغل");
+  if(sheetUploadBusy) return alert("في عملية تجهيز أو رفع شغالة بالفعل، استنى لما تخلص");
+  sheetUploadBusy=true; autoOn=false;
   const btnAuto=document.getElementById("autoBtn");
   if(btnAuto){btnAuto.textContent="تشغيل";btnAuto.style.background="#dcfce7";btnAuto.style.color="#166534";}
-  const msg=document.getElementById("uploadMsg");
-  const prog=document.getElementById("prog");
-  const progBar=document.getElementById("progBar");
-  if(msg) msg.innerText="جاري تجهيز الملفات...";
-  if(prog) prog.style.display="block";
-  if(progBar) progBar.style.width="0%";
-  let totalInserted=0, skippedExisting=0, skippedInFiles=0, failedRows=0, techNameCorrections=0;
-  const seenOrders=new Set();
-  const errors=[], techReviewNames=new Set();
+  const msg=document.getElementById("uploadMsg"), prog=document.getElementById("prog"), progBar=document.getElementById("progBar");
+  if(msg)msg.innerText="جاري قراءة الملفات وفحص الأوردرات...";
+  if(prog)prog.style.display="block";if(progBar)progBar.style.width="0%";
+  const prepared=[], allCandidateRows=[], seenOrders=new Set(), techReviewNames=new Set(), fileStats=[];
+  let skippedInFiles=0, skippedExisting=0, invalidRows=0, techNameCorrections=0;
   try{
     for(let fileIndex=0;fileIndex<files.length;fileIndex++){
-      const f=files[fileIndex];
-      const wb=XLSX.read(await f.arrayBuffer(),{type:"array"});
-      const ws=wb.Sheets["Sheet1"]||wb.Sheets[wb.SheetNames[0]];
-      if(!ws) throw new Error(`الملف ${f.name} لا يحتوي على ورقة بيانات`);
-      const arr=XLSX.utils.sheet_to_json(ws,{header:1,defval:""});
-      const toInsert=[];
+      const f=files[fileIndex], wb=XLSX.read(await f.arrayBuffer(),{type:"array"}), ws=wb.Sheets["Sheet1"]||wb.Sheets[wb.SheetNames[0]];
+      if(!ws)throw new Error(`الملف ${f.name} لا يحتوي على ورقة بيانات`);
+      const arr=XLSX.utils.sheet_to_json(ws,{header:1,defval:""}), rows=[];
+      let duplicateInFile=0, invalidInFile=0;
       for(let i=1;i<arr.length;i++){
-        const r=arr[i];
-        const customer=String(r[3]||"").trim();
-        const order=String(r[1]||"").trim();
-        if(!customer||!order||customer==="Name") continue;
-        const orderKey=order.toLowerCase();
-        if(seenOrders.has(orderKey)){skippedInFiles++;continue;}
+        const r=arr[i], customer=String(r[3]||"").trim(), order=String(r[1]||"").trim();
+        if(!customer||!order||customer==="Name"){invalidRows++;invalidInFile++;continue;}
+        const orderKey=normOrderKey(order);
+        if(seenOrders.has(orderKey)){skippedInFiles++;duplicateInFile++;continue;}
         seenOrders.add(orderKey);
-        const techRaw=String(r[16]||"").trim();
-        const techMatch=techNameMatch(techRaw);
-        if(techMatch.kind==="suggested") techNameCorrections++;
-        if(techMatch.kind==="unmatched"||techMatch.kind==="ambiguous") techReviewNames.add(techRaw+(techMatch.kind==="ambiguous"?` (محتمل: ${techMatch.candidates.join(" / ")})`:""));
-        toInsert.push({
-          customer_name:customer,address:String(r[10]||""),order,landline:order,
-          mobile:String(r[2]||""),device:String(r[4]||""),code:String(r[7]||""),
-          tech:techMatch.name,tech_name:techMatch.name,
-          tech_phone:String(r[17]||"").trim(),status:"جديد",date:todayStr(),
-          comment:String(r[14]||""),serial:String(r[13]||"")
-        });
+        const techRaw=String(r[16]||"").trim(), techMatch=techNameMatch(techRaw);
+        if(techMatch.kind==="suggested")techNameCorrections++;
+        if(techMatch.kind==="unmatched"||techMatch.kind==="ambiguous")techReviewNames.add(techRaw+(techMatch.kind==="ambiguous"?` (محتمل: ${techMatch.candidates.join(" / ")})`:""));
+        const row={customer_name:customer,address:String(r[10]||""),order,landline:order,mobile:String(r[2]||""),device:String(r[4]||""),code:String(r[7]||""),tech:techMatch.name,tech_name:techMatch.name,tech_phone:String(r[17]||"").trim(),status:"جديد",date:todayStr(),comment:String(r[14]||""),serial:String(r[13]||""),_techKind:techMatch.kind,_techOriginal:techRaw,_sourceFile:f.name};
+        rows.push(row);allCandidateRows.push(row);
       }
-      if(!toInsert.length){if(msg)msg.innerText=`${f.name}: لا توجد صفوف صالحة`;continue;}
-      const orders=toInsert.map(x=>x.order);
-      const existingSet=new Set();
-      for(let i=0;i<orders.length;i+=500){
-        const {data:ex,error:lookupError}=await supabaseClient.from(TABLE).select("order").in("order",orders.slice(i,i+500));
-        if(lookupError) throw new Error(`فشل فحص الأوردرات الموجودة في ${f.name}: ${lookupError.message}`);
-        (ex||[]).forEach(x=>existingSet.add(String(x.order).trim().toLowerCase()));
-      }
-      const filtered=[];
-      for(const row of toInsert){
-        if(existingSet.has(String(row.order).trim().toLowerCase())) skippedExisting++;
-        else filtered.push(row);
-      }
-      for(let i=0;i<filtered.length;i+=500){
-        const chunk=filtered.slice(i,i+500);
-        let result=await supabaseClient.from(TABLE).insert(chunk);
-        if(result.error){
-          const chunk2=chunk.map(({tech_name,tech_phone,...rest})=>rest);
-          result=await supabaseClient.from(TABLE).insert(chunk2);
-          if(result.error){
-            const chunk3=chunk.map(({tech,...rest})=>rest);
-            result=await supabaseClient.from(TABLE).insert(chunk3);
-            if(result.error){failedRows+=filtered.length-i;errors.push(`${f.name}: ${result.error.message}`);break;}
-          }
-        }
-        totalInserted+=chunk.length;
-        if(progBar)progBar.style.width=Math.round(((fileIndex+1)/files.length)*100)+"%";
-        if(msg)msg.innerText=`تم رفع ${totalInserted} أوردر حتى الآن - الملف ${fileIndex+1} من ${files.length}`;
-      }
-      if(errors.length) break;
+      fileStats.push({fileName:f.name,read:arr.length>0?arr.length-1:0,valid:rows.length,duplicate:duplicateInFile,invalid:invalidInFile});
+      prepared.push({fileName:f.name,rows});
+      if(progBar)progBar.style.width=Math.round((fileIndex+1)/files.length*45)+"%";
+    }
+    if(!allCandidateRows.length)throw new Error("لم يتم العثور على أوردرات صالحة للرفع في الملفات المحددة.");
+    // Read existing order keys in pages so differences in spaces do not bypass duplicate detection.
+    const existingSet=new Set();let offset=0,page=[];
+    do{
+      const {data,error}=await supabaseClient.from(TABLE).select("order").range(offset,offset+999);
+      if(error)throw new Error("فشل فحص الأوردرات الموجودة في قاعدة البيانات: "+error.message);
+      page=data||[];page.forEach(x=>{const key=normOrderKey(x.order);if(key)existingSet.add(key);});
+      offset+=page.length;
+      if(progBar)progBar.style.width=Math.min(90,45+Math.round(offset/Math.max(offset+page.length,1000)*45))+"%";
+    }while(page.length===1000);
+    for(const file of prepared){
+      const fresh=[];
+      for(const row of file.rows){if(existingSet.has(normOrderKey(row.order)))skippedExisting++;else fresh.push(row);}
+      file.rows=fresh;
+    }
+    const allRows=prepared.flatMap(x=>x.rows);
+    pendingSheetUpload={prepared,skippedInFiles,skippedExisting,invalidRows,techNameCorrections,techReviewNames:[...techReviewNames],allRows,fileStats};
+    const summary=document.getElementById("sheetReviewSummary");
+    if(summary)summary.innerHTML=`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:8px"><div style="background:#e8f7ee;padding:10px;border-radius:10px"><b>${allRows.length}</b><br>أوردر جديد جاهز</div><div style="background:#fff7ed;padding:10px;border-radius:10px"><b>${skippedExisting}</b><br>موجود مسبقًا</div><div style="background:#fef2f2;padding:10px;border-radius:10px"><b>${skippedInFiles}</b><br>مكرر بالملفات</div><div style="background:#eff6ff;padding:10px;border-radius:10px"><b>${invalidRows}</b><br>صف غير مكتمل</div><div style="background:#f0fdf4;padding:10px;border-radius:10px"><b>${techNameCorrections}</b><br>اسم فني تم تصحيحه</div></div><p>عدد الملفات: ${files.length} | إجمالي الصفوف المقروءة: ${fileStats.reduce((a,x)=>a+x.read,0)}</p><div style="font-size:12px;background:#f8fafc;padding:8px;border-radius:8px">${fileStats.map(x=>`<div><b>${escapeHTML(x.fileName)}</b>: صالح ${x.valid} | مكرر ${x.duplicate} | غير مكتمل ${x.invalid}</div>`).join("")}</div>`;
+    const warnings=document.getElementById("sheetReviewWarnings");
+    if(warnings)warnings.innerHTML=(techReviewNames.size?`⚠️ أسماء فنيين تحتاج مراجعة: ${[...techReviewNames].slice(0,15).map(escapeHTML).join("، ")}`:"✅ أسماء الفنيين مطابقة أو تم تصحيحها تلقائيًا.")+(invalidRows?`<br>⚠️ تم استبعاد ${invalidRows} صف لعدم وجود رقم أوردر أو اسم عميل.`:"");
+    const tbody=document.getElementById("sheetReviewRows");
+    if(tbody)tbody.innerHTML=allRows.slice(0,100).map(r=>`<tr><td style="padding:7px;border-bottom:1px solid #eee">${escapeHTML(r.order)}</td><td style="padding:7px;border-bottom:1px solid #eee">${escapeHTML(r.customer_name)}</td><td style="padding:7px;border-bottom:1px solid #eee">${escapeHTML(r.tech||"-")}</td><td style="padding:7px;border-bottom:1px solid #eee">${r._techKind==="unmatched"||r._techKind==="ambiguous"?"⚠️ مراجعة الفني":r._techKind==="suggested"?"✏️ تصحيح تلقائي":"جاهز"}</td></tr>`).join("")+(allRows.length>100?`<tr><td colspan="4" style="padding:8px;text-align:center">عرض أول 100 أوردر فقط من ${allRows.length}</td></tr>`:"");
+    const modal=document.getElementById("sheetReviewModal");if(modal)modal.style.display="block";
+    if(msg)msg.innerText="تم الفحص. راجع النتائج ثم أكد الرفع. لم يتم حفظ أي أوردر حتى الآن.";
+  }catch(e){if(msg)msg.innerText="فشل الفحص: "+(e.message||String(e));alert("فشل فحص الملفات: "+(e.message||String(e)));}
+  finally{sheetUploadBusy=false;if(prog)prog.style.display="none";if(progBar)progBar.style.width="0%";autoOn=true;if(btnAuto){btnAuto.textContent="إيقاف";btnAuto.style.background="#fee2e2";btnAuto.style.color="#dc2626";}}
+}
+function cancelSheetReview(){pendingSheetUpload=null;const m=document.getElementById("sheetReviewModal");if(m)m.style.display="none";const input=document.getElementById("sheetInput");if(input)input.value="";const msg=document.getElementById("uploadMsg");if(msg)msg.innerText="تم إلغاء العملية. لم يتم رفع أي أوردر.";}
+async function confirmSheetUpload(){
+  if(!pendingSheetUpload)return;
+  if(!userObj||!userObj.isAdmin)return alert("الأدمن بس اللي يرفع شيتات الشغل");
+  if(sheetUploadBusy)return alert("في عملية رفع شغالة بالفعل");
+  sheetUploadBusy=true;autoOn=false;const pending=pendingSheetUpload;cancelSheetReview();
+  const msg=document.getElementById("uploadMsg"),prog=document.getElementById("prog"),progBar=document.getElementById("progBar"),btnAuto=document.getElementById("autoBtn");
+  if(prog)prog.style.display="block";if(msg)msg.innerText="جاري رفع الأوردرات المعتمدة...";
+  let totalInserted=0,failedRows=0;const errors=[];
+  try{
+    const rows=pending.prepared.flatMap(file=>file.rows.map(({_techKind,_techOriginal,_sourceFile,...rest})=>rest));
+    for(let i=0;i<rows.length;i+=400){
+      const chunk=rows.slice(i,i+400);let result=await supabaseClient.from(TABLE).insert(chunk);
+      if(result.error){const c2=chunk.map(({tech_name,tech_phone,...rest})=>rest);result=await supabaseClient.from(TABLE).insert(c2);}
+      if(result.error){const c3=chunk.map(({tech,...rest})=>rest);result=await supabaseClient.from(TABLE).insert(c3);}
+      if(result.error){failedRows+=rows.length-i;errors.push(result.error.message);break;}
+      totalInserted+=chunk.length;if(progBar)progBar.style.width=Math.round((i+chunk.length)/rows.length*100)+"%";if(msg)msg.innerText=`تم رفع ${totalInserted} من ${rows.length} أوردر...`;
     }
   }catch(e){errors.push(e.message||String(e));}
-  finally{
-    sheetUploadBusy=false;
-    if(prog)prog.style.display="none";
-    if(progBar)progBar.style.width="0%";
-    autoOn=true;
-    if(btnAuto){btnAuto.textContent="إيقاف";btnAuto.style.background="#fee2e2";btnAuto.style.color="#dc2626";}
-  }
-  const summary=`نتيجة الرفع: ${totalInserted} أوردر تم رفعهم، ${skippedExisting} مكرر في قاعدة البيانات، ${skippedInFiles} مكرر داخل الملفات، ${failedRows} صف فشل.`;
-  const techNotes=(techNameCorrections?`\n✅ تم توحيد ${techNameCorrections} اسم فني بتصحيح بسيط.`:"")+(techReviewNames.size?`\n⚠️ أسماء فنيين تحتاج مراجعة: ${[...techReviewNames].slice(0,10).join("، ")}`:"");
+  finally{sheetUploadBusy=false;if(prog)prog.style.display="none";if(progBar)progBar.style.width="0%";autoOn=true;if(btnAuto){btnAuto.textContent="إيقاف";btnAuto.style.background="#fee2e2";btnAuto.style.color="#dc2626";}}
+  const summary=`نتيجة الرفع: ${totalInserted} أوردر تم رفعهم، ${pending.skippedExisting} موجود مسبقًا، ${pending.skippedInFiles} مكرر داخل الملفات، ${pending.invalidRows} صف غير مكتمل تم استبعاده، ${failedRows} صف فشل.`;
+  const techNotes=(pending.techNameCorrections?`\n✅ تم توحيد ${pending.techNameCorrections} اسم فني بتصحيح بسيط.`:"")+(pending.techReviewNames.length?`\n⚠️ أسماء فنيين تحتاج مراجعة: ${pending.techReviewNames.slice(0,10).join("، ")}`:"");
   if(msg)msg.innerText=errors.length?summary+techNotes+"\n⚠️ لم يكتمل الرفع: "+errors.join(" | "):summary+techNotes+"\n✅ اكتملت العملية";
   if(errors.length)alert(summary+techNotes+"\n\nتفاصيل الخطأ:\n"+errors.join("\n"));
-  if(totalInserted>0)await loadJobs();
-  if(input)input.value="";
+  if(totalInserted>0)await loadJobs();const input=document.getElementById("sheetInput");if(input)input.value="";pendingSheetUpload=null;
 }
 
 async function loadArchive(){
@@ -1560,6 +1635,7 @@ async function loadArchive(){
     sel.innerHTML=`<option value="">كل الأيام</option>`+dates.map(d=>`<option value="${escapeAttr(d)}">${escapeHTML(d)}</option>`).join("");
   }
     renderArchive();
+    renderTechCycleReport();
     if(userObj&&userObj.isAdmin) renderAdminReport();
 }
 async function archiveOldJobs(){
@@ -1989,5 +2065,18 @@ setInterval(()=>{
   }
 }, 1000);
 </script>
-<!-- MISK FIX15: normalize full technician names on daily/warehouse import; ignore obsolete stock columns. -->\n</body>
+<!-- MISK FIX20: strengthen pre-upload review, invalid-row reporting and normalized duplicate detection against existing orders. -->\n
+<!-- MISK FIX21: technician cycle ledger UI. SQL prerequisite (run in Supabase SQL Editor):
+create table if not exists public.technician_ledger (
+  id bigint generated by default as identity primary key,
+  technician_id text not null, technician_name text not null,
+  entry_type text not null check (entry_type in ('payment','advance','deduction','adjustment')),
+  amount numeric(12,2) not null check (amount > 0), note text,
+  cycle_start date not null, cycle_end date not null,
+  created_by text, created_by_name text, created_at timestamptz not null default now()
+);
+create index if not exists technician_ledger_tech_cycle_idx on public.technician_ledger (technician_id, cycle_start, cycle_end);
+-- Existing MISK custom-login flow uses the Supabase publishable/anon client, so this table's policies must be configured to match your access model. Do not expose unrestricted ledger reads/writes publicly.
+-->
+</body>
 </html>
