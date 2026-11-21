@@ -164,8 +164,46 @@ function renderOrdersTable(){try{let list=document.getElementById('ordersTable')
 function renderSales(){try{let mine=myJobsBase();document.getElementById('sDone').innerText=mine.filter(j=>j.status==='تم التسليم').length;document.getElementById('sStock').innerText=allWarehouse.filter(w=>!String(w.customer_phone||'').trim()).length;document.getElementById('sDelivered').innerText=allWarehouse.filter(w=>String(w.customer_phone||'').trim()).length;let c={};mine.forEach(j=>{let t=getJobTech(j)||'بدون فني';c[t]=(c[t]||0)+1});let s=Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,10);if(s.length)document.getElementById('sTopTech').innerText=s[0][0]+' - '+s[0][1];document.getElementById('salesTechs').innerHTML=s.map(([n,cc])=>`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #26262e"><b>${n}</b><span style="color:#ff7a00;font-weight:900">${cc} أوردر</span></div>`).join('')||'مفيش داتا'}catch(e){}}
 // ===== LOGIN =====
 async function login(e){if(e)e.preventDefault();let u=document.getElementById('user').value.trim().toLowerCase();let p=document.getElementById('pass').value.trim();let msg=document.getElementById('loginMsg');if(msg)msg.innerText='جاري...';try{let res=await supabaseClient.from('technicians').select('*');if(res.error||!res.data){if(msg)msg.innerText='خطأ: '+(res.error?res.error.message:'مفيش داتا');return false}let found=res.data.find(t=>{let userInDb=String(t.username||'').trim().toLowerCase();let nameInDb=String(t.name||'').trim().toLowerCase().replace(/[\s_]+/g,'');let phoneInDb=String(t.phone||'').trim();let inputClean=u.replace(/[\s_]+/g,'');let passInDb=String(t.password||'').trim();return ((userInDb===u)||(nameInDb===inputClean)||(userInDb.replace(/[\s_]+/g,'')===inputClean)||(phoneInDb===u))&&passInDb===p});if(!found){if(msg)msg.innerText='الاسم مش موجود';return false}let role=getRoleFromDb(found);userObj={id:found.id,username:found.username,name:techDisplayName(found),role:role,isAdmin:(role==="admin"||role==="super_admin"),isSuper:role==="super_admin"};localStorage.setItem('misk_user',JSON.stringify(userObj));localStorage.setItem('misk_pass',p);afterLogin()}catch(err){if(msg)msg.innerText='خطأ: '+err.message}return false}
-function afterLogin(){document.getElementById("loginPage").classList.add("hidden");document.getElementById("appPage").classList.remove("hidden");document.getElementById("welcome").innerText="أهلاً "+(userObj.name||"");document.getElementById("techInfo").innerText=userObj.isSuper?"Super Admin":userObj.isAdmin?"ادمن":"فني";document.getElementById("superDeleteBox").style.display=userObj.isSuper?"block":"none";if(userObj.isAdmin)loadTechNames();loadJobs();loadWarehouse();loadArchive();loadTechsForSearch();let pm=document.getElementById("passModal");if(pm&&!localStorage.getItem("misk_pass_changed_"+userObj.username))pm.style.display="flex";setTimeout(()=>{if(userObj.isAdmin){dashGo('overview',null)}else{dashGo('orders',null)}},300)}
-function logout(){Object.keys(localStorage).forEach(k=>{if(k.startsWith("misk_"))localStorage.removeItem(k)});sessionStorage.clear();location.reload()}
+  function afterLogin(){
+  document.getElementById("loginPage").classList.add("hidden");
+  document.getElementById("appPage").classList.remove("hidden");
+  document.getElementById("welcome").innerText="أهلاً "+(userObj.name||"");
+  document.getElementById("techInfo").innerText=userObj.isSuper?"Super Admin":userObj.isAdmin?"ادمن":"فني";
+  document.getElementById("superDeleteBox").style.display=userObj.isSuper?"block":"none";
+  if(userObj.isAdmin)loadTechNames();
+  loadJobs();
+  loadWarehouse();
+  if(userObj.isAdmin)loadArchive();
+  if(userObj.isAdmin)loadTechsForSearch();
+  let pm=document.getElementById("passModal");
+  if(pm&&!localStorage.getItem("misk_pass_changed_"+userObj.username))pm.style.display="flex";
+
+  // ===== قفل الفني - ده اللي اتضاف =====
+  if(!userObj.isAdmin){
+    // اخفي أي زرار أدمن
+    document.querySelectorAll('[onclick*="openAddTech"],[onclick*="uploadSheetFast"],[onclick*="uploadWarehouseSheet"],[onclick*="archiveOldJobs"],[onclick*="downloadEndOfDay"],[onclick*="deleteAllDataSuper"],[onclick*="deleteOneJob"],[onclick*="transferTechCustody"],[onclick*="clearTechCustody"],[onclick*="addJob"],[onclick*="exportArchive"]').forEach(el=>{
+      let p=el.closest('.panel');
+      if(p) p.style.display='none';
+      else el.style.display='none';
+    });
+    // اخفي أقسام الأرشيف والمبيعات
+    ['view-archive','view-sales'].forEach(id=>{
+      let e=document.getElementById(id);
+      if(e) e.style.display='none';
+    });
+    // اخفي أزرار السايدبار بتاعة الأرشيف والمبيعات
+    document.querySelectorAll('.side-btn').forEach(b=>{
+      let t=b.innerText||'';
+      if(t.includes('أرشيف')||t.includes('المبيعات')||t.includes('التقارير')) b.style.display='none';
+    });
+    // اخفي خانة اختيار الفنيين كلها
+    let techSel=document.getElementById('a_tech');
+    if(techSel){let p=techSel.closest('.panel'); if(p) p.style.display='none'; else techSel.style.display='none';}
+  }
+
+  setTimeout(()=>{if(userObj.isAdmin){dashGo('overview',null)}else{dashGo('orders',null)}},300)
+}
+  function logout(){Object.keys(localStorage).forEach(k=>{if(k.startsWith("misk_"))localStorage.removeItem(k)});sessionStorage.clear();location.reload()}
 async function doChangePass(){let np=document.getElementById("newPassInput").value.trim();if(!np)return alert("اكتب الباسورد الجديد");let {error}=await supabaseClient.from("technicians").update({password:np}).eq("id",userObj.id);if(error)return alert("خطأ: "+error.message);localStorage.setItem("misk_pass_changed_"+userObj.username,"1");closePassModal();alert("تم تغيير الباسورد")}
 function closePassModal(){document.getElementById("passModal").style.display="none"}
 // ===== JOBS =====
