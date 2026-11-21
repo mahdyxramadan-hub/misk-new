@@ -96,66 +96,36 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
     grid-template-columns: 1fr !important;
   }
 }  
-
-/* MISK 2027 — premium glass / depth redesign */
-:root{--misk-bg:#070b18;--misk-panel:#111a2e;--misk-panel2:#17243c;--misk-purple:#8b5cf6;--misk-pink:#ec4899;--misk-cyan:#38bdf8;--misk-green:#22c55e;--misk-text:#eaf0ff;--misk-muted:#9aa9c5;--misk-border:rgba(148,163,184,.18);--misk-shadow:0 18px 48px rgba(2,6,23,.38)}
-html{scroll-behavior:smooth}
-body{background:radial-gradient(ellipse at 12% 0%,rgba(124,58,237,.2),transparent 34%),radial-gradient(ellipse at 92% 8%,rgba(14,165,233,.13),transparent 28%),var(--misk-bg)!important;color:var(--misk-text)!important;padding-bottom:100px!important;font-family:Tahoma,"Segoe UI",sans-serif!important}
-input,select,textarea{background:#0d1527!important;color:var(--misk-text)!important;border:1px solid var(--misk-border)!important;border-radius:14px!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important}
-input::placeholder,textarea::placeholder{color:#7e8ba5!important}
-button,.btn,.btn2,.bigSave{transition:transform .18s ease,box-shadow .18s ease,filter .18s ease!important;box-shadow:0 7px 18px rgba(0,0,0,.22)!important}
-button:hover,.btn:hover,.btn2:hover,.bigSave:hover{transform:translateY(-2px);filter:brightness(1.07)}
-.hero-banner{height:clamp(145px,22vw,245px);border-radius:0 0 26px 26px;box-shadow:0 14px 35px rgba(0,0,0,.25)}
-.hero-banner:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,9,20,.1),rgba(5,9,20,.58));pointer-events:none}
-.hero-banner .hero-label{z-index:1;background:rgba(8,13,28,.68);backdrop-filter:blur(12px);font-size:12px;padding:8px 13px}
-#loginPage{background:rgba(15,23,42,.82)!important;border:1px solid var(--misk-border);box-shadow:var(--misk-shadow);backdrop-filter:blur(20px);color:var(--misk-text);margin:18px auto!important;border-radius:26px!important;padding:22px!important}
-#loginPage>div:first-child{background:linear-gradient(135deg,#20123f,#4c1d95 58%,#0e7490)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 16px 32px rgba(76,29,149,.3);border-radius:20px!important}
-#loginPage h2{color:#f8fafc}
-#appPage{max-width:1600px;margin:auto}
-.top-img{background:linear-gradient(125deg,#111827,#31205e 55%,#0e7490)!important;border:1px solid rgba(255,255,255,.12);border-radius:20px;margin:12px;box-shadow:var(--misk-shadow);height:auto;min-height:120px;padding:22px!important}
-.we-bar{background:linear-gradient(90deg,#10182c,#27194b,#10182c)!important;border:1px solid var(--misk-border);border-radius:16px;margin:12px;box-shadow:var(--misk-shadow)}
-.we-bar .logo span{color:var(--misk-pink)}
-.stats{gap:12px;flex-wrap:wrap}
-.stat{background:linear-gradient(145deg,rgba(24,35,58,.98),rgba(14,21,37,.98))!important;color:var(--misk-text)!important;border:1px solid var(--misk-border);border-radius:20px!important;box-shadow:0 12px 28px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.04)!important;transition:transform .2s,box-shadow .2s}
-.stat:hover{transform:translateY(-4px);box-shadow:0 20px 35px rgba(0,0,0,.35)!important}
-.circle{box-shadow:0 8px 22px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.25);border:1px solid rgba(255,255,255,.12)}
-.job,.warehouseCard,.d-box,#followerCard,.admin-side,.admin-box{background:linear-gradient(145deg,rgba(20,30,50,.97),rgba(12,19,34,.98))!important;color:var(--misk-text)!important;border:1px solid var(--misk-border)!important;border-radius:20px!important;box-shadow:0 12px 30px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.04)!important}
-.job{border-width:1px!important;margin:0 12px 12px!important}
-.job .meta,.d-box p,.d-box small{color:var(--misk-muted)!important}
-.btn{background:linear-gradient(135deg,#7c3aed,#4f46e5)!important}
-.btn2{background:linear-gradient(135deg,#db2777,#be185d)!important}
-.bigSave{background:linear-gradient(135deg,#16a34a,#059669)!important}
-.admin-layout{gap:16px;padding:0 12px}
-.admin-main{min-width:0}
-.admin-side{background:linear-gradient(145deg,#111a2e,#0d1526)!important;border:1px solid var(--misk-border)!important;box-shadow:var(--misk-shadow)!important}
-.admin-box{overflow:hidden}
-.admin-box-head{background:linear-gradient(90deg,#18243b,#211642)!important;color:var(--misk-text)!important;border-bottom:1px solid var(--misk-border);padding:15px!important}
-.admin-box.open .admin-box-head{background:linear-gradient(90deg,#5b21b6,#7c3aed,#0369a1)!important}
-.admin-box-body{background:rgba(8,13,24,.42)!important}
-#techList{gap:7px}
-.tech-chip{background:#17243a!important;border-color:var(--misk-border)!important;color:#eaf0ff!important;border-radius:12px!important}
-.tabs{background:rgba(9,14,26,.9)!important;backdrop-filter:blur(20px);border-top:1px solid var(--misk-border)!important;box-shadow:0 -12px 30px rgba(0,0,0,.2);padding:8px 4px!important}
-.tabs div{color:#8998b5!important;transition:color .2s,transform .2s}
-.tabs div.active{color:#c4b5fd!important;text-shadow:0 0 16px rgba(167,139,250,.45)}
-.tabs div:hover{transform:translateY(-2px)}
-#details{background:var(--misk-bg)!important;color:var(--misk-text)!important}
-.d-head{background:linear-gradient(90deg,#241345,#5b21b6,#075985)!important;box-shadow:0 12px 30px rgba(0,0,0,.3)}
-.d-box{margin:12px!important}
-.imgbox{background:#10192c!important;border-color:#334155!important;color:#a5b4fc!important}
-.photoThumb{background:#111827!important;border-color:#22c55e!important}
-.box{background:linear-gradient(145deg,#17243a,#0d1527)!important;color:var(--misk-text)!important;border:1px solid var(--misk-border);box-shadow:0 25px 70px rgba(0,0,0,.55)!important}
-#upDownModal,#recipientModal,#statusModal,#photoCamModal,#sendLockModal,#photoModal,#azkarModal,#passModal{backdrop-filter:blur(8px)}
-#searchInput{background:#111a2d!important;border:1px solid rgba(139,92,246,.45)!important}
-#archiveFilter,#uploadingBanner{border:1px solid var(--misk-border)!important;border-radius:18px!important}
-#archiveFilter{background:var(--misk-panel)!important;color:var(--misk-text)!important}
-#followerCard{border-color:rgba(56,189,248,.4)!important}
-#stockAlerts,#leftTechAlerts{margin:0 12px}
-#jobsList,#jobsContainer,#techJobsList,#jobsGrid,.jobs-list,.jobs-container,#jobs{gap:14px!important}
-@media(min-width:1024px){.admin-layout{align-items:flex-start}.admin-side{top:16px;max-height:calc(100vh - 30px);overflow:auto}.admin-main{flex:1}}
-@media(max-width:800px){.hero-banner{height:170px}.admin-layout{padding:0}.top-img,.we-bar{margin:8px}.stats{padding:8px}.stat{min-width:calc(33.33% - 10px);padding:10px 5px}.circle{width:48px;height:48px;font-size:15px}.tabs div{font-size:10px}.tabs div span{font-size:18px!important}#loginPage{margin:12px!important;padding:15px!important}}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
-
 </style>
+
+<style id="MISK-2027-STRUCTURAL-DESIGN">
+:root{--bg:#070b18;--surface:#10182a;--surface2:#162238;--ink:#edf4ff;--muted:#9eacc5;--line:rgba(160,190,255,.13);--violet:#8b5cf6;--cyan:#22d3ee;--pink:#f472b6;--green:#34d399;--shadow:0 18px 44px rgba(0,0,0,.38)}
+html{background:var(--bg)}body{background:radial-gradient(ellipse at 12% 0%,rgba(92,61,190,.22),transparent 38%),radial-gradient(ellipse at 90% 15%,rgba(0,180,220,.12),transparent 30%),var(--bg)!important;color:var(--ink)!important;padding:18px 18px 105px!important;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.13;background-image:linear-gradient(rgba(140,170,220,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(140,170,220,.12) 1px,transparent 1px);background-size:36px 36px;mask-image:linear-gradient(to bottom,#000,transparent 80%);z-index:-1}
+.hero-banner{display:none!important}.hidden{display:none!important}
+#loginPage{max-width:480px!important;margin:7vh auto 24px!important;padding:28px!important;border:1px solid var(--line)!important;border-radius:28px!important;background:linear-gradient(145deg,rgba(25,36,61,.96),rgba(10,15,29,.97))!important;box-shadow:var(--shadow),inset 0 1px rgba(255,255,255,.07)!important;color:var(--ink)!important;position:relative;overflow:hidden}
+#loginPage:before{content:"";position:absolute;width:260px;height:260px;top:-130px;left:-70px;background:radial-gradient(circle,rgba(139,92,246,.35),transparent 70%);pointer-events:none}
+#loginPage>div:first-child{background:transparent!important;padding:0 0 22px!important;border-radius:0!important;border-bottom:1px solid var(--line);position:relative}
+#loginPage>div:first-child div{font-size:46px!important;letter-spacing:5px;text-shadow:0 0 30px rgba(139,92,246,.5)}#loginPage>div:first-child small{color:var(--muted);letter-spacing:2px}
+#loginPage h2{color:#fff!important;font-size:22px;margin:22px 0 8px}#loginPage p{color:var(--muted)!important}
+input,select,textarea{background:#0a1222!important;color:var(--ink)!important;border:1px solid rgba(151,177,225,.2)!important;border-radius:14px!important;padding:13px 15px!important;box-shadow:inset 0 2px 8px #0002!important;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--cyan)!important;box-shadow:0 0 0 3px rgba(34,211,238,.12)!important}
+button,.btn,.btn2,.bigSave{border-radius:14px!important;transition:transform .18s,filter .18s,box-shadow .18s!important;box-shadow:0 7px 18px rgba(0,0,0,.25)!important}button:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.btn{background:linear-gradient(110deg,#6d4aff,#a855f7)!important;color:#fff!important}.btn2{background:linear-gradient(110deg,#db2777,#f472b6)!important}.bigSave{background:linear-gradient(110deg,#059669,#34d399)!important;color:#06251b!important}
+.stats{gap:12px!important;padding:14px!important;flex-wrap:wrap}.stat{background:linear-gradient(145deg,#17243b,#101829)!important;border:1px solid var(--line)!important;border-radius:20px!important;color:var(--ink)!important;box-shadow:0 10px 25px #0003,inset 0 1px rgba(255,255,255,.06)!important;padding:15px 10px!important;min-width:0;transition:transform .2s,border-color .2s}.stat:hover{transform:translateY(-4px);border-color:rgba(34,211,238,.4)!important}.stat b{color:#eaf2ff}.stat small{color:var(--muted)!important}.circle{box-shadow:0 8px 24px rgba(0,0,0,.25),inset 0 2px 5px rgba(255,255,255,.25)!important;border:1px solid rgba(255,255,255,.16)}
+#appPage{max-width:1440px;margin:0 auto;position:relative}#appPage>div:first-child{justify-content:flex-start!important;margin:0 0 12px!important}#appPage>div:first-child>div{background:rgba(13,21,37,.9)!important;border:1px solid var(--line)!important;border-radius:15px!important;color:var(--muted)!important;box-shadow:var(--shadow)!important;backdrop-filter:blur(18px)}
+.top-img{height:auto!important;min-height:145px;background:linear-gradient(120deg,#171e39,#26224f 55%,#123a51)!important;border:1px solid var(--line);border-radius:24px!important;padding:26px!important;margin-bottom:12px!important;box-shadow:var(--shadow)!important;overflow:hidden}.top-img:after{content:"MISK 2027";position:absolute;left:22px;bottom:15px;font-size:34px;font-weight:900;letter-spacing:4px;color:rgba(255,255,255,.07)}.top-img small:first-child{font-size:12px;color:var(--cyan)}.top-img b#welcome{font-size:26px!important}.top-img #techInfo{color:#c4d2eb!important}
+.we-bar{background:transparent!important;padding:0 4px 12px!important;color:var(--ink)!important}.we-bar .logo{font-size:20px!important;letter-spacing:2px}.we-bar .logo span{color:var(--cyan)!important}
+.admin-layout{gap:18px!important;align-items:flex-start!important}.admin-main{min-width:0}.admin-box,.d-box,#followerCard,#archiveFilter,.job{background:linear-gradient(145deg,rgba(20,31,51,.97),rgba(12,19,32,.97))!important;border:1px solid var(--line)!important;border-radius:20px!important;color:var(--ink)!important;box-shadow:0 12px 30px rgba(0,0,0,.24)!important}.admin-box{margin:12px!important;overflow:hidden}.admin-box-head{background:linear-gradient(110deg,rgba(110,76,210,.25),rgba(22,178,207,.13))!important;color:#f0f5ff!important;padding:16px!important;border-bottom:1px solid var(--line)}.admin-box-body{color:var(--ink)!important}.job{margin:12px!important;border:1px solid rgba(52,211,153,.22)!important;position:relative;overflow:hidden}.job:before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:linear-gradient(var(--cyan),var(--violet))}.job h3{color:#fff!important}.job .meta{color:var(--muted)!important}
+#followerCard{border-color:rgba(34,211,238,.25)!important}#followerCard h3{color:#eaf7ff!important}#searchInput{border-radius:16px!important;background:#101a2b!important}.tabs{position:fixed!important;bottom:14px!important;left:50%!important;transform:translateX(-50%)!important;width:min(820px,calc(100% - 24px))!important;background:rgba(10,16,29,.88)!important;border:1px solid rgba(170,195,255,.18)!important;border-radius:22px!important;padding:8px!important;box-shadow:0 18px 40px #0008!important;backdrop-filter:blur(22px)!important;z-index:100!important}.tabs div{color:#95a5c1!important;border-radius:15px;padding:5px 2px;transition:.2s}.tabs div.active{color:#fff!important;background:linear-gradient(135deg,rgba(139,92,246,.32),rgba(34,211,238,.18))!important}.tabs div.active span{filter:drop-shadow(0 0 7px rgba(34,211,238,.4))}
+#details{background:var(--bg)!important;color:var(--ink)!important;padding:12px!important}#details .d-head{background:rgba(15,23,40,.95)!important;border:1px solid var(--line);border-radius:18px!important;color:#fff!important;box-shadow:var(--shadow)}#details .back{background:#18243b!important;color:#fff!important;border:1px solid var(--line)!important}.box{background:linear-gradient(145deg,#17243b,#0d1525)!important;color:#fff!important;border:1px solid var(--line)!important;box-shadow:var(--shadow)!important;border-radius:22px!important}.box p{color:var(--muted)!important}
+#archiveFilter{padding:15px!important;margin:12px!important}#archiveFilter b{color:#eaf2ff}#archiveSummary{color:var(--muted)!important}
+button[style*="background:#fff"],button.whiteBtn{background:#16243a!important;color:#eaf2ff!important;border:1px solid var(--line)!important}button[style*="background:#222"]{background:#27344a!important;color:#fff!important}
+.photoThumb{border-color:rgba(34,211,238,.35)!important;background:#101a2a!important}.imgbox{background:#101a2a!important;border-color:rgba(139,92,246,.45)!important;color:var(--muted)!important}
+@media(min-width:900px){body{padding:24px 30px 110px!important}.stats .stat{min-height:150px}.admin-layout{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(320px,390px)!important}.admin-main{width:100%!important}.admin-layout>div:not(.admin-main){width:100%!important}}
+@media(max-width:600px){body{padding:10px 9px 100px!important}.top-img{min-height:125px;padding:20px!important;border-radius:20px!important}.top-img b#welcome{font-size:21px!important}.stats{padding:8px!important;gap:8px!important}.stat{flex:1 1 calc(33.333% - 8px)!important;padding:10px 5px!important;border-radius:15px!important}.circle{width:48px;height:48px;font-size:15px}.tabs{bottom:8px!important;width:calc(100% - 12px)!important}.tabs div{font-size:10px!important}.tabs div span{font-size:18px!important}.admin-box,#followerCard,.job{margin:9px!important}.row{gap:6px}.row button{padding:10px 6px!important;font-size:13px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important}}
+</style>
+
 </head>
 <body>
 <div class="hero-banner"><img id="serverRotator" src="server1.jpg" alt="MISK"><div class="hero-label">MISK • SERVER • CCTV</div></div>
@@ -328,7 +298,7 @@ button:hover,.btn:hover,.btn2:hover,.bigSave:hover{transform:translateY(-2px);fi
 <input type="file" id="photoInput" accept="image/*" capture="environment" class="hidden">
 <input type="file" id="photoGalleryInput" accept="image/*" class="hidden">
 <input type="file" id="serialCamInput" accept="image/*" capture="environment" class="hidden">
-<div id="photoModal" style="position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:10001;display:none;align-items:center;justify-content:center;padding:12px" onclick="this.style.display='none'"><div style="text-align:center" onclick="event.stopPropagation()"><img id="photoModalImg" style="max-width:100%;max-height:80vh;border-radius:12px"><br><button onclick="event.stopPropagation();rotatePhotoModal()" style="background:#ff7a00;color:#fff;width:auto;padding:12px 20px;margin-top:10px;border:0;border-radius:50px">↻ تدوير الصورة</button></div></div>
+<div id="photoModal" style="position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:10001;display:none;align-items:center;justify-content:center;padding:12px" onclick="this.style.display='none'"><div style="text-align:center"><img id="photoModalImg" style="max-width:100%;max-height:80vh;border-radius:12px"><br><button onclick="event.stopPropagation();rotatePhotoModal()" style="background:#ff7a00;color:#fff;width:auto;padding:12px 20px;margin-top:10px;border:0;border-radius:50px">↻ تدوير الصورة</button></div></div>
 <div id="photoCamModal"><div class="box"><h3 id="photoCamTitle">📷 صور وش الجهاز</h3><p id="photoCamMsg" style="font-weight:bold">هتصور ازاي؟ اختار:</p><button style="background:#007bff;color:#fff" onclick="capturePhoto()">📷 صوّر بالكاميرا - كاميرا التليفون</button><button style="background:#ff7a00;color:#fff" onclick="openPhotoFile()">🖼️ اختار من الاستوديو</button><button style="background:#333;color:#fff" onclick="closePhotoCam()">✖️ اقفل من غير حفظ</button></div></div>
 <div id="sendLockModal"><div class="box" style="max-width:420px"><h2 style="margin:0">🔒 مطلوب منك عشان تكمل</h2><p id="lockCustomer" style="font-weight:bold"></p><div id="lockNetWarn" style="background:#ffe6e6;border:1px solid #dc3545;color:#dc3545;padding:10px;border-radius:12px;font-size:14px;font-weight:bold;margin:8px 0;display:none">⚠️ مفيش نت عندك - الرسالة متحفظة - اول ما النت يرجع ابعتها</div><p id="lockStatus" style="font-size:14px;line-height:1.8"></p><button id="btnSendBoth" style="background:#25D366;color:#fff" onclick="sendToFollowerOnly()">👤 ارسال للمتابع - واتساب ماسنجر + الصور</button><p style="font-size:12px;color:#666">هيفتح مشاركة فيها النص + الـ 3 صور جاهزين - اختار واتساب ماسنجر ودوس ارسال</p><div id="lockConfirmBox" style="display:none;background:#fff7e6;border:1px solid #ff7b00;border-radius:12px;padding:12px;margin-top:8px"><p id="lockConfirmText" style="font-weight:bold;margin:0 0 8px"></p><div class="row"><button onclick="confirmSendYes()" style="background:#00a651;color:#fff">✅ ايوه بعت للمتابع</button><button onclick="confirmSendNo()" style="background:#dc3545;color:#fff">❌ لا لسه</button></div></div><button onclick="closeLockBack()" style="background:#333;color:#fff;margin-top:14px">⬅️ رجوع - هبعت بعدين</button></div></div>
 <div id="istighfarOverlay" style="position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:30000;display:none;align-items:center;justify-content:center;text-align:center;padding:20px"><div style="background:#071126;border:2px solid #22c55e;border-radius:20px;padding:24px;max-width:420px;width:100%"><div style="font-size:42px">🤲</div><h2 id="istTitle" style="color:#fff;margin:8px 0">أستغفر الله العظيم</h2><p id="istText" style="color:#cfe3ff;line-height:1.8">أستغفر الله العظيم الذي لا إله إلا هو الحي القيوم وأتوب إليه<br><span id="istCount" style="font-size:28px;font-weight:900;color:#22c55e">10</span></p><p style="color:#8aa3c7;font-size:12px">ثواني ونكمل...</p></div></div>
@@ -578,9 +548,8 @@ function renderWarehouseList(){
   </div>`).join('') || '<p style="text-align:center;opacity:.6">مفيش حاجة هنا</p>'}</div>`;
 }
 function downloadWarehouseExcel(){
-  let exportRows = window._warehouseForExcel || allWarehouse;
-  if(!exportRows.length) return alert("مفيش داتا في المخزن");
-  let rows = exportRows.map(w=>({
+  if(!allWarehouse.length) return alert("مفيش داتا في المخزن");
+  let rows = allWarehouse.map(w=>({
     السيريال: w.serial||"",
     الفني: w.tech||"",
     الموديل: w.model||"",
@@ -1593,8 +1562,6 @@ async function saveTechnician(){
 }
 
 function silentRefreshNow(){
-  if(document.visibilityState === "hidden") return;
-
   if(!userObj) return;
   loadJobs(); loadWarehouse();
   silentSec = 10;
@@ -1623,3 +1590,4 @@ setInterval(()=>{
 </script>
 </body>
 </html>
+
