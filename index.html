@@ -672,7 +672,12 @@ async function transferTechCustody(){
   let moved = 0, notFound = [];
   for(let serial of serialsToMove){
     let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("serial", serial).maybeSingle();
-    if(!data){ notFound.push(serial); continue; }
+    if(!data){
+  // لو السيريال مش موجود أصلا، ضيفه جديد على عهدة الفني اللي اخترته
+  let {error: insErr} = await supabaseClient.from(WAREHOUSE_TABLE).insert([{serial: serial, tech: to, comment: "إضافة عهدة جديدة | نقل من " + (from || "المخزن")}]);
+  if(!insErr){ moved++; continue; }
+  notFound.push(serial); continue;
+}
     let hist = (data.comment||"") + ` | نقل من ${data.tech||from||""} إلى ${to} بتاريخ ${todayStr()}`;
     await supabaseClient.from(WAREHOUSE_TABLE).update({tech: to, comment: hist}).eq("id", data.id);
     moved++;
