@@ -503,5 +503,49 @@ setTimeout(async ()=>{
   if(n>0){ alert(`تم مسح ${n} سيريال مكرر ✅\nدلوقتي كل سيريال مع فني واحد بس`); loadWarehouse(); }
 }, 1500);
 </script>
+  <script>
+// === صندوق التحكم في السيريال - بالزراير مش بالكونسول ===
+function makeSerialActionBox(){
+  if(document.getElementById("serialActionBox")) return;
+  let box = document.createElement("div");
+  box.id = "serialActionBox";
+  box.style.cssText = "background:#fff3cd;border:2px solid #ff7a00;border-radius:14px;padding:12px;margin:10px 0;";
+  box.innerHTML = `
+    <b style="font-size:15px">🎛️ التحكم في السيريال</b><br>
+    <input id="serialActionInput" placeholder="اكتب السيريال هنا..." style="width:100%;padding:10px;margin:8px 0;border:1px solid #ccc;border-radius:10px;font-size:15px">
+    <div style="display:flex;gap:8px">
+      <button onclick="doDeleteSerialFromBox()" style="flex:1;background:#d32f2f;color:#fff;border:0;padding:12px;border-radius:10px;font-weight:bold">🗑️ امسح من السيستم كله</button>
+      <button onclick="doStatusSerialFromBox()" style="flex:1;background:#1aa34a;color:#fff;border:0;padding:12px;border-radius:10px;font-weight:bold">📍 اكتب هو فين</button>
+    </div>
+    <div id="serialActionMsg" style="font-size:13px;margin-top:6px;color:#333"></div>
+  `;
+  let target = document.getElementById("warehouseList") || document.body;
+  target.parentNode.insertBefore(box, target);
+}
+
+async function doDeleteSerialFromBox(){
+  let serial = cleanSerial(document.getElementById("serialActionInput").value);
+  if(!serial) return alert("اكتب السيريال الأول");
+  if(!confirm(`متأكد؟؟ هتمسح ${serial} من السيستم كله؟`)) return;
+  let {error} = await supabaseClient.from(WAREHOUSE_TABLE).delete().eq("serial", serial);
+  if(error) return alert("خطأ: " + error.message);
+  document.getElementById("serialActionMsg").innerText = `تم مسح ${serial} من السيستم كله ✅`;
+  document.getElementById("serialActionInput").value = "";
+  loadWarehouse();
+}
+
+async function doStatusSerialFromBox(){
+  let serial = cleanSerial(document.getElementById("serialActionInput").value);
+  if(!serial) return alert("اكتب السيريال الأول");
+  let st = prompt(`السيريال ${serial} هيفضل في السيستم، قولي هو فين؟`, "تم رجوعه الى المخزن");
+  if(!st) return;
+  await supabaseClient.from(WAREHOUSE_TABLE).update({tech:"", comment: st + " - " + todayStr()}).eq("serial", serial);
+  document.getElementById("serialActionMsg").innerText = `تمام ✅ ${serial} مكتوب عليه: ${st}`;
+  document.getElementById("serialActionInput").value = "";
+  loadWarehouse();
+}
+
+setTimeout(makeSerialActionBox, 1000);
+</script>
 </body>
 </html>
