@@ -176,30 +176,36 @@ async function login(e){if(e)e.preventDefault();let u=document.getElementById('u
   if(userObj.isAdmin)loadArchive();
   if(userObj.isAdmin)loadTechsForSearch();
   let pm=document.getElementById("passModal");
-  if(pm&&!localStorage.getItem("misk_pass_changed_"+userObj.username))pm.style.display="flex";
-
-  // ===== قفل الفني - النسخة النهائية =====
+  if(pm && !localStorage.getItem("misk_pass_changed_"+userObj.username)) pm.style.display="flex";
   if(!userObj.isAdmin){
-    // 1. شيل إضافة شغل ورفع شيت وإضافة فني وكل حاجة أدمن
-    document.querySelectorAll('[onclick*="openAddTech"],[onclick*="uploadSheetFast"],[onclick*="uploadWarehouseSheet"],[onclick*="archiveOldJobs"],[onclick*="downloadEndOfDay"],[onclick*="deleteAllDataSuper"],[onclick*="deleteOneJob"],[onclick*="transferTechCustody"],[onclick*="clearTechCustody"],[onclick*="addJob"],[onclick*="exportArchive"],[onclick*="saveTechnician"]').forEach(el=>{
-      let p=el.closest('.panel');
-      if(p) p.style.display='none';
-      else el.style.display='none';
-    });
-    // 2. شيل خانة اختيار الفني نفسها
-    let techSel=document.getElementById('a_tech');
-    if(techSel){let p=techSel.closest('.panel'); if(p) p.style.display='none'; else techSel.style.display='none';}
-    // 3. شيل الأرشيف بس، وسيب Overview و Orders والمخزن
-    let arch=document.getElementById('view-archive');
-    if(arch) arch.style.display='none';
-    document.querySelectorAll('.side-btn').forEach(b=>{
-      let t=b.innerText||'';
-      if(t.includes('أرشيف')) b.style.display='none';
-    });
-    // 4. شيل قايمة الفنيين
-    let tl=document.getElementById('techList');
-    if(tl){let p=tl.closest('.panel'); if(p) p.style.display='none'; else tl.style.display='none';}
+    try{
+      let keys=["openAddTech","uploadSheetFast","uploadWarehouseSheet","archiveOldJobs","downloadEndOfDay","deleteAllDataSuper","deleteOneJob","transferTechCustody","clearTechCustody","addJob","exportArchive","saveTechnician"];
+      keys.forEach(function(k){
+        document.querySelectorAll('[onclick*="'+k+'"]').forEach(function(el){
+          let p=el.closest('.panel');
+          if(p) p.style.display='none';
+          else el.style.display='none';
+        });
+      });
+      let arch=document.getElementById('view-archive');
+      if(arch) arch.style.display='none';
+      document.querySelectorAll('.side-btn').forEach(function(b){
+        let t=b.innerText||'';
+        if(t.indexOf('أرشيف')>-1) b.style.display='none';
+      });
+      let techSel=document.getElementById('a_tech');
+      if(techSel){
+        let p2=techSel.closest('.panel');
+        if(p2) p2.style.display='none';
+        else techSel.style.display='none';
+      }
+    }catch(e){}
   }
+  setTimeout(function(){
+    if(userObj.isAdmin){ dashGo('overview',null); }
+    else{ dashGo('orders',null); }
+  },300);
+}
 
   setTimeout(()=>{if(userObj.isAdmin){dashGo('overview',null)}else{dashGo('orders',null)}},300)
 }
