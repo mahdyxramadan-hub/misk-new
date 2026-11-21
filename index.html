@@ -456,7 +456,8 @@ function renderWarehouse(){
   let box=document.getElementById("stockAlerts");
   if(box){
     if(old.length){
-      box.innerHTML=`<div style="background:#fff3cd;border:2px solid #ff7a00;margin:0 12px 12px;border-radius:16px;padding:14px;max-height:250px;overflow-y:auto;"><h3 style="margin:0">⚠️ جرد - أجهزة بقالها 60 يوم ومركبتش (${old.filter(w=>!/\\d{6,}/.test(String(w.comment||""))).length})</h3>`+old.filter(w=>!/\\d{6,}/.test(String(w.comment||""))).map(w=>`<div style="font-size:13px;line-height:2">🔴 سيريال <b>${w.serial}</b> - متسلم بتاريخ <b>${w.date_received||w.date||""}</b> - لم يتم التركيب حتى الآن - الفني: ${w.tech||""} - ${w.comment||""}</div>`).join("")+`</div>`;
+// تم إلغاء تنبيه الجرد - بناء على طلبك
+box.innerHTML = "";
     } else box.innerHTML="";
   }
   let prev=document.getElementById("warehousePreview");
