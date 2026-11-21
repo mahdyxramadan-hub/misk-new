@@ -169,7 +169,6 @@ function afterLogin(){
   document.getElementById("appPage").classList.remove("hidden");
   document.getElementById("welcome").innerText="أهلاً "+(userObj.name||"");
   alert("دخلت تمام");
-}
   }
   setTimeout(function(){
     if(userObj.isAdmin){ dashGo('overview',null); }
