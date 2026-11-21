@@ -11,7 +11,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
 *{box-sizing:border-box;font-family:Tahoma}
-body{margin:0;background:#f4f0fa;color:#111;padding-bottom:85px}
+ body{margin:0;background:#f4f0fa;color:#111;padding-bottom:85px}
+body.dash-mode{background:#0f172a;color:#fff}
+body.dash-mode .top-img, body.dash-mode .we-bar{display:none}
+body.dash-mode .hero-banner{height:120px}
 button{cursor:pointer}
 .hidden{display:none}
 input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:50px;font-size:15px}
@@ -1522,6 +1525,126 @@ setInterval(()=>{
     loadJobs();
   }
 }, 1000);
+</script>
+ <!-- ===== DASHBOARD زي الفيديو - ادمن / سوبر ادمن + فني موبايل ===== -->
+<style>
+#dashSidebar{display:none}
+body.dash-mode #dashSidebar{display:flex;position:fixed;top:0;right:0;bottom:0;width:230px;background:#111827;flex-direction:column;padding:16px 10px;z-index:9990;gap:4px}
+body.dash-mode #appPage{margin-right:230px}
+#dashSidebar .d-logo{font-size:24px;font-weight:900;color:#fff;text-align:center;padding:10px 0 16px}
+#dashSidebar .d-logo span{color:#ff7a00}
+#dashSidebar button{background:transparent;border:0;color:#cbd5e1;padding:13px 12px;border-radius:12px;text-align:right;font-size:15px;font-weight:700;width:100%}
+#dashSidebar button.active,#dashSidebar button:hover{background:#ff7a00;color:#fff}
+#dashSidebar .d-foot{margin-top:auto;color:#64748b;font-size:12px;text-align:center}
+.dash-cards{display:none;gap:10px;padding:12px}
+body.dash-mode .dash-cards{display:flex}
+.dash-cards .dc{flex:1;background:#1e293b;border-radius:16px;padding:14px;text-align:center}
+.dash-cards .dc b{font-size:22px;color:#fff;display:block}
+.dash-cards .dc small{color:#94a3b8}
+.dash-view{display:none}
+.dash-view.show{display:block}
+body.dash-mode .admin-layout{display:block}
+body.dash-mode .admin-side{width:auto;position:static;margin:0 12px}
+/* الفني موبايل - زراير كبيرة */
+body.tech-mode .tabs div{font-size:15px;padding:6px 0}
+body.tech-mode .tabs div span{font-size:26px!important}
+body.tech-mode .job h3{font-size:19px}
+body.tech-mode .bigSave{padding:20px;font-size:20px}
+@media(max-width:800px){
+  body.dash-mode #dashSidebar{top:auto;left:0;right:0;bottom:0;width:auto;flex-direction:row;overflow-x:auto;padding:8px}
+  body.dash-mode #dashSidebar .d-logo, body.dash-mode #dashSidebar .d-foot{display:none}
+  body.dash-mode #dashSidebar button{white-space:nowrap;width:auto;padding:12px 16px}
+  body.dash-mode #appPage{margin-right:0;padding-bottom:80px}
+}
+</style>
+
+<div id="dashSidebar">
+  <div class="d-logo">MISK<span>.</span></div>
+  <button id="dbHome" class="active" onclick="dashGo('home',this)">🏠 الرئيسية</button>
+  <button onclick="dashGo('jobs',this)">📋 الأوردرات</button>
+  <button onclick="dashGo('warehouse',this)">📦 المخزن</button>
+  <button onclick="dashGo('techs',this)">👷 الفنيين</button>
+  <button onclick="dashGo('add',this)">➕ إضافة شغل</button>
+  <button onclick="dashGo('archive',this)">📦 الأرشيف</button>
+  <button onclick="dashGo('settings',this)">⚙️ رفع شيت / إعدادات</button>
+  <div class="d-foot" id="dashUserName">MISK</div>
+</div>
+
+<div class="dash-cards" id="dashCards">
+  <div class="dc"><b id="dcTotal">0</b><small>إجمالي الأوردرات</small></div>
+  <div class="dc"><b id="dcDone" style="color:#22c55e">0</b><small>تم التسليم</small></div>
+  <div class="dc"><b id="dcPend" style="color:#ff7a00">0</b><small>قيد الانتظار</small></div>
+  <div class="dc"><b id="dcProb" style="color:#ef4444">0</b><small>تأجيل</small></div>
+</div>
+
+<script>
+function dashGo(view,btn){
+  document.querySelectorAll('#dashSidebar button').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  // كل الفيوز
+  let home = document.getElementById('followerCard');
+  let stats = document.querySelector('.stats');
+  let jobsList = document.getElementById('jobsList');
+  let searchBox = document.getElementById('searchInput');
+  let adminAdd = document.getElementById('adminAdd');
+  // نظهر الاساسي الاول
+  if(home) home.style.display = (view==='home'||view==='jobs')?'':'none';
+  if(jobsList) jobsList.style.display = (view==='home'||view==='jobs')?'':'none';
+  if(searchBox) searchBox.style.display = (view==='home'||view==='jobs')?'':'none';
+  if(adminAdd) adminAdd.style.display = '';
+  // كروت فوق بس في الرئيسية
+  let cards = document.getElementById('dashCards');
+  if(cards) cards.style.display = (view==='home')?'flex':'none';
+
+  // تقسيم الادمن بوكسات
+  let boxes = document.querySelectorAll('#adminAdd .admin-box');
+  boxes.forEach(b=>{
+    let head = (b.querySelector('.admin-box-head')?.innerText||'');
+    let show = false;
+    if(view==='home') show = true;
+    if(view==='warehouse' && head.includes('المخزن')) show = true;
+    if(view==='techs' && head.includes('الفنيين')) show = true; // الفنيين فوق اصلا
+    if(view==='add' && head.includes('اضافة شغل')) show = true;
+    if(view==='archive' && head.includes('أرشفة')) show = true;
+    if(view==='settings' && (head.includes('رفع شيت')||head.includes('مسح')||head.includes('SUPER'))) show = true;
+    if(view==='jobs') show = false;
+    b.style.display = show?'':'none';
+    if(show) b.classList.add('open');
+  });
+  // الفنيين بوكس
+  let techBox = document.querySelector('#adminAdd .admin-side > div');
+  if(techBox) techBox.style.display = (view==='home'||view==='techs')?'':'none';
+
+  if(view==='jobs'){ activeFilter='all'; renderJobs(); }
+  if(view==='warehouse'){ showTab('warehouse',null); }
+  if(view==='archive'){ showTab('archive',null); }
+  if(view==='jobs'||view==='home'){ showTab('all',null); }
+  window.scrollTo({top:0,behavior:'smooth'});
+  // تحديث الارقام
+  try{
+    let mine = myJobsBase();
+    document.getElementById('dcTotal').innerText = mine.length;
+    document.getElementById('dcDone').innerText = mine.filter(j=>j.status==='تم التسليم').length;
+    document.getElementById('dcPend').innerText = mine.filter(j=>j.status!=='تم التسليم' && !['تأجيل','لم يتم الرد','رفض الزيارة'].includes(j.status)).length;
+    document.getElementById('dcProb').innerText = mine.filter(j=>['تأجيل','لم يتم الرد','رفض الزيارة'].includes(j.status)).length;
+  }catch(e){}
+}
+// تفعيل الداشبورد بعد الدخول
+let _oldAfterLogin = afterLogin;
+afterLogin = function(){
+  _oldAfterLogin();
+  document.body.classList.remove('dash-mode','tech-mode');
+  if(userObj && userObj.isAdmin){
+    document.body.classList.add('dash-mode');
+    let dn = document.getElementById('dashUserName');
+    if(dn) dn.innerText = userObj.name + (userObj.isSuper?' - Super Admin':' - Admin');
+    setTimeout(()=>dashGo('home',document.getElementById('dbHome')),300);
+  } else {
+    document.body.classList.add('tech-mode');
+    let aa = document.getElementById('adminAdd');
+    if(aa) aa.classList.add('hidden');
+  }
+}
 </script>
 </body>
 </html>
