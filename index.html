@@ -164,7 +164,7 @@ function renderOrdersTable(){try{let list=document.getElementById('ordersTable')
 function renderSales(){try{let mine=myJobsBase();document.getElementById('sDone').innerText=mine.filter(j=>j.status==='تم التسليم').length;document.getElementById('sStock').innerText=allWarehouse.filter(w=>!String(w.customer_phone||'').trim()).length;document.getElementById('sDelivered').innerText=allWarehouse.filter(w=>String(w.customer_phone||'').trim()).length;let c={};mine.forEach(j=>{let t=getJobTech(j)||'بدون فني';c[t]=(c[t]||0)+1});let s=Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,10);if(s.length)document.getElementById('sTopTech').innerText=s[0][0]+' - '+s[0][1];document.getElementById('salesTechs').innerHTML=s.map(([n,cc])=>`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #26262e"><b>${n}</b><span style="color:#ff7a00;font-weight:900">${cc} أوردر</span></div>`).join('')||'مفيش داتا'}catch(e){}}
 // ===== LOGIN =====
 async function login(e){if(e)e.preventDefault();let u=document.getElementById('user').value.trim().toLowerCase();let p=document.getElementById('pass').value.trim();let msg=document.getElementById('loginMsg');if(msg)msg.innerText='جاري...';try{let res=await supabaseClient.from('technicians').select('*');if(res.error||!res.data){if(msg)msg.innerText='خطأ: '+(res.error?res.error.message:'مفيش داتا');return false}let found=res.data.find(t=>{let userInDb=String(t.username||'').trim().toLowerCase();let nameInDb=String(t.name||'').trim().toLowerCase().replace(/[\s_]+/g,'');let phoneInDb=String(t.phone||'').trim();let inputClean=u.replace(/[\s_]+/g,'');let passInDb=String(t.password||'').trim();return ((userInDb===u)||(nameInDb===inputClean)||(userInDb.replace(/[\s_]+/g,'')===inputClean)||(phoneInDb===u))&&passInDb===p});if(!found){if(msg)msg.innerText='الاسم مش موجود';return false}let role=getRoleFromDb(found);userObj={id:found.id,username:found.username,name:techDisplayName(found),role:role,isAdmin:(role==="admin"||role==="super_admin"),isSuper:role==="super_admin"};localStorage.setItem('misk_user',JSON.stringify(userObj));localStorage.setItem('misk_pass',p);afterLogin()}catch(err){if(msg)msg.innerText='خطأ: '+err.message}return false}
-  function afterLogin(){
+ function afterLogin(){
   document.getElementById("loginPage").classList.add("hidden");
   document.getElementById("appPage").classList.remove("hidden");
   document.getElementById("welcome").innerText="أهلاً "+(userObj.name||"");
@@ -206,7 +206,6 @@ async function login(e){if(e)e.preventDefault();let u=document.getElementById('u
     else{ dashGo('orders',null); }
   },300);
 }
-
   setTimeout(()=>{if(userObj.isAdmin){dashGo('overview',null)}else{dashGo('orders',null)}},300)
 }
 
