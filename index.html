@@ -117,6 +117,84 @@ input,select,textarea{background:#fff!important;border:1px solid #dce4f4!importa
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
+
+<style id="misk-fix10-dashboard">
+/* MISK 2027 FIX10 — responsive management layout */
+:root{--misk-accent:#2879e8;--misk-accent2:#6548d7;--misk-good:#16a36a;--misk-warn:#e68a16;--misk-danger:#e34c5b;--misk-surface:#fff;--misk-border:#e4eaf5;--misk-text:#182844;--misk-muted:#70809a;--misk-shadow:0 8px 24px rgba(23,47,93,.07)}
+body{background:#f3f6fc!important;color:var(--misk-text)!important}
+#appPage:not(.hidden){max-width:1700px;margin:0 auto;padding:16px 24px 28px!important}
+#appPage .top-img{min-height:120px;border-radius:22px!important;display:flex;flex-direction:column;justify-content:center;gap:5px;background:linear-gradient(120deg,#12284c,#286fd1 65%,#654bd0)!important;box-shadow:0 12px 30px #2458a21b!important}
+#appPage .we-bar{min-height:58px;border-radius:18px!important;display:flex;align-items:center;box-shadow:var(--misk-shadow)!important}
+#appPage .we-bar .logo{letter-spacing:.2px}
+#appPage .admin-layout{display:flex;align-items:flex-start;gap:18px}
+#appPage .admin-main{min-width:0;flex:1}
+#appPage .admin-side{width:300px;position:sticky;top:16px;background:transparent!important;padding:0!important;box-shadow:none!important;border-radius:0!important}
+#appPage .admin-side>div:first-child{background:linear-gradient(145deg,#172b4d,#254e9c)!important;border:1px solid #ffffff22;box-shadow:0 12px 28px #1c3b751c;border-radius:20px!important;padding:18px!important}
+#appPage #techList{grid-template-columns:1fr 1fr;max-height:250px;padding-top:6px}
+#appPage .admin-box{background:#fff;border:1px solid var(--misk-border);border-radius:18px;box-shadow:var(--misk-shadow);margin-bottom:14px}
+#appPage .admin-box-head{padding:15px 16px;background:#f7f9fd;color:#253957;font-size:14px}
+#appPage .admin-box.open .admin-box-head{background:linear-gradient(110deg,#eaf2ff,#f3efff);color:#253957}
+#appPage .admin-box-body{padding:16px}
+#appPage .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding:12px 0!important}
+#appPage .stat{min-width:0;border:1px solid var(--misk-border)!important;border-radius:20px!important;background:linear-gradient(145deg,#fff,#f9fbff)!important;padding:16px 12px!important;box-shadow:var(--misk-shadow)!important}
+#appPage .stat .circle{width:56px;height:56px;margin-bottom:9px;box-shadow:0 6px 15px #00000012}
+#appPage .stat b{font-size:13px;color:#253957}
+#appPage #jobsList,#appPage #warehouseList{gap:14px!important}
+#appPage .job,#appPage .warehouseCard{background:#fff;border:1px solid var(--misk-border)!important;border-radius:18px!important;padding:15px!important;box-shadow:var(--misk-shadow)!important;transition:transform .16s ease,box-shadow .16s ease}
+#appPage .job:hover,#appPage .warehouseCard:hover{transform:translateY(-2px);box-shadow:0 14px 30px #213d7516!important}
+#appPage .job h3{font-size:15px;line-height:1.7;color:#192d4c}
+#appPage .job .meta{color:#687893!important;font-size:12px;line-height:1.85}
+#appPage #searchInput{margin:4px 0 12px!important;border-radius:16px!important;min-height:48px}
+#appPage #archiveFilter,#appPage #followerCard{border:1px solid var(--misk-border)!important;border-radius:18px!important;box-shadow:var(--misk-shadow)!important}
+#appPage .btn,#appPage .btn2,#appPage .bigSave{border-radius:13px!important}
+#appPage .admin-box input,#appPage .admin-box select{margin:5px 0}
+#appPage #adminReportOutput table{min-width:620px;background:#fff;border-radius:12px;overflow:hidden}
+#appPage #adminReportOutput th{color:#354967;font-weight:800}
+#appPage #bottomNav{box-shadow:0 -8px 24px #17345d12;border-top:1px solid var(--misk-border);background:#fff}
+#appPage #bottomNav div{transition:color .15s,background .15s}
+#appPage #bottomNav div.active{color:var(--misk-accent2)!important}
+#appPage #bottomNav div.active span{filter:drop-shadow(0 2px 3px #7045db22)}
+@media(min-width:1100px){
+ #appPage:not(.hidden){padding-right:250px!important}
+ #appPage #bottomNav{top:16px;right:16px;bottom:16px;left:auto;width:210px;display:flex;flex-direction:column;justify-content:flex-start;gap:5px;padding:14px;border:1px solid var(--misk-border);border-radius:22px;box-shadow:var(--misk-shadow);height:auto}
+ #appPage #bottomNav div{flex:none;text-align:right;display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:13px;font-size:13px;color:#6d7d96}
+ #appPage #bottomNav div span{font-size:20px!important;display:inline!important;width:28px}
+ #appPage #bottomNav div.active{background:#eef3ff;color:#4f43b9!important;font-weight:800}
+ #appPage #bottomNav div:hover{background:#f5f7fc}
+ #appPage .admin-layout{gap:20px}
+ #appPage .admin-side{width:290px}
+ #appPage #jobsList,#appPage #warehouseList{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+ #appPage #jobsList>* ,#appPage #warehouseList>*{width:auto!important;margin:0!important;max-width:none!important}
+}
+@media(min-width:700px) and (max-width:1099px){
+ #appPage:not(.hidden){padding:12px 16px 100px!important}
+ #appPage .admin-layout{display:block}
+ #appPage .admin-side{width:auto;position:static;margin-bottom:16px}
+ #appPage #jobsList,#appPage #warehouseList{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ #appPage #jobsList>* ,#appPage #warehouseList>*{width:auto!important;margin:0!important;max-width:none!important}
+ #appPage #bottomNav{padding:8px 2px;gap:0}
+ #appPage #bottomNav div{font-size:11px}
+}
+@media(max-width:699px){
+ #appPage:not(.hidden){padding:8px 10px 90px!important}
+ #appPage .top-img{margin:8px 0!important;min-height:105px;padding:16px!important}
+ #appPage .we-bar{padding:12px!important;gap:8px;flex-wrap:wrap}
+ #appPage .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ #appPage .stat{padding:12px 8px!important;border-radius:16px!important}
+ #appPage .stat .circle{width:48px;height:48px;font-size:16px}
+ #appPage .admin-layout{display:block}
+ #appPage .admin-side{width:auto;position:static;margin:0 0 12px}
+ #appPage .admin-side>div:first-child{padding:14px!important}
+ #appPage #jobsList,#appPage #warehouseList{grid-template-columns:1fr!important}
+ #appPage #jobsList>* ,#appPage #warehouseList>*{width:auto!important;margin:0!important;max-width:none!important}
+ #appPage #bottomNav{padding:7px 0;gap:0}
+ #appPage #bottomNav div{font-size:10px;line-height:1.25}
+ #appPage #bottomNav div span{font-size:18px!important}
+ #appPage .job,#appPage .warehouseCard{margin:0!important}
+ #appPage #archiveFilter{margin:0 0 12px!important}
+}
+@media(prefers-reduced-motion:reduce){#appPage button,#appPage .stat,#appPage .job,#appPage .warehouseCard{transition:none!important}#appPage button:hover,#appPage .job:hover,#appPage .warehouseCard:hover{transform:none!important}}
+</style>
 <body>
 <div class="hero-banner"><img id="serverRotator" src="server1.jpg" alt="MISK"><div class="hero-label">MISK • SERVER • CCTV</div></div>
 <div id="loginPage">
@@ -199,6 +277,7 @@ input,select,textarea{background:#fff!important;border:1px solid #dce4f4!importa
 <button onclick="openAddTech()" style="background:#00c6ff;border:0;padding:10px;border-radius:50px;width:100%;color:#fff;font-size:14px;margin-top:8px">➕ اضافة فني</button>
 <div id="techList"></div>
 </div>
+<div class="admin-box open" id="miskReportsBox"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📊 التقارير الإدارية <span>▼</span></div><div class="admin-box-body"><p style="font-size:12px;color:#64748b;margin:0 0 10px">التقرير مبني على الأوردرات الحالية المحمّلة، ولا يشمل الأرشيف.</p><button class="btn" onclick="renderAdminReport()" style="width:100%;margin-bottom:8px">🔄 تحديث التقرير</button><button class="blueBtn" onclick="exportAdminReportCSV()" style="width:100%;padding:12px;border:0;border-radius:12px">⬇️ تصدير تقرير الفنيين CSV</button><div id="adminReportOutput" style="margin-top:12px"></div></div></div>
 <div id="addTechModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center">
 <div style="background:#fff;width:92%;max-width:380px;padding:16px;border-radius:16px;color:#000">
 <h3 style="text-align:center;margin:0 0 12px">➕ اضافة فني جديد</h3>
@@ -423,6 +502,7 @@ async function login(e){
   return false;
 }
 function afterLogin(){
+  // الدور والصلاحيات يتم اعتمادها من سجل الفني بقاعدة البيانات، وليس من بيانات المتصفح وحدها.
   let lp = document.getElementById("loginPage");
   if(lp) lp.classList.add("hidden");
   let ap = document.getElementById("appPage");
@@ -642,27 +722,32 @@ function downloadWarehouseExcel(){
 }
 
 async function transferTechCustody(){
-  let from = document.getElementById("custodyFromTech").value.trim();
-  let to = document.getElementById("custodyToTech").value.trim();
-  if(!from || !to) return alert("اكتب من فني وإلى فني");
+  const from=document.getElementById("custodyFromTech").value.trim();
+  const to=document.getElementById("custodyToTech").value.trim();
+  const msg=document.getElementById("custodyMsg");
+  if(!from||!to) return alert("اكتب من فني وإلى فني");
   if(normTechKey(from)===normTechKey(to)) return alert("اختار فني مختلف عن الفني الحالي");
   if(!confirm(`هننقل كل أجهزة ${from} إلى ${to} ؟`)) return;
-  const {data,error}=await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("tech", from);
-  if(error) return alert("تعذر قراءة العهدة: "+error.message);
-  if(!data || !data.length) return alert("مفيش أجهزة عند "+from);
-  for(let i=0;i<data.length;i+=100){
-    const chunk=data.slice(i,i+100);
-    for(const w of chunk){
-      const hist=(w.comment||"")+` | نقل من ${from} إلى ${to} بتاريخ ${todayStr()}`;
-      const {error:updateError}=await supabaseClient.from(WAREHOUSE_TABLE).update({tech:to,comment:hist}).eq("id",w.id);
-      if(updateError){
-        document.getElementById("custodyMsg").innerText=`توقف النقل بعد ${i} جهاز. الخطأ: ${updateError.message}`;
-        await loadWarehouse();
-        return;
-      }
-    }
+  let data=[],offset=0;
+  while(true){
+    const {data:page,error}=await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("tech",from).range(offset,offset+999);
+    if(error){ if(msg) msg.innerText="تعذر قراءة العهدة: "+error.message; return alert("تعذر قراءة العهدة: "+error.message); }
+    const rows=page||[]; data=data.concat(rows);
+    if(rows.length<1000) break; offset+=1000;
   }
-  document.getElementById("custodyMsg").innerText=`تم ✅ نقل ${data.length} جهاز من ${from} إلى ${to}`;
+  if(!data.length) return alert("مفيش أجهزة عند "+from);
+  let moved=0;
+  for(const w of data){
+    const hist=(w.comment||"")+` | نقل من ${from} إلى ${to} بتاريخ ${todayStr()}`;
+    const {error:updateError}=await supabaseClient.from(WAREHOUSE_TABLE).update({tech:to,comment:hist}).eq("id",w.id);
+    if(updateError){
+      if(msg) msg.innerText=`توقف النقل بعد نجاح ${moved} جهاز من ${data.length}. الخطأ: ${updateError.message}`;
+      alert(`توقف النقل بعد ${moved} جهاز من ${data.length}. لم يتم استكمال الباقي. راجع العهدة قبل إعادة المحاولة.`);
+      await loadWarehouse(); return;
+    }
+    moved++;
+  }
+  if(msg) msg.innerText=`تم ✅ نقل ${moved} جهاز من ${from} إلى ${to}`;
   await loadWarehouse();
 }
  async function transferOneSerial(){
@@ -675,8 +760,9 @@ async function transferTechCustody(){
   if(lookupError){ res.textContent=lookupError.code==='PGRST116' ? 'السيريال ده مش موجود في المخزن' : 'تعذر البحث: '+lookupError.message; return; }
   if(!old){ res.textContent='السيريال ده مش موجود في المخزن'; return; }
 
+  if(normTechKey(old.tech)===normTechKey(toTech)){ res.textContent='الجهاز بالفعل على عهدة الفني ده'; return; }
   let d = (typeof todayStr === 'function' ? todayStr() : todayStr);
-  let hist = (old.comment || "") + ` | نقل من ${old.tech} إلى ${toTech} بتاريخ ${d}`;
+  let hist = (old.comment || "") + ` | نقل من ${old.tech||"المخزن"} إلى ${toTech} بتاريخ ${d}`;
   let { error } = await supabaseClient.from(WAREHOUSE_TABLE).update({ tech: toTech, comment: hist }).eq("serial", serial);
 
   if(error){ res.textContent = 'في مشكلة: ' + error.message; }
@@ -688,18 +774,31 @@ async function transferTechCustody(){
 }
 
 async function clearTechCustody(){
-  let from = document.getElementById("custodyFromTech").value.trim();
+  const from=document.getElementById("custodyFromTech").value.trim();
+  const msg=document.getElementById("custodyMsg");
   if(!from) return alert("اكتب اسم الفني اللي هتمسح عهدته");
   if(!confirm(`همسح عهدة ${from} ؟ الأجهزة هترجع المخزن من غير فني`)) return;
-  let {data,error} = await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("tech", from);
-  if(error) return alert("تعذر تحميل العهدة: "+error.message);
-  if(!data || !data.length) return alert("مفيش أجهزة عند "+from);
-  for(let w of data){
-    let hist = (w.comment||"") + ` | اتمسحت عهدة ${from} بتاريخ ${todayStr()}`;
-    await supabaseClient.from(WAREHOUSE_TABLE).update({tech: "", comment: hist}).eq("id", w.id);
+  let data=[],offset=0;
+  while(true){
+    const {data:page,error}=await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("tech",from).range(offset,offset+999);
+    if(error) return alert("تعذر تحميل العهدة: "+error.message);
+    const rows=page||[]; data=data.concat(rows);
+    if(rows.length<1000) break; offset+=1000;
   }
-  document.getElementById("custodyMsg").innerText = `تم ✅ مسح عهدة ${from} - ${data.length} جهاز رجعوا المخزن`;
-  loadWarehouse();
+  if(!data.length) return alert("مفيش أجهزة عند "+from);
+  let cleared=0;
+  for(const w of data){
+    const hist=(w.comment||"")+` | اتمسحت عهدة ${from} بتاريخ ${todayStr()}`;
+    const {error:updateError}=await supabaseClient.from(WAREHOUSE_TABLE).update({tech:"",comment:hist}).eq("id",w.id);
+    if(updateError){
+      if(msg) msg.innerText=`توقف مسح العهدة بعد ${cleared} جهاز من ${data.length}. الخطأ: ${updateError.message}`;
+      alert(`توقف مسح العهدة بعد ${cleared} جهاز من ${data.length}. راجع المخزن قبل إعادة المحاولة.`);
+      await loadWarehouse(); return;
+    }
+    cleared++;
+  }
+  if(msg) msg.innerText=`تم ✅ مسح عهدة ${from} - ${cleared} جهاز رجعوا المخزن`;
+  await loadWarehouse();
 }
 let allTechs = [];
 let selectedTech = "";
@@ -991,6 +1090,45 @@ function clearTechFilter(){
   if(typeof renderJobs==="function") renderJobs();
 }
 
+function getJobStatusBucket(status){
+  const s=String(status||"جديد").trim();
+  if(s==="تم التسليم") return "done";
+  if(["تأجيل","لم يتم الرد","رفض الزيارة"].includes(s)) return "problem";
+  return "pending";
+}
+function buildAdminReport(){
+  const rows=Array.isArray(allJobs)?allJobs:[];
+  const stats={total:rows.length,done:0,pending:0,problem:0,unassigned:0};
+  const byTech=new Map();
+  rows.forEach(j=>{
+    const bucket=getJobStatusBucket(j.status); stats[bucket]++;
+    const tech=String(getJobTech(j)||"غير مسند").trim()||"غير مسند";
+    if(tech==="غير مسند") stats.unassigned++;
+    if(!byTech.has(tech)) byTech.set(tech,{tech,total:0,done:0,pending:0,problem:0});
+    const t=byTech.get(tech); t.total++; t[bucket]++;
+  });
+  const techRows=[...byTech.values()].sort((a,b)=>b.total-a.total||a.tech.localeCompare(b.tech,"ar"));
+  return {stats,techRows};
+}
+function renderAdminReport(){
+  const out=document.getElementById("adminReportOutput"); if(!out) return;
+  if(!userObj||!userObj.isAdmin){out.innerHTML="";return;}
+  const {stats,techRows}=buildAdminReport();
+  const cards=[["إجمالي الأوردرات",stats.total,"#1d4ed8"],["تم التسليم",stats.done,"#16a34a"],["قيد الانتظار",stats.pending,"#d97706"],["حالات المشكلة",stats.problem,"#dc2626"],["غير مسندة",stats.unassigned,"#64748b"]];
+  const cardsHtml=cards.map(c=>`<div style="flex:1;min-width:90px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:10px;text-align:center"><small>${escapeHTML(c[0])}</small><div style="font-size:22px;font-weight:900;color:${c[2]}">${c[1]}</div></div>`).join("");
+  const tableRows=techRows.map(t=>{const rate=t.total?Math.round(t.done/t.total*100):0;return `<tr><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:right">${escapeHTML(t.tech)}</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:center">${t.total}</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:center;color:#16a34a;font-weight:bold">${t.done}</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:center;color:#d97706">${t.pending}</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:center;color:#dc2626">${t.problem}</td><td style="padding:8px;border-bottom:1px solid #e5e7eb;text-align:center">${rate}%</td></tr>`;}).join("");
+  out.innerHTML=`<div style="display:flex;gap:6px;flex-wrap:wrap">${cardsHtml}</div><div style="overflow:auto;margin-top:12px"><table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr style="background:#eef2ff"><th style="padding:8px;text-align:right">الفني</th><th style="padding:8px">الإجمالي</th><th style="padding:8px">تسليم</th><th style="padding:8px">انتظار</th><th style="padding:8px">مشاكل</th><th style="padding:8px">نسبة التسليم</th></tr></thead><tbody>${tableRows||'<tr><td colspan="6" style="padding:10px;text-align:center">لا توجد بيانات</td></tr>'}</tbody></table></div>`;
+}
+function exportAdminReportCSV(){
+  if(!userObj||!userObj.isAdmin) return alert("التقرير متاح للأدمن فقط");
+  const {stats,techRows}=buildAdminReport();
+  const header=["الفني","إجمالي الأوردرات","تم التسليم","قيد الانتظار","حالات المشكلة","نسبة التسليم"];
+  const lines=[header,...techRows.map(t=>[t.tech,t.total,t.done,t.pending,t.problem,t.total?Math.round(t.done/t.total*100)+"%":"0%"]),[],["الإجمالي",stats.total,stats.done,stats.pending,stats.problem,stats.total?Math.round(stats.done/stats.total*100)+"%":"0%"]];
+  const csv="\uFEFF"+lines.map(row=>row.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");
+  const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
+  const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="MISK_Tech_Report_"+todayStr().replace(/-/g,"_")+".csv";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+}
+
 function renderJobs(){
   let list=document.getElementById("jobsList"); if(!list) return;
   let mine=myJobsBase();
@@ -1006,6 +1144,7 @@ function renderJobs(){
   let show=jobs.slice(0, visibleCount);
   list.innerHTML=show.map(j=>`<div class="job" onclick="openDetails('${escapeAttr(j.id)}')"><h3>${escapeHTML(j.customer_name||"")} - ${escapeHTML(j.order||"")}</h3><div style="font-weight:bold;color:#0b6cff">🆔 الكود: ${escapeHTML(j.code||"—")}</div><div class="meta">📍 ${escapeHTML(j.address||"")}<br>📞 الأرضي: ${escapeHTML(j.landline||"")} | 📱 ${escapeHTML(j.mobile||"")}<br>👷 الفني: ${escapeHTML(getJobTech(j)||"")} | 📦 الجهاز: ${escapeHTML(j.device||"")}<br>🔢 السيريال: ${escapeHTML(j.serial||"لسه")} | الحالة: <b>${escapeHTML(j.status||"جديد")}</b><br>💬 ${escapeHTML(j.comment||"")}</div><span class="badge">${escapeHTML(j.status||"جديد")}</span></div>`).join("") || `<p style="text-align:center">مفيش شغل هنا</p>`;
   document.getElementById("loadMoreWrap").innerHTML= jobs.length>visibleCount ? `<button class="btn" onclick="visibleCount+=20;renderJobs()">عرض المزيد (${jobs.length-visibleCount} باقي)</button>` : "";
+  if(userObj&&userObj.isAdmin) renderAdminReport();
 }
 function onSearch(){ searchQ=document.getElementById("searchInput").value; renderJobs() }
 function filterByCircle(f){ activeFilter=f; visibleCount=10; renderJobs() }
@@ -1075,16 +1214,28 @@ function openStatusModal(id, cust){
 }
 function closeStatusModal(){ document.getElementById("statusModal").style.display="none" }
 function selectStatusOption(s){ document.getElementById("selectedStatusLabel").innerText="المختار: "+s; document.getElementById("selectedStatusLabel").dataset.val=s }
+let statusSaveBusy=false;
 async function confirmStatus(){
+  if(statusSaveBusy) return;
   let st=document.getElementById("selectedStatusLabel").dataset.val;
   let cm=document.getElementById("statusComment").value.trim();
   if(!st) return alert("اختار الحالة الأول");
-  let j=allJobs.find(x=>String(x.id)===String(currentStatusJobId)); if(!j) return;
-  let {error}=await supabaseClient.from(TABLE).update({status:st, comment:cm}).eq("id", j.id);
-  if(error) return alert("خطأ: "+error.message);
-  j.status=st; j.comment=cm;
-  closeStatusModal(); closeDetails(); renderJobs();
-  alert("تم حفظ الحالة: "+st);
+  let j=allJobs.find(x=>String(x.id)===String(currentStatusJobId)); if(!j) return alert("الأوردر مش موجود في البيانات الحالية");
+  statusSaveBusy=true;
+  const btn=document.querySelector('#statusModal button[onclick="confirmStatus()"]');
+  if(btn){btn.disabled=true;btn.textContent="جاري الحفظ...";}
+  try{
+    const {error}=await supabaseClient.from(TABLE).update({status:st, comment:cm}).eq("id", j.id);
+    if(error) throw error;
+    j.status=st; j.comment=cm;
+    closeStatusModal(); closeDetails(); renderJobs();
+    alert("تم حفظ الحالة: "+st);
+  }catch(error){
+    alert("فشل حفظ الحالة، البيانات لم تتغير: "+(error.message||String(error)));
+  }finally{
+    statusSaveBusy=false;
+    if(btn){btn.disabled=false;btn.textContent="✅ حفظ الحالة وارسال للمتابع أوتوماتيك";}
+  }
 }
 async function isSerialInWarehouse(serial){
   serial=String(serial||"").trim();
@@ -1178,86 +1329,96 @@ async function addJob(){
   await loadJobs();
   showTab('pending', document.querySelectorAll(".tabs div")[1]);
 }
+let sheetUploadBusy = false;
 async function uploadSheetFast(){
-  let files=document.getElementById("sheetInput").files;
-  if(!files.length) return alert("اختار ملف الأول");
-  autoOn = false;
-  let btnAuto = document.getElementById("autoBtn");
-  if(btnAuto){ btnAuto.textContent="تشغيل"; btnAuto.style.background="#dcfce7"; btnAuto.style.color="#166534"; }
-  document.getElementById("uploadMsg").innerText="جاري الرفع...";
-  let prog = document.getElementById("prog");
-  let progBar = document.getElementById("progBar");
+  const input=document.getElementById("sheetInput");
+  const files=input?.files;
+  if(!files || !files.length) return alert("اختار ملف الأول");
+  if(!userObj || !userObj.isAdmin) return alert("الأدمن بس اللي يرفع شيتات الشغل");
+  if(sheetUploadBusy) return alert("في عملية رفع شغالة بالفعل، استنى لما تخلص");
+  sheetUploadBusy=true;
+  autoOn=false;
+  const btnAuto=document.getElementById("autoBtn");
+  if(btnAuto){btnAuto.textContent="تشغيل";btnAuto.style.background="#dcfce7";btnAuto.style.color="#166534";}
+  const msg=document.getElementById("uploadMsg");
+  const prog=document.getElementById("prog");
+  const progBar=document.getElementById("progBar");
+  if(msg) msg.innerText="جاري تجهيز الملفات...";
   if(prog) prog.style.display="block";
-  let total=0, skipped=0;
+  if(progBar) progBar.style.width="0%";
+  let totalInserted=0, skippedExisting=0, skippedInFiles=0, failedRows=0;
+  const seenOrders=new Set();
+  const errors=[];
   try{
-    for(let f of files){
-      let buf=await f.arrayBuffer();
-      let wb=XLSX.read(buf,{type:"array"});
-      let ws = wb.Sheets["Sheet1"] || wb.Sheets[wb.SheetNames[0]];
-      let arr = XLSX.utils.sheet_to_json(ws,{header:1,defval:""});
-      let toInsert=[];
+    for(let fileIndex=0;fileIndex<files.length;fileIndex++){
+      const f=files[fileIndex];
+      const wb=XLSX.read(await f.arrayBuffer(),{type:"array"});
+      const ws=wb.Sheets["Sheet1"]||wb.Sheets[wb.SheetNames[0]];
+      if(!ws) throw new Error(`الملف ${f.name} لا يحتوي على ورقة بيانات`);
+      const arr=XLSX.utils.sheet_to_json(ws,{header:1,defval:""});
+      const toInsert=[];
       for(let i=1;i<arr.length;i++){
-        let r=arr[i];
-        let customer=String(r[3]||"").trim();
-        let order=String(r[1]||"").trim();
-        if(!customer || !order) continue;
-        if(customer==="Name") continue;
-        let techVal=String(r[16]||"").trim();
-        let techPhone=String(r[17]||"").trim();
+        const r=arr[i];
+        const customer=String(r[3]||"").trim();
+        const order=String(r[1]||"").trim();
+        if(!customer||!order||customer==="Name") continue;
+        const orderKey=order.toLowerCase();
+        if(seenOrders.has(orderKey)){skippedInFiles++;continue;}
+        seenOrders.add(orderKey);
         toInsert.push({
-          customer_name: customer,
-          address: String(r[10]||""),
-          order: order,
-          landline: order,
-          mobile: String(r[2]||""),
-          device: String(r[4]||""),
-          code: String(r[7]||""),
-          tech: techVal,
-          tech_name: techVal,
-          tech_phone: techPhone,
-          status: "جديد",
-          date: todayStr(),
-          comment: String(r[14]||""),
-          serial: String(r[13]||"")
+          customer_name:customer,address:String(r[10]||""),order,landline:order,
+          mobile:String(r[2]||""),device:String(r[4]||""),code:String(r[7]||""),
+          tech:String(r[16]||"").trim(),tech_name:String(r[16]||"").trim(),
+          tech_phone:String(r[17]||"").trim(),status:"جديد",date:todayStr(),
+          comment:String(r[14]||""),serial:String(r[13]||"")
         });
       }
-      if(toInsert.length){
-        let orders = [...new Set(toInsert.map(x=>x.order))];
-        let exSet = new Set();
-        for(let i=0;i<orders.length;i+=500){
-          let chunkOrders = orders.slice(i, i+500);
-          let {data:ex} = await supabaseClient.from(TABLE).select("order").in("order", chunkOrders);
-          (ex||[]).forEach(x=> exSet.add(String(x.order)));
+      if(!toInsert.length){if(msg)msg.innerText=`${f.name}: لا توجد صفوف صالحة`;continue;}
+      const orders=toInsert.map(x=>x.order);
+      const existingSet=new Set();
+      for(let i=0;i<orders.length;i+=500){
+        const {data:ex,error:lookupError}=await supabaseClient.from(TABLE).select("order").in("order",orders.slice(i,i+500));
+        if(lookupError) throw new Error(`فشل فحص الأوردرات الموجودة في ${f.name}: ${lookupError.message}`);
+        (ex||[]).forEach(x=>existingSet.add(String(x.order).trim().toLowerCase()));
+      }
+      const filtered=[];
+      for(const row of toInsert){
+        if(existingSet.has(String(row.order).trim().toLowerCase())) skippedExisting++;
+        else filtered.push(row);
+      }
+      for(let i=0;i<filtered.length;i+=500){
+        const chunk=filtered.slice(i,i+500);
+        let result=await supabaseClient.from(TABLE).insert(chunk);
+        if(result.error){
+          const chunk2=chunk.map(({tech_name,tech_phone,...rest})=>rest);
+          result=await supabaseClient.from(TABLE).insert(chunk2);
+          if(result.error){
+            const chunk3=chunk.map(({tech,...rest})=>rest);
+            result=await supabaseClient.from(TABLE).insert(chunk3);
+            if(result.error){failedRows+=filtered.length-i;errors.push(`${f.name}: ${result.error.message}`);break;}
+          }
         }
-        let filtered=[];
-        for(let x of toInsert){ if(exSet.has(String(x.order))) skipped++; else filtered.push(x); }
-        toInsert=filtered;
+        totalInserted+=chunk.length;
+        if(progBar)progBar.style.width=Math.round(((fileIndex+1)/files.length)*100)+"%";
+        if(msg)msg.innerText=`تم رفع ${totalInserted} أوردر حتى الآن - الملف ${fileIndex+1} من ${files.length}`;
       }
-      for(let i=0;i<toInsert.length;i+=500){
-        let chunk = toInsert.slice(i, i+500);
-        let {error} = await supabaseClient.from(TABLE).insert(chunk);
-        if(error){
-          let chunk2 = chunk.map(({tech_name, tech_phone, ...rest})=>rest);
-          let r2 = await supabaseClient.from(TABLE).insert(chunk2);
-          if(r2.error){
-            let chunk3 = chunk.map(({tech, ...rest})=>rest);
-            let r3 = await supabaseClient.from(TABLE).insert(chunk3);
-            if(!r3.error) total+=chunk3.length;
-            else { alert("خطأ: "+r3.error.message); console.log(r3.error); }
-          } else total+=chunk2.length;
-        } else total+=chunk.length;
-        if(progBar) progBar.style.width = Math.round(((i+chunk.length)/Math.max(1,toInsert.length))*100)+"%";
-        document.getElementById("uploadMsg").innerText=`جاري... تم رفع ${total} - ملف ${f.name}`;
-      }
+      if(errors.length) break;
     }
-  }catch(e){ alert("خطأ في الرفع: "+e.message); console.log(e); }
-  if(prog) prog.style.display="none";
-  if(progBar) progBar.style.width="0%";
-  document.getElementById("uploadMsg").innerText=`تم رفع ${total} أوردر - وتخطينا ${skipped} مكرر ✅`;
-  autoOn = true;
-  if(btnAuto){ btnAuto.textContent="إيقاف"; btnAuto.style.background="#fee2e2"; btnAuto.style.color="#dc2626"; }
-  loadJobs();
+  }catch(e){errors.push(e.message||String(e));}
+  finally{
+    sheetUploadBusy=false;
+    if(prog)prog.style.display="none";
+    if(progBar)progBar.style.width="0%";
+    autoOn=true;
+    if(btnAuto){btnAuto.textContent="إيقاف";btnAuto.style.background="#fee2e2";btnAuto.style.color="#dc2626";}
+  }
+  const summary=`نتيجة الرفع: ${totalInserted} أوردر تم رفعهم، ${skippedExisting} مكرر في قاعدة البيانات، ${skippedInFiles} مكرر داخل الملفات، ${failedRows} صف فشل.`;
+  if(msg)msg.innerText=errors.length?summary+"\n⚠️ لم يكتمل الرفع: "+errors.join(" | "):summary+"\n✅ اكتملت العملية";
+  if(errors.length)alert(summary+"\n\nتفاصيل الخطأ:\n"+errors.join("\n"));
+  if(totalInserted>0)await loadJobs();
+  if(input)input.value="";
 }
+
 async function loadArchive(){
   try{
     let {data,error}=await supabaseClient.from(ARCHIVE_TABLE).select("*").order("created_at",{ascending:false}).limit(50000);
@@ -1288,9 +1449,19 @@ async function archiveOldJobs(){
     const rows=page||[]; existingOrders=existingOrders.concat(rows);
     if(rows.length<1000) break; offset+=1000;
   }
-  const exSet=new Set(existingOrders.map(x=>String(x.order||"")));
-  const toArchive=allJobs.filter(j=>!j.order || !exSet.has(String(j.order)));
-  if(!toArchive.length) return alert("الشغل ده مترشف قبل كده بالفعل");
+  const exSet=new Set(existingOrders.map(x=>String(x.order||"").trim().toLowerCase()).filter(Boolean));
+  const seenDailyOrders=new Set();
+  let duplicateDaily=0;
+  const toArchive=allJobs.filter(j=>{
+    const order=String(j.order||"").trim().toLowerCase();
+    if(order){
+      if(exSet.has(order)) return false;
+      if(seenDailyOrders.has(order)){duplicateDaily++;return false;}
+      seenDailyOrders.add(order);
+    }
+    return true;
+  });
+  if(!toArchive.length) return alert("الأوردرات الموجودة في اليومي مسجلة بالفعل في أرشيف التاريخ المحدد. لم يتم حذف أي بيانات.");
   const rows=toArchive.map(j=>({
     customer_name:j.customer_name,address:j.address,order:j.order,landline:j.landline,mobile:j.mobile,code:j.code,
     device:j.device,tech:getJobTech(j),tech_name:getJobTech(j),status:j.status,serial:j.serial||"",comment:j.comment||"",
@@ -1318,7 +1489,7 @@ async function archiveOldJobs(){
       await loadJobs(); await loadArchive(); return;
     }
   }
-  alert("تمت الأرشفة بنجاح ✅ عدد "+toArchive.length+" أوردر ليوم "+date);
+  alert("تمت الأرشفة بنجاح ✅ عدد "+toArchive.length+" أوردر ليوم "+date+(duplicateDaily?"\nتم تخطي "+duplicateDaily+" أوردر مكرر داخل اليومي":""));
   await loadJobs(); await loadArchive();
 }
   function getArchiveRows(date){
@@ -1518,72 +1689,76 @@ function confirmSendYes(){ document.getElementById("sendLockModal").style.displa
 function confirmSendNo(){ document.getElementById("sendLockModal").style.display="none" }
 function closeLockBack(){ document.getElementById("sendLockModal").style.display="none" }
 async function compressImage(file){
-  return new Promise((res)=>{
-    const img = new Image();
-    const url = URL.createObjectURL(file);
-    img.onload = ()=>{
-      const max = 1000;
-      let w = img.width, h = img.height;
-      if(w > max){ h = h * max / w; w = max; }
-      if(h > max){ w = w * max / h; h = max; }
-      const c = document.createElement("canvas");
-      c.width = w; c.height = h;
-      c.getContext("2d").drawImage(img,0,0,w,h);
-      URL.revokeObjectURL(url);
-      c.toBlob(b=>res(b), "image/jpeg", 0.75);
+  if(!file || !file.type || !file.type.startsWith("image/")) throw new Error("الملف المختار مش صورة");
+  return new Promise((resolve,reject)=>{
+    const img=new Image();
+    const url=URL.createObjectURL(file);
+    img.onload=()=>{
+      try{
+        const max=1200;
+        let w=img.width,h=img.height;
+        if(!w||!h) throw new Error("تعذر قراءة أبعاد الصورة");
+        if(w>max){h=h*max/w;w=max;}
+        if(h>max){w=w*max/h;h=max;}
+        const c=document.createElement("canvas");c.width=Math.round(w);c.height=Math.round(h);
+        const ctx=c.getContext("2d");if(!ctx) throw new Error("تعذر تجهيز الصورة");
+        ctx.drawImage(img,0,0,c.width,c.height);
+        c.toBlob(blob=>{URL.revokeObjectURL(url);blob?resolve(blob):reject(new Error("فشل ضغط الصورة"));},"image/jpeg",0.78);
+      }catch(error){URL.revokeObjectURL(url);reject(error);}
     };
-    img.src = url;
+    img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error("تعذر فتح الصورة"));};
+    img.src=url;
   });
 }
 async function uploadPhoto(file, jobId, slot){
-  const compressed = await compressImage(file);
-  file = new File([compressed], "photo.jpg", {type:"image/jpeg"});
-  let name=`${jobId}_${slot}_${Date.now()}.jpg`;
-  let {error}=await supabaseClient.storage.from(BUCKET).upload(name, file);
-  if(error){ alert("خطأ في الرفع: " + error.message); return null; }
-  let {data}=supabaseClient.storage.from(BUCKET).getPublicUrl(name);
-  return data.publicUrl;
+  const compressed=await compressImage(file);
+  const name=`${jobId}_${slot}_${Date.now()}.jpg`;
+  const {error}=await supabaseClient.storage.from(BUCKET).upload(name,compressed,{contentType:"image/jpeg",upsert:false});
+  if(error) throw error;
+  const {data}=supabaseClient.storage.from(BUCKET).getPublicUrl(name);
+  if(!data?.publicUrl) throw new Error("تعذر إنشاء رابط الصورة");
+  return {url:data.publicUrl,path:name};
 }
-document.getElementById("photoInput")?.addEventListener("change", async e=>{
-  let f=e.target.files[0]; if(!f) return;
-  const tempUrl = URL.createObjectURL(f);
-  let j = allJobs.find(x=>String(x.id)===String(currentDetailId));
-  if(j){ j["photo"+(currentPhotoSlot+1)] = tempUrl; renderPhotos(j); }
-  e.target.value = "";
-  document.getElementById("uploadingBanner").style.display="block";
-  let url=await uploadPhoto(f, currentDetailId, currentPhotoSlot);
-  if(url){
-    let j=allJobs.find(x=>String(x.id)===String(currentDetailId));
-    let upRes=await supabaseClient.from(TABLE).update({["photo"+(currentPhotoSlot+1)]:url}).eq("id", currentDetailId);
-    if(upRes.error) alert("الصورة اترفعت بس متحفظتش - جرب تاني: "+upRes.error.message);
-    if(j) j["photo"+(currentPhotoSlot+1)]=url;
+let photoUploadBusy=false;
+async function handlePhotoSelection(e){
+  const f=e.target.files?.[0];if(!f)return;
+  e.target.value="";
+  if(photoUploadBusy){alert("في صورة بتترفع بالفعل، استنى لما تخلص");return;}
+  if(!f.type?.startsWith("image/")){alert("اختار ملف صورة فقط");return;}
+  if(f.size>15*1024*1024){alert("حجم الصورة أكبر من 15 ميجابايت، اختار صورة أصغر");return;}
+  const jobId=currentDetailId, slot=currentPhotoSlot;
+  const j=allJobs.find(x=>String(x.id)===String(jobId));
+  if(!j){alert("الأوردر غير موجود");return;}
+  const field="photo"+(slot+1), previous=j[field]||"";
+  const previewUrl=URL.createObjectURL(f);
+  photoUploadBusy=true;
+  const banner=document.getElementById("uploadingBanner");if(banner)banner.style.display="block";
+  j[field]=previewUrl;renderPhotos(j);
+  try{
+    const uploaded=await uploadPhoto(f,jobId,slot);
+    const {error}=await supabaseClient.from(TABLE).update({[field]:uploaded.url}).eq("id",jobId);
+    if(error){
+      try{await supabaseClient.storage.from(BUCKET).remove([uploaded.path]);}catch(cleanError){console.warn("MISK: uploaded photo cleanup failed",cleanError);}
+      throw new Error("الصورة اترفعت لكن حفظ رابطها في الأوردر فشل: "+error.message);
+    }
+    j[field]=uploaded.url;
+    if(previewUrl)URL.revokeObjectURL(previewUrl);
     renderPhotos(j);
-  } else {
-    alert("الصورة متحملتش - اتأكد من النت وجرب تاني");
-  }
-  document.getElementById("uploadingBanner").style.display="none";
-  closePhotoCam();
-});
-document.getElementById("photoGalleryInput")?.addEventListener("change", async e=>{
-  let f=e.target.files[0]; if(!f) return;
-  const tempUrl = URL.createObjectURL(f);
-  let j = allJobs.find(x=>String(x.id)===String(currentDetailId));
-  if(j){ j["photo"+(currentPhotoSlot+1)] = tempUrl; renderPhotos(j); }
-  e.target.value = "";
-  document.getElementById("uploadingBanner").style.display="block";
-  let url=await uploadPhoto(f, currentDetailId, currentPhotoSlot);
-  if(url){
-    let j=allJobs.find(x=>String(x.id)===String(currentDetailId));
-    let upRes=await supabaseClient.from(TABLE).update({["photo"+(currentPhotoSlot+1)]:url}).eq("id", currentDetailId);
-    if(upRes.error) alert("الصورة اترفعت بس متحفظتش - جرب تاني: "+upRes.error.message);
-    if(j) j["photo"+(currentPhotoSlot+1)]=url;
+    closePhotoCam();
+    alert("تم رفع الصورة وحفظها بنجاح");
+  }catch(error){
+    j[field]=previous;
+    if(previewUrl)URL.revokeObjectURL(previewUrl);
     renderPhotos(j);
-  } else {
-    alert("الصورة متحملتش - اتأكد من النت وجرب تاني");
+    alert("فشل رفع/حفظ الصورة: "+(error.message||String(error)));
+  }finally{
+    photoUploadBusy=false;
+    if(banner)banner.style.display="none";
   }
-  document.getElementById("uploadingBanner").style.display="none";
-  closePhotoCam();
-});
+}
+document.getElementById("photoInput")?.addEventListener("change",handlePhotoSelection);
+document.getElementById("photoGalleryInput")?.addEventListener("change",handlePhotoSelection);
+
 function tickClock(){
   let n=new Date();
   let clock=document.getElementById("loginClock"); if(clock) clock.innerText=String(n.getHours()).padStart(2,"0")+":"+String(n.getMinutes()).padStart(2,"0");
@@ -1591,12 +1766,27 @@ function tickClock(){
   let a=document.getElementById("attendTime"); if(a) a.innerText=n.toLocaleTimeString("ar-EG");
 }
 setInterval(tickClock, 1000); tickClock();
-window.addEventListener("load", ()=>{
+window.addEventListener("load", async ()=>{
   // إزالة أي كلمة مرور قديمة محفوظة من إصدارات سابقة
   localStorage.removeItem("misk_pass");
-  let saved=localStorage.getItem("misk_user");
-  if(saved){
-    try{ userObj=JSON.parse(saved); afterLogin(); }catch(e){ localStorage.removeItem("misk_user") }
+  const savedRaw=localStorage.getItem("misk_user");
+  if(savedRaw){
+    try{
+      const saved=JSON.parse(savedRaw);
+      if(!saved?.id) throw new Error("جلسة غير صالحة");
+      const {data:account,error}=await supabaseClient.from("technicians").select("*").eq("id",saved.id).maybeSingle();
+      if(error) throw error;
+      if(!account) throw new Error("الحساب غير موجود");
+      const role=getRoleFromDb(account);
+      const display=techDisplayName(account);
+      userObj={id:account.id,username:account.username,name:display,role,isAdmin:(role==="admin"||role==="super_admin"),isSuper:role==="super_admin"};
+      localStorage.setItem("misk_user",JSON.stringify(userObj));
+      afterLogin();
+    }catch(e){
+      console.warn("MISK: saved session validation failed",e);
+      localStorage.removeItem("misk_user");
+      userObj=null;
+    }
   }
   let fp=getFollowerPhone();
   if(fp) document.getElementById("followerPhone").value=fp;
@@ -1613,25 +1803,37 @@ function getCustodyForTech(techName){
 }
 function openAddTech(){ document.getElementById('addTechModal').style.display='flex'; }
 function closeAddTech(){ document.getElementById('addTechModal').style.display='none'; }
+let technicianSaveBusy=false;
 async function saveTechnician(){
+  if(technicianSaveBusy) return;
+  if(!userObj || !userObj.isAdmin) return alert("الأدمن فقط");
   const name = document.getElementById('techName').value.trim();
   const phone = document.getElementById('techPhone').value.trim();
   const pass = document.getElementById('techPass').value.trim() || phone;
   const line = document.getElementById('techLine').value.trim();
   const gov = document.getElementById('techGov').value.trim();
   if(!name || !phone){ alert('اكتب اسم الفني ورقم الموبايل'); return; }
-  let {error} = await supabaseClient.from('technicians').insert({username: name, name: name, password: pass, phone: phone, line: line, governorate: gov, role: 'tech'});
-  if(error){
-    let {error:err2} = await supabaseClient.from('technicians').update({name:name, password:pass, phone:phone, line:line, governorate:gov}).eq('username', name);
-    if(err2){
-      let {error:err3} = await supabaseClient.from('technicians').update({name:name, password:pass, phone:phone, line:line, governorate:gov}).eq('phone', phone);
-      if(err3){ alert('خطأ: '+err3.message); return; }
+  technicianSaveBusy=true;
+  const btn=document.querySelector('#addTechModal button[onclick="saveTechnician()"]');
+  if(btn){btn.disabled=true;btn.textContent="جاري الحفظ...";}
+  try{
+    const payload={username:name,name:name,password:pass,phone:phone,line:line,governorate:gov,role:'tech'};
+    let {error}=await supabaseClient.from('technicians').insert(payload);
+    if(error){
+      let {error:err2}=await supabaseClient.from('technicians').update({name:name,password:pass,phone:phone,line:line,governorate:gov}).eq('username',name);
+      if(err2){
+        let {error:err3}=await supabaseClient.from('technicians').update({name:name,password:pass,phone:phone,line:line,governorate:gov}).eq('phone',phone);
+        if(err3) throw new Error(err3.message);
+      }
     }
-  }
-  const custody = getCustodyForTech(name);
-  document.getElementById('techMsg').textContent = 'تم اضافة ' + name + ' ✅ - على عهدته دلوقتي ' + custody.length + ' جهاز - اليوزر: ' + name + ' أو ' + phone + ' - الباسورد: ' + pass;
-  loadTechCount(); loadTechNames();
-  setTimeout(closeAddTech, 1500);
+    const custody=getCustodyForTech(name);
+    const msg=document.getElementById('techMsg');
+    if(msg) msg.textContent='تم حفظ بيانات الفني '+name+' بنجاح. على عهدته '+custody.length+' جهاز. اليوزر: '+name+' أو '+phone+'. تم إخفاء كلمة المرور حفاظًا على الخصوصية.';
+    document.getElementById('techPass').value='';
+    loadTechCount();loadTechNames();
+    setTimeout(closeAddTech,1500);
+  }catch(error){alert('فشل حفظ الفني: '+(error.message||String(error)));}
+  finally{technicianSaveBusy=false;if(btn){btn.disabled=false;btn.textContent="حفظ الفني";}}
 }
 
 function silentRefreshNow(){
