@@ -596,19 +596,28 @@ function downloadWarehouseExcel(){
 
   async function fillCustodyTechs(){
   let techs = [];
-  document.querySelectorAll('select option').forEach(o=>{
-    let v = (o.value||o.textContent||"").trim();
-    if(v && v!=="-- اختر الفني --" && v!=="" && !v.includes("اختار") && !v.includes("اختر")) techs.push(v);
+  let bad = ["ONT","ONU","Router","راوتر","Switch","سويتش","كل الأنواع","كل الانواع","-- اختر الفني --","-- اختار --","-- اختر --","اختار","اختر"];
+  document.querySelectorAll('select').forEach(sel=>{
+    let id = (sel.id + " " + sel.name + " " + sel.className).toLowerCase();
+    if(!id.includes("tech") && !id.includes("فني")) return;
+    if(sel.id === "custodyFromTech" || sel.id === "custodyToTech") return;
+    sel.querySelectorAll('option').forEach(o=>{
+      let v = (o.value||o.textContent||"").trim();
+      if(v && !bad.includes(v) && !v.includes("اختار") && !v.includes("اختر")) techs.push(v);
+    });
   });
   if(window.allTechs && allTechs.length){
-    techs = [...techs, ...allTechs.map(t=>{
-      if(typeof t === "string") return t.trim();
-      return (t.name || t.username || "").trim();
-    }).filter(Boolean)];
+    allTechs.forEach(t=>{
+      let v = (typeof t === "string" ? t : (t.name || t.username || "")).trim();
+      if(v && !bad.includes(v) && !v.includes("اختار") && !v.includes("اختر")) techs.push(v);
+    });
   }
   try{
     let {data} = await supabaseClient.from(WAREHOUSE_TABLE).select("tech");
-    if(data) techs = [...techs, ...data.map(r=> (r.tech||"").trim()).filter(Boolean)];
+    if(data) data.forEach(r=>{
+      let v = (r.tech||"").trim();
+      if(v && !bad.includes(v)) techs.push(v);
+    });
   }catch(e){}
 
   techs = [...new Set(techs)].sort();
@@ -622,7 +631,6 @@ function downloadWarehouseExcel(){
   if(techs.includes(curTo)) toSel.value = curTo;
   showPastedSerials();
 }
-
 function getPastedSerials(){
   let el = document.getElementById("custodyPasteSerials");
   if(!el) return [];
