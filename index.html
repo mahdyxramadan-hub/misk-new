@@ -178,28 +178,31 @@ async function login(e){if(e)e.preventDefault();let u=document.getElementById('u
   let pm=document.getElementById("passModal");
   if(pm&&!localStorage.getItem("misk_pass_changed_"+userObj.username))pm.style.display="flex";
 
-  // ===== قفل الفني - ده اللي اتضاف =====
+  // ===== قفل الفني - النسخة النهائية =====
   if(!userObj.isAdmin){
-    // اخفي أي زرار أدمن
-    document.querySelectorAll('[onclick*="openAddTech"],[onclick*="uploadSheetFast"],[onclick*="uploadWarehouseSheet"],[onclick*="archiveOldJobs"],[onclick*="downloadEndOfDay"],[onclick*="deleteAllDataSuper"],[onclick*="deleteOneJob"],[onclick*="transferTechCustody"],[onclick*="clearTechCustody"],[onclick*="addJob"],[onclick*="exportArchive"]').forEach(el=>{
+    // 1. شيل إضافة شغل ورفع شيت وإضافة فني وكل حاجة أدمن
+    document.querySelectorAll('[onclick*="openAddTech"],[onclick*="uploadSheetFast"],[onclick*="uploadWarehouseSheet"],[onclick*="archiveOldJobs"],[onclick*="downloadEndOfDay"],[onclick*="deleteAllDataSuper"],[onclick*="deleteOneJob"],[onclick*="transferTechCustody"],[onclick*="clearTechCustody"],[onclick*="addJob"],[onclick*="exportArchive"],[onclick*="saveTechnician"]').forEach(el=>{
       let p=el.closest('.panel');
       if(p) p.style.display='none';
       else el.style.display='none';
     });
-    // اخفي أقسام الأرشيف والمبيعات
-    ['view-archive','view-sales'].forEach(id=>{
-      let e=document.getElementById(id);
-      if(e) e.style.display='none';
-    });
-    // اخفي أزرار السايدبار بتاعة الأرشيف والمبيعات
-    document.querySelectorAll('.side-btn').forEach(b=>{
-      let t=b.innerText||'';
-      if(t.includes('أرشيف')||t.includes('المبيعات')||t.includes('التقارير')) b.style.display='none';
-    });
-    // اخفي خانة اختيار الفنيين كلها
+    // 2. شيل خانة اختيار الفني نفسها
     let techSel=document.getElementById('a_tech');
     if(techSel){let p=techSel.closest('.panel'); if(p) p.style.display='none'; else techSel.style.display='none';}
+    // 3. شيل الأرشيف بس، وسيب Overview و Orders والمخزن
+    let arch=document.getElementById('view-archive');
+    if(arch) arch.style.display='none';
+    document.querySelectorAll('.side-btn').forEach(b=>{
+      let t=b.innerText||'';
+      if(t.includes('أرشيف')) b.style.display='none';
+    });
+    // 4. شيل قايمة الفنيين
+    let tl=document.getElementById('techList');
+    if(tl){let p=tl.closest('.panel'); if(p) p.style.display='none'; else tl.style.display='none';}
   }
+
+  setTimeout(()=>{if(userObj.isAdmin){dashGo('overview',null)}else{dashGo('orders',null)}},300)
+}
 
   setTimeout(()=>{if(userObj.isAdmin){dashGo('overview',null)}else{dashGo('orders',null)}},300)
 }
