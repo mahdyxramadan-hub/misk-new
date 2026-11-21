@@ -209,6 +209,12 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <button onclick="transferTechCustody()" style="flex:1;padding:12px;border-radius:50px;border:0;background:#0b7ed1;color:#fff;font-weight:800">🔄 نقل عهدة فني لفني</button>
 <button onclick="clearTechCustody()" style="flex:1;padding:12px;border-radius:50px;border:0;background:#dc3545;color:#fff;font-weight:800">🗑️ مسح عهدة فني</button>
 </div>
+       <!-- نقل سيريال واحد من فني لفني -->
+<p style="margin:12px 0 4px; font-weight:800;">نقل سيريال واحد</p>
+<input id="singleSerial" placeholder="اكتب السيريال" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ddd">
+<input id="singleToTech" placeholder="إلى فني - مثال : الاباصيري - سيمه فاضل" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ddd">
+<button onclick="transferOneSerial()" style="flex:1;padding:12px;border-radius:50px;border:0;background:#0b7ed1;color:#fff;font-weight:800; width:100%;">نقل سيريال واحد لفني تاني</button>
+<div id="singleResult" style="margin-top:6px;font-weight:700;"></div>
 <p id="custodyMsg" style="font-size:13px"></p>
         <p id="warehouseUploadMsg" style="font-size:13px"></p>
         <p style="font-size:12px;color:#666">الأعمدة: A:sn - B:date - C:serial - D:date install - E:costmer phone - F:Model - G:Tech - H:Comment - بيقرا كل ورق المحافظات.</p>
@@ -604,6 +610,26 @@ async function transferTechCustody(){
   }
   document.getElementById("custodyMsg").innerText = `تم ✅ نقل ${data.length} جهاز من ${from} إلى ${to}`;
   loadWarehouse();
+}
+ async function transferOneSerial(){
+  const serial = document.getElementById('singleSerial').value.trim();
+  const toTech = document.getElementById('singleToTech').value.trim();
+  const res = document.getElementById('singleResult');
+  if(!serial || !toTech){ res.textContent = 'اكتب السيريال واسم الفني الجديد'; return; }
+
+  let { data: old } = await supabaseClient.from(WAREHOUSE_TABLE).select("*").eq("serial", serial).single();
+  if(!old){ res.textContent = 'السيريال ده مش موجود في المخزن'; return; }
+
+  let d = (typeof todayStr === 'function' ? todayStr() : todayStr);
+  let hist = (old.comment || "") + ` | نقل من ${old.tech} إلى ${toTech} بتاريخ ${d}`;
+  let { error } = await supabaseClient.from(WAREHOUSE_TABLE).update({ tech: toTech, comment: hist }).eq("serial", serial);
+
+  if(error){ res.textContent = 'في مشكلة: ' + error.message; }
+  else {
+    res.textContent = `تم نقل ${serial} من ${old.tech} إلى ${toTech}`;
+    document.getElementById('singleSerial').value = '';
+    loadWarehouse();
+  }
 }
 
 async function clearTechCustody(){
