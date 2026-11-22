@@ -10,60 +10,103 @@
 <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
-*{box-sizing:border-box;font-family:Tahoma}
-body{margin:0;background:#f4f0fa;color:#111;padding-bottom:85px}
-button{cursor:pointer}
-.hidden{display:none}
-input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:50px;font-size:15px}
-.hero-banner{width:100%;height:260px;overflow:hidden;position:relative;background:#111}
-.hero-banner img{width:100%;height:100%;object-fit:cover;display:block}
-.hero-banner .hero-label{position:absolute;bottom:8px;right:10px;background:rgba(0,0,0,.55);color:#fff;font-size:11px;padding:4px 10px;border-radius:20px}
-.top-img{height:130px;background:linear-gradient(180deg,#1a1a2e,#4A0E68);color:#fff;padding:14px;position:relative;overflow:hidden}
-.we-bar{background:#4A0E68;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:12px 16px}
-.we-bar .logo{font-size:24px;font-weight:900}.we-bar .logo span{color:#ff2a8a}
-.stats{display:flex;gap:10px;padding:12px}
-.stat{flex:1;background:#fff;border-radius:16px;padding:12px 6px;text-align:center;box-shadow:0 2px 8px #0001;cursor:pointer}
-.stat.active{border:2px solid #4A0E68}
-.circle{width:58px;height:58px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px}
-.c-green{background:#1aa34a}.c-yellow{background:#ff7a00}.c-red{background:#d32f2f}.c-purple{background:#7b2fbf}.c-blue{background:#0b7ed1}
-.job{background:#fff;margin:0 12px 12px;border:2px solid #1aa34a;border-radius:16px;padding:14px}
-.job h3{margin:0;font-size:17px;word-break:break-word;line-height:1.8}.job .meta{font-size:13px;line-height:2;color:#444;margin:8px 0;word-break:break-word;white-space:normal;overflow:hidden}
-.btn{width:100%;background:#4A0E68;color:#fff;border:0;padding:13px;border-radius:50px;font-weight:800;font-size:16px}
-.btn2{width:100%;background:#E6007E;color:#fff;border:0;padding:12px;border-radius:50px;font-weight:800;margin-top:8px}
-.badge{display:inline-block;background:#eef;border-radius:20px;padding:3px 8px;font-size:11px;font-weight:800}
-.serial{width:100%;padding:13px;border:2px solid #4A0E68;border-radius:50px;text-align:center;font-size:16px;font-weight:800}
-.row{display:flex;gap:8px;margin-top:8px}.row button{flex:1;padding:13px;border-radius:50px;font-weight:800;border:0}
-.saveBtn{background:#1aa34a!important;color:#fff!important}
-.blueBtn{background:#0b7ed1!important;color:#fff!important}
-.whiteBtn{background:#fff!important;color:#1aa34a!important;border:2px solid #1aa34a!important}
-.orangeBtn{background:#ff7a00!important;color:#fff!important}
-.bigSave{width:100%;background:#1aa34a;color:#fff;border:0;padding:17px;border-radius:50px;font-weight:900;font-size:18px;margin-top:12px}
-.tabs{position:fixed;bottom:0;right:0;left:0;background:#fff;display:flex;border-top:1px solid #eee;padding:10px 0;z-index:10}
-.tabs div{flex:1;text-align:center;font-size:12px;color:#777}.tabs div.active{color:#4A0E68;font-weight:800}
-#details{display:none;position:fixed;inset:0;background:#f4f0fa;z-index:50;overflow-y:auto;padding-bottom:90px}
-.d-head{background:#4A0E68;color:#fff;padding:14px;display:flex;gap:12px;align-items:center;position:sticky;top:0}
-.back{background:#fff;color:#4A0E68;border:0;padding:10px 16px;border-radius:50px;font-weight:800;font-size:18px}
-.d-box{background:#fff;margin:12px;border-radius:16px;padding:14px}
-.imgs{display:flex;gap:8px;margin-top:8px}.imgbox{flex:1;background:#eee;border:2px dashed #aaa;border-radius:12px;height:110px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:12px}
-.photoThumb{width:100%;height:90px;object-fit:contain;background:#f0f0f0;border-radius:8px;border:2px solid #1aa34a}
-#upDownModal,#recipientModal,#statusModal,#photoCamModal,#sendLockModal,#photoModal,#azkarModal,#passModal{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:none;align-items:center;justify-content:center;padding:14px}
-.box{background:#fff;color:#111;border-radius:18px;padding:18px;width:100%;max-width:380px;text-align:center}
-.box button{width:100%;padding:14px;border-radius:50px;font-weight:800;border:0;margin:6px 0}
-#loginPage{max-width:430px;margin:12px auto;background:#fff;border-radius:18px;padding:16px}
-#loginPage input{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:50px;text-align:center}
-.admin-layout{display:flex;gap:12px;align-items:flex-start}
-.admin-main{flex:1;min-width:0}
-.admin-side{width:320px;flex-shrink:0;position:sticky;top:10px;background:#fff;border-radius:16px;padding:12px;box-shadow:0 2px 10px #0002}
-.admin-box{border:1px solid #eee;border-radius:12px;margin-bottom:10px;overflow:hidden}
-.admin-box-head{padding:12px;font-weight:900;cursor:pointer;display:flex;justify-content:space-between;background:#f8f5ff}
-.admin-box-body{display:none;padding:12px}
-.admin-box.open .admin-box-body{display:block}
-.admin-box.open .admin-box-head{background:#4A0E68;color:#fff}
-.warehouseCard{background:#fff;margin:0 12px 12px;border:2px solid #ff7a00;border-radius:16px;padding:14px}
-#techList{max-height:170px;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:8px;text-align:right}
-.tech-chip{background:#fff;border:1px solid #dbe4ff;border-radius:10px;padding:6px 7px;font-size:11px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#111!important}
-.tech-chip b{font-size:11px;color:#111!important}
-.logout-small{background:#ff4757!important;color:#fff!important;border:0!important;padding:3px 9px!important;border-radius:12px!important;font-size:11px!important;width:auto!important;margin:0!important}
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
+body{min-height:100vh;color:#fff;overflow-x:hidden;background:#020617;display:flex;flex-direction:column}
+
+/* === الخلفية طبق الأصل - نجوم + Aurora === */
+.bg{position:fixed;inset:0;z-index:0;background:#020617}
+.bg::before{content:"";position:absolute;inset:0;background:
+radial-gradient(600px 400px at 15% 10%, rgba(0,240,255,.35) 0%, transparent 60%),
+radial-gradient(700px 500px at 85% 15%, rgba(168,85,247,.50) 0%, transparent 60%),
+radial-gradient(900px 600px at 50% 115%, rgba(34,211,238,.40) 0%, transparent 60%),
+radial-gradient(600px 400px at 90% 85%, rgba(236,72,153,.28) 0%, transparent 60%),
+radial-gradient(400px 300px at 30% 90%, rgba(99,102,241,.30) 0%, transparent 60%)}
+.bg::after{content:"";position:absolute;inset:0;background-image:
+radial-gradient(1.5px 1.5px at 10% 20%, #fff, transparent),
+radial-gradient(1px 1px at 25% 35%, #fff, transparent),
+radial-gradient(1.5px 1.5px at 35% 10%, #fff, transparent),
+radial-gradient(1px 1px at 50% 25%, #fff, transparent),
+radial-gradient(1.5px 1.5px at 65% 15%, #fff, transparent),
+radial-gradient(1px 1px at 80% 30%, #fff, transparent),
+radial-gradient(1.5px 1.5px at 90% 10%, #fff, transparent),
+radial-gradient(1px 1px at 15% 70%, #fff, transparent),
+radial-gradient(1px 1px at 45% 80%, #fff, transparent),
+radial-gradient(1.5px 1.5px at 75% 75%, #fff, transparent),
+radial-gradient(1px 1px at 95% 60%, #fff, transparent),
+radial-gradient(1px 1px at 5% 50%, #fff, transparent);
+opacity:.9}
+
+/* === النافبار === */
+.nav{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:22px 32px}
+.logo{font-weight:900;letter-spacing:2px;color:#67e8f9;font-size:22px;display:flex;gap:8px;align-items:center}
+.pill{border:1px solid rgba(255,255,255,.30);background:rgba(255,255,255,.12);padding:8px 16px;border-radius:30px;backdrop-filter:blur(12px);font-size:14px}
+
+.wrap{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 20px 50px}
+
+/* === الكورة طبق الأصل === */
+.orb{width:150px;height:150px;border-radius:50%;position:relative;z-index:3;
+background:radial-gradient(circle at 28% 25%, #ffffff 0%, #e0f2fe 8%, #a5f3fc 22%, #67e8f9 38%, #22d3ee 52%, #0ea5e9 68%, #7c3aed 88%, #4c1d95 100%);
+box-shadow:0 0 50px rgba(34,211,238,.9), 0 0 110px rgba(168,85,247,.7), inset -12px -18px 35px rgba(76,29,149,.55), inset 12px 12px 30px rgba(255,255,255,.65);
+animation:float 4s ease-in-out infinite}
+.orb::after{content:"⬡";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:64px;color:#fff;text-shadow:0 0 12px #fff, 0 0 25px #fff}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+
+/* === الكارت الزجاجي طبق الأصل === */
+.card{margin-top:-28px;width:100%;max-width:580px;background:linear-gradient(180deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,.07) 100%);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,.38);border-radius:28px;padding:36px 35px 30px;box-shadow:0 30px 80px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.4);position:relative;z-index:2}
+h1{text-align:center;font-size:35px;font-weight:900;letter-spacing:.5px}
+p.sub{text-align:center;color:#bae6fd;margin:10px 0 26px;font-size:16px}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label{display:block;margin-bottom:6px;color:#a5f3fc;font-size:14px;font-weight:600}
+input{width:100%;padding:14px 18px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:50px;color:#1e293b;outline:none;font-size:15px;font-weight:500}
+input::placeholder{color:#94a3b8}
+input:focus{border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,238,.25)}
+
+.row{display:flex;justify-content:space-between;align-items:center;margin:18px 0;color:#e2e8f0;font-size:14px}
+.row a{color:#67e8f9;text-decoration:none}
+.row label{display:flex;align-items:center;gap:7px;margin:0;color:#e2e8f0}
+.row label input{width:16px;height:16px;accent-color:#22d3ee}
+
+.btn{width:100%;padding:15px;border:none;border-radius:50px;background:linear-gradient(90deg,#22d3ee 0%, #8b5cf6 50%, #ec4899 100%);color:#fff;font-size:21px;font-weight:900;cursor:pointer;box-shadow:0 15px 35px rgba(168,85,247,.45);transition:.2s}
+.btn:hover{transform:translateY(-1px)}
+.passkey{width:100%;margin-top:12px;padding:13px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.38);color:#fff;border-radius:50px;cursor:pointer;font-size:16px}
+
+.ai{margin-top:20px;display:flex;gap:12px;align-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);padding:12px 14px;border-radius:16px}
+.ai .avatar{width:45px;height:45px;min-width:45px;border-radius:50%;background:#22d3ee;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 0 15px rgba(34,211,238,.6)}
+.ai b{font-size:15px}
+.ai small{color:#67e8f9;font-size:13px}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.card{padding:25px 20px}.nav{padding:18px 20px}}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="nav"><div class="logo">⬡ AURA 2027</div><div class="pill">🛡️ Secure</div></div>
+
+<div class="wrap">
+  <div class="orb" id="orb"></div>
+  <div class="card">
+    <h1>Welcome Back</h1>
+    <p class="sub">Sign in to continue in AURA 2027</p>
+    <div class="grid">
+      <div><label>Username</label><input id="user" placeholder="Enter username"></div>
+      <div><label>Password</label><input id="pass" type="password" placeholder="••••••••"></div>
+    </div>
+    <div class="row"><label><input type="checkbox" checked> Remember me</label><a href="#">Forgot Password?</a></div>
+    <button class="btn" onclick="login()">Sign In →</button>
+    <button class="passkey" onclick="alert('Passkey - Face ID / Fingerprint')">🔑 Sign in with Passkey</button>
+    <div class="ai"><div class="avatar">🤖</div><div><b>AURA • AI Assistant</b><br><small>● Online • Ready to help if you forgot password</small></div></div>
+  </div>
+</div>
+
+<script>
+function login(){let u=document.getElementById('user').value;if(!u) return alert('Enter username');alert('Welcome '+u+' 🚀');}
+let orb=document.getElementById('orb');
+document.addEventListener('mousemove',e=>{
+  let x=(e.clientX/window.innerWidth-0.5)*22;
+  let y=(e.clientY/window.innerHeight-0.5)*22;
+  orb.style.translate=x+'px '+y+'px';
+});
 @media(max-width:800px){.admin-layout{display:block}.admin-side{width:auto;position:static;margin:0 12px 12px}.hero-banner{height:210px}}
  /* لاب 4 أوردرات جنب بعض / موبايل 1 تحت بعض */
 #jobsList, #jobsContainer, #techJobsList, #jobsGrid, .jobs-list, .jobs-container, #jobs {
