@@ -1108,6 +1108,88 @@ body:has(#appPage:not(.hidden))::before{
 }
 </style>
 
+
+<style id="MISK_NEONSPACE_FINAL_VISUAL_LAYER">
+/* Final visual layer: replace legacy-looking widgets with a cohesive dashboard */
+#appPage:not(.hidden){padding:18px 252px 26px 18px!important;background:transparent!important}
+#appPage .admin-layout,#appPage .admin-main{display:block!important;width:100%!important;max-width:none!important}
+#appPage .admin-main>*{box-sizing:border-box}
+#appPage .admin-main>#followerCard{
+  margin:0 0 14px!important;padding:18px 20px!important;
+  background:linear-gradient(120deg,rgba(10,22,48,.96),rgba(15,23,53,.94))!important;
+  border:1px solid rgba(90,210,255,.3)!important;border-radius:20px!important;
+  box-shadow:0 12px 32px rgba(0,0,0,.22),inset 0 0 32px rgba(40,190,255,.05)!important
+}
+#appPage #followerCard h3{font-size:16px!important;margin:0 0 12px!important;color:#eaf7ff!important}
+#appPage #followerCard input{height:44px!important;border-radius:12px!important;text-align:right!important;padding:0 14px!important}
+#appPage #followerCard button{width:auto!important;margin-top:10px!important;padding:9px 16px!important;background:linear-gradient(90deg,#ec4774,#b52e67)!important}
+#appPage .stats{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important;padding:0!important;margin:0 0 16px!important}
+#appPage .stat{
+  position:relative!important;min-height:148px!important;display:flex!important;flex-direction:column!important;
+  align-items:center!important;justify-content:center!important;gap:6px!important;padding:18px!important;
+  margin:0!important;overflow:hidden!important;text-align:center!important;
+  background:linear-gradient(145deg,rgba(11,22,48,.97),rgba(17,23,52,.92))!important;
+  border:1px solid rgba(83,193,255,.25)!important;border-radius:22px!important;
+  box-shadow:0 12px 30px rgba(0,0,0,.25),inset 0 1px rgba(255,255,255,.04)!important
+}
+#appPage .stat:before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,transparent,#55e7ff, #9b75ff,transparent);opacity:.75}
+#appPage .stat:after{content:"";position:absolute;width:170px;height:170px;border-radius:50%;top:-95px;left:-45px;background:radial-gradient(circle,rgba(73,193,255,.13),transparent 70%);pointer-events:none}
+#appPage .stat b{font-size:17px!important;color:#f3f8ff!important;position:relative}
+#appPage .stat small{font-size:12px!important;color:#9db5d7!important;position:relative}
+#appPage .circle{width:62px!important;height:62px!important;margin:0 0 3px!important;font-size:21px!important;font-weight:900!important;
+  box-shadow:0 0 22px currentColor!important;border:2px solid rgba(255,255,255,.2)!important}
+#appPage .stat.active{border-color:#9b75ff!important;box-shadow:0 0 28px rgba(155,117,255,.16)!important}
+#appPage #archiveFilter{padding:16px!important;margin:0 0 14px!important}
+#appPage #searchInput{height:50px!important;padding:0 18px!important;font-size:15px!important;
+  background:linear-gradient(120deg,rgba(7,17,40,.96),rgba(13,22,49,.96))!important;
+  border:1px solid rgba(85,220,255,.35)!important;border-radius:16px!important;
+  box-shadow:0 8px 24px rgba(0,0,0,.2),inset 0 0 18px rgba(60,190,255,.04)!important}
+#appPage #searchInput:focus{border-color:#55e7ff!important;box-shadow:0 0 0 3px rgba(85,231,255,.09),0 0 25px rgba(85,231,255,.1)!important}
+#appPage #searchInput::placeholder{color:#91a9ca!important}
+#appPage .admin-main>div[style*="line-height:1.7"],
+#appPage .admin-main>div[style*="line-height: 1.7"]{
+  padding:14px 18px!important;margin:0 0 14px!important;
+  background:linear-gradient(120deg,rgba(9,20,44,.95),rgba(15,23,51,.95))!important;
+  color:#c8d9f2!important;border:1px solid rgba(93,175,255,.2)!important;border-radius:16px!important;
+  font-size:13px!important;line-height:1.9!important;box-shadow:0 8px 24px rgba(0,0,0,.18)!important
+}
+#appPage #uploadingBanner{background:linear-gradient(90deg,#e66b20,#d94a25)!important;border-radius:12px!important}
+#appPage #jobsList,#appPage #warehouseList{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important}
+#appPage #jobsList .job,#appPage #warehouseList .warehouseCard{
+  margin:0!important;padding:16px!important;border-radius:20px!important;
+  background:linear-gradient(145deg,rgba(10,20,45,.98),rgba(16,23,52,.95))!important;
+  border:1px solid rgba(75,190,255,.25)!important;color:#eaf4ff!important;
+  box-shadow:0 10px 28px rgba(0,0,0,.23),inset 0 0 24px rgba(45,180,255,.035)!important
+}
+#appPage #jobsList .job h3{font-size:16px!important;color:#f5f9ff!important}
+#appPage #jobsList .job .meta{color:#b6c9e4!important}
+#appPage #jobsList .job button,#appPage #warehouseList button{
+  border-radius:11px!important;border:1px solid rgba(255,255,255,.12)!important
+}
+#appPage .admin-side>div:first-child{background:linear-gradient(145deg,rgba(8,20,44,.96),rgba(15,24,52,.96))!important;
+  border:1px solid rgba(80,195,255,.25)!important;border-radius:20px!important;box-shadow:0 12px 30px rgba(0,0,0,.24)!important}
+#appPage #techList .tech-chip{border-radius:12px!important;padding:8px!important}
+#appPage #loadMoreWrap{padding:12px 0!important}
+#appPage .top-img{display:flex!important;flex-direction:column!important;justify-content:center!important;height:auto!important;min-height:100px!important;
+  padding:18px 24px!important;border-radius:20px!important;background:linear-gradient(110deg,rgba(8,18,43,.97),rgba(24,20,55,.94))!important;
+  border:1px solid rgba(85,220,255,.24)!important;box-shadow:0 12px 30px rgba(0,0,0,.22)!important}
+#appPage .top-img br{display:none!important}
+#appPage .top-img #welcome{font-size:24px!important;margin:0!important}
+#appPage .top-img #techInfo{margin-top:5px!important;color:#a9c4e7!important}
+#appPage .we-bar{display:none!important}
+#bottomNav{right:16px!important;left:auto!important;width:220px!important}
+#bottomNav div{min-height:46px!important;border-radius:13px!important}
+@media(max-width:1100px){
+ #appPage #jobsList,#appPage #warehouseList{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:760px){
+ #appPage:not(.hidden){padding:10px 10px 90px!important}
+ #appPage .stats{grid-template-columns:1fr!important}
+ #appPage .stat{min-height:105px!important}
+ #appPage #jobsList,#appPage #warehouseList{grid-template-columns:1fr!important}
+}
+</style>
+
 </head>
 <body>
 <div class="hero-banner"><img id="serverRotator" src="server1.jpg" alt="MISK"><div class="hero-label">MISK • SERVER • CCTV</div></div>
