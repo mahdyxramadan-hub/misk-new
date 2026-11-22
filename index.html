@@ -893,7 +893,221 @@ body:has(#appPage:not(.hidden)){background:radial-gradient(ellipse at 82% 8%,rgb
 @media(max-width:800px){#appPage{padding:10px 10px 88px!important}.admin-layout{display:block!important}.admin-side{width:auto!important;position:static!important;margin:0 0 12px!important}.stats{grid-template-columns:repeat(3,minmax(0,1fr))!important}.admin-main{width:100%}#bottomNav{left:8px;right:8px;top:auto;bottom:8px;width:auto;height:68px;flex-direction:row;justify-content:space-around;padding:6px!important;border-radius:18px!important}#bottomNav:before{display:none!important}#bottomNav div{flex:1;justify-content:center;flex-direction:column;gap:1px;padding:5px 2px!important;min-height:0;font-size:10px!important;text-align:center}#bottomNav div span{font-size:18px!important}#appPage .admin-layout{min-height:0}#appPage #followerCard{margin:0 0 12px!important}}
 @media(max-width:480px){#appPage .stats{grid-template-columns:1fr!important}.stat{display:flex;align-items:center;justify-content:flex-start;gap:10px;text-align:right!important}.circle{margin:0!important;flex-shrink:0}#bottomNav div{font-size:9px!important}#bottomNav div span{font-size:17px!important}}
 @media(prefers-reduced-motion:reduce){#appPage.dashboard-enter{animation:none!important}}
+\n/* ===== MISK NEON SPACE: ACTUAL INTERNAL LAYOUT REDESIGN ===== */
+:root{--misk-bg:#050817;--misk-panel:rgba(9,18,42,.88);--misk-panel2:rgba(12,25,55,.78);--misk-line:rgba(76,192,255,.24);--misk-cyan:#46e2ff;--misk-purple:#b36cff;--misk-text:#edf6ff;--misk-muted:#9db3d1}
+body:has(#appPage:not(.hidden)){background:#050817!important;color:var(--misk-text)!important;padding:0!important}
+#appPage{padding:18px 18px 28px 258px!important;min-height:100vh;background:radial-gradient(ellipse at 75% 8%,rgba(25,95,200,.2),transparent 38%),radial-gradient(ellipse at 35% 95%,rgba(132,42,205,.18),transparent 34%),linear-gradient(135deg,#030611,#07152d 58%,#08071b)!important;overflow-x:hidden}
+#appPage:before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(circle at 12% 25%,rgba(0,225,255,.08),transparent 22%),radial-gradient(circle at 86% 78%,rgba(168,85,247,.09),transparent 27%)}
+#appPage>*{position:relative;z-index:1}
+/* Dashboard top header */
+#appPage>.top-img{display:flex!important;align-items:center;justify-content:space-between;height:auto!important;min-height:88px;margin:0 0 14px!important;padding:18px 22px!important;border:1px solid var(--misk-line);border-radius:22px;background:linear-gradient(110deg,rgba(7,21,48,.94),rgba(15,22,50,.76))!important;box-shadow:0 12px 35px rgba(0,0,0,.24),inset 0 0 28px rgba(38,185,255,.04);backdrop-filter:blur(18px)}
+#appPage>.top-img #serverRotator{display:none!important}
+#appPage>.top-img small:first-child{display:none!important}
+#appPage>.top-img #welcome{font-size:24px!important;color:#fff!important;display:inline-block;margin-bottom:5px}
+#appPage>.top-img #techInfo{color:#a8c4e8!important;font-size:13px}
+#appPage>.top-img>div[style*="position:absolute"]{position:static!important;font-size:22px;margin-inline-start:20px}
+#appPage>.we-bar{display:none!important}
+#appPage>div:first-child{display:flex!important;justify-content:flex-start!important;margin:0 0 14px!important}
+#appPage>div:nth-of-type(2)>div{width:100%;display:flex;align-items:center;justify-content:flex-start;gap:8px;flex-wrap:wrap;background:var(--misk-panel)!important;border:1px solid var(--misk-line)!important;color:var(--misk-text)!important;border-radius:16px!important;padding:9px 12px!important;box-shadow:0 0 22px rgba(0,190,255,.06)!important;backdrop-filter:blur(18px)}
+#appPage .admin-layout{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(260px,310px)!important;gap:16px!important;align-items:start!important;min-height:calc(100vh - 150px)}
+#appPage .admin-main{grid-column:1;grid-row:1;min-width:0;width:100%}
+#appPage #adminAdd{grid-column:2;grid-row:1;min-width:0;width:100%}
+#appPage .admin-side{width:100%!important;position:static!important;top:auto!important;background:transparent!important;border:0!important;border-radius:0!important;padding:0!important;box-shadow:none!important;margin:0 0 12px!important}
+#appPage .admin-side>div:first-child{background:linear-gradient(145deg,rgba(7,20,46,.96),rgba(20,18,52,.94))!important;border:1px solid rgba(55,190,255,.32)!important;border-radius:20px!important;padding:15px!important;box-shadow:0 0 26px rgba(0,190,255,.07)!important}
+#appPage #followerCard,#appPage #archiveFilter,#appPage .admin-main>div[style*="background:#fff"],#appPage .admin-main>div[style*="background: #fff"]{background:var(--misk-panel)!important;color:var(--misk-text)!important;border:1px solid var(--misk-line)!important;border-radius:18px!important;box-shadow:0 10px 30px rgba(0,0,0,.18),inset 0 0 24px rgba(0,190,255,.04)!important;backdrop-filter:blur(16px)}
+#appPage #followerCard{margin:0 0 14px!important;border-width:1px!important;padding:15px!important}
+#appPage #followerCard h3{font-size:15px;color:#eaf6ff}
+#appPage .stats{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px!important;padding:0 0 14px!important}
+#appPage .stat{background:linear-gradient(145deg,rgba(8,24,54,.96),rgba(14,20,48,.9))!important;border:1px solid rgba(72,183,255,.28)!important;border-radius:20px!important;color:var(--misk-text)!important;box-shadow:0 8px 24px rgba(0,0,0,.22),inset 0 0 18px rgba(40,180,255,.05)!important;padding:16px 10px!important;transition:transform .2s,border-color .2s,box-shadow .2s}
+#appPage .stat:hover{transform:translateY(-2px);box-shadow:0 0 22px rgba(0,205,255,.14)!important}
+#appPage .stat.active{border-color:var(--misk-purple)!important;box-shadow:0 0 20px rgba(168,85,247,.22)!important}
+#appPage .circle{box-shadow:0 0 16px currentColor;border:2px solid rgba(255,255,255,.16)}
+#appPage #searchInput{background:rgba(7,18,42,.9)!important;color:#fff!important;border:1px solid rgba(52,194,255,.32)!important;border-radius:15px!important;box-shadow:0 0 18px rgba(0,190,255,.06);margin:0 0 12px!important}
+#appPage input,#appPage select,#appPage textarea{background:rgba(5,15,35,.92)!important;color:#eaf4ff!important;border:1px solid rgba(70,175,255,.26)!important;border-radius:12px!important}
+#appPage input::placeholder,#appPage textarea::placeholder{color:#91a8c8!important}
+#appPage .job{background:linear-gradient(145deg,rgba(8,20,46,.96),rgba(13,25,52,.92))!important;color:var(--misk-text)!important;border:1px solid rgba(40,205,255,.28)!important;border-radius:18px!important;margin:0 0 12px!important;padding:15px!important;box-shadow:0 8px 24px rgba(0,0,0,.2),inset 0 0 20px rgba(40,180,255,.04)!important;transition:transform .18s,border-color .18s,box-shadow .18s}
+#appPage .job:hover{transform:translateY(-2px);border-color:rgba(168,85,247,.6)!important;box-shadow:0 0 22px rgba(0,190,255,.1)!important}
+#appPage .job .meta{color:#b5c8e3!important}#appPage .job h3{color:#fff!important}
+#appPage #jobsList{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start}
+#appPage #warehouseList{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#appPage .warehouseCard{background:var(--misk-panel)!important;color:var(--misk-text)!important;border:1px solid rgba(255,170,50,.4)!important;border-radius:18px!important;margin:0!important;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+#appPage .admin-box{background:var(--misk-panel)!important;border:1px solid var(--misk-line)!important;border-radius:16px!important;margin-bottom:10px!important;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.16)}
+#appPage .admin-box-head{background:linear-gradient(100deg,rgba(0,172,255,.12),rgba(146,65,255,.14))!important;color:#eaf4ff!important;border-bottom:1px solid rgba(80,180,255,.15);padding:14px!important}
+#appPage .admin-box.open .admin-box-head{background:linear-gradient(100deg,rgba(0,198,255,.25),rgba(146,65,255,.25))!important;color:#fff!important}
+#appPage .admin-box-body{background:rgba(5,14,32,.45);color:var(--misk-text)}
+#appPage button,.logout-small{border-radius:12px!important;border:1px solid rgba(80,190,255,.22)!important;transition:filter .16s,transform .16s,box-shadow .16s}
+#appPage button:hover{filter:brightness(1.12);transform:translateY(-1px);box-shadow:0 0 15px rgba(0,190,255,.14)}
+#appPage #techList .tech-chip{background:rgba(7,20,42,.9)!important;color:#eaf4ff!important;border-color:rgba(70,180,255,.25)!important}#appPage #techList .tech-chip b{color:#eaf4ff!important}
+#bottomNav{position:fixed!important;left:14px!important;right:auto!important;top:14px!important;bottom:14px!important;width:224px!important;z-index:1200!important;display:flex!important;flex-direction:column!important;justify-content:flex-start!important;gap:7px!important;background:linear-gradient(180deg,rgba(6,15,38,.96),rgba(9,13,34,.96))!important;border:1px solid rgba(65,190,255,.28)!important;border-radius:22px!important;padding:14px 10px!important;box-shadow:0 10px 40px rgba(0,0,0,.32),inset 0 0 28px rgba(0,190,255,.04)!important;backdrop-filter:blur(20px)}
+#bottomNav:before{content:"◈ MISK TECHNOLOGY";display:block;color:#58e2ff;font-size:18px;font-weight:900;letter-spacing:1px;padding:12px 6px 18px;text-align:center;border-bottom:1px solid rgba(70,190,255,.18);margin-bottom:8px}
+#bottomNav div{display:flex!important;align-items:center!important;gap:12px!important;text-align:right!important;padding:11px 12px!important;border-radius:13px!important;color:#c5d7ef!important;font-weight:800!important;font-size:14px!important;cursor:pointer!important;border:1px solid transparent!important;min-height:48px!important;flex:none!important}
+#bottomNav div span{display:inline!important;font-size:20px!important;margin:0!important;min-width:24px!important}
+#bottomNav div.active{background:linear-gradient(100deg,rgba(0,200,255,.28),rgba(144,55,255,.32))!important;border-color:rgba(70,220,255,.48)!important;color:#fff!important;box-shadow:0 0 15px rgba(0,200,255,.14),inset 0 0 12px rgba(160,70,255,.1)}
+#bottomNav div:hover{background:rgba(30,90,170,.2);border-color:rgba(60,190,255,.2)}
+#bottomNav #archiveNav[style*="display: none"]{display:none!important}
+#appPage #details{background:linear-gradient(145deg,#06132c,#0c1534)!important;color:#eaf4ff!important}
+#appPage .d-head,#appPage .d-box{background:var(--misk-panel)!important;color:var(--misk-text)!important;border:1px solid var(--misk-line)!important;border-radius:16px!important;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+#upDownModal,#recipientModal,#statusModal,#photoCamModal,#sendLockModal,#azkarModal,#passModal{background:rgba(2,5,16,.78)!important;backdrop-filter:blur(12px)}
+#upDownModal .box,#recipientModal .box,#statusModal .box,#photoCamModal .box,#sendLockModal .box,#azkarModal .box,#passModal .box{background:linear-gradient(145deg,#091833,#101a3a)!important;color:#eaf4ff!important;border:1px solid rgba(60,190,255,.28)!important;border-radius:20px!important;box-shadow:0 0 30px rgba(0,180,255,.12)}
+#appPage #loadMoreWrap{padding:12px!important;text-align:center}#appPage #loadMoreWrap button{background:linear-gradient(90deg,#00b9ef,#8b35ee)!important;color:white!important;border:0!important;padding:12px 24px!important}
+#appPage #archiveFilter select{background:#07142d!important}#appPage hr{border-color:rgba(70,180,255,.18)}#appPage #uploadingBanner{border-radius:14px!important;margin:0 0 12px!important}
+@media(max-width:1200px){#appPage{padding-left:238px!important}#bottomNav{width:205px!important}#appPage .admin-layout{grid-template-columns:minmax(230px,270px) minmax(0,1fr)!important}}
+@media(max-width:900px){#appPage{padding:10px 10px 90px!important}#appPage .admin-layout{display:flex!important;flex-direction:column!important;min-height:0!important}#appPage .admin-main,#appPage #adminAdd{width:100%!important;grid-column:auto!important;grid-row:auto!important}#appPage .admin-side{width:100%!important}#bottomNav{left:8px!important;right:8px!important;top:auto!important;bottom:8px!important;width:auto!important;height:68px!important;flex-direction:row!important;justify-content:space-around!important;padding:6px!important;border-radius:18px!important}#bottomNav:before{display:none!important}#bottomNav div{flex:1!important;justify-content:center!important;flex-direction:column!important;gap:1px!important;padding:5px 2px!important;min-height:0!important;font-size:10px!important;text-align:center!important}#bottomNav div span{font-size:18px!important}#appPage .stats{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:600px){#appPage>.top-img{min-height:70px;padding:12px!important}#appPage>.top-img #welcome{font-size:19px!important}#appPage #jobsList,#appPage #warehouseList{grid-template-columns:1fr!important}#appPage .stats{grid-template-columns:1fr!important}#appPage .stat{display:flex;align-items:center;justify-content:flex-start;gap:10px;text-align:right!important}#appPage .circle{margin:0!important;flex-shrink:0}#bottomNav div{font-size:9px!important}#bottomNav div span{font-size:17px!important}}
+@media(prefers-reduced-motion:reduce){#appPage.dashboard-enter{animation:none!important}}
+
 </style>
+
+<style id="MISK_NEONSPACE_TRUE_REDESIGN">
+/* ===== MISK NEON SPACE: FULL INTERNAL UI REDESIGN ===== */
+:root{
+  --misk-bg:#050816;--misk-panel:rgba(11,18,42,.84);--misk-panel2:rgba(15,24,51,.92);
+  --misk-cyan:#55e7ff;--misk-blue:#579bff;--misk-purple:#9b75ff;--misk-text:#eaf3ff;
+  --misk-muted:#9aabc7;--misk-border:rgba(88,195,255,.22);
+}
+body:has(#appPage:not(.hidden)){
+  background:
+    radial-gradient(ellipse at 15% 8%,rgba(30,92,170,.20),transparent 32%),
+    radial-gradient(ellipse at 80% 0%,rgba(114,52,186,.18),transparent 30%),
+    linear-gradient(145deg,#050816,#090d20 48%,#070b19)!important;
+  color:var(--misk-text)!important;
+}
+body:has(#appPage:not(.hidden))::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.22;
+  background-image:radial-gradient(1px 1px at 8% 17%,#b9eaff 99%,transparent),
+    radial-gradient(1px 1px at 24% 70%,#8bbdff 99%,transparent),
+    radial-gradient(1px 1px at 51% 30%,#fff 99%,transparent),
+    radial-gradient(2px 2px at 77% 61%,#9edcff 99%,transparent),
+    radial-gradient(1px 1px at 91% 13%,#d4baff 99%,transparent);
+  background-size:240px 190px,310px 260px,360px 290px,280px 230px,400px 300px;
+}
+#appPage:not(.hidden){
+  position:relative;z-index:1;min-height:100vh;box-sizing:border-box;
+  padding:16px 250px 28px 18px!important;margin:0!important;width:100%!important;max-width:none!important;
+  animation: miskNeonEntrance 1.25s cubic-bezier(.18,.75,.22,1) both;
+}
+@keyframes miskNeonEntrance{
+  0%{opacity:0;transform:perspective(1400px) translateZ(-480px) scale(.56) rotateY(-12deg)}
+  70%{opacity:1;transform:perspective(1400px) translateZ(20px) scale(1.015) rotateY(1deg)}
+  100%{opacity:1;transform:perspective(1400px) translateZ(0) scale(1) rotateY(0)}
+}
+#appPage .top-img{
+  min-height:112px!important;height:auto!important;box-sizing:border-box!important;margin:0 0 16px!important;
+  padding:22px 26px!important;position:relative!important;display:flex!important;align-items:center!important;
+  border-radius:22px!important;overflow:hidden!important;
+  background:linear-gradient(110deg,rgba(9,18,44,.95),rgba(24,21,59,.88))!important;
+  border:1px solid var(--misk-border)!important;
+  box-shadow:0 14px 38px rgba(0,0,0,.24),inset 0 0 30px rgba(64,190,255,.05)!important;
+  text-align:right!important;color:var(--misk-text)!important;
+}
+#appPage .top-img:after{content:"";position:absolute;inset:auto -8% -80% 30%;height:180%;border-radius:50%;
+  background:radial-gradient(circle,rgba(83,222,255,.14),transparent 65%);pointer-events:none}
+#appPage .top-img small:first-child{display:none!important}
+#appPage #welcome{font-size:24px!important;font-weight:900!important;color:#f4f8ff!important;position:relative;z-index:1}
+#appPage #techInfo{color:#a6c2e6!important;display:block!important;margin-top:5px!important;position:relative;z-index:1}
+#appPage .top-img>div[style*="position:absolute"]{position:static!important;margin-inline-start:auto!important;font-size:22px!important}
+#appPage .we-bar{display:none!important}
+#appPage>div:first-child{background:rgba(8,15,34,.78)!important;border:1px solid var(--misk-border)!important;
+  border-radius:14px!important;color:#cfe3ff!important;box-shadow:0 8px 24px rgba(0,0,0,.2)!important;
+  margin:0 0 14px!important;padding:8px 12px!important;justify-content:flex-start!important}
+#appPage>div:first-child button{border-radius:10px!important}
+#appPage .admin-layout{display:block!important;width:100%!important;max-width:none!important;margin:0!important}
+#appPage .admin-main{width:100%!important;max-width:none!important;min-width:0!important;background:transparent!important;
+  border:0!important;box-shadow:none!important;padding:0!important;margin:0!important}
+#appPage #followerCard,#appPage #archiveFilter,#appPage .admin-main>div[style*="background:#fff"],
+#appPage .admin-main>div[style*="background: #fff"]{
+  background:var(--misk-panel)!important;color:var(--misk-text)!important;border:1px solid var(--misk-border)!important;
+  border-radius:18px!important;box-shadow:0 10px 28px rgba(0,0,0,.2)!important;backdrop-filter:blur(16px)!important;
+}
+#appPage #followerCard{margin:0 0 14px!important}
+#appPage #followerCard h3,#appPage #archiveFilter b{color:#eaf3ff!important}
+#appPage #followerMsg{color:#ff9ca9!important}
+#appPage .stats{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important;
+  padding:0!important;margin:0 0 16px!important;background:transparent!important}
+#appPage .stat{min-width:0!important;margin:0!important;padding:18px 14px!important;text-align:center!important;
+  border-radius:20px!important;background:linear-gradient(145deg,rgba(12,24,51,.92),rgba(17,20,48,.88))!important;
+  border:1px solid rgba(80,193,255,.24)!important;color:#eaf3ff!important;
+  box-shadow:0 12px 28px rgba(0,0,0,.22),inset 0 0 24px rgba(64,180,255,.035)!important;
+  transition:border-color .18s ease,box-shadow .18s ease!important}
+#appPage .stat:hover{border-color:rgba(85,231,255,.55)!important;box-shadow:0 0 22px rgba(50,190,255,.12)!important}
+#appPage .stat b{color:#eaf3ff!important;font-size:15px!important}
+#appPage .stat small{color:#9eb4d4!important}
+#appPage .circle{box-shadow:0 0 20px currentColor!important;border:1px solid rgba(255,255,255,.18)!important}
+#appPage #searchInput{width:100%!important;box-sizing:border-box!important;background:rgba(9,17,39,.92)!important;
+  color:#eff7ff!important;border:1px solid rgba(90,195,255,.27)!important;border-radius:15px!important;
+  padding:13px 16px!important;outline:none!important;margin:0 0 14px!important}
+#appPage #searchInput::placeholder{color:#8297b7!important}
+#appPage #jobsList,#appPage #warehouseList{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:14px!important;width:100%!important;padding:0!important;margin:0!important}
+#appPage #jobsList>* ,#appPage #warehouseList>*{min-width:0!important;width:auto!important;max-width:none!important;margin:0!important}
+#appPage .job,#appPage .warehouseCard,#appPage #jobsList>div,#appPage #warehouseList>div{
+  background:linear-gradient(145deg,rgba(10,20,44,.95),rgba(15,22,47,.94))!important;
+  color:#eaf3ff!important;border:1px solid rgba(80,190,255,.22)!important;border-radius:18px!important;
+  box-shadow:0 10px 26px rgba(0,0,0,.2)!important;backdrop-filter:blur(12px)!important;
+}
+#appPage .job *,#appPage .warehouseCard *{color:inherit}
+#appPage .job button,#appPage .warehouseCard button,#appPage button{
+  border-radius:12px!important;transition:filter .15s ease,border-color .15s ease!important
+}
+#appPage button:hover{filter:brightness(1.08)!important}
+#appPage .admin-side{width:100%!important;position:static!important;margin:14px 0!important}
+#appPage #techList{max-height:300px!important}
+#appPage .admin-box,#appPage .admin-box-head,#appPage .admin-box-body{
+  background:var(--misk-panel)!important;color:var(--misk-text)!important;border-color:var(--misk-border)!important
+}
+#appPage input,#appPage select,#appPage textarea{background:#0a132b!important;color:#edf6ff!important;border-color:rgba(88,195,255,.28)!important}
+#appPage input::placeholder,#appPage textarea::placeholder{color:#8296b5!important}
+#appPage #loadMoreWrap{padding:14px 0!important}
+#appPage .hidden{display:none!important}
+#appPage #uploadingBanner{border-radius:12px!important;margin:0 0 12px!important}
+#bottomNav{
+  position:fixed!important;right:16px!important;left:auto!important;top:16px!important;bottom:16px!important;
+  width:218px!important;height:auto!important;z-index:1200!important;display:flex!important;flex-direction:column!important;
+  align-items:stretch!important;justify-content:flex-start!important;gap:8px!important;
+  padding:14px 10px!important;box-sizing:border-box!important;overflow:auto!important;
+  border:1px solid rgba(85,220,255,.25)!important;border-radius:24px!important;
+  background:linear-gradient(180deg,rgba(7,15,37,.97),rgba(11,13,35,.97))!important;
+  box-shadow:0 18px 50px rgba(0,0,0,.4),inset 0 0 30px rgba(61,176,255,.035)!important;
+  backdrop-filter:blur(20px)!important
+}
+#bottomNav:before{content:"MISK TECHNOLOGY";display:block;text-align:center;font-size:19px;font-weight:950;
+  letter-spacing:1.5px;color:#55e7ff;padding:14px 8px 20px;margin:0 0 8px;
+  border-bottom:1px solid rgba(85,220,255,.18);text-shadow:0 0 18px rgba(85,220,255,.3)}
+#bottomNav div{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;
+  gap:12px!important;text-align:right!important;min-height:48px!important;box-sizing:border-box!important;
+  padding:10px 12px!important;border-radius:14px!important;color:#bfd2ec!important;font-size:14px!important;font-weight:800!important;
+  border:1px solid transparent!important;background:transparent!important;cursor:pointer!important}
+#bottomNav div span{font-size:20px!important;display:inline-block!important;min-width:24px!important}
+#bottomNav div.active{background:linear-gradient(100deg,rgba(46,176,255,.17),rgba(145,91,255,.13))!important;
+  color:#f5fbff!important;border-color:rgba(85,220,255,.3)!important;box-shadow:inset -3px 0 0 #55e7ff,0 0 20px rgba(48,177,255,.08)!important}
+#bottomNav div:hover{background:rgba(76,170,255,.09)!important;border-color:rgba(85,220,255,.18)!important}
+#bottomNav #archiveNav{display:none!important}
+#details,#azkarModal,#sendLockModal,#addTechModal{backdrop-filter:blur(12px)}
+#details{background:#050816!important;color:#edf6ff!important}
+#details .d-box{background:var(--misk-panel)!important;color:var(--misk-text)!important;border-color:var(--misk-border)!important}
+@media(max-width:1100px){
+ #appPage:not(.hidden){padding-right:230px!important;padding-left:12px!important}
+ #appPage #jobsList,#appPage #warehouseList{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:760px){
+ #appPage:not(.hidden){padding:10px 10px 88px!important}
+ #bottomNav{right:8px!important;left:8px!important;top:auto!important;bottom:8px!important;width:auto!important;height:68px!important;
+   flex-direction:row!important;align-items:center!important;justify-content:space-around!important;padding:5px!important;border-radius:18px!important}
+ #bottomNav:before{display:none!important}
+ #bottomNav div{flex:1!important;min-height:52px!important;flex-direction:column!important;justify-content:center!important;gap:2px!important;
+   padding:5px 2px!important;font-size:10px!important;text-align:center!important}
+ #bottomNav div span{font-size:18px!important}
+ #appPage .top-img{min-height:90px!important;padding:16px!important}
+ #appPage #welcome{font-size:20px!important}
+ #appPage .stats{grid-template-columns:1fr!important;gap:10px!important}
+ #appPage #jobsList,#appPage #warehouseList{grid-template-columns:1fr!important}
+ #appPage #followerCard{padding:12px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #appPage:not(.hidden){animation:none!important}
+}
+</style>
+
 </head>
 <body>
 <div class="hero-banner"><img id="serverRotator" src="server1.jpg" alt="MISK"><div class="hero-label">MISK • SERVER • CCTV</div></div>
