@@ -958,53 +958,156 @@ body:has(#appPage:not(.hidden)){background:#050817!important;color:var(--misk-te
 
 </style>
 
-<style id="MISK_INTERNAL_UI_REBUILD">
-:root{--misk-bg:#070b18;--misk-panel:#101a31;--misk-panel2:#121d38;--misk-cyan:#57e5ff;--misk-purple:#a17cff;--misk-line:rgba(108,193,255,.16);--misk-text:#eaf2ff;--misk-muted:#91a5c5;--misk-green:#38d69a;--misk-orange:#ffb454;--misk-red:#ff657d}
-body{background:#070b18!important;color:var(--misk-text)!important;padding-bottom:0!important;font-family:Tahoma,Arial,sans-serif!important}
-body:has(#appPage:not(.hidden)){background:radial-gradient(ellipse at 20% 0%,rgba(30,91,171,.17),transparent 34%),radial-gradient(ellipse at 80% 10%,rgba(108,55,180,.15),transparent 30%),#070b18!important}
-#appPage:not(.hidden){position:relative;z-index:1;width:auto!important;max-width:none!important;min-height:100vh!important;margin:0!important;padding:22px 270px 28px 22px!important;background:transparent!important;animation:miskDashboardEnter .95s cubic-bezier(.2,.72,.25,1) both}
-@keyframes miskDashboardEnter{0%{opacity:0;transform:perspective(1300px) translateZ(-360px) scale(.7) rotateY(-8deg)}75%{opacity:1;transform:perspective(1300px) translateZ(8px) scale(1.008)}100%{opacity:1;transform:none}}
-#appPage .top-img{height:auto!important;min-height:106px!important;padding:20px 24px!important;margin:0 0 16px!important;border:1px solid var(--misk-line)!important;border-radius:20px!important;background:linear-gradient(115deg,#111d3b,#171b3d 70%,#102541)!important;box-shadow:0 12px 30px #0003!important;color:var(--misk-text)!important;display:flex!important;flex-direction:column!important;justify-content:center!important;position:relative!important}
-#appPage .top-img>small:first-child{display:none!important}#appPage .top-img br{display:none!important}#appPage #welcome{font-size:24px!important;font-weight:900!important;color:#f5f8ff!important}#appPage #techInfo{display:block!important;margin-top:6px!important;color:var(--misk-muted)!important}
-#appPage>div:first-child{display:flex!important;justify-content:flex-start!important;flex-wrap:wrap!important;gap:8px!important;background:var(--misk-panel)!important;border:1px solid var(--misk-line)!important;border-radius:13px!important;padding:8px 10px!important;margin:0 0 14px!important;box-shadow:none!important;color:var(--misk-muted)!important}
-#appPage>div:first-child button{border-radius:9px!important;padding:7px 12px!important}
-#appPage .admin-layout{display:block!important;width:100%!important;margin:0!important}#appPage .admin-main{display:block!important;width:100%!important;max-width:none!important;padding:0!important;margin:0!important;background:transparent!important;border:0!important;box-shadow:none!important}
-#appPage #followerCard{display:grid!important;grid-template-columns:minmax(160px,1fr) minmax(200px,1.3fr) auto!important;align-items:center!important;gap:12px!important;margin:0 0 14px!important;padding:15px 18px!important;border:1px solid var(--misk-line)!important;border-radius:16px!important;background:var(--misk-panel)!important;color:var(--misk-text)!important;box-shadow:none!important}
-#appPage #followerCard h3{margin:0!important;font-size:14px!important;color:var(--misk-text)!important}#appPage #followerCard input{margin:0!important;border-radius:11px!important;background:#0a1225!important;border:1px solid var(--misk-line)!important;color:#fff!important;text-align:center!important}#appPage #followerCard button{width:auto!important;margin:0!important;padding:10px 14px!important;border-radius:10px!important}#appPage #followerMsg{grid-column:1/-1;margin:0!important}
-#appPage #leftTechAlerts,#appPage #stockAlerts{margin:0 0 12px!important}
-#appPage .stats{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important;margin:0 0 16px!important;padding:0!important;background:transparent!important}
-#appPage .stat{position:relative!important;display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:14px!important;min-height:108px!important;margin:0!important;padding:18px!important;text-align:right!important;overflow:hidden!important;border:1px solid var(--misk-line)!important;border-radius:18px!important;background:linear-gradient(145deg,#111d38,#10182e)!important;box-shadow:0 8px 24px #0002!important;color:var(--misk-text)!important}
-#appPage .stat:after{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:var(--misk-cyan);opacity:.7}#appPage #statDone:after{background:var(--misk-green)}#appPage #statPending:after{background:var(--misk-orange)}#appPage #statProblem:after{background:var(--misk-red)}
-#appPage .circle{flex:0 0 52px!important;width:52px!important;height:52px!important;margin:0!important;font-size:18px!important;border:1px solid #ffffff22!important;box-shadow:0 0 16px currentColor!important}
-#appPage .stat b{font-size:15px!important;color:#f3f7ff!important}#appPage .stat small{font-size:12px!important;color:var(--misk-muted)!important}
-#appPage #archiveFilter{margin:0 0 14px!important;padding:16px!important;border:1px solid var(--misk-line)!important;border-radius:16px!important;background:var(--misk-panel)!important;color:var(--misk-text)!important}
-#appPage #archiveFilter select{border-radius:10px!important;background:#0a1225!important;color:#fff!important;border-color:var(--misk-line)!important}
-#appPage #searchInput{height:48px!important;margin:0 0 14px!important;padding:0 16px!important;border:1px solid var(--misk-line)!important;border-radius:14px!important;background:#0d162b!important;color:#fff!important;box-shadow:none!important}
-#appPage #searchInput::placeholder{color:#7f94b5!important}#appPage #searchInput:focus{border-color:#57e5ff!important;outline:0!important;box-shadow:0 0 0 3px #57e5ff14!important}
-#appPage .admin-main>div[style*="line-height:1.7"],#appPage .admin-main>div[style*="line-height: 1.7"]{margin:0 0 14px!important;padding:12px 16px!important;border:1px solid var(--misk-line)!important;border-radius:14px!important;background:#101a31!important;color:#b7c7df!important;font-size:12px!important;line-height:1.8!important}
-#appPage #jobsList{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important;margin:0!important;padding:0!important}
-#appPage .misk-job-card{cursor:pointer;min-width:0;margin:0!important;padding:17px!important;border:1px solid var(--misk-line)!important;border-radius:18px!important;background:linear-gradient(145deg,#111d38,#0d172c)!important;color:var(--misk-text)!important;box-shadow:0 8px 25px #0002!important;transition:transform .16s,border-color .16s,box-shadow .16s!important}
-#appPage .misk-job-card:hover{transform:translateY(-2px);border-color:#57e5ff55!important;box-shadow:0 12px 30px #0003!important}
-#appPage .misk-job-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding-bottom:13px;border-bottom:1px solid #ffffff0c}#appPage .misk-job-top small,#appPage .misk-job-grid small{display:block;color:var(--misk-muted)!important;font-size:11px!important;margin-bottom:5px!important}#appPage .misk-job-top h3{font-size:17px!important;line-height:1.6!important;margin:3px 0!important;color:#f3f7ff!important;word-break:break-word}#appPage .misk-order-code{color:#72caff;font-size:12px;font-weight:800}
-#appPage .misk-status{white-space:nowrap;display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;background:#55e5ff12;border:1px solid #55e5ff22;color:#80eaff;font-size:11px;font-weight:800}
-#appPage .misk-job-code{margin:12px 0;padding:9px 11px;border-radius:10px;background:#0a1326;color:#9bb1d2;font-size:12px}#appPage .misk-job-code b{color:#eaf4ff;margin-right:6px}
-#appPage .misk-job-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px 14px}#appPage .misk-job-grid>div{min-width:0}#appPage .misk-job-grid b{display:block;color:#d9e7fa;font-size:12px;line-height:1.7;overflow-wrap:anywhere}#appPage .misk-job-serial{grid-column:1/-1;padding:9px 11px;border:1px solid #57e5ff16;border-radius:10px;background:#57e5ff06}
-#appPage .misk-job-comment{margin-top:11px;padding:10px;border-radius:10px;background:#ffffff05;color:#aebed6;font-size:12px;line-height:1.8}#appPage .misk-job-open{display:flex;justify-content:space-between;margin-top:14px;padding-top:10px;border-top:1px solid #ffffff0b;color:#6ddfff;font-size:12px;font-weight:800}
-#appPage .misk-empty{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;gap:8px;padding:44px 16px;border:1px dashed #6f91b333;border-radius:18px;color:#a8bad5;text-align:center}#appPage .misk-empty span{font-size:34px;color:#57e5ff}
-#appPage #loadMoreWrap{padding:14px 0!important}#appPage #loadMoreWrap .btn{width:auto!important;padding:11px 22px!important;border-radius:12px!important;background:#172844!important;border:1px solid var(--misk-line)!important}
-#appPage #warehouseList{display:block!important}#appPage .misk-warehouse-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 0 14px;padding:18px;border:1px solid var(--misk-line);border-radius:18px;background:var(--misk-panel)}#appPage .misk-warehouse-head small{color:var(--misk-muted)}#appPage .misk-warehouse-head h2{margin:4px 0 0;color:#f3f7ff;font-size:21px}#appPage .misk-warehouse-head h2 span{font-size:13px;color:#72e4ff;margin-right:8px;padding:4px 9px;border-radius:20px;background:#57e5ff12}#appPage .misk-export{border:1px solid var(--misk-line);border-radius:10px;padding:10px 13px;background:#162744;color:#eaf4ff;font-weight:800}
-#appPage .misk-warehouse-tabs{display:flex;gap:10px;margin:0 0 12px}#appPage .misk-warehouse-tabs button{flex:1;padding:13px;border-radius:12px;border:1px solid var(--misk-line);background:#101a31;color:#b8c8df;font-weight:800}#appPage .misk-warehouse-tabs button.active{background:linear-gradient(100deg,#163e62,#29274e);border-color:#57e5ff55;color:#fff}#appPage .misk-warehouse-tabs b{margin-right:6px;color:#70e5ff}
-#appPage .misk-warehouse-search{height:46px;margin:0 0 14px;padding:0 14px;border:1px solid var(--misk-line);border-radius:12px;background:#0d162b;color:#fff}#appPage .misk-warehouse-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}#appPage .misk-stock-card{margin:0!important;padding:15px!important;border:1px solid var(--misk-line)!important;border-radius:16px!important;background:linear-gradient(145deg,#111d38,#0d172c)!important;color:var(--misk-text)!important}#appPage .misk-stock-serial{padding:10px;border-radius:10px;background:#081226}#appPage .misk-stock-serial small{display:block;color:var(--misk-muted);font-size:10px;margin-bottom:4px}#appPage .misk-stock-serial b{font-size:14px;color:#70e5ff;overflow-wrap:anywhere}#appPage .misk-stock-card h3{font-size:15px;margin:12px 0;color:#eaf4ff}#appPage .misk-stock-meta{display:flex;flex-wrap:wrap;gap:8px;color:#a8bad5;font-size:12px}#appPage .misk-stock-meta span{padding:6px 8px;background:#ffffff05;border-radius:8px}#appPage .misk-stock-meta b{color:#d9e7fa}#appPage .misk-stock-state{margin-top:12px;padding:9px;border-radius:9px;background:#ffb4540d;color:#ffca83;font-size:12px}#appPage .misk-stock-state small{display:block;color:#9eafc9;margin-top:4px}#appPage .misk-stock-installed{display:grid;grid-template-columns:1fr 1fr;gap:5px 10px;margin-top:12px;padding:10px;background:#38d69a08;border-radius:10px;font-size:11px;color:#91a6c4}#appPage .misk-stock-installed b{color:#dcecff;overflow-wrap:anywhere}
-#bottomNav{position:fixed!important;right:16px!important;left:auto!important;top:16px!important;bottom:16px!important;width:228px!important;z-index:1200!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;gap:6px!important;padding:15px 11px!important;overflow:auto!important;border:1px solid #70cfff22!important;border-radius:22px!important;background:linear-gradient(180deg,#0c152aee,#0a1024f5)!important;box-shadow:0 16px 45px #0005!important;backdrop-filter:blur(18px)!important}
-#bottomNav .misk-brand{display:flex;align-items:center;gap:11px;padding:12px 9px 18px;border-bottom:1px solid #ffffff10;margin-bottom:9px}#bottomNav .misk-brand-mark{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:linear-gradient(145deg,#57e5ff,#8b7aff);color:#06101e;font-size:20px;font-weight:1000;box-shadow:0 0 18px #57e5ff2a}#bottomNav .misk-brand b{display:block;font-size:17px;letter-spacing:1.3px;color:#eff7ff}#bottomNav .misk-brand small{display:block;font-size:9px;letter-spacing:2px;color:#79cfff;margin-top:2px}#bottomNav .misk-nav-label{padding:8px 10px;color:#647b9c;font-size:10px;font-weight:900;letter-spacing:1px}
-#bottomNav>div:not(.misk-brand):not(.misk-nav-label):not(.misk-nav-spacer):not(.misk-nav-footer){display:flex!important;align-items:center!important;gap:12px!important;min-height:46px!important;padding:10px 12px!important;border-radius:12px!important;text-align:right!important;color:#aebfda!important;font-size:13px!important;font-weight:800!important;background:transparent!important;border:1px solid transparent!important;cursor:pointer!important}#bottomNav>div span{display:inline-flex!important;align-items:center;justify-content:center;min-width:24px!important;font-size:19px!important}#bottomNav>div.active{background:linear-gradient(100deg,#57e5ff18,#a17cff18)!important;border-color:#57e5ff25!important;color:#f2f8ff!important;box-shadow:inset -3px 0 #57e5ff!important}#bottomNav>div:hover{background:#ffffff06!important}#bottomNav .misk-nav-spacer{flex:1;min-height:20px}#bottomNav .misk-nav-footer{display:flex!important;align-items:center!important;gap:12px!important;min-height:46px!important;border-top:1px solid #ffffff10!important;padding-top:14px!important;color:#a6b8d3!important}#bottomNav #archiveNav[style*="display: none"]{display:none!important}
-#appPage .admin-side>div:first-child,#appPage .admin-box,#appPage .admin-box-head,#appPage .admin-box-body{background:#101a31!important;color:var(--misk-text)!important;border-color:var(--misk-line)!important;border-radius:14px!important}#appPage .admin-box-head{padding:13px!important}#appPage .admin-box-body{padding:12px!important}#appPage input,#appPage select,#appPage textarea{background:#0a1325!important;color:#edf5ff!important;border-color:var(--misk-line)!important;border-radius:11px!important}#appPage input::placeholder,#appPage textarea::placeholder{color:#7187a8!important}#appPage button{border-radius:11px!important}
-#appPage #details{background:#070b18!important;color:#edf5ff!important}#appPage #details .d-head,#appPage #details .d-box{background:#101a31!important;color:#edf5ff!important;border:1px solid var(--misk-line)!important;border-radius:16px!important;box-shadow:none!important}#appPage #details .d-box p{color:#aabbd4!important}
-#appPage #addTechModal>div,#appPage #passModal>div,#appPage #techDetailModal>div,#appPage #transferModal>div{background:#101a31!important;color:#edf5ff!important;border:1px solid var(--misk-line)!important;border-radius:18px!important}
-@media(max-width:1100px){#appPage:not(.hidden){padding-right:252px!important;padding-left:14px!important}#appPage #jobsList{grid-template-columns:1fr!important}#appPage .misk-warehouse-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
-@media(max-width:760px){#appPage:not(.hidden){padding:10px 10px 92px!important}#bottomNav{right:8px!important;left:8px!important;top:auto!important;bottom:8px!important;width:auto!important;height:70px!important;flex-direction:row!important;align-items:center!important;justify-content:space-around!important;gap:2px!important;padding:5px!important;border-radius:18px!important}#bottomNav .misk-brand,#bottomNav .misk-nav-label,#bottomNav .misk-nav-spacer,#bottomNav .misk-nav-footer{display:none!important}#bottomNav>div:not(.misk-brand):not(.misk-nav-label):not(.misk-nav-spacer):not(.misk-nav-footer){flex:1!important;min-height:55px!important;flex-direction:column!important;justify-content:center!important;gap:2px!important;padding:3px!important;font-size:10px!important;text-align:center!important}#bottomNav>div span{font-size:17px!important}#appPage .stats{grid-template-columns:1fr!important;gap:8px!important}#appPage .stat{min-height:85px!important;padding:12px!important}#appPage #followerCard{grid-template-columns:1fr!important}#appPage #jobsList,#appPage .misk-warehouse-grid{grid-template-columns:1fr!important}#appPage .misk-warehouse-head{padding:13px!important}#appPage .misk-job-grid{gap:8px}#appPage .top-img{min-height:86px!important;padding:15px!important}#appPage #welcome{font-size:20px!important}}
-@media(prefers-reduced-motion:reduce){#appPage:not(.hidden){animation:none!important}}
+<style id="MISK_NEONSPACE_TRUE_REDESIGN">
+/* ===== MISK NEON SPACE: FULL INTERNAL UI REDESIGN ===== */
+:root{
+  --misk-bg:#050816;--misk-panel:rgba(11,18,42,.84);--misk-panel2:rgba(15,24,51,.92);
+  --misk-cyan:#55e7ff;--misk-blue:#579bff;--misk-purple:#9b75ff;--misk-text:#eaf3ff;
+  --misk-muted:#9aabc7;--misk-border:rgba(88,195,255,.22);
+}
+body:has(#appPage:not(.hidden)){
+  background:
+    radial-gradient(ellipse at 15% 8%,rgba(30,92,170,.20),transparent 32%),
+    radial-gradient(ellipse at 80% 0%,rgba(114,52,186,.18),transparent 30%),
+    linear-gradient(145deg,#050816,#090d20 48%,#070b19)!important;
+  color:var(--misk-text)!important;
+}
+body:has(#appPage:not(.hidden))::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.22;
+  background-image:radial-gradient(1px 1px at 8% 17%,#b9eaff 99%,transparent),
+    radial-gradient(1px 1px at 24% 70%,#8bbdff 99%,transparent),
+    radial-gradient(1px 1px at 51% 30%,#fff 99%,transparent),
+    radial-gradient(2px 2px at 77% 61%,#9edcff 99%,transparent),
+    radial-gradient(1px 1px at 91% 13%,#d4baff 99%,transparent);
+  background-size:240px 190px,310px 260px,360px 290px,280px 230px,400px 300px;
+}
+#appPage:not(.hidden){
+  position:relative;z-index:1;min-height:100vh;box-sizing:border-box;
+  padding:16px 250px 28px 18px!important;margin:0!important;width:100%!important;max-width:none!important;
+  animation: miskNeonEntrance 1.25s cubic-bezier(.18,.75,.22,1) both;
+}
+@keyframes miskNeonEntrance{
+  0%{opacity:0;transform:perspective(1400px) translateZ(-480px) scale(.56) rotateY(-12deg)}
+  70%{opacity:1;transform:perspective(1400px) translateZ(20px) scale(1.015) rotateY(1deg)}
+  100%{opacity:1;transform:perspective(1400px) translateZ(0) scale(1) rotateY(0)}
+}
+#appPage .top-img{
+  min-height:112px!important;height:auto!important;box-sizing:border-box!important;margin:0 0 16px!important;
+  padding:22px 26px!important;position:relative!important;display:flex!important;align-items:center!important;
+  border-radius:22px!important;overflow:hidden!important;
+  background:linear-gradient(110deg,rgba(9,18,44,.95),rgba(24,21,59,.88))!important;
+  border:1px solid var(--misk-border)!important;
+  box-shadow:0 14px 38px rgba(0,0,0,.24),inset 0 0 30px rgba(64,190,255,.05)!important;
+  text-align:right!important;color:var(--misk-text)!important;
+}
+#appPage .top-img:after{content:"";position:absolute;inset:auto -8% -80% 30%;height:180%;border-radius:50%;
+  background:radial-gradient(circle,rgba(83,222,255,.14),transparent 65%);pointer-events:none}
+#appPage .top-img small:first-child{display:none!important}
+#appPage #welcome{font-size:24px!important;font-weight:900!important;color:#f4f8ff!important;position:relative;z-index:1}
+#appPage #techInfo{color:#a6c2e6!important;display:block!important;margin-top:5px!important;position:relative;z-index:1}
+#appPage .top-img>div[style*="position:absolute"]{position:static!important;margin-inline-start:auto!important;font-size:22px!important}
+#appPage .we-bar{display:none!important}
+#appPage>div:first-child{background:rgba(8,15,34,.78)!important;border:1px solid var(--misk-border)!important;
+  border-radius:14px!important;color:#cfe3ff!important;box-shadow:0 8px 24px rgba(0,0,0,.2)!important;
+  margin:0 0 14px!important;padding:8px 12px!important;justify-content:flex-start!important}
+#appPage>div:first-child button{border-radius:10px!important}
+#appPage .admin-layout{display:block!important;width:100%!important;max-width:none!important;margin:0!important}
+#appPage .admin-main{width:100%!important;max-width:none!important;min-width:0!important;background:transparent!important;
+  border:0!important;box-shadow:none!important;padding:0!important;margin:0!important}
+#appPage #followerCard,#appPage #archiveFilter,#appPage .admin-main>div[style*="background:#fff"],
+#appPage .admin-main>div[style*="background: #fff"]{
+  background:var(--misk-panel)!important;color:var(--misk-text)!important;border:1px solid var(--misk-border)!important;
+  border-radius:18px!important;box-shadow:0 10px 28px rgba(0,0,0,.2)!important;backdrop-filter:blur(16px)!important;
+}
+#appPage #followerCard{margin:0 0 14px!important}
+#appPage #followerCard h3,#appPage #archiveFilter b{color:#eaf3ff!important}
+#appPage #followerMsg{color:#ff9ca9!important}
+#appPage .stats{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important;
+  padding:0!important;margin:0 0 16px!important;background:transparent!important}
+#appPage .stat{min-width:0!important;margin:0!important;padding:18px 14px!important;text-align:center!important;
+  border-radius:20px!important;background:linear-gradient(145deg,rgba(12,24,51,.92),rgba(17,20,48,.88))!important;
+  border:1px solid rgba(80,193,255,.24)!important;color:#eaf3ff!important;
+  box-shadow:0 12px 28px rgba(0,0,0,.22),inset 0 0 24px rgba(64,180,255,.035)!important;
+  transition:border-color .18s ease,box-shadow .18s ease!important}
+#appPage .stat:hover{border-color:rgba(85,231,255,.55)!important;box-shadow:0 0 22px rgba(50,190,255,.12)!important}
+#appPage .stat b{color:#eaf3ff!important;font-size:15px!important}
+#appPage .stat small{color:#9eb4d4!important}
+#appPage .circle{box-shadow:0 0 20px currentColor!important;border:1px solid rgba(255,255,255,.18)!important}
+#appPage #searchInput{width:100%!important;box-sizing:border-box!important;background:rgba(9,17,39,.92)!important;
+  color:#eff7ff!important;border:1px solid rgba(90,195,255,.27)!important;border-radius:15px!important;
+  padding:13px 16px!important;outline:none!important;margin:0 0 14px!important}
+#appPage #searchInput::placeholder{color:#8297b7!important}
+#appPage #jobsList,#appPage #warehouseList{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:14px!important;width:100%!important;padding:0!important;margin:0!important}
+#appPage #jobsList>* ,#appPage #warehouseList>*{min-width:0!important;width:auto!important;max-width:none!important;margin:0!important}
+#appPage .job,#appPage .warehouseCard,#appPage #jobsList>div,#appPage #warehouseList>div{
+  background:linear-gradient(145deg,rgba(10,20,44,.95),rgba(15,22,47,.94))!important;
+  color:#eaf3ff!important;border:1px solid rgba(80,190,255,.22)!important;border-radius:18px!important;
+  box-shadow:0 10px 26px rgba(0,0,0,.2)!important;backdrop-filter:blur(12px)!important;
+}
+#appPage .job *,#appPage .warehouseCard *{color:inherit}
+#appPage .job button,#appPage .warehouseCard button,#appPage button{
+  border-radius:12px!important;transition:filter .15s ease,border-color .15s ease!important
+}
+#appPage button:hover{filter:brightness(1.08)!important}
+#appPage .admin-side{width:100%!important;position:static!important;margin:14px 0!important}
+#appPage #techList{max-height:300px!important}
+#appPage .admin-box,#appPage .admin-box-head,#appPage .admin-box-body{
+  background:var(--misk-panel)!important;color:var(--misk-text)!important;border-color:var(--misk-border)!important
+}
+#appPage input,#appPage select,#appPage textarea{background:#0a132b!important;color:#edf6ff!important;border-color:rgba(88,195,255,.28)!important}
+#appPage input::placeholder,#appPage textarea::placeholder{color:#8296b5!important}
+#appPage #loadMoreWrap{padding:14px 0!important}
+#appPage .hidden{display:none!important}
+#appPage #uploadingBanner{border-radius:12px!important;margin:0 0 12px!important}
+#bottomNav{
+  position:fixed!important;right:16px!important;left:auto!important;top:16px!important;bottom:16px!important;
+  width:218px!important;height:auto!important;z-index:1200!important;display:flex!important;flex-direction:column!important;
+  align-items:stretch!important;justify-content:flex-start!important;gap:8px!important;
+  padding:14px 10px!important;box-sizing:border-box!important;overflow:auto!important;
+  border:1px solid rgba(85,220,255,.25)!important;border-radius:24px!important;
+  background:linear-gradient(180deg,rgba(7,15,37,.97),rgba(11,13,35,.97))!important;
+  box-shadow:0 18px 50px rgba(0,0,0,.4),inset 0 0 30px rgba(61,176,255,.035)!important;
+  backdrop-filter:blur(20px)!important
+}
+#bottomNav:before{content:"MISK TECHNOLOGY";display:block;text-align:center;font-size:19px;font-weight:950;
+  letter-spacing:1.5px;color:#55e7ff;padding:14px 8px 20px;margin:0 0 8px;
+  border-bottom:1px solid rgba(85,220,255,.18);text-shadow:0 0 18px rgba(85,220,255,.3)}
+#bottomNav div{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;
+  gap:12px!important;text-align:right!important;min-height:48px!important;box-sizing:border-box!important;
+  padding:10px 12px!important;border-radius:14px!important;color:#bfd2ec!important;font-size:14px!important;font-weight:800!important;
+  border:1px solid transparent!important;background:transparent!important;cursor:pointer!important}
+#bottomNav div span{font-size:20px!important;display:inline-block!important;min-width:24px!important}
+#bottomNav div.active{background:linear-gradient(100deg,rgba(46,176,255,.17),rgba(145,91,255,.13))!important;
+  color:#f5fbff!important;border-color:rgba(85,220,255,.3)!important;box-shadow:inset -3px 0 0 #55e7ff,0 0 20px rgba(48,177,255,.08)!important}
+#bottomNav div:hover{background:rgba(76,170,255,.09)!important;border-color:rgba(85,220,255,.18)!important}
+#bottomNav #archiveNav{display:none!important}
+#details,#azkarModal,#sendLockModal,#addTechModal{backdrop-filter:blur(12px)}
+#details{background:#050816!important;color:#edf6ff!important}
+#details .d-box{background:var(--misk-panel)!important;color:var(--misk-text)!important;border-color:var(--misk-border)!important}
+@media(max-width:1100px){
+ #appPage:not(.hidden){padding-right:230px!important;padding-left:12px!important}
+ #appPage #jobsList,#appPage #warehouseList{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:760px){
+ #appPage:not(.hidden){padding:10px 10px 88px!important}
+ #bottomNav{right:8px!important;left:8px!important;top:auto!important;bottom:8px!important;width:auto!important;height:68px!important;
+   flex-direction:row!important;align-items:center!important;justify-content:space-around!important;padding:5px!important;border-radius:18px!important}
+ #bottomNav:before{display:none!important}
+ #bottomNav div{flex:1!important;min-height:52px!important;flex-direction:column!important;justify-content:center!important;gap:2px!important;
+   padding:5px 2px!important;font-size:10px!important;text-align:center!important}
+ #bottomNav div span{font-size:18px!important}
+ #appPage .top-img{min-height:90px!important;padding:16px!important}
+ #appPage #welcome{font-size:20px!important}
+ #appPage .stats{grid-template-columns:1fr!important;gap:10px!important}
+ #appPage #jobsList,#appPage #warehouseList{grid-template-columns:1fr!important}
+ #appPage #followerCard{padding:12px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #appPage:not(.hidden){animation:none!important}
+}
 </style>
+
 </head>
 <body>
 <div class="hero-banner"><img id="serverRotator" src="server1.jpg" alt="MISK"><div class="hero-label">MISK • SERVER • CCTV</div></div>
@@ -1140,7 +1243,7 @@ body:has(#appPage:not(.hidden)){background:radial-gradient(ellipse at 20% 0%,rgb
 </div>
 </div>
 <div class="top-img"><small>☰</small><br><br><b id="welcome" style="font-size:22px"></b><br><small id="techInfo"></small><div style="position:absolute;left:14px;top:14px">🔔</div></div>
-
+<div class="we-bar"><div class="logo">WE<span>.</span></div><div>🔔</div></div>
 <div class="admin-layout">
 <div class="admin-main">
 <div id="followerCard" style="background:#fff;margin:12px;border:2px solid #0b7ed1;border-radius:16px;padding:14px">
@@ -1258,17 +1361,14 @@ body:has(#appPage:not(.hidden)){background:radial-gradient(ellipse at 20% 0%,rgb
 </div>
 </div>
 </div>
-<nav id="bottomNav" class="tabs misk-sidebar" aria-label="التنقل الرئيسي">
-<div class="misk-brand"><span class="misk-brand-mark">M</span><span><b>MISK</b><small>TECHNOLOGY</small></span></div>
-<div class="misk-nav-label">القائمة الرئيسية</div>
-<div class="active" onclick="showTab('all',this)"><span>⌂</span>الرئيسية</div>
-<div onclick="showTab('pending',this)"><span>▤</span>المهام</div>
-<div onclick="showTab('problem',this)"><span>♧</span>التنبيهات</div>
-<div onclick="showTab('warehouse',this)"><span>▣</span>المخزن</div>
-<div id="archiveNav" onclick="showTab('archive',this)" style="display:none"><span>◷</span>الأرشيف</div>
-<div class="misk-nav-spacer"></div>
-<div class="misk-nav-footer" onclick="logout()"><span>↪</span> تسجيل الخروج</div>
-</nav>
+<div class="tabs" id="bottomNav">
+<div class="active" onclick="showTab('all',this)"><span style="font-size:20px;display:block">🏠</span>الرئيسية</div>
+<div onclick="showTab('pending',this)"><span style="font-size:20px;display:block">📋</span>المهام</div>
+<div onclick="showTab('problem',this)"><span style="font-size:20px;display:block">🔔</span>التنبيهات</div>
+<div onclick="showTab('warehouse',this)"><span style="font-size:20px;display:block">📦</span>المخزن</div>
+<div id="archiveNav" onclick="showTab('archive',this)" style="display:none"><span style="font-size:20px;display:block">📦</span>الأرشيف</div>
+<div onclick="logout()"><span style="font-size:20px;display:block">👤</span>الحساب</div>
+</div>
 <div id="details">
 <div class="d-head"><button class="back" onclick="closeDetails()">← رجوع</button><b id="dTitle" style="font-size:18px">تفاصيل المهمة</b></div>
 <div class="d-box"><h3 id="dCustomer" style="margin:0"></h3><p id="dMeta" style="font-size:13px;color:#555;line-height:1.8"></p><p id="dComment" style="font-size:13px"></p></div>
@@ -1514,10 +1614,18 @@ function renderWarehouseList(){
   }
   if(warehouseTab==='stock'||warehouseTab==='delivered') warehouseTab='all_pending';
   let listToShow = warehouseTab==='all_done' ? allDone : allStock;
-  box.innerHTML=`<section class="misk-warehouse-head"><div><small>إدارة الأجهزة</small><h2>المخزن <span>${baseWarehouse.length}</span></h2></div><button class="misk-export" onclick="downloadWarehouseExcel()">↓ تصدير Excel</button></section>
-  <div class="misk-warehouse-tabs"><button class="${warehouseTab==='all_pending'?'active':''}" onclick="warehouseTab='all_pending';renderWarehouseList()">الأجهزة غير المركبة <b>${allStock.length}</b></button><button class="${warehouseTab==='all_done'?'active':''}" onclick="warehouseTab='all_done';renderWarehouseList()">الأجهزة المركبة <b>${allDone.length}</b></button></div>
-  <input class="misk-warehouse-search" placeholder="ابحث بالسيريال أو رقم العميل أو الفني..." value="${String(warehouseSearch).replace(/"/g,'&quot;')}" oninput="warehouseSearch=this.value;renderWarehouseList()">
-  <div class="misk-warehouse-grid">${listToShow.map(w=>`<article class="warehouseCard misk-stock-card"><div class="misk-stock-serial"><small>Serial Number</small><b>${w.serial||'—'}</b></div><h3>${w.model||'جهاز غير محدد'}</h3><div class="misk-stock-meta"><span>الفني <b>${w.tech||'—'}</b></span><span>المحافظة <b>${w.province||'—'}</b></span></div>${warehouseTab==='all_done' ? `<div class="misk-stock-installed"><span>العميل</span><b>${w.customer_name||'—'}</b><span>رقم العميل</span><b>${w.customer_phone||'—'}</b><span>تاريخ التركيب</span><b>${w.date_install||'—'}</b></div>` : `<div class="misk-stock-state">غير مركب <small>تاريخ الاستلام: ${w.date_received||'—'}</small></div>`}</article>`).join('') || '<div class="misk-empty"><b>لا توجد أجهزة في هذا القسم</b></div>'}</div>`;
+  box.innerHTML=`<h3 style="padding:0 12px">📦 المخزن (${baseWarehouse.length})</h3>
+  <div style="display:flex;gap:8px;padding:0 12px;flex-wrap:wrap">
+    <button onclick="warehouseTab='all_pending';renderWarehouseList()" style="flex:1;padding:12px;border-radius:10px;background:${warehouseTab==='all_pending'?'#7c3aed;color:#fff':'#f3e8ff'}">لم يتم تركيبه - ${allStock.length}</button>
+    <button onclick="warehouseTab='all_done';renderWarehouseList()" style="flex:1;padding:12px;border-radius:10px;background:${warehouseTab==='all_done'?'#7c3aed;color:#fff':'#f3e8ff'}">تم تركيبه - ${allDone.length}</button>
+  </div>
+  <button onclick="downloadWarehouseExcel()" style="width:calc(100% - 24px);margin:10px 12px;padding:12px;border-radius:10px;border:0;background:#111;color:#fff;font-weight:800">⬇️ تحميل شيت اكسيل</button>
+  <input placeholder="دور برقم الأرضي أو السيريال أو اسم الفني..." value="${String(warehouseSearch).replace(/"/g,'&quot;')}" oninput="warehouseSearch=this.value;renderWarehouseList()" style="width:calc(100% - 24px);margin:10px 12px;padding:10px;border-radius:10px;border:1px solid #ccc">
+  <div style="padding:0 12px">${listToShow.map(w=>`<div class="warehouseCard" style="border:1px solid #ddd;border-radius:12px;padding:10px;margin-bottom:8px">
+    <b>${w.serial||''}</b> - ${w.model||''}<br>
+    الفني: ${w.tech||''} | المحافظة: ${w.province||''}<br>
+    ${warehouseTab==='all_done' ? `العميل: ${w.customer_name||''}<br>رقم العميل (أرضي): ${w.customer_phone||''}<br>تاريخ التركيب: ${w.date_install||''}` : `تاريخ الاستلام: ${w.date_received||''} - الحالة: لم يتم تركيبه`}
+  </div>`).join('') || '<p style="text-align:center;opacity:.6">مفيش حاجة هنا</p>'}</div>`;
 }
 function downloadWarehouseExcel(){
   if(!allWarehouse.length) return alert("مفيش داتا في المخزن");
@@ -1910,7 +2018,7 @@ function renderJobs(){
   document.getElementById("cPending").innerText=mine.filter(j=>j.status!=="تم التسليم" && !["تأجيل","لم يتم الرد","رفض الزيارة"].includes(j.status)).length;
   document.getElementById("cProblem").innerText=mine.filter(j=>["تأجيل","لم يتم الرد","رفض الزيارة"].includes(j.status)).length;
   let show=jobs.slice(0, visibleCount);
-  list.innerHTML=show.map(j=>`<article class="misk-job-card job" onclick="openDetails('${j.id}')"><div class="misk-job-top"><div><small>رقم الأوردر</small><h3>${j.customer_name||"—"}</h3><span class="misk-order-code">${j.order||"بدون رقم"}</span></div><span class="misk-status">${j.status||"جديد"}</span></div><div class="misk-job-code">كود العميل <b>${j.code||"—"}</b></div><div class="misk-job-grid"><div><small>العنوان</small><b>${j.address||"—"}</b></div><div><small>التليفون الأرضي</small><b>${j.landline||"—"}</b></div><div><small>الموبايل</small><b>${j.mobile||"—"}</b></div><div><small>الفني / الجهاز</small><b>${getJobTech(j)||"—"} · ${j.device||"—"}</b></div><div class="misk-job-serial"><small>السيريال</small><b>${j.serial||"لسه مفيش"}</b></div></div>${j.comment?`<div class="misk-job-comment">${j.comment}</div>`:""}<div class="misk-job-open">عرض التفاصيل <span>←</span></div></article>`).join("") || `<div class="misk-empty"><span>⌕</span><b>مفيش مهام هنا</b><small>جرّب تغيير الفلتر أو البحث</small></div>`;
+  list.innerHTML=show.map(j=>`<div class="job" onclick="openDetails('${j.id}')"><h3>${j.customer_name||""} - ${j.order||""}</h3><div style="font-weight:bold;color:#0b6cff">🆔 الكود: ${j.code||"—"}</div><div class="meta">📍 ${j.address||""}<br>📞 الأرضي: ${j.landline||""} | 📱 ${j.mobile||""}<br>👷 الفني: ${getJobTech(j)||""} | 📦 الجهاز: ${j.device||""}<br>🔢 السيريال: ${j.serial||"لسه"} | الحالة: <b>${j.status||"جديد"}</b><br>💬 ${j.comment||""}</div><span class="badge">${j.status||"جديد"}</span></div>`).join("") || `<p style="text-align:center">مفيش شغل هنا</p>`;
   document.getElementById("loadMoreWrap").innerHTML= jobs.length>visibleCount ? `<button class="btn" onclick="visibleCount+=20;renderJobs()">عرض المزيد (${jobs.length-visibleCount} باقي)</button>` : "";
 }
 function onSearch(){ searchQ=document.getElementById("searchInput").value; renderJobs() }
