@@ -1,83 +1,50 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AURA 2027 | Login</title>
-<style>
-  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
-  body{min-height:100vh;background:#020617;color:#fff;display:flex;flex-direction:column;overflow:auto}
-
-  /* 1. الخلفية الصح - نجوم + Aurora زي الأصلية */
-  .bg{position:fixed;inset:0;z-index:0;background:
-    radial-gradient(700px at 15% 15%, rgba(0,240,255,.35), transparent 60%),
-    radial-gradient(700px at 85% 25%, rgba(168,85,247,.45), transparent 60%),
-    radial-gradient(900px at 50% 110%, rgba(34,211,238,.35), transparent 60%),
-    radial-gradient(500px at 50% 0%, rgba(236,72,153,.20), transparent 60%),
-    #020617}
-  .bg::before{content:"";position:absolute;inset:0;background-image:radial-gradient(1px 1px at 20% 30%, #fff, transparent),radial-gradient(1px 1px at 40% 70%, #fff, transparent),radial-gradient(1.5px 1.5px at 60% 20%, #fff, transparent),radial-gradient(1px 1px at 80% 50%, #fff, transparent),radial-gradient(1px 1px at 10% 80%, #fff, transparent),radial-gradient(1px 1px at 90% 90%, #fff, transparent),radial-gradient(1px 1px at 30% 10%, #fff, transparent),radial-gradient(1.5px 1.5px at 70% 85%, #fff, transparent);opacity:.7}
-  .bg::after{content:"";position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1534796636912-3b95b45a82d8?w=1600') center/cover;opacity:.30;mix-blend-mode:screen}
-
-  /* 2. النافبار - زي الصورة بالظبط */
-  .nav{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:20px 30px}
-  .logo{font-weight:900;letter-spacing:3px;color:#67e8f9;font-size:22px}
-  .pill{border:1px solid #ffffff33;background:rgba(255,255,255,.12);padding:8px 16px;border-radius:30px;backdrop-filter:blur(10px)}
-
-  .wrap{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;padding-bottom:40px}
-
-  /* 3. الكورة الصح - أبيض + سماوي + بنفسجي */
-  .orb{width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 30% 30%, #ffffff 0%, #a5f3fc 20%, #22d3ee 45%, #0ea5e9 65%, #7c3aed 100%);box-shadow:0 0 80px #22d3ee, 0 0 120px #a855f7, inset 0 0 30px rgba(255,255,255,.8);position:relative;z-index:2;animation:float 4s ease-in-out infinite}
-  .orb::after{content:"⬡";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:60px;color:#fff;text-shadow:0 0 10px #fff}
-  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
-
-  /* 4. الكارت - مش مقصوص، وكل حاجة باينة */
-  .card{margin-top:-25px;width:100%;max-width:580px;background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px);border:1px solid rgba(255,255,255,.35);border-radius:28px;padding:35px;box-shadow:0 30px 80px rgba(0,0,0,.5);position:relative;z-index:1}
-  h1{text-align:center;font-size:34px;font-weight:900}
-  p.sub{text-align:center;color:#bae6fd;margin:8px 0 25px;direction:rtl}
-
-  /* 5. تقسيمة Username / Password - متظبطة */
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;direction:rtl}
-  label{display:block;margin-bottom:6px;color:#a5f3fc;font-size:14px;text-align:right}
-  input{width:100%;padding:14px 16px;background:rgba(255,255,255,.95);border:1px solid rgba(255,255,255,.3);border-radius:50px;color:#1e293b;outline:none;font-size:15px;text-align:left}
-  input::placeholder{color:#94a3b8}
-  input:focus{border-color:#22d3ee;box-shadow:0 0 0 3px #22d3ee33}
-
-  .row{display:flex;justify-content:space-between;align-items:center;margin:18px 0;color:#cbd5e1;font-size:14px;direction:rtl}
-  .row a{color:#67e8f9;text-decoration:none}
-
-  .btn{width:100%;padding:15px;border:none;border-radius:50px;background:linear-gradient(90deg,#22d3ee 0%, #a855f7 50%, #ec4899 100%);color:#fff;font-size:21px;font-weight:900;cursor:pointer;box-shadow:0 15px 30px #a855f766}
-  .passkey{width:100%;margin-top:12px;padding:13px;background:rgba(255,255,255,.05);border:1px solid #ffffff44;color:#fff;border-radius:50px;cursor:pointer;font-size:16px}
-
-  /* 6. صندوق AI - كان مختفي عندك */
-  .ai{margin-top:20px;display:flex;gap:12px;align-items:center;background:rgba(255,255,255,.08);border:1px solid #ffffff22;padding:12px;border-radius:16px;direction:rtl;text-align:right}
-  .ai .avatar{width:45px;height:45px;min-width:45px;border-radius:50%;background:#22d3ee;display:flex;align-items:center;justify-content:center;font-size:24px}
-  .ai small{color:#67e8f9}
-
-  @media(max-width:600px){.grid{grid-template-columns:1fr} .card{padding:25px 20px}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>قائمة المهام</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #f4f6f9; margin: 0; padding: 20px; }
+    .app { max-width: 420px; margin: auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+    .row { display: flex; gap: 8px; margin-bottom: 16px; }
+    input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 8px; }
+    button { padding: 10px 16px; border: none; background: #2563eb; color: #fff; border-radius: 8px; cursor: pointer; }
+    ul { list-style: none; padding: 0; margin: 0; }
+    li { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; }
+    .done { text-decoration: line-through; color: #888; }
+  </style>
 </head>
 <body>
-<div class="bg"></div>
-<div class="nav"><div class="pill">🛡️ Secure</div><div class="logo">AURA 2027 ⬡</div></div>
-
-<div class="wrap">
-  <div class="orb"></div>
-  <div class="card">
-    <h1>Welcome Back</h1>
-    <p class="sub">سجل دخول عشان تكمل في AURA 2027</p>
-    <div class="grid">
-      <div><label>Username</label><input id="user" value="mahdy" placeholder="اكتب اليوزر نيم"></div>
-      <div><label>Password</label><input id="pass" type="password" value="12345678" placeholder="••••••••"></div>
+  <div class="app">
+    <h2>مهامي اليومية</h2>
+    <div class="row">
+      <input id="taskInput" type="text" placeholder="أضف مهمة جديدة..." />
+      <button onclick="addTask()">إضافة</button>
     </div>
-    <div class="row"><a href="#">نسيت كلمة المرور؟</a><label><input type="checkbox" style="width:auto"> تذكرني</label></div>
-    <button class="btn" onclick="login()">Sign In →</button>
-    <button class="passkey" onclick="alert('Passkey')">🔑 Sign in with Passkey</button>
-    <div class="ai"><div class="avatar">🤖</div><div><b>AURA • AI Assistant</b><br><small>● Online • جاهز أساعدك لو نسيت الباسورد</small></div></div>
+    <ul id="taskList"></ul>
   </div>
-</div>
-<script>
-function login(){let u=document.getElementById('user').value; alert('أهلا بيك يا '+u+' 🚀');}
-document.addEventListener('mousemove',e=>{let orb=document.querySelector('.orb');let x=(e.clientX/window.innerWidth-0.5)*20;let y=(e.clientY/window.innerHeight-0.5)*20;orb.style.transform=`translate(${x}px,${y}px)`;});
-</script>
+
+  <script>
+    function addTask() {
+      const input = document.getElementById("taskInput");
+      const text = input.value.trim();
+      if (!text) return;
+
+      const li = document.createElement("li");
+      const span = document.createElement("span");
+      span.textContent = text;
+      span.onclick = () => span.classList.toggle("done");
+
+      const delBtn = document.createElement("button");
+      delBtn.textContent = "حذف";
+      delBtn.style.background = "#dc2626";
+      delBtn.onclick = () => li.remove();
+
+      li.append(span, delBtn);
+      document.getElementById("taskList").appendChild(li);
+      input.value = "";
+    }
+  </script>
 </body>
 </html>
