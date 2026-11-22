@@ -98,21 +98,152 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 </style>
 </head>
 <body>
-<div class="hero-banner"><img id="serverRotator" src="server1.jpg" alt="MISK"><div class="hero-label">MISK • SERVER • CCTV</div></div>
-<div id="loginPage">
-<div style="text-align:center;background:#4A0E68;color:#fff;padding:18px;border-radius:16px"><div style="font-size:32px;font-weight:900">MISK<span style="color:#ff2a8a">.</span></div><small>SERVER • CCTV • ELECTRONICS</small></div>
-<h2 style="text-align:center">تسجيل دخول - صفحة واحدة</h2>
-<p style="text-align:center;font-size:13px;color:#666">اكتب اسم المستخدم والباسورد</p>
-<input id="user" placeholder="اسم المستخدم" autocomplete="off" onkeydown="if(event.key==='Enter') login(event)"><input id="pass" type="password" placeholder="الباسورد" autocomplete="off" onkeydown="if(event.key==='Enter') login(event)">
-<button class="btn" type="button" onclick="login(event)">تسجيل الدخول</button><p id="loginMsg" style="color:red;text-align:center"></p>
-<div class="stats" style="padding:0;margin-top:10px">
-<div class="stat" onclick="showAzkar()"><div class="circle c-purple">📖</div><b style="font-size:11px">اذكار الصباح والمساء</b><br><small id="azkarText">سبحان الله وبحمده</small></div>
-<div class="stat"><div class="circle c-blue"><span id="loginClock">--:--</span></div><b style="font-size:11px">الساعة وحالة الجو</b><br><small id="loginDate">--</small><br><small id="loginWeather">☀️ جاري...</small></div>
-<div class="stat" onclick="doAttendance()"><div class="circle c-green">🕐</div><b style="font-size:11px">الحضور والانصراف</b><br><small id="attendTime">--:--:--</small></div>
+
+<div id="loginPage" class="misk-login-scene">
+
+    <!-- الخلفية -->
+    <div class="misk-space">
+        <div class="misk-stars"></div>
+        <div class="misk-aurora aurora-one"></div>
+        <div class="misk-aurora aurora-two"></div>
+
+        <!-- الكرة التقنية -->
+        <div class="misk-orb">
+            <div class="orb-ring ring-one"></div>
+            <div class="orb-ring ring-two"></div>
+            <div class="orb-grid"></div>
+            <div class="orb-core"></div>
+        </div>
+
+        <!-- موجات الإضاءة -->
+        <div class="misk-wave wave-one"></div>
+        <div class="misk-wave wave-two"></div>
+        <div class="misk-wave wave-three"></div>
+    </div>
+
+    <!-- Header -->
+    <div class="misk-login-header">
+        <div class="misk-brand">
+            <div class="misk-logo">
+                <div></div>
+            </div>
+            <span>MISK TECHNOLOGY</span>
+        </div>
+
+        <div class="misk-header-actions">
+            <div class="glass-pill">🛡 Secure</div>
+            <div class="glass-pill">◉</div>
+            <div class="glass-pill">⚙</div>
+        </div>
+    </div>
+
+    <!-- 3D Login Card -->
+    <div class="misk-login-card">
+
+        <div class="misk-card-heading">
+            <h1>Welcome Back</h1>
+            <p>Sign in to continue to MISK Technology</p>
+        </div>
+
+        <form onsubmit="login(event)">
+
+            <div class="misk-input-row">
+
+                <div class="misk-input-wrap">
+                    <span>👤</span>
+                    <input
+                        id="user"
+                        type="text"
+                        placeholder="Username"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+
+                <div class="misk-input-wrap">
+                    <span>🔒</span>
+                    <input
+                        id="pass"
+                        type="password"
+                        placeholder="Password"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+
+            </div>
+
+            <div class="misk-login-options">
+                <label>
+                    <input type="checkbox" id="miskRemember">
+                    Remember me
+                </label>
+
+                <a href="#" onclick="miskForgotPassword(event)">
+                    Forgot password?
+                </a>
+            </div>
+
+            <button class="misk-signin-btn" type="submit">
+                Sign In
+            </button>
+
+            <button
+                type="button"
+                class="misk-passkey"
+                onclick="miskPasskeyMessage()"
+            >
+                ⚿ &nbsp; Sign in with Passkey
+            </button>
+
+        </form>
+
+        <p id="loginMsg" class="misk-login-message"></p>
+
+    </div>
+
+    <!-- Assistant -->
+    <div class="misk-assistant">
+        <div class="misk-robot">🤖</div>
+
+        <div>
+            <h3>MISK · Technology</h3>
+            <p><span class="online-dot"></span> Online · Ready to assist you</p>
+        </div>
+    </div>
+
+    <!-- Existing system widgets -->
+    <div class="misk-login-extras">
+
+        <div class="misk-extra" onclick="showAzkar()">
+            📖
+            <span>الأذكار</span>
+            <small id="azkarText">سبحان الله وبحمده</small>
+        </div>
+
+        <div class="misk-extra">
+            🕒
+            <span id="loginClock">--:--</span>
+            <small id="loginDate">--</small>
+            <small id="loginWeather">☀️ جاري...</small>
+        </div>
+
+        <div class="misk-extra" onclick="doAttendance()">
+            🕐
+            <span>الحضور والانصراف</span>
+            <small id="attendTime">--:--:--</small>
+        </div>
+
+    </div>
+
+    <button class="misk-location-btn" onclick="getLiveLocation()">
+        📍 لايف لوكيشن
+    </button>
+
+    <p id="mapLocText" class="misk-location-text"></p>
+
 </div>
-<div class="row"><button class="blueBtn" onclick="getLiveLocation()">📍 لايف لوكيشن</button></div>
-<p id="mapLocText" style="font-size:12px;color:#666;text-align:center"></p>
-</div>
+
 <div id="appPage" class="hidden">
 <div style="display:flex;justify-content:flex-end;margin-bottom:6px">
 <div style="display:flex;align-items:center;gap:6px;background:#fff;border:1px solid #e5e7eb;padding:4px 8px;border-radius:20px;font-size:12px;box-shadow:0 2px 8px rgba(0,0,0,.08)">
