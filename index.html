@@ -334,47 +334,63 @@ body:has(#loginPage:not(.hidden)) .hero-banner {
         inset 0 1px 1px rgba(255,255,255,.25);
 
     transform-style: preserve-3d;
+    transform-origin: center center;
+    will-change: transform, opacity, filter;
 
     opacity: 0;
-    animation: miskLoginEntrance 2.4s cubic-bezier(.16,1,.3,1) forwards;
+    animation: miskLoginEntrance 2.8s cubic-bezier(.16,1,.3,1) forwards;
 }
 
+/* صندوق الدخول يبدأ بعيدًا ومائلًا ثم يقترب ويفرد نفسه */
 @keyframes miskLoginEntrance {
     0% {
         opacity: 0;
         transform:
             translate(-50%, -50%)
-            translate3d(100px, 80px, -600px)
-            rotateX(22deg)
-            rotateY(-28deg)
-            rotateZ(-12deg)
-            scale(.65);
-        filter: blur(8px);
+            translate3d(190px, 115px, -1250px)
+            rotateX(32deg)
+            rotateY(-42deg)
+            rotateZ(-18deg)
+            scale(.28);
+        filter: blur(12px);
     }
 
-    35% {
+    22% {
+        opacity: .45;
+        filter: blur(7px);
+    }
+
+    48% {
         opacity: 1;
-    }
-
-    65% {
         transform:
             translate(-50%, -50%)
-            translate3d(-15px, -10px, 100px)
-            rotateX(-5deg)
-            rotateY(8deg)
-            rotateZ(3deg)
-            scale(1.04);
+            translate3d(-35px, -22px, -180px)
+            rotateX(12deg)
+            rotateY(18deg)
+            rotateZ(7deg)
+            scale(.78);
+        filter: blur(2px);
+    }
+
+    72% {
+        transform:
+            translate(-50%, -50%)
+            translate3d(0, -8px, 90px)
+            rotateX(-4deg)
+            rotateY(-5deg)
+            rotateZ(-2deg)
+            scale(1.045);
         filter: blur(0);
     }
 
-    82% {
+    88% {
         transform:
             translate(-50%, -50%)
-            translate3d(0, 0, 30px)
-            rotateX(2deg)
-            rotateY(-2deg)
-            rotateZ(-1deg)
-            scale(1.01);
+            translate3d(0, 0, 25px)
+            rotateX(1.5deg)
+            rotateY(1deg)
+            rotateZ(.5deg)
+            scale(1.015);
     }
 
     100% {
