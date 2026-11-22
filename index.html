@@ -1,814 +1,135 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AURA 2027 | Secure Login</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-:root {
-    --cyan: #65eaff;
-    --blue: #4db8ff;
-    --purple: #b36aff;
-    --pink: #f05bff;
-    --bg: #030815;
-}
-
+/* 3D SCENE */
 body {
-    font-family: 'Inter', sans-serif;
-    min-height: 100vh;
-    color: white;
-    overflow: hidden;
-    background:
-        radial-gradient(ellipse at 15% 30%, rgba(0,255,210,.20), transparent 40%),
-        radial-gradient(ellipse at 85% 65%, rgba(168,45,255,.22), transparent 40%),
-        radial-gradient(ellipse at 50% 100%, rgba(20,100,255,.20), transparent 50%),
-        linear-gradient(135deg, #020817, #071629 50%, #10051f);
-}
-
-/* BACKGROUND */
-
-.background {
-    position: fixed;
-    inset: 0;
-    overflow: hidden;
-    z-index: -1;
-}
-
-.stars {
-    position: absolute;
-    inset: 0;
-    background-image:
-        radial-gradient(2px 2px at 10% 20%, white, transparent),
-        radial-gradient(2px 2px at 30% 70%, #8afaff, transparent),
-        radial-gradient(2px 2px at 80% 30%, white, transparent),
-        radial-gradient(2px 2px at 60% 80%, #c78aff, transparent),
-        radial-gradient(1px 1px at 90% 90%, white, transparent);
-    background-size: 250px 250px;
-    animation: starMove 40s linear infinite;
-}
-
-@keyframes starMove {
-    from { transform: translateY(0); }
-    to { transform: translateY(-250px); }
-}
-
-.aurora {
-    position: absolute;
-    width: 70vw;
-    height: 35vh;
-    left: -10%;
-    top: 15%;
-    background: rgba(0, 255, 220, .12);
-    filter: blur(90px);
-    transform: rotate(-25deg);
-    animation: aurora 8s ease-in-out infinite alternate;
-}
-
-.aurora2 {
-    position: absolute;
-    width: 60vw;
-    height: 40vh;
-    right: -10%;
-    bottom: 10%;
-    background: rgba(180, 40, 255, .16);
-    filter: blur(100px);
-    animation: aurora 10s ease-in-out infinite alternate-reverse;
-}
-
-@keyframes aurora {
-    from { transform: translateY(-30px) rotate(-15deg); }
-    to { transform: translateY(40px) rotate(15deg); }
-}
-
-/* TECH ORB */
-
-.orb {
-    position: absolute;
-    width: 400px;
-    height: 400px;
-    left: 50%;
-    top: 32%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    border: 1px solid rgba(100, 240, 255, .3);
-    background:
-        repeating-radial-gradient(circle,
-        transparent 0 30px,
-        rgba(80, 220, 255, .1) 31px 32px),
-        radial-gradient(circle at 30% 30%,
-        rgba(100,240,255,.25),
-        rgba(20,30,80,.2) 60%,
-        transparent 75%);
-    box-shadow:
-        0 0 50px rgba(0,220,255,.15),
-        inset 0 0 50px rgba(0,220,255,.15);
-    animation: orbFloat 8s ease-in-out infinite;
-}
-
-.orb::before,
-.orb::after {
-    content: "";
-    position: absolute;
-    inset: -25px;
-    border-radius: 50%;
-    border: 1px solid rgba(90,220,255,.2);
-    transform: rotateX(65deg);
-}
-
-.orb::after {
-    inset: -45px;
-    transform: rotateY(65deg);
-    border-color: rgba(190,100,255,.2);
-}
-
-.orb-inner {
-    position: absolute;
-    inset: 35px;
-    border-radius: 50%;
-    border: 1px dashed rgba(110,230,255,.4);
-    animation: rotate 30s linear infinite;
-}
-
-@keyframes rotate {
-    to { transform: rotate(360deg); }
-}
-
-@keyframes orbFloat {
-    0%,100% { margin-top: 0; }
-    50% { margin-top: -20px; }
-}
-
-/* LIGHT WAVES */
-
-.wave {
-    position: absolute;
-    width: 150%;
-    height: 250px;
-    left: -25%;
-    bottom: 8%;
-    border-radius: 50%;
-    border-top: 2px solid rgba(90,220,255,.4);
-    filter: drop-shadow(0 0 10px #25baff);
-    transform: rotate(-8deg);
-}
-
-.wave:nth-child(2) {
-    bottom: 15%;
-    border-color: rgba(190,80,255,.4);
-    transform: rotate(8deg);
-}
-
-.wave:nth-child(3) {
-    bottom: 22%;
-    border-color: rgba(70,120,255,.3);
-    transform: rotate(-15deg);
-}
-
-/* HEADER */
-
-.header {
-    position: absolute;
-    top: 35px;
-    left: 5%;
-    right: 5%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
-
-.logo {
-    width: 48px;
-    height: 48px;
-    background: linear-gradient(135deg, #00eaff, #287aff, #933dff);
-    clip-path: polygon(
-        50% 0%, 100% 25%, 100% 75%,
-        50% 100%, 0% 75%, 0% 25%
-    );
-    position: relative;
-}
-
-.logo::after {
-    content: "";
-    position: absolute;
-    inset: 9px;
-    background: #071529;
-    clip-path: polygon(
-        50% 0%, 100% 25%, 100% 75%,
-        50% 100%, 0% 75%, 0% 25%
-    );
-}
-
-.brand-name {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 20px;
-    letter-spacing: 4px;
-    color: var(--cyan);
-    text-shadow: 0 0 15px rgba(0,220,255,.5);
-}
-
-.header-actions {
-    display: flex;
-    gap: 10px;
-}
-
-.header-btn {
-    border: 1px solid rgba(255,255,255,.2);
-    background: rgba(255,255,255,.08);
-    backdrop-filter: blur(10px);
-    color: white;
-    padding: 12px 18px;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: .3s;
-}
-
-.header-btn:hover {
-    border-color: var(--cyan);
-    box-shadow: 0 0 15px rgba(0,220,255,.3);
+    perspective: 1400px;
+    perspective-origin: 50% 45%;
 }
 
 /* LOGIN CARD */
-
 .login-container {
     position: absolute;
     top: 52%;
     left: 50%;
-    transform: translate(-50%, -50%);
+
     width: min(520px, 90%);
     padding: 40px;
+
     border-radius: 28px;
-    background: rgba(120, 160, 210, .10);
-    backdrop-filter: blur(25px);
+
+    background: rgba(120, 160, 210, .12);
+    backdrop-filter: blur(28px);
+
     border: 1px solid rgba(255,255,255,.25);
+
     box-shadow:
         0 25px 80px rgba(0,0,0,.4),
         inset 0 1px 1px rgba(255,255,255,.2);
-    animation: cardEnter 1s ease;
+
+    transform-style: preserve-3d;
+
+    animation: loginEntrance 2.4s cubic-bezier(.16,1,.3,1) forwards;
+
+    opacity: 0;
 }
 
-@keyframes cardEnter {
-    from {
+/* INITIAL POSITION -> FINAL POSITION */
+
+@keyframes loginEntrance {
+
+    0% {
         opacity: 0;
-        transform: translate(-50%, -45%);
+
+        transform:
+            translate(-50%, -50%)
+            translate3d(100px, 80px, -600px)
+            rotateX(22deg)
+            rotateY(-28deg)
+            rotateZ(-12deg)
+            scale(.65);
+
+        filter: blur(8px);
     }
-    to {
+
+    35% {
         opacity: 1;
-        transform: translate(-50%, -50%);
+    }
+
+    65% {
+        transform:
+            translate(-50%, -50%)
+            translate3d(-15px, -10px, 100px)
+            rotateX(-5deg)
+            rotateY(8deg)
+            rotateZ(3deg)
+            scale(1.04);
+
+        filter: blur(0);
+    }
+
+    82% {
+        transform:
+            translate(-50%, -50%)
+            translate3d(0, 0, 30px)
+            rotateX(2deg)
+            rotateY(-2deg)
+            rotateZ(-1deg)
+            scale(1.01);
+    }
+
+    100% {
+        opacity: 1;
+
+        transform:
+            translate(-50%, -50%)
+            translate3d(0, 0, 0)
+            rotateX(0)
+            rotateY(0)
+            rotateZ(0)
+            scale(1);
+
+        filter: blur(0);
     }
 }
 
-.login-container::before {
+/* LIGHT REFLECTION */
+
+.login-container::after {
     content: "";
+
     position: absolute;
     inset: 0;
-    border-radius: 28px;
-    padding: 1px;
+
+    border-radius: inherit;
+
     background: linear-gradient(
-        135deg,
-        rgba(100,255,255,.5),
-        transparent 40%,
-        rgba(200,100,255,.5)
+        120deg,
+        transparent 20%,
+        rgba(255,255,255,.18) 45%,
+        transparent 65%
     );
-    -webkit-mask:
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
+
+    transform: translateX(-120%);
+
+    animation: glassReflection 2.5s ease 1.2s forwards;
+
     pointer-events: none;
 }
 
-.login-title {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.login-title h1 {
-    font-size: 32px;
-    font-weight: 600;
-    font-style: italic;
-    margin-bottom: 8px;
-    text-shadow: 0 0 20px rgba(100,220,255,.3);
-}
-
-.login-title p {
-    color: rgba(220,245,255,.75);
-    font-size: 14px;
-}
-
-/* INPUTS */
-
-.input-group {
-    position: relative;
-    margin-bottom: 20px;
-}
-
-.input-group input {
-    width: 100%;
-    height: 58px;
-    padding: 0 55px 0 20px;
-    border-radius: 35px;
-    color: white;
-    font-size: 15px;
-    outline: none;
-    background: rgba(255,255,255,.08);
-    border: 1px solid rgba(255,255,255,.3);
-    transition: .3s;
-}
-
-.input-group input::placeholder {
-    color: rgba(230,245,255,.65);
-}
-
-.input-group input:focus {
-    border-color: var(--cyan);
-    box-shadow:
-        0 0 15px rgba(0,220,255,.2),
-        inset 0 0 10px rgba(0,220,255,.05);
-}
-
-.input-icon {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 20px;
-    opacity: .7;
-}
-
-.show-password {
-    position: absolute;
-    left: 18px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    opacity: .7;
-}
-
-/* OPTIONS */
-
-.options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 10px 5px 25px;
-    font-size: 13px;
-}
-
-.remember {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    color: rgba(220,245,255,.7);
-}
-
-.remember input {
-    accent-color: var(--cyan);
-}
-
-.forgot {
-    color: var(--cyan);
-    text-decoration: none;
-}
-
-.forgot:hover {
-    text-shadow: 0 0 10px var(--cyan);
-}
-
-/* SIGN IN */
-
-.signin {
-    width: 100%;
-    height: 62px;
-    border-radius: 40px;
-    color: white;
-    font-size: 20px;
-    font-weight: 600;
-    cursor: pointer;
-    border: 1px solid rgba(255,255,255,.5);
-    background: linear-gradient(
-        110deg,
-        rgba(30,180,220,.6),
-        rgba(90,100,200,.5),
-        rgba(190,60,220,.6)
-    );
-    box-shadow:
-        0 0 15px rgba(60,220,255,.3),
-        0 0 30px rgba(160,80,255,.2);
-    transition: .3s;
-}
-
-.signin:hover {
-    transform: translateY(-2px);
-    box-shadow:
-        0 0 25px rgba(60,220,255,.5),
-        0 0 45px rgba(160,80,255,.3);
-}
-
-.signin:active {
-    transform: scale(.98);
-}
-
-/* PASSKEY */
-
-.passkey {
-    width: 100%;
-    margin-top: 15px;
-    height: 48px;
-    border-radius: 30px;
-    color: white;
-    border: 1px solid rgba(255,255,255,.25);
-    background: rgba(255,255,255,.04);
-    cursor: pointer;
-    transition: .3s;
-}
-
-.passkey:hover {
-    background: rgba(255,255,255,.1);
-}
-
-/* AI ASSISTANT */
-
-.assistant {
-    position: absolute;
-    bottom: 35px;
-    left: 5%;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.robot {
-    width: 75px;
-    height: 75px;
-    border-radius: 50%;
-    border: 1px solid rgba(100,220,255,.5);
-    background:
-        radial-gradient(circle, #1d4166, #06101d);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 36px;
-    box-shadow: 0 0 25px rgba(0,220,255,.2);
-    animation: robotPulse 3s infinite;
-}
-
-@keyframes robotPulse {
-    0%,100% { box-shadow: 0 0 15px rgba(0,220,255,.2); }
-    50% { box-shadow: 0 0 30px rgba(0,220,255,.5); }
-}
-
-.assistant h3 {
-    font-size: 20px;
-    margin-bottom: 6px;
-}
-
-.status {
-    font-size: 13px;
-    color: #8de8ff;
-}
-
-.status::before {
-    content: "● ";
-    color: #35ff9b;
-}
-
-/* TOAST */
-
-.toast {
-    position: fixed;
-    top: 100px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-20px);
-    padding: 14px 25px;
-    border-radius: 12px;
-    background: rgba(10,30,50,.9);
-    border: 1px solid var(--cyan);
-    box-shadow: 0 0 20px rgba(0,220,255,.2);
-    opacity: 0;
-    transition: .3s;
-    z-index: 100;
-}
-
-.toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-}
-
-/* RESPONSIVE */
-
-@media(max-width:700px) {
-    .header {
-        top: 20px;
+@keyframes glassReflection {
+    to {
+        transform: translateX(120%);
     }
+}
 
-    .brand-name {
-        font-size: 14px;
-        letter-spacing: 2px;
-    }
+/* ACCESSIBILITY */
 
-    .logo {
-        width: 38px;
-        height: 38px;
-    }
-
-    .header-btn {
-        padding: 9px 12px;
-        font-size: 12px;
-    }
-
+@media (prefers-reduced-motion: reduce) {
     .login-container {
-        top: 50%;
-        padding: 28px 22px;
+        animation: none;
+        opacity: 1;
+        transform: translate(-50%, -50%);
     }
 
-    .login-title h1 {
-        font-size: 26px;
-    }
-
-    .orb {
-        width: 280px;
-        height: 280px;
-        top: 25%;
-    }
-
-    .assistant {
-        bottom: 20px;
-        left: 20px;
-    }
-
-    .robot {
-        width: 55px;
-        height: 55px;
-        font-size: 25px;
-    }
-
-    .assistant h3 {
-        font-size: 15px;
-    }
-
-    .assistant .status {
-        font-size: 11px;
+    .login-container::after {
+        animation: none;
     }
 }
-
-@media(max-height:650px) {
-    .login-container {
-        padding: 22px;
-    }
-
-    .login-title {
-        margin-bottom: 18px;
-    }
-
-    .input-group {
-        margin-bottom: 12px;
-    }
-
-    .assistant {
-        display: none;
-    }
-}
-</style>
-</head>
-
-<body>
-
-<div class="background">
-    <div class="stars"></div>
-    <div class="aurora"></div>
-    <div class="aurora2"></div>
-
-    <div class="orb">
-        <div class="orb-inner"></div>
-    </div>
-
-    <div class="wave"></div>
-    <div class="wave"></div>
-    <div class="wave"></div>
-</div>
-
-<!-- HEADER -->
-
-<header class="header">
-    <div class="brand">
-        <div class="logo"></div>
-        <div class="brand-name">AURA 2027</div>
-    </div>
-
-    <div class="header-actions">
-        <button class="header-btn" onclick="showToast('Secure Connection Active')">
-            🛡 Secure
-        </button>
-
-        <button class="header-btn" onclick="showToast('Network Connected')">
-            ◉
-        </button>
-
-        <button class="header-btn" onclick="showToast('Settings')">
-            ⚙
-        </button>
-    </div>
-</header>
-
-<!-- LOGIN -->
-
-<main class="login-container">
-
-    <div class="login-title">
-        <h1>Welcome Back</h1>
-        <p>Sign in to continue to AURA 2027</p>
-    </div>
-
-    <form id="loginForm">
-
-        <div class="input-group">
-            <span class="input-icon">👤</span>
-            <input
-                type="text"
-                id="username"
-                placeholder="Username"
-                autocomplete="username"
-                required
-            >
-        </div>
-
-        <div class="input-group">
-            <span class="input-icon">🔒</span>
-            <input
-                type="password"
-                id="password"
-                placeholder="Password"
-                autocomplete="current-password"
-                required
-            >
-
-            <button
-                type="button"
-                class="show-password"
-                onclick="togglePassword()"
-            >
-                ◉
-            </button>
-        </div>
-
-        <div class="options">
-            <label class="remember">
-                <input type="checkbox" id="remember">
-                Remember me
-            </label>
-
-            <a href="#" class="forgot" onclick="forgotPassword(event)">
-                Forgot password?
-            </a>
-        </div>
-
-        <button class="signin" type="submit" id="loginBtn">
-            Sign In
-        </button>
-
-        <button
-            type="button"
-            class="passkey"
-            onclick="showToast('Passkey authentication is not configured')"
-        >
-            ⚿ &nbsp; Sign in with Passkey
-        </button>
-
-    </form>
-
-</main>
-
-<!-- AI ASSISTANT -->
-
-<div class="assistant">
-    <div class="robot">🤖</div>
-
-    <div>
-        <h3>AURA · AI Assistant</h3>
-        <div class="status">Online · Ready to assist you</div>
-    </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script>
-
-/* SHOW / HIDE PASSWORD */
-
-function togglePassword() {
-    const password = document.getElementById("password");
-
-    password.type =
-        password.type === "password"
-        ? "text"
-        : "password";
-}
-
-/* TOAST MESSAGE */
-
-function showToast(message) {
-    const toast = document.getElementById("toast");
-
-    toast.textContent = message;
-    toast.classList.add("show");
-
-    setTimeout(() => {
-        toast.classList.remove("show");
-    }, 2500);
-}
-
-/* FORGOT PASSWORD */
-
-function forgotPassword(event) {
-    event.preventDefault();
-
-    showToast("Please contact your system administrator");
-}
-
-/* LOGIN */
-
-document.getElementById("loginForm")
-.addEventListener("submit", function(event) {
-
-    event.preventDefault();
-
-    const username =
-        document.getElementById("username").value.trim();
-
-    const password =
-        document.getElementById("password").value;
-
-    const loginBtn =
-        document.getElementById("loginBtn");
-
-    if (!username || !password) {
-        showToast("Please enter username and password");
-        return;
-    }
-
-    loginBtn.disabled = true;
-    loginBtn.textContent = "Authenticating...";
-
-    setTimeout(() => {
-
-        loginBtn.disabled = false;
-        loginBtn.textContent = "Sign In";
-
-        /*
-        NOTE:
-        This is a UI demo only.
-        Connect your real authentication system here.
-        */
-
-        showToast("Login UI ready - connect authentication");
-
-    }, 1200);
-
-});
-
-/* REMEMBER USERNAME */
-
-const rememberedUser = localStorage.getItem("aura_username");
-
-if (rememberedUser) {
-    document.getElementById("username").value = rememberedUser;
-    document.getElementById("remember").checked = true;
-}
-
-document.getElementById("remember")
-.addEventListener("change", function() {
-
-    const username =
-        document.getElementById("username").value.trim();
-
-    if (this.checked && username) {
-        localStorage.setItem("aura_username", username);
-    } else {
-        localStorage.removeItem("aura_username");
-    }
-
-});
-
-</script>
-
-</body>
-</html>
