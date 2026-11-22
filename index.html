@@ -1,50 +1,91 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>قائمة المهام</title>
-  <style>
-    body { font-family: system-ui, sans-serif; background: #f4f6f9; margin: 0; padding: 20px; }
-    .app { max-width: 420px; margin: auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.08); }
-    .row { display: flex; gap: 8px; margin-bottom: 16px; }
-    input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 8px; }
-    button { padding: 10px 16px; border: none; background: #2563eb; color: #fff; border-radius: 8px; cursor: pointer; }
-    ul { list-style: none; padding: 0; margin: 0; }
-    li { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; }
-    .done { text-decoration: line-through; color: #888; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURA 2027</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+body{min-height:100vh;color:#fff;display:flex;flex-direction:column;overflow-x:hidden;background:#020617}
+
+/* الخلفية - زي الصورة بالظبط */
+.bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:#020617}
+.bg::before{content:"";position:absolute;inset:-50%;background:
+radial-gradient(600px at 20% 20%, rgba(0,240,255,.45), transparent 60%),
+radial-gradient(700px at 80% 20%, rgba(168,85,247,.55), transparent 60%),
+radial-gradient(800px at 50% 100%, rgba(34,211,238,.45), transparent 60%),
+radial-gradient(500px at 90% 90%, rgba(236,72,153,.35), transparent 60%);
+animation:aurora 12s ease-in-out infinite alternate}
+@keyframes aurora{0%{transform:translate(0,0) scale(1)}100%{transform:translate(-30px,20px) scale(1.05)}}
+.bg::after{content:"";position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1534796636912-3b95b45a82d8?w=1600&q=80') center/cover;opacity:.35;mix-blend-mode:screen}
+
+/* النافبار */
+.nav{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:22px 32px}
+.logo{font-weight:900;letter-spacing:3px;color:#67e8f9;font-size:22px}
+.pill{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);padding:8px 16px;border-radius:30px;backdrop-filter:blur(10px);font-size:14px}
+
+.wrap{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 20px 50px}
+
+/* الكورة - هي دي اللي في الصورة */
+.orb{width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 30% 30%, #ffffff 0%, #a5f3fc 15%, #67e8f9 30%, #0ea5e9 55%, #7c3aed 85%, #4c1d95 100%);box-shadow:0 0 60px #22d3ee, 0 0 120px #a855f7, inset -10px -15px 30px rgba(0,0,0,.25), inset 10px 10px 30px rgba(255,255,255,.6);position:relative;z-index:2;animation:float 4s ease-in-out infinite}
+.orb::after{content:"⬡";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:62px;color:#fff;text-shadow:0 0 15px #fff}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+
+/* الكارت */
+.card{margin-top:-25px;width:100%;max-width:580px;background:rgba(255,255,255,.10);backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px);border:1px solid rgba(255,255,255,.35);border-radius:28px;padding:35px;box-shadow:0 30px 80px rgba(0,0,0,.5);position:relative;z-index:1}
+h1{text-align:center;font-size:34px;font-weight:900}
+p.sub{text-align:center;color:#bae6fd;margin:10px 0 25px}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label{display:block;margin-bottom:6px;color:#a5f3fc;font-size:14px}
+input{width:100%;padding:14px 16px;background:rgba(255,255,255,.95);border:1px solid rgba(255,255,255,.3);border-radius:50px;color:#1e293b;outline:none;font-size:15px}
+input::placeholder{color:#94a3b8}
+input:focus{border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,238,.3)}
+
+.row{display:flex;justify-content:space-between;align-items:center;margin:18px 0;color:#cbd5e1;font-size:14px}
+.row a{color:#67e8f9;text-decoration:none}
+.row label{display:flex;align-items:center;gap:6px;margin:0}
+.row label input{width:auto}
+
+.btn{width:100%;padding:15px;border:none;border-radius:50px;background:linear-gradient(90deg,#22d3ee,#a855f7,#ec4899);color:#fff;font-size:21px;font-weight:900;cursor:pointer;box-shadow:0 15px 30px rgba(168,85,247,.4);transition:.2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 20px 40px rgba(168,85,247,.6)}
+.passkey{width:100%;margin-top:12px;padding:13px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:50px;cursor:pointer;font-size:16px}
+
+.ai{margin-top:20px;display:flex;gap:12px;align-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);padding:12px;border-radius:16px}
+.ai .avatar{width:45px;height:45px;min-width:45px;border-radius:50%;background:#22d3ee;display:flex;align-items:center;justify-content:center;font-size:24px}
+.ai small{color:#67e8f9}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.card{padding:25px 20px}}
+</style>
 </head>
 <body>
-  <div class="app">
-    <h2>مهامي اليومية</h2>
-    <div class="row">
-      <input id="taskInput" type="text" placeholder="أضف مهمة جديدة..." />
-      <button onclick="addTask()">إضافة</button>
+<div class="bg"></div>
+<div class="nav"><div class="logo">⬡ AURA 2027</div><div class="pill">🛡️ Secure</div></div>
+
+<div class="wrap">
+  <div class="orb" id="orb"></div>
+  <div class="card">
+    <h1>Welcome Back</h1>
+    <p class="sub">Sign in to continue in AURA 2027</p>
+    <div class="grid">
+      <div><label>Username</label><input id="user" placeholder="Enter username"></div>
+      <div><label>Password</label><input id="pass" type="password" placeholder="••••••••"></div>
     </div>
-    <ul id="taskList"></ul>
+    <div class="row"><label><input type="checkbox"> Remember me</label><a href="#">Forgot Password?</a></div>
+    <button class="btn" onclick="login()">Sign In →</button>
+    <button class="passkey" onclick="alert('Passkey')">🔑 Sign in with Passkey</button>
+    <div class="ai"><div class="avatar">🤖</div><div><b>AURA • AI Assistant</b><br><small>● Online • Ready to help if you forgot password</small></div></div>
   </div>
+</div>
 
-  <script>
-    function addTask() {
-      const input = document.getElementById("taskInput");
-      const text = input.value.trim();
-      if (!text) return;
-
-      const li = document.createElement("li");
-      const span = document.createElement("span");
-      span.textContent = text;
-      span.onclick = () => span.classList.toggle("done");
-
-      const delBtn = document.createElement("button");
-      delBtn.textContent = "حذف";
-      delBtn.style.background = "#dc2626";
-      delBtn.onclick = () => li.remove();
-
-      li.append(span, delBtn);
-      document.getElementById("taskList").appendChild(li);
-      input.value = "";
-    }
-  </script>
+<script>
+function login(){let u=document.getElementById('user').value;if(!u) return alert('Enter username');alert('Welcome '+u+' 🚀');}
+// الكورة بتتحرك مع الماوس - دي اللي بتخلي الصفحة مش ثابتة
+let orb=document.getElementById('orb');
+document.addEventListener('mousemove',e=>{
+  let x=(e.clientX/window.innerWidth-0.5)*25;
+  let y=(e.clientY/window.innerHeight-0.5)*25;
+  orb.style.translate=x+'px '+y+'px';
+});
+</script>
 </body>
 </html>
