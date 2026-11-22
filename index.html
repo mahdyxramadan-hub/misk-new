@@ -3,85 +3,90 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MISK | Misk Information Technology</title>
+<title>AURA 2027 | تسجيل الدخول</title>
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
   body{min-height:100vh;overflow:hidden;background:#020617;color:#fff;display:flex;flex-direction:column}
+
+  /* الخلفية - نفس ألوان الصورة بالظبط */
   .bg{position:fixed;inset:0;background:radial-gradient(600px at 20% 20%,#00f0ff33,transparent),radial-gradient(600px at 80% 20%,#a855f733,transparent),radial-gradient(800px at 50% 100%,#22d3ee33,transparent),#020617;z-index:0}
   .bg::after{content:"";position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1534796636912-3b95b45a82d8?w=1600') center/cover;opacity:.25;mix-blend-mode:screen}
-  .nav{position:relative;z-index:3;display:flex;justify-content:space-between;align-items:center;padding:20px 30px}
-  .logo{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:2px;font-size:22px;color:#67e8f9}
-  .logo span{background:linear-gradient(90deg,#22d3ee,#a855f7);width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px}
-  .pill{border:1px solid #ffffff33;background:#ffffff14;padding:8px 16px;border-radius:30px;backdrop-filter:blur(10px)}
 
-  .wrap{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;perspective:1200px}
+  /* النافبار فوق */
+  .nav{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:20px 30px}
+  .logo{font-weight:900;letter-spacing:3px;color:#67e8f9;font-size:22px}
+  .nav .pill{border:1px solid #ffffff33;background:#ffffff14;padding:8px 16px;border-radius:30px;backdrop-filter:blur(10px);font-size:14px}
 
-  /* الكورة */
-  .orb{width:130px;height:130px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff,#67e8f9,#0ea5e9,#7c3aed);box-shadow:0 0 60px #22d3ee, inset 0 0 30px #fff;position:relative;z-index:3;animation:float 4s ease-in-out infinite}
-  .orb::after{content:"M";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:60px;font-weight:900;color:#0f172a}
-  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  .wrap{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
 
-  /* الكارت - هنا الحركة اللي طلبتها */
-  .card{
-    margin-top:-20px;width:100%;max-width:580px;
-    background:rgba(255,255,255,.08);backdrop-filter:blur(25px);
-    border:1px solid rgba(255,255,255,.35);border-radius:28px;padding:35px;
-    box-shadow:0 30px 80px rgba(0,0,0,.5);
-    /* يبدأ مايل */
-    transform: rotateX(18deg) rotateY(-18deg) rotateZ(-6deg) translateY(40px);
-    opacity:0;
-    /* وبعدين يتعدل لوحده */
-    animation: straighten 1.6s ease forwards .3s;
-    transition: transform .2s ease;
-  }
-  @keyframes straighten{
-    0%{transform: rotateX(18deg) rotateY(-18deg) rotateZ(-6deg) translateY(40px);opacity:0}
-    60%{transform: rotateX(4deg) rotateY(-4deg) rotateZ(-1deg) translateY(5px);opacity:1}
-    100%{transform: rotateX(0) rotateY(0) rotateZ(0) translateY(0);opacity:1}
-  }
-  h1{text-align:center;font-size:34px}
-  p.sub{text-align:center;color:#bae6fd;margin:8px 0 25px}
+  /* الكورة الزجاج 3D - نفس اللي في الصورة */
+  .orb{width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#ffffff,#67e8f9,#0ea5e9,#7c3aed);box-shadow:0 0 60px #22d3ee, inset 0 0 30px #ffffff;animation:float 4s ease-in-out infinite;position:relative;z-index:2}
+  .orb::after{content:"⬡";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:60px;color:#fff}
+  @keyframes float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-15px) scale(1.03)}}
+
+  /* الكارت الزجاجي */
+  .card{margin-top:-25px;width:100%;max-width:580px;background:rgba(255,255,255,.08);backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px);border:1px solid rgba(255,255,255,.35);border-radius:28px;padding:35px;box-shadow:0 30px 80px rgba(0,0,0,.5);position:relative;z-index:1}
+  h1{text-align:center;font-size:34px;font-weight:900}
+  p.sub{text-align:center;color:#bae6fd;margin:8px 0 25px;font-size:16px}
+
+  /* تقسيمة الايكونات - 2 جنب بعض زي الصورة */
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   label{display:block;margin-bottom:6px;color:#a5f3fc;font-size:14px}
-  input{width:100%;padding:14px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);border-radius:50px;color:#fff;outline:none}
+  input{width:100%;padding:14px 16px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);border-radius:50px;color:#fff;outline:none;font-size:15px}
   input::placeholder{color:#cbd5e1}
   input:focus{border-color:#22d3ee;box-shadow:0 0 0 3px #22d3ee33}
-  .row{display:flex;justify-content:space-between;margin:18px 0;color:#cbd5e1}
+
+  .row{display:flex;justify-content:space-between;align-items:center;margin:18px 0;color:#cbd5e1;font-size:14px}
+  .row a{color:#67e8f9;text-decoration:none}
+  .row label{display:flex;align-items:center;gap:6px;margin:0}
+
+  /* زرار الدخول */
   .btn{width:100%;padding:15px;border:none;border-radius:50px;background:linear-gradient(90deg,#22d3ee,#a855f7,#ec4899);color:#fff;font-size:21px;font-weight:900;cursor:pointer;box-shadow:0 15px 30px #a855f766}
+  .btn:active{transform:scale(.98)}
+
+  /* زرار الباسكي */
   .passkey{width:100%;margin-top:12px;padding:13px;background:transparent;border:1px solid #ffffff44;color:#fff;border-radius:50px;cursor:pointer;font-size:16px}
+
+  /* مساعد AI تحت */
   .ai{margin-top:20px;display:flex;gap:12px;align-items:center;background:#ffffff10;border:1px solid #ffffff22;padding:12px;border-radius:16px}
-  .ai .avatar{width:45px;height:45px;border-radius:50%;background:#22d3ee;display:flex;align-items:center;justify-content:center;font-size:24px}
+  .ai .avatar{width:45px;height:45px;min-width:45px;border-radius:50%;background:#22d3ee;display:flex;align-items:center;justify-content:center;font-size:24px}
   .ai small{color:#67e8f9}
-  .foot{text-align:center;margin-top:15px;color:#94a3b8;font-size:13px}
-  @media(max-width:600px){.grid{grid-template-columns:1fr} body{overflow:auto}}
+
+  @media(max-width:600px){.grid{grid-template-columns:1fr} body{overflow:auto} .card{padding:25px 20px}}
 </style>
 </head>
 <body>
 <div class="bg"></div>
-<div class="nav"><div class="logo"><span>M</span> MISK</div><div class="pill">🛡️ Misk Information Technology</div></div>
+
+<div class="nav">
+  <div class="logo">⬡ AURA 2027</div>
+  <div class="pill">🛡️ Secure</div>
+</div>
 
 <div class="wrap">
   <div class="orb"></div>
-  <div class="card" id="card">
+  <div class="card">
     <h1>Welcome Back</h1>
-    <p class="sub">سجل دخول عشان تكمل في Misk Information Technology</p>
+    <p class="sub">سجل دخول عشان تكمل في AURA 2027</p>
 
     <div class="grid">
-      <div><label>Username</label><input id="user" placeholder="اكتب اليوزر نيم"></div>
-      <div><label>Password</label><input id="pass" type="password" placeholder="••••••••"></div>
+      <div><label>Username</label><input id="user" placeholder="اكتب اليوزر نيم" autocomplete="off"></div>
+      <div><label>Password</label><input id="pass" type="password" placeholder="••••••••" autocomplete="off"></div>
     </div>
 
-    <div class="row"><label><input type="checkbox"> تذكرني</label><a href="#" style="color:#67e8f9">نسيت كلمة المرور؟</a></div>
+    <div class="row">
+      <label><input type="checkbox" style="width:auto"> تذكرني</label>
+      <a href="#">نسيت كلمة المرور؟</a>
+    </div>
 
     <button class="btn" onclick="login()">Sign In →</button>
     <button class="passkey" onclick="alert('Passkey - بصمة / Face ID')">🔑 Sign in with Passkey</button>
 
     <div class="ai">
       <div class="avatar">🤖</div>
-      <div><b>MISK • AI Assistant</b><br><small>● Online • جاهز أساعدك لو نسيت الباسورد</small></div>
+      <div><b>AURA • AI Assistant</b><br><small>● Online • جاهز أساعدك لو نسيت الباسورد</small></div>
     </div>
   </div>
-  <div class="foot">© 2027 Misk Information Technology • Privacy • Terms</div>
 </div>
 
 <script>
@@ -89,18 +94,14 @@ function login(){
   let u=document.getElementById('user').value;
   let p=document.getElementById('pass').value;
   if(!u||!p) return alert('اكتب اليوزر والباسورد');
-  alert('أهلا بيك في MISK يا '+u+' 🚀');
+  alert('أهلا بيك في المستقبل يا '+u+' 🚀');
 }
-
-// الكارت يميل مع الماوس وبعدين يرجع معدول - ستايل 2027
-let card=document.getElementById('card');
+// الكورة بتتحرك مع الماوس - نفس اللي في الصورة
 document.addEventListener('mousemove',e=>{
-  let x=(e.clientX/window.innerWidth-0.5)*12;
-  let y=(e.clientY/window.innerHeight-0.5)*12;
-  // بس بعد ما يخلص انيميشن التعديل
-  setTimeout(()=>{
-    card.style.transform=`rotateY(${x}deg) rotateX(${-y}deg)`;
-  },1900);
+  let orb=document.querySelector('.orb');
+  let x=(e.clientX/window.innerWidth-0.5)*20;
+  let y=(e.clientY/window.innerHeight-0.5)*20;
+  orb.style.transform=`translate(${x}px,${y}px)`;
 });
 </script>
 </body>
