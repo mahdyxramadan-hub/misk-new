@@ -958,155 +958,6 @@ body:has(#appPage:not(.hidden)){background:#050817!important;color:var(--misk-te
 
 </style>
 
-<style id="MISK_NEONSPACE_TRUE_REDESIGN">
-/* ===== MISK NEON SPACE: FULL INTERNAL UI REDESIGN ===== */
-:root{
-  --misk-bg:#050816;--misk-panel:rgba(11,18,42,.84);--misk-panel2:rgba(15,24,51,.92);
-  --misk-cyan:#55e7ff;--misk-blue:#579bff;--misk-purple:#9b75ff;--misk-text:#eaf3ff;
-  --misk-muted:#9aabc7;--misk-border:rgba(88,195,255,.22);
-}
-body:has(#appPage:not(.hidden)){
-  background:
-    radial-gradient(ellipse at 15% 8%,rgba(30,92,170,.20),transparent 32%),
-    radial-gradient(ellipse at 80% 0%,rgba(114,52,186,.18),transparent 30%),
-    linear-gradient(145deg,#050816,#090d20 48%,#070b19)!important;
-  color:var(--misk-text)!important;
-}
-body:has(#appPage:not(.hidden))::before{
-  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.22;
-  background-image:radial-gradient(1px 1px at 8% 17%,#b9eaff 99%,transparent),
-    radial-gradient(1px 1px at 24% 70%,#8bbdff 99%,transparent),
-    radial-gradient(1px 1px at 51% 30%,#fff 99%,transparent),
-    radial-gradient(2px 2px at 77% 61%,#9edcff 99%,transparent),
-    radial-gradient(1px 1px at 91% 13%,#d4baff 99%,transparent);
-  background-size:240px 190px,310px 260px,360px 290px,280px 230px,400px 300px;
-}
-#appPage:not(.hidden){
-  position:relative;z-index:1;min-height:100vh;box-sizing:border-box;
-  padding:16px 250px 28px 18px!important;margin:0!important;width:100%!important;max-width:none!important;
-  animation: miskNeonEntrance 1.25s cubic-bezier(.18,.75,.22,1) both;
-}
-@keyframes miskNeonEntrance{
-  0%{opacity:0;transform:perspective(1400px) translateZ(-480px) scale(.56) rotateY(-12deg)}
-  70%{opacity:1;transform:perspective(1400px) translateZ(20px) scale(1.015) rotateY(1deg)}
-  100%{opacity:1;transform:perspective(1400px) translateZ(0) scale(1) rotateY(0)}
-}
-#appPage .top-img{
-  min-height:112px!important;height:auto!important;box-sizing:border-box!important;margin:0 0 16px!important;
-  padding:22px 26px!important;position:relative!important;display:flex!important;align-items:center!important;
-  border-radius:22px!important;overflow:hidden!important;
-  background:linear-gradient(110deg,rgba(9,18,44,.95),rgba(24,21,59,.88))!important;
-  border:1px solid var(--misk-border)!important;
-  box-shadow:0 14px 38px rgba(0,0,0,.24),inset 0 0 30px rgba(64,190,255,.05)!important;
-  text-align:right!important;color:var(--misk-text)!important;
-}
-#appPage .top-img:after{content:"";position:absolute;inset:auto -8% -80% 30%;height:180%;border-radius:50%;
-  background:radial-gradient(circle,rgba(83,222,255,.14),transparent 65%);pointer-events:none}
-#appPage .top-img small:first-child{display:none!important}
-#appPage #welcome{font-size:24px!important;font-weight:900!important;color:#f4f8ff!important;position:relative;z-index:1}
-#appPage #techInfo{color:#a6c2e6!important;display:block!important;margin-top:5px!important;position:relative;z-index:1}
-#appPage .top-img>div[style*="position:absolute"]{position:static!important;margin-inline-start:auto!important;font-size:22px!important}
-#appPage .we-bar{display:none!important}
-#appPage>div:first-child{background:rgba(8,15,34,.78)!important;border:1px solid var(--misk-border)!important;
-  border-radius:14px!important;color:#cfe3ff!important;box-shadow:0 8px 24px rgba(0,0,0,.2)!important;
-  margin:0 0 14px!important;padding:8px 12px!important;justify-content:flex-start!important}
-#appPage>div:first-child button{border-radius:10px!important}
-#appPage .admin-layout{display:block!important;width:100%!important;max-width:none!important;margin:0!important}
-#appPage .admin-main{width:100%!important;max-width:none!important;min-width:0!important;background:transparent!important;
-  border:0!important;box-shadow:none!important;padding:0!important;margin:0!important}
-#appPage #followerCard,#appPage #archiveFilter,#appPage .admin-main>div[style*="background:#fff"],
-#appPage .admin-main>div[style*="background: #fff"]{
-  background:var(--misk-panel)!important;color:var(--misk-text)!important;border:1px solid var(--misk-border)!important;
-  border-radius:18px!important;box-shadow:0 10px 28px rgba(0,0,0,.2)!important;backdrop-filter:blur(16px)!important;
-}
-#appPage #followerCard{margin:0 0 14px!important}
-#appPage #followerCard h3,#appPage #archiveFilter b{color:#eaf3ff!important}
-#appPage #followerMsg{color:#ff9ca9!important}
-#appPage .stats{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important;
-  padding:0!important;margin:0 0 16px!important;background:transparent!important}
-#appPage .stat{min-width:0!important;margin:0!important;padding:18px 14px!important;text-align:center!important;
-  border-radius:20px!important;background:linear-gradient(145deg,rgba(12,24,51,.92),rgba(17,20,48,.88))!important;
-  border:1px solid rgba(80,193,255,.24)!important;color:#eaf3ff!important;
-  box-shadow:0 12px 28px rgba(0,0,0,.22),inset 0 0 24px rgba(64,180,255,.035)!important;
-  transition:border-color .18s ease,box-shadow .18s ease!important}
-#appPage .stat:hover{border-color:rgba(85,231,255,.55)!important;box-shadow:0 0 22px rgba(50,190,255,.12)!important}
-#appPage .stat b{color:#eaf3ff!important;font-size:15px!important}
-#appPage .stat small{color:#9eb4d4!important}
-#appPage .circle{box-shadow:0 0 20px currentColor!important;border:1px solid rgba(255,255,255,.18)!important}
-#appPage #searchInput{width:100%!important;box-sizing:border-box!important;background:rgba(9,17,39,.92)!important;
-  color:#eff7ff!important;border:1px solid rgba(90,195,255,.27)!important;border-radius:15px!important;
-  padding:13px 16px!important;outline:none!important;margin:0 0 14px!important}
-#appPage #searchInput::placeholder{color:#8297b7!important}
-#appPage #jobsList,#appPage #warehouseList{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  gap:14px!important;width:100%!important;padding:0!important;margin:0!important}
-#appPage #jobsList>* ,#appPage #warehouseList>*{min-width:0!important;width:auto!important;max-width:none!important;margin:0!important}
-#appPage .job,#appPage .warehouseCard,#appPage #jobsList>div,#appPage #warehouseList>div{
-  background:linear-gradient(145deg,rgba(10,20,44,.95),rgba(15,22,47,.94))!important;
-  color:#eaf3ff!important;border:1px solid rgba(80,190,255,.22)!important;border-radius:18px!important;
-  box-shadow:0 10px 26px rgba(0,0,0,.2)!important;backdrop-filter:blur(12px)!important;
-}
-#appPage .job *,#appPage .warehouseCard *{color:inherit}
-#appPage .job button,#appPage .warehouseCard button,#appPage button{
-  border-radius:12px!important;transition:filter .15s ease,border-color .15s ease!important
-}
-#appPage button:hover{filter:brightness(1.08)!important}
-#appPage .admin-side{width:100%!important;position:static!important;margin:14px 0!important}
-#appPage #techList{max-height:300px!important}
-#appPage .admin-box,#appPage .admin-box-head,#appPage .admin-box-body{
-  background:var(--misk-panel)!important;color:var(--misk-text)!important;border-color:var(--misk-border)!important
-}
-#appPage input,#appPage select,#appPage textarea{background:#0a132b!important;color:#edf6ff!important;border-color:rgba(88,195,255,.28)!important}
-#appPage input::placeholder,#appPage textarea::placeholder{color:#8296b5!important}
-#appPage #loadMoreWrap{padding:14px 0!important}
-#appPage .hidden{display:none!important}
-#appPage #uploadingBanner{border-radius:12px!important;margin:0 0 12px!important}
-#bottomNav{
-  position:fixed!important;right:16px!important;left:auto!important;top:16px!important;bottom:16px!important;
-  width:218px!important;height:auto!important;z-index:1200!important;display:flex!important;flex-direction:column!important;
-  align-items:stretch!important;justify-content:flex-start!important;gap:8px!important;
-  padding:14px 10px!important;box-sizing:border-box!important;overflow:auto!important;
-  border:1px solid rgba(85,220,255,.25)!important;border-radius:24px!important;
-  background:linear-gradient(180deg,rgba(7,15,37,.97),rgba(11,13,35,.97))!important;
-  box-shadow:0 18px 50px rgba(0,0,0,.4),inset 0 0 30px rgba(61,176,255,.035)!important;
-  backdrop-filter:blur(20px)!important
-}
-#bottomNav:before{content:"MISK TECHNOLOGY";display:block;text-align:center;font-size:19px;font-weight:950;
-  letter-spacing:1.5px;color:#55e7ff;padding:14px 8px 20px;margin:0 0 8px;
-  border-bottom:1px solid rgba(85,220,255,.18);text-shadow:0 0 18px rgba(85,220,255,.3)}
-#bottomNav div{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;
-  gap:12px!important;text-align:right!important;min-height:48px!important;box-sizing:border-box!important;
-  padding:10px 12px!important;border-radius:14px!important;color:#bfd2ec!important;font-size:14px!important;font-weight:800!important;
-  border:1px solid transparent!important;background:transparent!important;cursor:pointer!important}
-#bottomNav div span{font-size:20px!important;display:inline-block!important;min-width:24px!important}
-#bottomNav div.active{background:linear-gradient(100deg,rgba(46,176,255,.17),rgba(145,91,255,.13))!important;
-  color:#f5fbff!important;border-color:rgba(85,220,255,.3)!important;box-shadow:inset -3px 0 0 #55e7ff,0 0 20px rgba(48,177,255,.08)!important}
-#bottomNav div:hover{background:rgba(76,170,255,.09)!important;border-color:rgba(85,220,255,.18)!important}
-#bottomNav #archiveNav{display:none!important}
-#details,#azkarModal,#sendLockModal,#addTechModal{backdrop-filter:blur(12px)}
-#details{background:#050816!important;color:#edf6ff!important}
-#details .d-box{background:var(--misk-panel)!important;color:var(--misk-text)!important;border-color:var(--misk-border)!important}
-@media(max-width:1100px){
- #appPage:not(.hidden){padding-right:230px!important;padding-left:12px!important}
- #appPage #jobsList,#appPage #warehouseList{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-}
-@media(max-width:760px){
- #appPage:not(.hidden){padding:10px 10px 88px!important}
- #bottomNav{right:8px!important;left:8px!important;top:auto!important;bottom:8px!important;width:auto!important;height:68px!important;
-   flex-direction:row!important;align-items:center!important;justify-content:space-around!important;padding:5px!important;border-radius:18px!important}
- #bottomNav:before{display:none!important}
- #bottomNav div{flex:1!important;min-height:52px!important;flex-direction:column!important;justify-content:center!important;gap:2px!important;
-   padding:5px 2px!important;font-size:10px!important;text-align:center!important}
- #bottomNav div span{font-size:18px!important}
- #appPage .top-img{min-height:90px!important;padding:16px!important}
- #appPage #welcome{font-size:20px!important}
- #appPage .stats{grid-template-columns:1fr!important;gap:10px!important}
- #appPage #jobsList,#appPage #warehouseList{grid-template-columns:1fr!important}
- #appPage #followerCard{padding:12px!important}
-}
-@media(prefers-reduced-motion:reduce){
- #appPage:not(.hidden){animation:none!important}
-}
-</style>
 
 </head>
 <body>
@@ -1232,162 +1083,8 @@ body:has(#appPage:not(.hidden))::before{
     <p id="mapLocText" class="misk-location-text"></p>
 
 </div>
-<div id="appPage" class="hidden">
-<div style="display:flex;justify-content:flex-end;margin-bottom:6px">
-<div style="display:flex;align-items:center;gap:6px;background:#fff;border:1px solid #e5e7eb;padding:4px 8px;border-radius:20px;font-size:12px;box-shadow:0 2px 8px rgba(0,0,0,.08)">
-<span style="width:8px;height:8px;background:#22c55e;border-radius:50%;display:inline-block"></span>
-<span>تحديث بعد <b id="silentCount">10</b></span>
-<button onclick="silentRefreshNow()" style="background:#7c3aed;border:0;color:#fff;padding:3px 8px;border-radius:12px;font-size:11px;cursor:pointer">حدث</button>
-<button id="autoBtn" onclick="toggleAuto()" style="background:#fee2e2;border:0;color:#dc2626;padding:3px 8px;border-radius:12px;font-size:11px;cursor:pointer">إيقاف</button>
-<button class="logout-small" onclick="logout()">🚪 خروج</button>
-</div>
-</div>
-<div class="top-img"><small>☰</small><br><br><b id="welcome" style="font-size:22px"></b><br><small id="techInfo"></small><div style="position:absolute;left:14px;top:14px">🔔</div></div>
-<div class="we-bar"><div class="logo">WE<span>.</span></div><div>🔔</div></div>
-<div class="admin-layout">
-<div class="admin-main">
-<div id="followerCard" style="background:#fff;margin:12px;border:2px solid #0b7ed1;border-radius:16px;padding:14px">
-<h3 style="margin:0">👤 رقم المتابع بتاع النهاردة - اجباري</h3>
-<input id="followerPhone" placeholder="010xxxxxxxxx" inputmode="numeric" oninput="saveFollowerPhone()" style="border:2px solid #0b7ed1;text-align:center">
-<p id="followerMsg" style="font-size:13px;color:red"></p>
-<button onclick="clearFollowerPhone()" style="background:#dc3545;color:#fff;border:0;padding:10px;border-radius:50px;width:100%">🗑️ مسح رقم المتابع</button>
-</div>
-<div id="leftTechAlerts"></div>
-<div id="stockAlerts"></div>
-<div class="stats">
-<div class="stat" id="statDone" onclick="filterByCircle('done')"><div class="circle c-green" id="cDone">0</div><b>تم التسليم</b><br><small>دوس لعرض المتسلمين</small></div>
-<div class="stat" id="statPending" onclick="filterByCircle('pending')"><div class="circle c-yellow" id="cPending">0</div><b>قيد الانتظار</b><br><small>باقي الشغل اللي لسه متقفلش</small></div>
-<div class="stat" id="statProblem" onclick="filterByCircle('problem')"><div class="circle c-red" id="cProblem">0</div><b>تأجيل</b><br><small>تأجيل / لم يتم الرد / رفض</small></div>
-</div>
-<div id="archiveFilter" class="hidden" style="background:#fff;margin:0 12px 12px;border-radius:16px;padding:14px">
-<b>📦 فلتر الأرشيف - كل يوم لوحده:</b><select id="archiveDate" onchange="renderArchive()"><option value="">كل الأيام</option></select>
-<div id="archiveSheetsList" style="margin-top:12px"></div>
-<div class="stats" style="padding:10px 0 0"><div class="stat"><div class="circle c-green" id="aDone">0</div><b>تم التسليم</b></div><div class="stat"><div class="circle c-blue" id="aUpdated">0</div><b>عليه ابديت</b></div><div class="stat"><div class="circle c-purple" id="aEmpty">0</div><b>فاضي</b></div></div>
-<p id="archiveSummary" style="font-size:13px;color:#666;text-align:center"></p>
-<button onclick="exportArchive()" style="background:#00a651;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">⬇️ تحميل اليوم المختار اكسيل</button>
-</div>
-  <div style="padding:0 12px">
-  <!-- دي خانات وهمية عشان الموبايل يتلخبط فيها ومايجيش ناحية البحث -->
-  <input type="text" name="prevent_autofill_username" style="display:none">
-  <input type="password" name="prevent_autofill_password" style="display:none">
-  <input id="searchInput" 
-    type="search" 
-    inputmode="search"
-    autocomplete="new-password"
-    autocorrect="off" 
-    autocapitalize="off" 
-    spellcheck="false"
-    name="search_landline"
-    data-lpignore="true"
-    placeholder="بحث عن مهمة / رقم تسلسلي ..." 
-    oninput="onSearch()" 
-    style="background:#fff">
-</div>
-  <div id="uploadingBanner" style="display:none;background:#ff7b00;color:#fff;padding:10px;border-radius:12px;font-size:14px;font-weight:bold;text-align:center;margin:0 12px 10px">⏳ جاري رفع الصورة...</div>
-<div style="background:#fff;margin:0 12px 12px;border-radius:12px;padding:10px;font-size:13px;line-height:1.7">صور الـ 3 صور الاول: وش الجهاز + ضهر الجهاز + الايصال والبطاقة. وبعدين سيريال + Up / Down + المستلم. لو العميل مش موجود، دوس <b>حالة الزيارة</b> واختار تأجيل / لم يتم الرد / رفض الزيارة + كومنت.</div>
-<div id="jobsList"></div>
-<div id="warehouseList" class="hidden"></div>
-<div id="loadMoreWrap" style="padding:0 12px"></div>
-</div>
-<div id="adminAdd" class="hidden">
-<div class="admin-side">
-<div style="background:#071126;color:#fff;padding:12px;border-radius:12px;text-align:center;margin-bottom:10px">
-<b>👷 الفنيين</b>
-<div id="techCount" style="font-size:28px;font-weight:900;color:#00c6ff">0</div>
-<div style="font-size:12px;opacity:.7">عدد الفنيين المسجلين</div>
-<button onclick="openAddTech()" style="background:#00c6ff;border:0;padding:10px;border-radius:50px;width:100%;color:#fff;font-size:14px;margin-top:8px">➕ اضافة فني</button>
-<div id="techList"></div>
-</div>
-<div id="addTechModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center">
-<div style="background:#fff;width:92%;max-width:380px;padding:16px;border-radius:16px;color:#000">
-<h3 style="text-align:center;margin:0 0 12px">➕ اضافة فني جديد</h3>
-<input id="techName" placeholder="اسم الفني - زي ما هو في شيت الأجهزة" autocomplete="off" style="width:100%;padding:10px;margin-bottom:8px;border-radius:10px;border:1px solid #ccc">
-<input id="techPhone" placeholder="رقم التليفون - ده اليوزر بتاعه" autocomplete="off" style="width:100%;padding:10px;margin-bottom:8px;border-radius:10px;border:1px solid #ccc">
-<input id="techPass" placeholder="الباسورد" autocomplete="off" style="width:100%;padding:10px;margin-bottom:8px;border-radius:10px;border:1px solid #ccc">
-<input id="techLine" placeholder="Line - مثال: 93" autocomplete="off" style="width:100%;padding:10px;margin-bottom:8px;border-radius:10px;border:1px solid #ccc">
-<input id="techGov" placeholder="المحافظة - مثال: sohag" autocomplete="off" style="width:100%;padding:10px;margin-bottom:12px;border-radius:10px;border:1px solid #ccc">
-<button onclick="saveTechnician()" style="width:100%;background:#00c6ff;color:#fff;border:0;padding:12px;border-radius:12px;font-size:15px">اوكي - اضافة</button>
-<button onclick="closeAddTech()" style="background:#eee;border:0;padding:10px;border-radius:12px;margin-top:8px">الغاء</button>
-<div id="techMsg" style="text-align:center;font-size:13px;margin-top:8px;color:green"></div>
-</div>
-</div>
-<div class="admin-box open"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">➕ اضافة شغل <span>▼</span></div><div class="admin-box-body"><input id="a_customer" placeholder="اسم العميل" autocomplete="off"><input id="a_landline" placeholder="رقم التليفون الأرضي" inputmode="numeric" autocomplete="off"><input id="a_mobile" placeholder="رقم الموبايل" inputmode="numeric" autocomplete="off"><input id="a_code" placeholder="كود كام" autocomplete="off"><input id="a_address" placeholder="العنوان" autocomplete="off"><input id="a_order" placeholder="رقم الأوردر - Tel" autocomplete="off"><select id="a_device"><option value="">اختر الجهاز - ONU أو ONT</option><option value="ONU">ONU</option><option value="ONT">ONT</option></select><select id="a_tech"><option value="">اختر اسم الفني</option></select><button class="btn" onclick="addJob()">اضافة</button></div></div>
-  <div class="admin-box">
-  <div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📦 المخزن <span>▼</span></div>
-  <div class="admin-box-body">
-    <div class="admin-box">
-      <div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">➕ إضافة سيريال <span>▼</span></div>
-      <div class="admin-box-body">
-        <input type="file" id="warehouseInput" accept=".xlsx,.xls,.csv">
-         <button class="orangeBtn" onclick="uploadWarehouseSheet()" style="width:100%;padding:13px;border-radius:50px;border:0">📦 رفع شيت المخزن - بيحدث العهدة من خانة الفني</button>
-        <hr>
-<p style="font-weight:900;margin:0">🔄 إدارة عهدة فني</p>
-<input id="custodyFromTech" placeholder="من فني - مثال: عز الدين" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
-<input id="custodyToTech" placeholder="إلى فني - مثال: الاباصيري - سيبه فاضي لو هتمسح" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
-<div style="display:flex;gap:8px">
-<button onclick="transferTechCustody()" style="flex:1;padding:12px;border-radius:50px;border:0;background:#0b7ed1;color:#fff;font-weight:800">🔄 نقل عهدة فني لفني</button>
-<button onclick="clearTechCustody()" style="flex:1;padding:12px;border-radius:50px;border:0;background:#dc3545;color:#fff;font-weight:800">🗑️ مسح عهدة فني</button>
-</div>
-<p id="custodyMsg" style="font-size:13px"></p>
-        <p id="warehouseUploadMsg" style="font-size:13px"></p>
-        <p style="font-size:12px;color:#666">الأعمدة: A:sn - B:date - C:serial - D:date install - E:costmer phone - F:Model - G:Tech - H:Comment - بيقرا كل ورق المحافظات.</p>
-        <div id="warehouseSummary" style="font-size:13px;margin-top:8px"></div>
-        <div id="warehousePreview" style="font-size:12px"></div>
-        <hr>
-        <p style="font-weight:bold;margin:0">إضافة سيريال واحد</p>
-        <input id="oneSerial" placeholder="السيريال" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
-        <div style="position:relative">
-  <input id="oneTechSearch" placeholder="اكتب اسم الفني أو اختار من القايمة ▼" autocomplete="off" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
-  <div id="techDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;max-height:220px;overflow-y:auto;background:#fff;border:1px solid #ccc;border-radius:10px;z-index:999;box-shadow:0 4px 12px rgba(0,0,0,0.15)"></div>
-</div>
-        <input id="oneModel" placeholder="الموديل (اختياري)" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
-        <input id="onePhone" placeholder="رقم العميل (اختياري)" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
-        <input id="oneGov" placeholder="المحافظة (اختياري)" style="width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc">
-        <button onclick="addOneSerial()" style="width:100%;padding:13px;border-radius:50px;border:0;background:#222;color:#fff">✅ إضافة السيريال ده للفني</button>
-        <p id="oneSerialMsg" style="font-size:13px"></p>
-      </div>
-    </div>
-    <hr>
-    <input type="file" id="masterFile" accept=".xlsx,.csv" style="display:none" onchange="uploadMasterUsersExact(event)">
-    <button onclick="document.getElementById('masterFile').click()" style="width:100%;padding:13px;border-radius:50px;border:0;background:#222;color:#fff">👥 رفع الشيت الموحد زي ما هو</button>
-    <p id="masterUploadMsg" style="font-size:13px"></p>
-  </div>
-</div>
-  <div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📂 رفع شيت الشغل <span>▼</span></div><div class="admin-box-body"><input type="file" id="sheetInput" accept=".xlsx,.xls,.csv" multiple><button class="orangeBtn" onclick="uploadSheetFast()" style="width:100%;padding:13px;border-radius:50px;border:0">🚀 رفع شيتات الشغل</button><div id="prog" style="height:18px;background:#eee;border-radius:10px;overflow:hidden;margin:8px 0;display:none"><div id="progBar" style="height:100%;width:0%;background:#1aa34a"></div></div><p id="uploadMsg"></p></div></div>
-<div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📦 أرشفة - إنهاء اليوم <span>▼</span></div><div class="admin-box-body"><input type="text" id="manualArchiveDate" placeholder="مثال: 18-11-2026 - سيبه فاضي وهياخد تاريخ النهاردة"><button onclick="archiveOldJobs()" style="background:#9333ea;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">📦 أرشفة اليوم ده</button><button onclick="downloadEndOfDay()" style="background:#00a651;color:#fff;width:100%;padding:13px;border-radius:50px;border:0;margin-top:8px">📥 تحميل فولدر اليوم - شيتين على اللاب توب</button><p style="font-size:12px;color:#666">الفولدر بتاريخ اليوم جواه: شيت تم التسليم + شيت تأجيل / أبديت</p></div></div>
-<div class="admin-box"><div class="admin-box-head" style="background:#fff0f0" onclick="this.parentElement.classList.toggle('open')">🗑️ مسح أوردر واحد / مسح أرضي <span>▼</span></div><div class="admin-box-body"><input id="delOrderId" placeholder="رقم الأوردر - ID"><button onclick="deleteOneJob()" style="background:#dc3545;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">🗑️ مسح الأوردر ده</button><button onclick="deleteLandlineOnly()" style="background:#ff7a00;color:#fff;width:100%;padding:13px;border-radius:50px;border:0;margin-top:8px">🗑️ مسح الرقم الأرضي بس من الأوردر ده</button><p style="font-size:12px;color:#666">الأدمن بس - ومفيش مسح كل حاجة ولا ريسترة هنا</p></div></div>
-  <div id="superDeleteBox" class="admin-box" style="display:none"><div class="admin-box-head" style="background:#7f0000;color:#fff" onclick="this.parentElement.classList.toggle('open')">🚨 SUPER ADMIN - مسح الشغل والأرشيف <span>▼</span></div><div class="admin-box-body"><p style="font-size:13px;color:#dc3545;font-weight:900">ده بيمسح الشغل + الأرشيف بس. المخزن مش هيتمسح. مفيش رجوع.</p><button onclick="deleteAllDataSuper()" style="background:#7f0000;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">🚨 مسح الشغل والأرشيف - Super Admin بس</button></div></div>
-</div>
-</div>
-</div>
-</div>
-<div class="tabs" id="bottomNav">
-<div class="active" onclick="showTab('all',this)"><span style="font-size:20px;display:block">🏠</span>الرئيسية</div>
-<div onclick="showTab('pending',this)"><span style="font-size:20px;display:block">📋</span>المهام</div>
-<div onclick="showTab('problem',this)"><span style="font-size:20px;display:block">🔔</span>التنبيهات</div>
-<div onclick="showTab('warehouse',this)"><span style="font-size:20px;display:block">📦</span>المخزن</div>
-<div id="archiveNav" onclick="showTab('archive',this)" style="display:none"><span style="font-size:20px;display:block">📦</span>الأرشيف</div>
-<div onclick="logout()"><span style="font-size:20px;display:block">👤</span>الحساب</div>
-</div>
-<div id="details">
-<div class="d-head"><button class="back" onclick="closeDetails()">← رجوع</button><b id="dTitle" style="font-size:18px">تفاصيل المهمة</b></div>
-<div class="d-box"><h3 id="dCustomer" style="margin:0"></h3><p id="dMeta" style="font-size:13px;color:#555;line-height:1.8"></p><p id="dComment" style="font-size:13px"></p></div>
-<div class="d-box"><b>📷 الصور الاجبارية - 3 صور</b><div class="imgs" id="dPhotos"></div><p style="font-size:12px;color:#777">دوس على أي صورة عشان تصورها أو تشوفها</p></div>
-<div class="d-box"><b>🔢 السيريال</b><input id="dSerial" class="serial" placeholder="اضافة سيريال - الزق هنا من Manatee"><div class="row"><button class="whiteBtn" onclick="openManatee(currentDetailId)">📲 افتح Manatee - انسخ والزق</button></div><div class="row"><button class="blueBtn" onclick="openUpDownOnly(currentDetailId, document.getElementById('dCustomer').innerText)" id="dUpDownBtn">⬆️ Up / ⬇️ Down *</button><button class="blueBtn" onclick="openRecipientOnly(currentDetailId, document.getElementById('dCustomer').innerText)" id="dRecipientBtn">👤 المستلم *</button></div><button class="btn2" onclick="openStatusModal(currentDetailId, document.getElementById('dCustomer').innerText)" id="dStatusBtn">📋 حالة الزيارة - تأجيل / لم يتم الرد / رفض</button><button class="bigSave" onclick="saveSerial(currentDetailId)">💾 حفظ وارسال للمتابع</button><p style="font-size:12px;color:#777;text-align:center">هيتأكد من الصور والـ Up/Down والمستلم قبل الحفظ</p></div>
-</div>
-<div id="upDownModal"><div class="box"><h3>📶 حالة الخط ايه؟</h3><p id="upDownCustomer"></p><button style="background:#1aa34a;color:#fff" onclick="chooseUpDown('Up')">⬆️ Up</button><button style="background:#fff;color:#1aa34a;border:2px solid #1aa34a" onclick="chooseUpDown('Down')">⬇️ Down</button><button style="background:#333;color:#fff" onclick="closeUpDown()">↩️ الرجوع - من غير تسجيل</button></div></div>
-<div id="recipientModal"><div class="box"><h3>👤 مين اللي استلم؟</h3><p id="recipientCustomer"></p><button style="background:#1aa34a;color:#fff" onclick="chooseRecipient('الزوج')">👨 الزوج</button><button style="background:#1aa34a;color:#fff" onclick="chooseRecipient('الزوجة')">👩 الزوجة</button><button style="background:#1aa34a;color:#fff" onclick="chooseRecipient('نجله')">🧒 نجله</button><button style="background:#1aa34a;color:#fff" onclick="chooseRecipient('مستأجر')">🏠 مستأجر</button><button style="background:#dc3545;color:#fff" onclick="clearRecipientChoice()">🗑️ مسح الاختيار</button><button style="background:#333;color:#fff" onclick="chooseRecipient('الرجوع')">↩️ الرجوع - من غير تسجيل</button></div></div>
-<div id="statusModal"><div class="box"><h3>📋 حالة الزيارة</h3><p id="statusCustomer"></p><button style="background:#fff;color:#1aa34a;border:2px solid #1aa34a" onclick="selectStatusOption('تأجيل')">⏰ تأجيل</button><button style="background:#fff;color:#1aa34a;border:2px solid #1aa34a" onclick="selectStatusOption('لم يتم الرد')">📞 لم يتم الرد</button><button style="background:#fff;color:#1aa34a;border:2px solid #1aa34a" onclick="selectStatusOption('رفض الزيارة')">🚫 رفض الزيارة</button><p id="selectedStatusLabel" style="font-weight:bold;color:#dc3545"></p><textarea id="statusComment" placeholder="اكتب كومنت - مثال: العميل مش موجود، التليفون مقفول..." rows="3" style="border-radius:12px;text-align:right"></textarea><button style="background:#00a651;color:#fff" onclick="confirmStatus()">✅ حفظ الحالة وارسال للمتابع أوتوماتيك</button><button style="background:#333;color:#fff" onclick="closeStatusModal()">✖️ اقفل من غير حفظ</button></div></div>
-<input type="file" id="photoInput" accept="image/*" capture="environment" class="hidden">
-<input type="file" id="photoGalleryInput" accept="image/*" class="hidden">
-<input type="file" id="serialCamInput" accept="image/*" capture="environment" class="hidden">
-<div id="photoModal" style="position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:10001;display:none;align-items:center;justify-content:center;padding:12px" onclick="this.style.display='none'"><div style="text-align:center"><img id="photoModalImg" style="max-width:100%;max-height:80vh;border-radius:12px"><br><button onclick="event.stopPropagation();rotatePhotoModal()" style="background:#ff7a00;color:#fff;width:auto;padding:12px 20px;margin-top:10px;border:0;border-radius:50px">↻ تدوير الصورة</button></div></div>
-<div id="photoCamModal"><div class="box"><h3 id="photoCamTitle">📷 صور وش الجهاز</h3><p id="photoCamMsg" style="font-weight:bold">هتصور ازاي؟ اختار:</p><button style="background:#007bff;color:#fff" onclick="capturePhoto()">📷 صوّر بالكاميرا - كاميرا التليفون</button><button style="background:#ff7a00;color:#fff" onclick="openPhotoFile()">🖼️ اختار من الاستوديو</button><button style="background:#333;color:#fff" onclick="closePhotoCam()">✖️ اقفل من غير حفظ</button></div></div>
-<div id="sendLockModal"><div class="box" style="max-width:420px"><h2 style="margin:0">🔒 مطلوب منك عشان تكمل</h2><p id="lockCustomer" style="font-weight:bold"></p><div id="lockNetWarn" style="background:#ffe6e6;border:1px solid #dc3545;color:#dc3545;padding:10px;border-radius:12px;font-size:14px;font-weight:bold;margin:8px 0;display:none">⚠️ مفيش نت عندك - الرسالة متحفظة - اول ما النت يرجع ابعتها</div><p id="lockStatus" style="font-size:14px;line-height:1.8"></p><button id="btnSendBoth" style="background:#25D366;color:#fff" onclick="sendToFollowerOnly()">👤 ارسال للمتابع - واتساب ماسنجر + الصور</button><p style="font-size:12px;color:#666">هيفتح مشاركة فيها النص + الـ 3 صور جاهزين - اختار واتساب ماسنجر ودوس ارسال</p><div id="lockConfirmBox" style="display:none;background:#fff7e6;border:1px solid #ff7b00;border-radius:12px;padding:12px;margin-top:8px"><p id="lockConfirmText" style="font-weight:bold;margin:0 0 8px"></p><div class="row"><button onclick="confirmSendYes()" style="background:#00a651;color:#fff">✅ ايوه بعت للمتابع</button><button onclick="confirmSendNo()" style="background:#dc3545;color:#fff">❌ لا لسه</button></div></div><button onclick="closeLockBack()" style="background:#333;color:#fff;margin-top:14px">⬅️ رجوع - هبعت بعدين</button></div></div>
-<div id="istighfarOverlay" style="position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:30000;display:none;align-items:center;justify-content:center;text-align:center;padding:20px"><div style="background:#071126;border:2px solid #22c55e;border-radius:20px;padding:24px;max-width:420px;width:100%"><div style="font-size:42px">🤲</div><h2 id="istTitle" style="color:#fff;margin:8px 0">أستغفر الله العظيم</h2><p id="istText" style="color:#cfe3ff;line-height:1.8">أستغفر الله العظيم الذي لا إله إلا هو الحي القيوم وأتوب إليه<br><span id="istCount" style="font-size:28px;font-weight:900;color:#22c55e">10</span></p><p style="color:#8aa3c7;font-size:12px">ثواني ونكمل...</p></div></div>
-</div>
-<div id="azkarModal"><div class="box" style="text-align:right;max-height:88vh;overflow-y:auto"><h3 style="margin:0 0 10px">📖 الأذكار وحصن المسلم</h3><div id="azkarFull" style="line-height:2;font-size:15px"></div><button onclick="closeAzkar()" style="background:#333;color:#fff">✖️ اقفل</button></div></div>
-<div id="passModal"><div class="box"><h3 style="margin:0 0 8px">🔐 تريد تغيير الباسورد؟</h3><p style="font-size:14px;line-height:1.7">لو حابب تغير الباسورد بتاعك، اكتب الجديد هنا. لو مش حابب دوس تخطي.</p><input id="newPassInput" type="password" placeholder="الباسورد الجديد"><button onclick="doChangePass()" style="background:#00a651;color:#fff">✅ تغيير الباسورد</button><button onclick="closePassModal()" style="background:#333;color:#fff">⏭️ تخطي - مش عايز أغير</button></div></div>
+<div id="appPage" class="hidden" aria-label="صفحة داخلية فارغة"></div>
+
 <script>
 const SUPABASE_URL = "https://wpbjdxjozibqcoyrmxlc.supabase.co";
 const SUPABASE_KEY = "sb_publishable_EpBDoKSZQ6OMZA3wHKd8vg_9_ocCNnm";
@@ -1506,37 +1203,10 @@ async function login(e){
   return false;
 }
 function afterLogin(){
-  let lp = document.getElementById("loginPage");
+  let lp=document.getElementById("loginPage");
   if(lp) lp.classList.add("hidden");
-  let ap = document.getElementById("appPage");
-  if(ap){
-    ap.classList.remove("hidden");
-    ap.classList.remove("dashboard-enter");
-    void ap.offsetWidth;
-    ap.classList.add("dashboard-enter");
-    setTimeout(function(){ap.classList.remove("dashboard-enter");},1800);
-  }
-  let w = document.getElementById("welcome");
-  let ti = document.getElementById("techInfo");
-  let isAdmin = userObj.isAdmin;
-  let isSuper = userObj.role === 'super_admin';
-  let displayName = (userObj.name || userObj.username || "Mahdy").trim();
-  if (w) w.innerText = "أهلاً " + displayName;
-  if (ti) {
-    if (isSuper) ti.innerText = "Super Admin - " + displayName;
-    else if (isAdmin) ti.innerText = "ادمن - " + displayName;
-    else ti.innerText = "فني - " + displayName;
-  }
-  let aa = document.getElementById("adminAdd");
-  if(aa) aa.classList.toggle("hidden", !isAdmin);
-  let an = document.getElementById("archiveNav");
-  if(an) an.style.display = isAdmin ? "" : "none";
-  let sdb = document.getElementById("superDeleteBox");
-  if(sdb) sdb.style.display = isSuper ? "block" : "none";
-  if(isAdmin) loadTechNames();
-  loadJobs(); loadWarehouse(); loadArchive();
-  let pm = document.getElementById("passModal");
-  if(pm && !localStorage.getItem("misk_pass_changed_"+userObj.username)) pm.style.display="flex";
+  let ap=document.getElementById("appPage");
+  if(ap) ap.classList.remove("hidden");
 }
 function logout(){
   Object.keys(localStorage).forEach(k=>{
@@ -1614,18 +1284,10 @@ function renderWarehouseList(){
   }
   if(warehouseTab==='stock'||warehouseTab==='delivered') warehouseTab='all_pending';
   let listToShow = warehouseTab==='all_done' ? allDone : allStock;
-  box.innerHTML=`<h3 style="padding:0 12px">📦 المخزن (${baseWarehouse.length})</h3>
-  <div style="display:flex;gap:8px;padding:0 12px;flex-wrap:wrap">
-    <button onclick="warehouseTab='all_pending';renderWarehouseList()" style="flex:1;padding:12px;border-radius:10px;background:${warehouseTab==='all_pending'?'#7c3aed;color:#fff':'#f3e8ff'}">لم يتم تركيبه - ${allStock.length}</button>
-    <button onclick="warehouseTab='all_done';renderWarehouseList()" style="flex:1;padding:12px;border-radius:10px;background:${warehouseTab==='all_done'?'#7c3aed;color:#fff':'#f3e8ff'}">تم تركيبه - ${allDone.length}</button>
-  </div>
-  <button onclick="downloadWarehouseExcel()" style="width:calc(100% - 24px);margin:10px 12px;padding:12px;border-radius:10px;border:0;background:#111;color:#fff;font-weight:800">⬇️ تحميل شيت اكسيل</button>
-  <input placeholder="دور برقم الأرضي أو السيريال أو اسم الفني..." value="${String(warehouseSearch).replace(/"/g,'&quot;')}" oninput="warehouseSearch=this.value;renderWarehouseList()" style="width:calc(100% - 24px);margin:10px 12px;padding:10px;border-radius:10px;border:1px solid #ccc">
-  <div style="padding:0 12px">${listToShow.map(w=>`<div class="warehouseCard" style="border:1px solid #ddd;border-radius:12px;padding:10px;margin-bottom:8px">
-    <b>${w.serial||''}</b> - ${w.model||''}<br>
-    الفني: ${w.tech||''} | المحافظة: ${w.province||''}<br>
-    ${warehouseTab==='all_done' ? `العميل: ${w.customer_name||''}<br>رقم العميل (أرضي): ${w.customer_phone||''}<br>تاريخ التركيب: ${w.date_install||''}` : `تاريخ الاستلام: ${w.date_received||''} - الحالة: لم يتم تركيبه`}
-  </div>`).join('') || '<p style="text-align:center;opacity:.6">مفيش حاجة هنا</p>'}</div>`;
+  box.innerHTML=`<section class="misk-warehouse-head"><div><small>إدارة الأجهزة</small><h2>المخزن <span>${baseWarehouse.length}</span></h2></div><button class="misk-export" onclick="downloadWarehouseExcel()">↓ تصدير Excel</button></section>
+  <div class="misk-warehouse-tabs"><button class="${warehouseTab==='all_pending'?'active':''}" onclick="warehouseTab='all_pending';renderWarehouseList()">الأجهزة غير المركبة <b>${allStock.length}</b></button><button class="${warehouseTab==='all_done'?'active':''}" onclick="warehouseTab='all_done';renderWarehouseList()">الأجهزة المركبة <b>${allDone.length}</b></button></div>
+  <input class="misk-warehouse-search" placeholder="ابحث بالسيريال أو رقم العميل أو الفني..." value="${String(warehouseSearch).replace(/"/g,'&quot;')}" oninput="warehouseSearch=this.value;renderWarehouseList()">
+  <div class="misk-warehouse-grid">${listToShow.map(w=>`<article class="warehouseCard misk-stock-card"><div class="misk-stock-serial"><small>Serial Number</small><b>${w.serial||'—'}</b></div><h3>${w.model||'جهاز غير محدد'}</h3><div class="misk-stock-meta"><span>الفني <b>${w.tech||'—'}</b></span><span>المحافظة <b>${w.province||'—'}</b></span></div>${warehouseTab==='all_done' ? `<div class="misk-stock-installed"><span>العميل</span><b>${w.customer_name||'—'}</b><span>رقم العميل</span><b>${w.customer_phone||'—'}</b><span>تاريخ التركيب</span><b>${w.date_install||'—'}</b></div>` : `<div class="misk-stock-state">غير مركب <small>تاريخ الاستلام: ${w.date_received||'—'}</small></div>`}</article>`).join('') || '<div class="misk-empty"><b>لا توجد أجهزة في هذا القسم</b></div>'}</div>`;
 }
 function downloadWarehouseExcel(){
   if(!allWarehouse.length) return alert("مفيش داتا في المخزن");
@@ -2018,7 +1680,7 @@ function renderJobs(){
   document.getElementById("cPending").innerText=mine.filter(j=>j.status!=="تم التسليم" && !["تأجيل","لم يتم الرد","رفض الزيارة"].includes(j.status)).length;
   document.getElementById("cProblem").innerText=mine.filter(j=>["تأجيل","لم يتم الرد","رفض الزيارة"].includes(j.status)).length;
   let show=jobs.slice(0, visibleCount);
-  list.innerHTML=show.map(j=>`<div class="job" onclick="openDetails('${j.id}')"><h3>${j.customer_name||""} - ${j.order||""}</h3><div style="font-weight:bold;color:#0b6cff">🆔 الكود: ${j.code||"—"}</div><div class="meta">📍 ${j.address||""}<br>📞 الأرضي: ${j.landline||""} | 📱 ${j.mobile||""}<br>👷 الفني: ${getJobTech(j)||""} | 📦 الجهاز: ${j.device||""}<br>🔢 السيريال: ${j.serial||"لسه"} | الحالة: <b>${j.status||"جديد"}</b><br>💬 ${j.comment||""}</div><span class="badge">${j.status||"جديد"}</span></div>`).join("") || `<p style="text-align:center">مفيش شغل هنا</p>`;
+  list.innerHTML=show.map(j=>`<article class="misk-job-card job" onclick="openDetails('${j.id}')"><div class="misk-job-top"><div><small>رقم الأوردر</small><h3>${j.customer_name||"—"}</h3><span class="misk-order-code">${j.order||"بدون رقم"}</span></div><span class="misk-status">${j.status||"جديد"}</span></div><div class="misk-job-code">كود العميل <b>${j.code||"—"}</b></div><div class="misk-job-grid"><div><small>العنوان</small><b>${j.address||"—"}</b></div><div><small>التليفون الأرضي</small><b>${j.landline||"—"}</b></div><div><small>الموبايل</small><b>${j.mobile||"—"}</b></div><div><small>الفني / الجهاز</small><b>${getJobTech(j)||"—"} · ${j.device||"—"}</b></div><div class="misk-job-serial"><small>السيريال</small><b>${j.serial||"لسه مفيش"}</b></div></div>${j.comment?`<div class="misk-job-comment">${j.comment}</div>`:""}<div class="misk-job-open">عرض التفاصيل <span>←</span></div></article>`).join("") || `<div class="misk-empty"><span>⌕</span><b>مفيش مهام هنا</b><small>جرّب تغيير الفلتر أو البحث</small></div>`;
   document.getElementById("loadMoreWrap").innerHTML= jobs.length>visibleCount ? `<button class="btn" onclick="visibleCount+=20;renderJobs()">عرض المزيد (${jobs.length-visibleCount} باقي)</button>` : "";
 }
 function onSearch(){ searchQ=document.getElementById("searchInput").value; renderJobs() }
