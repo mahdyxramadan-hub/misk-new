@@ -1,60 +1,68 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>MISK - Login</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<style>*{box-sizing:border-box;font-family:'Segoe UI',Tahoma}body{margin:0;min-height:100vh;background:#0a0a12;color:#fff;display:flex;align-items:center;justify-content:center}
-.card{width:380px;background:#15151f;border:1px solid #2a2a3a;border-radius:24px;padding:26px;text-align:center}
-.logo{font-size:30px;font-weight:900}.logo span{color:#a855f7}
-/* الـ pill */
-.tabs{position:relative;display:flex;background:#0a0a12;border-radius:50px;padding:5px;margin:18px 0}
-.tabs button{flex:1;background:transparent;border:0;color:#aaa;padding:12px;border-radius:50px;cursor:pointer;position:relative;z-index:1;font-weight:800;font-size:15px}
-.tabs button.active{color:#fff}
-#pill{position:absolute;top:5px;bottom:5px;background:linear-gradient(90deg,#a855f7,#ec4899);border-radius:50px;z-index:0;box-shadow:0 0 20px rgba(168,85,247,.6)}
-input{width:100%;padding:13px;margin:8px 0;border-radius:12px;border:1px solid #333;background:#0a0a12;color:#fff;outline:none}
-.btn{width:100%;padding:13px;border:0;border-radius:12px;background:#fff;color:#000;font-weight:800;font-size:16px;cursor:pointer;margin-top:10px}
+<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>MISK Technology - تسجيل الدخول</title>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma}
+body{margin:0;min-height:100vh;background:#030714;color:#fff;display:flex;align-items:center;justify-content:center;padding:16px;
+background-image:radial-gradient(circle at 15% 10%,rgba(30,92,170,.35),transparent 35%),radial-gradient(circle at 85% 90%,rgba(114,52,186,.35),transparent 35%),linear-gradient(145deg,#030714,#090d20 50%,#070b19)}
+.wrap{width:100%;max-width:980px;display:flex;gap:16px}
+/* اليمين - اللوجو */
+.side{flex:1;background:linear-gradient(160deg,rgba(9,18,44,.95),rgba(24,21,59,.9));border:1px solid rgba(88,195,255,.35);border-radius:22px;padding:28px;box-shadow:0 0 35px rgba(0,150,255,.35);display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+.side::after{content:"";position:absolute;inset:0;background-image:radial-gradient(1px 1px at 20% 20%,#b9eaff 99%,transparent),radial-gradient(1px 1px at 70% 60%,#fff 99%,transparent);opacity:.4}
+.logo-box{width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,#1a3a6a,#050816);border:2px solid #55e7ff;display:flex;align-items:center;justify-content:center;font-size:42px;font-weight:900;box-shadow:0 0 25px #55e7ff;position:relative;z-index:1}
+.logo-box span{font-size:14px;display:block;text-align:center;line-height:1}
+.stat-row{display:flex;gap:10px;margin-top:22px;position:relative;z-index:1}
+.mini{flex:1;border-radius:14px;padding:12px;text-align:center;font-size:13px}
+.mini b{display:block;font-size:22px}
+.m1{background:linear-gradient(135deg,#6a00ff,#a855f7);box-shadow:0 0 20px rgba(168,85,247,.6)}
+.m2{background:linear-gradient(135deg,#00a651,#00e676);box-shadow:0 0 20px rgba(0,230,118,.5)}
+.m3{background:linear-gradient(135deg,#ff7a00,#ffab00);box-shadow:0 0 20px rgba(255,122,0,.5)}
+/* الشمال - الدخول */
+.card{flex:1;background:linear-gradient(160deg,rgba(11,18,42,.95),rgba(15,24,51,.95));border:1px solid rgba(88,195,255,.35);border-radius:22px;padding:28px;box-shadow:0 0 35px rgba(0,150,255,.35)}
+.card h2{margin:0;font-size:26px}.card p{color:#9aabc7;font-size:14px;margin:6px 0 18px}
+label{font-size:14px;color:#ddd}
+input{width:100%;padding:14px;margin:6px 0 12px;border-radius:14px;border:1px solid rgba(88,195,255,.3);background:rgba(255,255,255,.07);color:#fff;outline:none;font-size:15px}
+input:focus{border-color:#55e7ff;box-shadow:0 0 15px rgba(85,231,255,.4)}
+input::placeholder{color:#8a99b8}
+.row{display:flex;justify-content:space-between;font-size:13px;margin:6px 0}.row a{color:#55e7ff;text-decoration:none}
+.btn{width:100%;padding:14px;border:0;border-radius:14px;background:linear-gradient(90deg,#ff2ea6,#00c6ff);color:#fff;font-weight:900;font-size:17px;cursor:pointer;box-shadow:0 0 20px rgba(255,46,166,.5);margin-top:10px}
+.foot{text-align:center;font-size:12px;color:#6b7a99;margin-top:16px}
+@media(max-width:750px){.wrap{flex-direction:column}.side{display:none}}
 </style></head>
 <body>
+<div class="wrap">
+
+<!-- اللوجو والإحصائيات زي الداشبورد -->
+<div class="side">
+  <div class="logo-box">M</div>
+  <h1 style="margin:16px 0 4px;font-size:34px;position:relative;z-index:1">MISK <span style="color:#55e7ff;font-size:20px">Technology</span></h1>
+  <p style="color:#9aabc7;margin:0;position:relative;z-index:1">Together for a smarter future</p>
+  <p style="font-size:14px;line-height:1.9;color:#dbe7ff;position:relative;z-index:1">نظام إدارة الأوردرات والمخزن والفنيين<br>تابع شغلك كله من مكان واحد.</p>
+  <div class="stat-row">
+    <div class="mini m1">إجمالي الأوردرات<b>248</b></div>
+    <div class="mini m2">تم التسليم<b>201</b></div>
+    <div class="mini m3">قيد التنفيذ<b>32</b></div>
+  </div>
+</div>
+
+<!-- تسجيل الدخول -->
 <div class="card">
-<div class="logo">MISK <span>Technology</span></div>
-<p style="color:#888;font-size:13px">Together for a smarter future</p>
-
-<!-- التبديل بالـ pill -->
-<div class="tabs" id="tabs">
-  <div id="pill"></div>
-  <button class="active" onclick="switchTab(this,'login')">تسجيل الدخول</button>
-  <button onclick="switchTab(this,'register')">حساب جديد</button>
+  <h2>تسجيل الدخول</h2>
+  <p>مرحباً بك في نظام MISK</p>
+  <label>اسم المستخدم</label>
+  <input id="user" placeholder="👤 اسم المستخدم">
+  <label>كلمة المرور</label>
+  <input id="pass" type="password" placeholder="🔒 كلمة المرور">
+  <div class="row"><label><input type="checkbox" style="width:auto"> تذكرني</label><a href="#">نسيت كلمة المرور؟</a></div>
+  <button class="btn" onclick="login()">دخول النظام ←</button>
+  <div class="foot">MISK Technology © 2025 - السبت، 22 نوفمبر 2025</div>
 </div>
 
-<div id="loginForm">
-  <input placeholder="👤 اسم المستخدم">
-  <input type="password" placeholder="🔒 كلمة المرور">
-  <button class="btn" onclick="alert('تم الدخول')">دخول النظام ←</button>
 </div>
-
-<div id="registerForm" style="display:none">
-  <input placeholder="👤 الاسم بالكامل">
-  <input placeholder="📱 رقم الموبايل">
-  <input type="password" placeholder="🔒 كلمة المرور">
-  <button class="btn" onclick="alert('تم إنشاء الحساب')">إنشاء حساب ←</button>
-</div>
-</div>
-
 <script>
-const pill = document.getElementById('pill');
-const firstBtn = document.querySelector('.tabs button');
-function placePill(btn, animate=true){
-  const r = btn.getBoundingClientRect();
-  const h = btn.parentElement.getBoundingClientRect();
-  const to = {left: r.left - h.left, width: r.width};
-  if(animate) gsap.to(pill, {left: to.left, width: to.width, duration: 0.55, ease: 'power3.inOut'});
-  else gsap.set(pill, {left: to.left, width: to.width});
-}
-placePill(firstBtn, false);
-function switchTab(btn, type){
-  document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  placePill(btn);
-  document.getElementById('loginForm').style.display = type=='login' ? 'block' : 'none';
-  document.getElementById('registerForm').style.display = type=='register' ? 'block' : 'none';
+function login(){
+  if(!document.getElementById('user').value || !document.getElementById('pass').value){alert('اكتب اسم المستخدم وكلمة المرور');return;}
+  alert('أهلاً '+document.getElementById('user').value+' - تم الدخول');
+  // هنا هتحط: window.location.href = 'dashboard.html'
 }
 </script>
 </body></html>
