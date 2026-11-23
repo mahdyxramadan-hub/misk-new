@@ -1,23 +1,4 @@
-<script>
-function slidePill(pill, target){
-  const host = pill.parentElement;
-  const h = host.getBoundingClientRect();
-  const r = target.getBoundingClientRect();
-  const to = { l: r.left-h.left, t: r.top-h.top, r: h.right-r.right, b: h.bottom-r.bottom };
-  const prev = pill._st || { ...to };
-  pill._st = prev;
-  gsap.killTweensOf(prev);
-  const vertical = Math.abs(to.t-prev.t) > Math.abs(to.l-prev.l);
-  const fwd = vertical ? to.t>prev.t : to.l>prev.l;
-  const [lead, trail] = vertical ? (fwd?['b','t']:['t','b']) : (fwd?['r','l']:['l','r']);
-  const clip = (st)=> `inset(${st.t}px ${st.r}px ${st.b}px ${st.l}px round 14px)`;
-  const paint = ()=> gsap.set(pill,{clipPath:clip(prev)});
-  gsap.to(prev,{[lead]:to[lead],duration:0.36,ease:'power3.out',onUpdate:paint});
-  gsap.to(prev,{[trail]:to[trail],duration:0.55,ease:'power3.inOut',onUpdate:paint});
-}
-document.querySelectorAll('.misk-nav-item').forEach(item=>{
-  item.addEventListener('click',()=>{
-    slidePill(document.getElementById('nav-pill'), item);
-  });
-});
-</script>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>MISK Login</title>
+<style>*{box-sizing:border-box;font-family:'Segoe UI',Tahoma}body{margin:0;min-height:100vh;display:flex} .left{flex:1;background:url('https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=1000') center/cover;display:flex;align-items:flex-end;padding:30px;color:#fff;font-size:28px;font-weight:900;text-shadow:0 2px 20px #000} .right{width:420px;background:#fff;display:flex;align-items:center;justify-content:center;padding:30px} .box{width:100%} input{width:100%;padding:14px;margin:8px 0;border-radius:12px;border:1px solid #ddd;outline:none} button{width:100%;padding:14px;border:0;border-radius:12px;background:#111;color:#fff;font-weight:800;font-size:16px;cursor:pointer;margin-top:10px}@media(max-width:700px){.left{display:none}.right{width:100%}}</style></head>
+<body><div class="left">MISK Technology<br><span style="font-size:16px;font-weight:400">Together for a smarter future</span></div><div class="right"><div class="box"><h1 style="margin:0">تسجيل الدخول</h1><p style="color:#777">مرحباً بك، ادخل بياناتك</p><label>اسم المستخدم</label><input placeholder="اسم المستخدم"><label>كلمة المرور</label><input type="password" placeholder="كلمة المرور"><button onclick="alert('تم الدخول')">دخول النظام ←</button><p style="text-align:center;font-size:13px;margin-top:12px"><a href="#" style="color:#111">نسيت كلمة المرور؟</a></p></div></div></body></html>
