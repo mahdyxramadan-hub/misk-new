@@ -7,15 +7,15 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
-body{color:#fff;display:flex;min-height:100vh;background:#050510;overflow-x:hidden}
+body{color:#fff;background:#050510;min-height:100vh;overflow-x:hidden}
+.hidden{display:none!important}
 
-/* === خلفية المجرة === */
+/* ===== خلفية المجرة - مشتركة ===== */
 .bg{position:fixed;inset:0;z-index:0;pointer-events:none;background:
 radial-gradient(800px 500px at 10% 0%, rgba(124,58,237,.45), transparent 60%),
 radial-gradient(700px 500px at 90% 10%, rgba(34,211,238,.35), transparent 60%),
 radial-gradient(900px 600px at 50% 110%, rgba(236,72,153,.30), transparent 60%),
-radial-gradient(600px 400px at 85% 90%, rgba(99,102,241,.40), transparent 60%),
-#050510}
+radial-gradient(600px 400px at 85% 90%, rgba(99,102,241,.40), transparent 60%),#050510}
 .bg::before{content:"";position:absolute;inset:0;background-image:
 radial-gradient(2px 2px at 10% 20%, #fff, transparent),
 radial-gradient(1px 1px at 25% 35%, #fff, transparent),
@@ -28,119 +28,137 @@ radial-gradient(1px 1px at 15% 70%, #fff, transparent),
 radial-gradient(2px 2px at 45% 80%, #fff, transparent),
 radial-gradient(1px 1px at 75% 75%, #fff, transparent),
 radial-gradient(2px 2px at 95% 60%, #fff, transparent),
-radial-gradient(1px 1px at 5% 50%, #fff, transparent),
-radial-gradient(1.5px 1.5px at 60% 90%, #fff, transparent),
-radial-gradient(1px 1px at 30% 60%, #fff, transparent);opacity:.9;animation:twinkle 3s ease-in-out infinite alternate}
+radial-gradient(1px 1px at 5% 50%, #fff, transparent);opacity:.9;animation:twinkle 3s ease-in-out infinite alternate}
 @keyframes twinkle{from{opacity:.6}to{opacity:1}}
 .bg::after{content:"";position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=1600&q=80') center/cover;opacity:.22;mix-blend-mode:screen}
 
-/* === Sidebar Galaxy === */
-.sidebar{width:260px;background:rgba(255,255,255,.06);backdrop-filter:blur(25px);border-right:1px solid rgba(255,255,255,.15);padding:22px 16px;display:flex;flex-direction:column;position:fixed;height:100vh;left:0;top:0;z-index:10}
-.logo{font-size:22px;font-weight:900;color:#fff;margin-bottom:30px;padding:0 10px;display:flex;gap:8px;align-items:center}
+/* ===== 1. صفحة الدخول ===== */
+.login-wrap{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column}
+.nav{ display:flex;justify-content:space-between;align-items:center;padding:22px 32px}
+.logo{font-size:22px;font-weight:900;display:flex;gap:8px;align-items:center}
 .logo span{background:linear-gradient(90deg,#22d3ee,#a855f7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.menu a{display:flex;gap:12px;align-items:center;padding:12px 12px;border-radius:14px;color:#cbd5e1;text-decoration:none;font-size:15px;margin-bottom:4px;cursor:pointer;transition:.2s;border:1px solid transparent}
-.menu a.active,.menu a:hover{background:rgba(168,85,247,.25);color:#fff;border-color:rgba(168,85,247,.4);box-shadow:0 0 20px rgba(168,85,247,.3)}
-.badge{margin-left:auto;background:linear-gradient(90deg,#22d3ee,#a855f7);color:#fff;font-size:11px;padding:2px 8px;border-radius:20px}
+.pill{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.10);padding:8px 16px;border-radius:30px;backdrop-filter:blur(12px);font-size:14px}
+.center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 20px 50px}
+.orb{width:150px;height:150px;border-radius:50%;position:relative;z-index:3;background:radial-gradient(circle at 28% 25%, #ffffff 0%, #e0f2fe 8%, #a5f3fc 22%, #67e8f9 38%, #22d3ee 52%, #0ea5e9 68%, #7c3aed 88%, #4c1d95 100%);box-shadow:0 0 50px rgba(34,211,238,.9), 0 0 110px rgba(168,85,247,.7), inset -12px -18px 35px rgba(76,29,149,.55), inset 12px 12px 30px rgba(255,255,255,.65);animation:float 4s ease-in-out infinite}
+.orb::after{content:"⬡";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:64px;color:#fff;text-shadow:0 0 12px #fff}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.login-card{margin-top:-28px;width:100%;max-width:580px;background:rgba(255,255,255,.08);backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,.25);border-radius:28px;padding:36px 35px 30px;box-shadow:0 30px 80px rgba(0,0,0,.5);position:relative;z-index:2}
+.login-card h1{text-align:center;font-size:35px;font-weight:900}
+.login-card p.sub{text-align:center;color:#bae6fd;margin:10px 0 26px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid label{display:block;margin-bottom:6px;color:#a5f3fc;font-size:14px;font-weight:600}
+.grid input{width:100%;padding:14px 18px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:50px;color:#1e293b;outline:none;font-size:15px}
+.row{display:flex;justify-content:space-between;align-items:center;margin:18px 0;color:#e2e8f0;font-size:14px}
+.row a{color:#67e8f9;text-decoration:none}.row label{display:flex;align-items:center;gap:7px}
+.btn{width:100%;padding:15px;border:none;border-radius:50px;background:linear-gradient(90deg,#22d3ee,#a855f7,#ec4899);color:#fff;font-size:21px;font-weight:900;cursor:pointer;box-shadow:0 15px 35px rgba(168,85,247,.45)}
+.passkey{width:100%;margin-top:12px;padding:13px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:50px;cursor:pointer;font-size:16px}
+.ai{margin-top:20px;display:flex;gap:12px;align-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);padding:12px 14px;border-radius:16px}
+.ai .avatar{width:45px;height:45px;min-width:45px;border-radius:50%;background:#22d3ee;display:flex;align-items:center;justify-content:center;font-size:24px}
+
+/* ===== 2. الداشبورد ===== */
+.dash{position:relative;z-index:2;display:flex;min-height:100vh}
+.sidebar{width:260px;background:rgba(255,255,255,.06);backdrop-filter:blur(25px);border-right:1px solid rgba(255,255,255,.15);padding:22px 16px;display:flex;flex-direction:column;position:fixed;height:100vh;left:0;top:0}
+.menu a{display:flex;gap:12px;align-items:center;padding:12px;border-radius:14px;color:#cbd5e1;text-decoration:none;font-size:15px;margin-bottom:4px;cursor:pointer}
+.menu a.active,.menu a:hover{background:rgba(168,85,247,.25);color:#fff;border:1px solid rgba(168,85,247,.4)}
+.badge{margin-left:auto;background:linear-gradient(90deg,#22d3ee,#a855f7);font-size:11px;padding:2px 8px;border-radius:20px}
 .profile{margin-top:auto;display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);padding:12px;border-radius:16px}
-.profile img{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#22d3ee,#a855f7,#ec4899);box-shadow:0 0 15px #a855f7}
-.profile b{font-size:14px}.profile small{color:#a5f3fc}
-
-.main{flex:1;margin-left:260px;padding:22px 26px;position:relative;z-index:2}
+.profile img{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#22d3ee,#a855f7,#ec4899)}
+.main{flex:1;margin-left:260px;padding:22px 26px}
 .topbar{display:flex;align-items:center;gap:14px;margin-bottom:22px}
-.search{flex:1;display:flex;align-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.20);backdrop-filter:blur(15px);border-radius:50px;padding:11px 18px;gap:10px;color:#cbd5e1}
+.search{flex:1;display:flex;align-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.20);border-radius:50px;padding:11px 18px;gap:10px}
 .search input{flex:1;background:transparent;border:none;outline:none;color:#fff;font-size:15px}
-.search input::placeholder{color:#94a3b8}
-.icon-btn{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.20);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;position:relative;backdrop-filter:blur(10px)}
-.dot{position:absolute;top:8px;right:9px;width:8px;height:8px;background:#f472b6;border-radius:50%;box-shadow:0 0 8px #f472b6}
-.btn-purple{background:linear-gradient(90deg,#22d3ee,#a855f7,#ec4899);border:none;color:#fff;padding:12px 20px;border-radius:50px;font-weight:900;cursor:pointer;white-space:nowrap;box-shadow:0 10px 25px rgba(168,85,247,.5)}
-
+.icon-btn{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.20);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative}
+.dot{position:absolute;top:8px;right:9px;width:8px;height:8px;background:#f472b6;border-radius:50%}
+.btn-purple{background:linear-gradient(90deg,#22d3ee,#a855f7,#ec4899);border:none;color:#fff;padding:12px 20px;border-radius:50px;font-weight:900;cursor:pointer;white-space:nowrap}
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:18px}
 .card{background:rgba(255,255,255,.07);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:18px;position:relative;overflow:hidden}
 .card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#22d3ee,#a855f7,#ec4899)}
-.card small{color:#cbd5e1}.card h2{font-size:28px;margin:8px 0 4px}
-.card p{font-size:13px}.green{color:#4ade80}.red{color:#fb7185}.cyan{color:#67e8f9}
-
+.card small{color:#cbd5e1}.card h2{font-size:28px;margin:8px 0 4px}.green{color:#4ade80}.red{color:#fb7185}.cyan{color:#67e8f9}
 .row{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:18px}
 .box{background:rgba(255,255,255,.07);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:20px}
-.box h3{margin-bottom:4px}.box p{color:#cbd5e1;font-size:13px;margin-bottom:14px}
 .donut-wrap{position:relative;height:180px;display:flex;align-items:center;justify-content:center}
-.donut-center{position:absolute;text-align:center}.donut-center b{font-size:28px}.donut-center small{color:#a5f3fc;display:block}
-.health-list{margin-top:12px}.health-list div{display:flex;justify-content:space-between;padding:7px 0;font-size:13px;color:#e2e8f0}
-
+.donut-center{position:absolute;text-align:center}.donut-center b{font-size:28px}
 .row2{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
-table{width:100%;border-collapse:collapse;font-size:14px}
-th{color:#a5f3fc;text-align:left;padding:10px 0;font-weight:500}
-td{padding:12px 0;border-top:1px solid rgba(255,255,255,.12)}
-.status{padding:4px 10px;border-radius:20px;font-size:12px}.ok{background:rgba(34,197,94,.2);color:#4ade80;border:1px solid rgba(34,197,94,.3)}.warn{background:rgba(250,204,21,.15);color:#facc15;border:1px solid rgba(250,204,21,.3)}.fail{background:rgba(248,113,113,.15);color:#fb7185;border:1px solid rgba(248,113,113,.3)}
-.bar{height:8px;background:rgba(255,255,255,.12);border-radius:20px;overflow:hidden;margin:6px 0 14px}
-.bar i{display:block;height:100%;border-radius:20px;box-shadow:0 0 10px rgba(168,85,247,.6)}
-@media(max-width:900px){.sidebar{display:none}.main{margin-left:0}.cards{grid-template-columns:1fr 1fr}.row,.row2{grid-template-columns:1fr}}
+table{width:100%;border-collapse:collapse;font-size:14px}th{color:#a5f3fc;text-align:left;padding:10px 0}td{padding:12px 0;border-top:1px solid rgba(255,255,255,.12)}
+.status{padding:4px 10px;border-radius:20px;font-size:12px}.ok{background:rgba(34,197,94,.2);color:#4ade80}.warn{background:rgba(250,204,21,.15);color:#facc15}.fail{background:rgba(248,113,113,.15);color:#fb7185}
+.bar{height:8px;background:rgba(255,255,255,.12);border-radius:20px;overflow:hidden;margin:6px 0 14px}.bar i{display:block;height:100%;border-radius:20px}
+.logout{background:transparent;border:1px solid rgba(255,255,255,.3);color:#fff;padding:10px 16px;border-radius:50px;cursor:pointer}
+@media(max-width:900px){.sidebar{display:none}.main{margin-left:0}.cards{grid-template-columns:1fr 1fr}.row,.row2,.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="bg"></div>
 
-<!-- 1-9 + 22 -->
-<div class="sidebar">
-  <div class="logo">🌌 AURA <span>GALAXY</span></div>
-  <div class="menu">
-    <a class="active">📊 1. Dashboard</a>
-    <a>📈 2. Analytics</a>
-    <a>🖥️ 3. Instances <span class="badge">12</span></a>
-    <a>🛡️ 4. Security</a>
-    <a>🚀 5. Deployments</a>
-    <a>📋 6. Logs</a>
-    <a>👥 7. Team</a>
-    <a>🔌 8. Integrations</a>
-    <a>⚙️ 9. Settings</a>
+<!-- ===== صفحة الدخول ===== -->
+<div id="loginPage" class="login-wrap">
+  <div class="nav"><div class="logo">🌌 AURA <span>GALAXY</span></div><div class="pill">🛡️ Secure</div></div>
+  <div class="center">
+    <div class="orb" id="orb"></div>
+    <div class="login-card">
+      <h1>Welcome Back</h1><p class="sub">Sign in to continue in AURA GALAXY</p>
+      <div class="grid"><div><label>Username</label><input id="user" placeholder="Enter username" value="mahdy"></div><div><label>Password</label><input id="pass" type="password" placeholder="••••••••" value="12345678"></div></div>
+      <div class="row"><label><input type="checkbox" checked> Remember me</label><a href="#">Forgot Password?</a></div>
+      <button class="btn" onclick="doLogin()">Sign In →</button>
+      <button class="passkey" onclick="alert('Passkey')">🔑 Sign in with Passkey</button>
+      <div class="ai"><div class="avatar">🤖</div><div><b>AURA • AI Assistant</b><br><small style="color:#67e8f9">● Online • Ready to help</small></div></div>
+    </div>
   </div>
-  <div class="profile"><img><div><b>Mahdy Ramdan</b><br><small>🌌 Galaxy Workspace</small></div><span style="margin-left:auto">⋮</span></div>
 </div>
 
-<div class="main">
-  <div class="topbar">
-    <div class="search">🔍 <input placeholder="10. Search in galaxy..."></div>
-    <div class="icon-btn">🔔 <span class="dot"></span></div>
-    <div class="icon-btn">⚙️</div>
-    <button class="btn-purple" onclick="alert('Launching to Galaxy 🚀')">+ 13. New Deployment</button>
-  </div>
-
-  <div class="cards">
-    <div class="card"><small>✨ 14. Active Servers</small><h2>128</h2><p><span class="green">▲ 12%</span> vs last month</p></div>
-    <div class="card"><small>🌙 15. Uptime</small><h2>99.98%</h2><p><span class="green">▲ 0.02%</span> excellent</p></div>
-    <div class="card"><small>🛡️ 16. Threats Blocked</small><h2>1.2K</h2><p><span class="red">▲ 8%</span> needs attention</p></div>
-    <div class="card"><small>💫 17. Data Processed</small><h2>4.7TB</h2><p><span class="cyan">▲ 23%</span> this week</p></div>
-  </div>
-
-  <div class="row">
-    <div class="box"><h3>🌌 18. Traffic Over Time</h3><p>Galaxy traffic • Live</p><canvas id="traffic" height="120"></canvas></div>
-    <div class="box"><h3>🪐 19. Service Health</h3><p>Overall galaxy status</p>
-      <div class="donut-wrap"><canvas id="health" width="170" height="170"></canvas><div class="donut-center"><b>98.6%</b><small>Healthy</small></div></div>
-      <div class="health-list"><div><span>● API Gateway</span><b style="color:#4ade80">99.9%</b></div><div><span>● Database</span><b style="color:#4ade80">99.8%</b></div><div><span>● CDN</span><b style="color:#facc15">97.2%</b></div></div>
+<!-- ===== الداشبورد ===== -->
+<div id="dashPage" class="dash hidden">
+  <div class="sidebar">
+    <div class="logo">🌌 AURA <span>GALAXY</span></div>
+    <div class="menu">
+      <a class="active">📊 Dashboard</a><a>📈 Analytics</a><a>🖥️ Instances <span class="badge">12</span></a><a>🛡️ Security</a><a>🚀 Deployments</a><a>📋 Logs</a><a>👥 Team</a><a>🔌 Integrations</a><a>⚙️ Settings</a>
     </div>
+    <div class="profile"><img><div><b id="userName">Mahdy Ramdan</b><br><small style="color:#a5f3fc">Galaxy Workspace</small></div></div>
   </div>
-
-  <div class="row2">
-    <div class="box"><h3>20. Recent Activity</h3><p>Latest galaxy events</p>
-      <table><tr><th>Service</th><th>Status</th><th>Time</th></tr>
-      <tr><td>🚀 auth-service v2.4.1</td><td><span class="status ok">Success</span></td><td>2 min ago</td></tr>
-      <tr><td>🛡️ security scan</td><td><span class="status warn">Warning</span></td><td>15 min ago</td></tr>
-      <tr><td>🗄️ db-backup</td><td><span class="status ok">Success</span></td><td>1 hr ago</td></tr>
-      <tr><td>🌐 api-gateway</td><td><span class="status fail">Failed</span></td><td>2 hrs ago</td></tr>
-      </table>
+  <div class="main">
+    <div class="topbar">
+      <div class="search">🔍 <input placeholder="Search in galaxy..."></div>
+      <div class="icon-btn">🔔 <span class="dot"></span></div>
+      <div class="icon-btn">⚙️</div>
+      <button class="btn-purple">+ New Deployment</button>
+      <button class="logout" onclick="doLogout()">Logout</button>
     </div>
-    <div class="box"><h3>21. Resource Utilization</h3><p>Galaxy resources</p>
-      <div style="display:flex;justify-content:space-between"><span>CPU</span><b>68%</b></div><div class="bar"><i style="width:68%;background:linear-gradient(90deg,#22d3ee,#a855f7)"></i></div>
-      <div style="display:flex;justify-content:space-between"><span>Memory</span><b>82%</b></div><div class="bar"><i style="width:82%;background:linear-gradient(90deg,#a855f7,#ec4899)"></i></div>
-      <div style="display:flex;justify-content:space-between"><span>Storage</span><b>45%</b></div><div class="bar"><i style="width:45%;background:linear-gradient(90deg,#22d3ee,#67e8f9)"></i></div>
-      <div style="display:flex;justify-content:space-between"><span>Network</span><b>91%</b></div><div class="bar"><i style="width:91%;background:linear-gradient(90deg,#ec4899,#f472b6)"></i></div>
+    <div class="cards">
+      <div class="card"><small>✨ Active Servers</small><h2>128</h2><p><span class="green">▲ 12%</span> vs last month</p></div>
+      <div class="card"><small>🌙 Uptime</small><h2>99.98%</h2><p><span class="green">▲ 0.02%</span> excellent</p></div>
+      <div class="card"><small>🛡️ Threats Blocked</small><h2>1.2K</h2><p><span class="red">▲ 8%</span> needs attention</p></div>
+      <div class="card"><small>💫 Data Processed</small><h2>4.7TB</h2><p><span class="cyan">▲ 23%</span> this week</p></div>
+    </div>
+    <div class="row">
+      <div class="box"><h3>🌌 Traffic Over Time</h3><p style="color:#cbd5e1;font-size:13px;margin-bottom:14px">Galaxy traffic • Live</p><canvas id="traffic" height="120"></canvas></div>
+      <div class="box"><h3>🪐 Service Health</h3><p style="color:#cbd5e1;font-size:13px;margin-bottom:14px">Overall galaxy status</p><div class="donut-wrap"><canvas id="health" width="170" height="170"></canvas><div class="donut-center"><b>98.6%</b><br><small style="color:#a5f3fc">Healthy</small></div></div></div>
+    </div>
+    <div class="row2">
+      <div class="box"><h3>Recent Activity</h3><table><tr><th>Service</th><th>Status</th><th>Time</th></tr><tr><td>🚀 auth-service v2.4.1</td><td><span class="status ok">Success</span></td><td>2 min ago</td></tr><tr><td>🛡️ security scan</td><td><span class="status warn">Warning</span></td><td>15 min ago</td></tr><tr><td>🗄️ db-backup</td><td><span class="status ok">Success</span></td><td>1 hr ago</td></tr><tr><td>🌐 api-gateway</td><td><span class="status fail">Failed</span></td><td>2 hrs ago</td></tr></table></div>
+      <div class="box"><h3>Resource Utilization</h3><div style="display:flex;justify-content:space-between"><span>CPU</span><b>68%</b></div><div class="bar"><i style="width:68%;background:linear-gradient(90deg,#22d3ee,#a855f7)"></i></div><div style="display:flex;justify-content:space-between"><span>Memory</span><b>82%</b></div><div class="bar"><i style="width:82%;background:linear-gradient(90deg,#a855f7,#ec4899)"></i></div><div style="display:flex;justify-content:space-between"><span>Storage</span><b>45%</b></div><div class="bar"><i style="width:45%;background:linear-gradient(90deg,#22d3ee,#67e8f9)"></i></div><div style="display:flex;justify-content:space-between"><span>Network</span><b>91%</b></div><div class="bar"><i style="width:91%;background:linear-gradient(90deg,#ec4899,#f472b6)"></i></div></div>
     </div>
   </div>
 </div>
 
 <script>
-new Chart(document.getElementById('traffic'),{type:'line',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[{label:'Traffic',data:[120,190,170,240,210,280,320],borderColor:'#a855f7',backgroundColor:'rgba(168,85,247,.25)',fill:true,tension:.4,pointBackgroundColor:'#22d3ee',pointBorderColor:'#fff'}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(255,255,255,.08)'},ticks:{color:'#cbd5e1'}},y:{grid:{color:'rgba(255,255,255,.08)'},ticks:{color:'#cbd5e1'}}}}});
-new Chart(document.getElementById('health'),{type:'doughnut',data:{datasets:[{data:[98.6,1.4],backgroundColor:['#a855f7','#ffffff22'],borderWidth:0,cutout:'78%'}]},options:{plugins:{legend:{display:false}}}});
+function doLogin(){
+  let u=document.getElementById('user').value || 'Mahdy';
+  document.getElementById('userName').innerText=u;
+  document.getElementById('loginPage').classList.add('hidden');
+  document.getElementById('dashPage').classList.remove('hidden');
+  setTimeout(initCharts,100);
+}
+function doLogout(){
+  document.getElementById('dashPage').classList.add('hidden');
+  document.getElementById('loginPage').classList.remove('hidden');
+}
+let chartsDone=false;
+function initCharts(){
+  if(chartsDone) return; chartsDone=true;
+  new Chart(document.getElementById('traffic'),{type:'line',data:{labels:['Mon',[STRIPPED]
+  new Chart(document.getElementById('health'),{type:'doughnut',data:{datasets:[{data:[98.6,[STRIPPED]
+}
+let orb=document.getElementById('orb');
+document.addEventListener('mousemove',e=>{if(!orb) return;let x=(e.clientX/window.innerWidth-0.5)*22;let y=(e.clientY/window.innerHeight-0.5)*22;orb.style.translate=x+'px '+y+'px';});
 document.querySelectorAll('.menu a').forEach(a=>{a.onclick=()=>{document.querySelectorAll('.menu a').forEach(x=>x.classList.remove('active'));a.classList.add('active')}});
 </script>
 </body>
