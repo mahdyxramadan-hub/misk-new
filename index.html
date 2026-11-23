@@ -1,101 +1,23 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MISK Technology</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-body{background:#050816;font-family:'Segoe UI',Tahoma;color:white}
-.glass{background:rgba(20,25,70,.75);backdrop-filter:blur(15px);border:1px solid rgba(0,200,255,.4);box-shadow:0 0 30px rgba(0,150,255,.35)}
-.btn{background:linear-gradient(90deg,#ff2ea6,#00c6ff)}
-input{outline:none}
-.sidebar a.active{background:linear-gradient(90deg,#a855f7,#ec4899)}
-</style>
-</head>
-<body>
-
-<!-- LOGIN -->
-<div id="login" class="min-h-screen flex flex-col items-center justify-center p-4 bg-[url('https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=1600')] bg-cover">
-  <h1 class="text-4xl font-black mb-1">MISK <span class="text-cyan-300">Technology</span></h1>
-  <p class="mb-6 text-gray-300">Together for a smarter future</p>
-  <div class="glass rounded-3xl p-7 w-full max-w-md">
-    <h2 class="text-2xl font-bold text-center">تسجيل الدخول</h2>
-    <p class="text-center text-gray-300 mb-5">مرحباً بك في نظام MISK</p>
-    <label>اسم المستخدم</label>
-    <input id="user" class="w-full bg-white/10 rounded-xl p-3 my-2" placeholder="اسم المستخدم">
-    <label>كلمة المرور</label>
-    <input id="pass" type="password" class="w-full bg-white/10 rounded-xl p-3 my-2" placeholder="كلمة المرور">
-    <div class="flex justify-between text-sm my-3"><label><input type="checkbox"> تذكرني</label><a href="#" class="text-cyan-300">نسيت كلمة المرور؟</a></div>
-    <button onclick="login()" class="btn w-full py-3 rounded-xl font-bold text-lg">دخول النظام ←</button>
-    <p class="text-center text-xs mt-4 text-gray-400">MISK Technology © 2025</p>
-  </div>
-</div>
-
-<!-- DASHBOARD -->
-<div id="dash" class="hidden min-h-screen flex">
-  <!-- Sidebar -->
-  <aside class="w-64 glass m-3 rounded-3xl p-4 hidden md:block">
-    <div class="text-center mb-6"><div class="text-3xl font-black">M <span class="text-cyan-300">MISK</span></div><p class="text-sm text-gray-300">Technology</p></div>
-    <nav class="space-y-2 sidebar">
-      <a href="#" class="active block p-3 rounded-xl">🏠 الرئيسية</a>
-      <a href="#" class="block p-3 rounded-xl bg-white/5">📋 الأوردرات</a>
-      <a href="#" class="block p-3 rounded-xl bg-white/5">📦 المخزن</a>
-      <a href="#" class="block p-3 rounded-xl bg-white/5">👨‍🔧 الفنيين</a>
-      <a href="#" class="block p-3 rounded-xl bg-white/5">🗂️ الأرشيف</a>
-      <a href="#" class="block p-3 rounded-xl bg-white/5">📊 التقارير</a>
-      <a href="#" class="block p-3 rounded-xl bg-white/5">⚙️ الإعدادات</a>
-      <a href="#" onclick="logout()" class="block p-3 rounded-xl bg-red-500/20 text-red-300">🚪 تسجيل الخروج</a>
-    </nav>
-  </aside>
-
-  <main class="flex-1 p-4">
-    <div class="glass rounded-2xl p-4 flex justify-between items-center">
-      <div class="flex items-center gap-3"><div class="w-11 h-11 rounded-full bg-cyan-500 flex items-center justify-center font-bold">أ</div><div><b>أحمد محمد</b><p class="text-xs text-gray-300">مدير النظام</p></div></div>
-      <input class="bg-white/10 rounded-xl p-2 w-1/3" placeholder="البحث في النظام... 🔍">
-      <div>🔔 <span class="bg-red-500 px-2 rounded-full text-xs">3</span> | السبت، 22 نوفمبر 2025 - 10:45 ص</div>
-    </div>
-
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 my-4">
-      <div class="glass rounded-2xl p-4"><p>إجمالي الأوردرات</p><h3 class="text-3xl font-black">248</h3><span class="text-green-400">↑ 12%</span></div>
-      <div class="glass rounded-2xl p-4"><p>تم التسليم</p><h3 class="text-3xl font-black text-green-400">201</h3><span class="text-green-400">↑ 8%</span></div>
-      <div class="glass rounded-2xl p-4"><p>قيد التنفيذ</p><h3 class="text-3xl font-black text-orange-400">32</h3><span class="text-orange-400">↑ 5%</span></div>
-      <div class="glass rounded-2xl p-4"><p>المخزون المتبقي</p><h3 class="text-3xl font-black text-cyan-300">12,500</h3><span class="text-green-400">↑ 3%</span></div>
-    </div>
-
-    <div class="grid lg:grid-cols-2 gap-3">
-      <div class="glass rounded-2xl p-4">
-        <b>حركة الأوردرات خلال الأسبوع</b>
-        <div class="flex items-end gap-3 h-32 mt-4">
-          <div class="flex-1 bg-purple-500 rounded-t" style="height:40%"></div><div class="flex-1 bg-purple-500 rounded-t" style="height:65%"></div><div class="flex-1 bg-purple-500 rounded-t" style="height:55%"></div><div class="flex-1 bg-cyan-400 rounded-t" style="height:80%"></div><div class="flex-1 bg-cyan-400 rounded-t" style="height:90%"></div><div class="flex-1 bg-cyan-400 rounded-t" style="height:70%"></div><div class="flex-1 bg-cyan-400 rounded-t" style="height:85%"></div>
-        </div>
-        <div class="flex justify-between text-xs mt-2 text-gray-300"><span>السبت</span><span>الأحد</span><span>الاثنين</span><span>الثلاثاء</span><span>الأربعاء</span><span>الخميس</span><span>الجمعة</span></div>
-      </div>
-
-      <div class="glass rounded-2xl p-4">
-        <b>أحدث الأوردرات</b>
-        <table class="w-full mt-3 text-sm"><tr class="text-gray-300"><td>#</td><td>العميل</td><td>الحالة</td><td>الوقت</td></tr>
-        <tr><td>#1048</td><td>شركة النيل</td><td><span class="bg-blue-500 px-2 rounded-full">قيد التنفيذ</span></td><td>10:30</td></tr>
-        <tr><td>#1047</td><td>مؤسسة المستقبل</td><td><span class="bg-green-500 px-2 rounded-full">تم التسليم</span></td><td>09:45</td></tr>
-        <tr><td>#1046</td><td>عميل خاص</td><td><span class="bg-orange-500 px-2 rounded-full">معلق</span></td><td>08:26</td></tr></table>
-      </div>
-    </div>
-
-    <div class="grid lg:grid-cols-3 gap-3 my-3">
-      <div class="glass rounded-2xl p-4"><b>أداء الفنيين</b><p class="mt-2">👨‍🔧 علي محمود - 82%</p><p>👨‍🔧 محمد علي - 88%</p><p>👨‍🔧 أحمد محمد - 95%</p></div>
-      <div class="glass rounded-2xl p-4 text-center"><b>حالة المخزن</b><h3 class="text-4xl font-black text-green-400 my-3">78%</h3><p>المخزون متوفر</p></div>
-      <div class="glass rounded-2xl p-4"><b>🔔 تنبيهات النظام</b><p class="bg-red-500/20 p-2 rounded-xl mt-2 text-sm">⚠️ أوردر متأخر عن موعد التسليم #1042</p><p class="bg-yellow-500/20 p-2 rounded-xl mt-2 text-sm">⚠️ نقص في مخزون بعض الأصناف #1048</p><p class="bg-blue-500/20 p-2 rounded-xl mt-2 text-sm">ℹ️ طلب جديد قيد المراجعة #1049</p></div>
-    </div>
-  </main>
-</div>
-
 <script>
-function login(){
-  if(document.getElementById('user').value==''||document.getElementById('pass').value==''){alert('اكتب اسم المستخدم وكلمة المرور');return;}
-  document.getElementById('login').style.display='none';
-  document.getElementById('dash').classList.remove('hidden');
+function slidePill(pill, target){
+  const host = pill.parentElement;
+  const h = host.getBoundingClientRect();
+  const r = target.getBoundingClientRect();
+  const to = { l: r.left-h.left, t: r.top-h.top, r: h.right-r.right, b: h.bottom-r.bottom };
+  const prev = pill._st || { ...to };
+  pill._st = prev;
+  gsap.killTweensOf(prev);
+  const vertical = Math.abs(to.t-prev.t) > Math.abs(to.l-prev.l);
+  const fwd = vertical ? to.t>prev.t : to.l>prev.l;
+  const [lead, trail] = vertical ? (fwd?['b','t']:['t','b']) : (fwd?['r','l']:['l','r']);
+  const clip = (st)=> `inset(${st.t}px ${st.r}px ${st.b}px ${st.l}px round 14px)`;
+  const paint = ()=> gsap.set(pill,{clipPath:clip(prev)});
+  gsap.to(prev,{[lead]:to[lead],duration:0.36,ease:'power3.out',onUpdate:paint});
+  gsap.to(prev,{[trail]:to[trail],duration:0.55,ease:'power3.inOut',onUpdate:paint});
 }
-function logout(){document.getElementById('dash').classList.add('hidden');document.getElementById('login').style.display='flex';}
+document.querySelectorAll('.misk-nav-item').forEach(item=>{
+  item.addEventListener('click',()=>{
+    slidePill(document.getElementById('nav-pill'), item);
+  });
+});
 </script>
-</body>
-</html>
