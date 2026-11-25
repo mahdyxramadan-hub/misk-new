@@ -1,68 +1,1504 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>MISK Technology - تسجيل الدخول</title>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MISK Technology</title>
+
 <style>
-*{box-sizing:border-box;font-family:'Segoe UI',Tahoma}
-body{margin:0;min-height:100vh;background:#030714;color:#fff;display:flex;align-items:center;justify-content:center;padding:16px;
-background-image:radial-gradient(circle at 15% 10%,rgba(30,92,170,.35),transparent 35%),radial-gradient(circle at 85% 90%,rgba(114,52,186,.35),transparent 35%),linear-gradient(145deg,#030714,#090d20 50%,#070b19)}
-.wrap{width:100%;max-width:980px;display:flex;gap:16px}
-/* اليمين - اللوجو */
-.side{flex:1;background:linear-gradient(160deg,rgba(9,18,44,.95),rgba(24,21,59,.9));border:1px solid rgba(88,195,255,.35);border-radius:22px;padding:28px;box-shadow:0 0 35px rgba(0,150,255,.35);display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
-.side::after{content:"";position:absolute;inset:0;background-image:radial-gradient(1px 1px at 20% 20%,#b9eaff 99%,transparent),radial-gradient(1px 1px at 70% 60%,#fff 99%,transparent);opacity:.4}
-.logo-box{width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,#1a3a6a,#050816);border:2px solid #55e7ff;display:flex;align-items:center;justify-content:center;font-size:42px;font-weight:900;box-shadow:0 0 25px #55e7ff;position:relative;z-index:1}
-.logo-box span{font-size:14px;display:block;text-align:center;line-height:1}
-.stat-row{display:flex;gap:10px;margin-top:22px;position:relative;z-index:1}
-.mini{flex:1;border-radius:14px;padding:12px;text-align:center;font-size:13px}
-.mini b{display:block;font-size:22px}
-.m1{background:linear-gradient(135deg,#6a00ff,#a855f7);box-shadow:0 0 20px rgba(168,85,247,.6)}
-.m2{background:linear-gradient(135deg,#00a651,#00e676);box-shadow:0 0 20px rgba(0,230,118,.5)}
-.m3{background:linear-gradient(135deg,#ff7a00,#ffab00);box-shadow:0 0 20px rgba(255,122,0,.5)}
-/* الشمال - الدخول */
-.card{flex:1;background:linear-gradient(160deg,rgba(11,18,42,.95),rgba(15,24,51,.95));border:1px solid rgba(88,195,255,.35);border-radius:22px;padding:28px;box-shadow:0 0 35px rgba(0,150,255,.35)}
-.card h2{margin:0;font-size:26px}.card p{color:#9aabc7;font-size:14px;margin:6px 0 18px}
-label{font-size:14px;color:#ddd}
-input{width:100%;padding:14px;margin:6px 0 12px;border-radius:14px;border:1px solid rgba(88,195,255,.3);background:rgba(255,255,255,.07);color:#fff;outline:none;font-size:15px}
-input:focus{border-color:#55e7ff;box-shadow:0 0 15px rgba(85,231,255,.4)}
-input::placeholder{color:#8a99b8}
-.row{display:flex;justify-content:space-between;font-size:13px;margin:6px 0}.row a{color:#55e7ff;text-decoration:none}
-.btn{width:100%;padding:14px;border:0;border-radius:14px;background:linear-gradient(90deg,#ff2ea6,#00c6ff);color:#fff;font-weight:900;font-size:17px;cursor:pointer;box-shadow:0 0 20px rgba(255,46,166,.5);margin-top:10px}
-.foot{text-align:center;font-size:12px;color:#6b7a99;margin-top:16px}
-@media(max-width:750px){.wrap{flex-direction:column}.side{display:none}}
-</style></head>
-<body>
-<div class="wrap">
-
-<!-- اللوجو والإحصائيات زي الداشبورد -->
-<div class="side">
-  <div class="logo-box">M</div>
-  <h1 style="margin:16px 0 4px;font-size:34px;position:relative;z-index:1">MISK <span style="color:#55e7ff;font-size:20px">Technology</span></h1>
-  <p style="color:#9aabc7;margin:0;position:relative;z-index:1">Together for a smarter future</p>
-  <p style="font-size:14px;line-height:1.9;color:#dbe7ff;position:relative;z-index:1">نظام إدارة الأوردرات والمخزن والفنيين<br>تابع شغلك كله من مكان واحد.</p>
-  <div class="stat-row">
-    <div class="mini m1">إجمالي الأوردرات<b>248</b></div>
-    <div class="mini m2">تم التسليم<b>201</b></div>
-    <div class="mini m3">قيد التنفيذ<b>32</b></div>
-  </div>
-</div>
-
-<!-- تسجيل الدخول -->
-<div class="card">
-  <h2>تسجيل الدخول</h2>
-  <p>مرحباً بك في نظام MISK</p>
-  <label>اسم المستخدم</label>
-  <input id="user" placeholder="👤 اسم المستخدم">
-  <label>كلمة المرور</label>
-  <input id="pass" type="password" placeholder="🔒 كلمة المرور">
-  <div class="row"><label><input type="checkbox" style="width:auto"> تذكرني</label><a href="#">نسيت كلمة المرور؟</a></div>
-  <button class="btn" onclick="login()">دخول النظام ←</button>
-  <div class="foot">MISK Technology © 2025 - السبت، 22 نوفمبر 2025</div>
-</div>
-
-</div>
-<script>
-function login(){
-  if(!document.getElementById('user').value || !document.getElementById('pass').value){alert('اكتب اسم المستخدم وكلمة المرور');return;}
-  alert('أهلاً '+document.getElementById('user').value+' - تم الدخول');
-  // هنا هتحط: window.location.href = 'dashboard.html'
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
+
+:root {
+    --bg: #030817;
+    --panel: rgba(7, 21, 55, .88);
+    --border: rgba(48, 142, 255, .45);
+    --blue: #087dff;
+    --cyan: #00d9ff;
+    --purple: #8b35ff;
+    --text: #f3f7ff;
+    --muted: #9db5d9;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Tahoma, Arial, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+        radial-gradient(circle at 10% 30%, rgba(0,100,255,.25), transparent 30%),
+        radial-gradient(circle at 80% 10%, rgba(120,0,255,.18), transparent 30%),
+        linear-gradient(135deg,#020617,#06143a,#020817);
+}
+
+button, input {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+    color: white;
+}
+
+.screen {
+    display: none;
+    min-height: 100vh;
+}
+
+.screen.active {
+    display: block;
+}
+
+.glass {
+    background: linear-gradient(135deg,
+        rgba(5,22,63,.94),
+        rgba(5,15,43,.83));
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow:
+        0 0 20px rgba(0,100,255,.15),
+        inset 0 0 15px rgba(0,80,255,.08);
+    backdrop-filter: blur(14px);
+}
+
+/* LOGIN */
+
+.login-wrapper {
+    min-height: 100vh;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: 20px;
+    align-items: center;
+}
+
+.login-hero {
+    min-height: 650px;
+    border-radius: 22px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    padding: 35px;
+    background:
+        radial-gradient(circle at 20% 30%,rgba(0,130,255,.4),transparent 35%),
+        radial-gradient(circle at 80% 80%,rgba(100,0,255,.4),transparent 35%),
+        linear-gradient(140deg,#020617,#08245e,#020817);
+}
+
+.login-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        repeating-linear-gradient(
+            135deg,
+            transparent 0 30px,
+            rgba(0,180,255,.05) 30px 31px
+        );
+}
+
+.hero-logo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.logo {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 15px rgba(0,160,255,.6));
+}
+
+.hero-logo h1 {
+    font-size: 40px;
+}
+
+.hero-logo p {
+    color: #a8d6ff;
+    margin-top: 8px;
+}
+
+.hero-center {
+    position: absolute;
+    left: 5%;
+    right: 5%;
+    bottom: 10%;
+    height: 55%;
+    border-radius: 50%;
+    background:
+        radial-gradient(ellipse at center,
+            rgba(0,150,255,.3),
+            transparent 65%);
+}
+
+.hero-center::before {
+    content: "MISK";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    font-size: clamp(70px,10vw,150px);
+    font-weight: 900;
+    color: rgba(0,160,255,.14);
+    text-shadow: 0 0 50px #007bff;
+}
+
+.hero-center::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 300px;
+    height: 300px;
+    transform: translate(-50%,-50%);
+    border: 1px solid rgba(0,200,255,.3);
+    border-radius: 50%;
+    box-shadow:
+        0 0 40px rgba(0,100,255,.5),
+        inset 0 0 40px rgba(0,100,255,.3);
+}
+
+.login-card {
+    width: 100%;
+    max-width: 460px;
+    justify-self: center;
+    padding: 35px;
+}
+
+.login-card .logo {
+    width: 90px;
+    height: 90px;
+}
+
+.login-card h2 {
+    font-size: 28px;
+    margin: 15px 0 8px;
+}
+
+.subtitle {
+    color: var(--muted);
+    margin-bottom: 25px;
+}
+
+.field {
+    margin-bottom: 18px;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.field input {
+    width: 100%;
+    padding: 14px;
+    color: white;
+    background: rgba(1,8,28,.8);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    outline: none;
+}
+
+.field input:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 12px rgba(0,180,255,.3);
+}
+
+.login-button {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #8bdfff;
+    border-radius: 12px;
+    font-weight: bold;
+    background: linear-gradient(90deg,#8b20ff,#087dff,#00d9ff);
+    box-shadow: 0 0 20px rgba(0,100,255,.3);
+}
+
+.preview-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.preview-buttons button {
+    flex: 1;
+    background: rgba(10,35,85,.8);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 12px;
+}
+
+/* TOP BAR */
+
+.topbar {
+    margin: 12px;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-height: 72px;
+}
+
+.user-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 170px;
+}
+
+.avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg,#00cfff,#7b35ff);
+    border: 2px solid #72dfff;
+    box-shadow: 0 0 12px #087dff;
+    font-weight: bold;
+}
+
+.search-box {
+    flex: 1;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 12px;
+    background: rgba(0,8,30,.7);
+    border: 1px solid var(--border);
+    color: white;
+    border-radius: 12px;
+}
+
+.top-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: rgba(5,25,65,.8);
+    border: 1px solid var(--border);
+    font-size: 20px;
+}
+
+/* DASHBOARD LAYOUT */
+
+.layout {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) 180px;
+    gap: 12px;
+    padding: 12px;
+}
+
+.main {
+    min-width: 0;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 15px;
+    height: calc(100vh - 24px);
+    min-height: 650px;
+    position: sticky;
+    top: 12px;
+}
+
+.side-brand {
+    text-align: center;
+    padding-bottom: 15px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid var(--border);
+}
+
+.side-brand .logo {
+    width: 75px;
+    height: 75px;
+}
+
+.side-brand h2 {
+    font-size: 22px;
+}
+
+.side-brand small {
+    color: var(--muted);
+}
+
+.nav-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    background: rgba(10,30,75,.65);
+    text-align: right;
+    font-weight: bold;
+    transition: .2s;
+}
+
+.nav-button:hover,
+.nav-button.active {
+    background: linear-gradient(90deg,#7025ff,#087dff);
+    border-color: #9ccfff;
+    box-shadow: 0 0 15px rgba(90,80,255,.6);
+}
+
+.nav-icon {
+    width: 25px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.logout {
+    margin-top: auto;
+    color: #ff6887;
+    border-color: rgba(255,70,100,.3);
+}
+
+/* STATS */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 12px;
+}
+
+.stat-card {
+    padding: 16px;
+    min-height: 110px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    overflow: hidden;
+}
+
+.stat-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 15px;
+    display: grid;
+    place-items: center;
+    background: rgba(255,255,255,.08);
+    font-size: 26px;
+}
+
+.stat-label {
+    font-size: 13px;
+    color: #d1e2ff;
+}
+
+.stat-number {
+    font-size: 26px;
+    font-weight: 900;
+    margin-top: 5px;
+}
+
+.stat-change {
+    color: #39ffad;
+    font-size: 11px;
+    margin-top: 4px;
+}
+
+.purple { color: #c38aff; }
+.green { color: #43ff9e; }
+.orange { color: #ffb44e; }
+.blue { color: #56caff; }
+
+/* CONTENT */
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.panel {
+    padding: 15px;
+    min-width: 0;
+}
+
+.panel-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.panel-title small {
+    color: var(--muted);
+}
+
+.chart {
+    width: 100%;
+    height: 220px;
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.orders-table th,
+.orders-table td {
+    padding: 12px 7px;
+    text-align: right;
+    border-bottom: 1px solid rgba(50,120,255,.2);
+}
+
+.orders-table th {
+    color: #9ec6ff;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 8px;
+    border-radius: 8px;
+    font-size: 11px;
+}
+
+.status-blue {
+    color: #71c8ff;
+    background: rgba(0,120,255,.2);
+}
+
+.status-green {
+    color: #4dffac;
+    background: rgba(0,220,100,.2);
+}
+
+.status-orange {
+    color: #ffbd65;
+    background: rgba(255,140,0,.2);
+}
+
+/* LOWER PANELS */
+
+.bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.tech-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 14px 0;
+}
+
+.tech-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg,#00cfff,#8135ff);
+    border: 1px solid #8bdfff;
+}
+
+.tech-details {
+    flex: 1;
+    font-size: 12px;
+}
+
+.progress {
+    height: 7px;
+    background: #0a2b58;
+    border-radius: 10px;
+    margin-top: 6px;
+    overflow: hidden;
+}
+
+.progress span {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg,#00dfff,#45ff9d);
+}
+
+.inventory-ring {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: conic-gradient(#48ff4e 0 78%,#00d9ff 78% 90%,#17376c 90%);
+    display: grid;
+    place-items: center;
+    margin: 15px auto;
+    position: relative;
+}
+
+.inventory-ring::before {
+    content: "";
+    position: absolute;
+    inset: 13px;
+    background: #071638;
+    border-radius: 50%;
+}
+
+.inventory-ring strong {
+    position: relative;
+    font-size: 24px;
+}
+
+.alert {
+    padding: 11px;
+    border-radius: 10px;
+    margin: 8px 0;
+    font-size: 12px;
+    background: rgba(10,34,80,.7);
+}
+
+.alert-red {
+    color: #ff8796;
+    border: 1px solid rgba(255,60,85,.4);
+}
+
+.alert-yellow {
+    color: #ffd27a;
+    border: 1px solid rgba(255,170,0,.4);
+}
+
+.alert-blue {
+    color: #82d9ff;
+    border: 1px solid rgba(0,150,255,.4);
+}
+
+.quick-buttons {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.quick-buttons button {
+    padding: 15px 8px;
+    border-radius: 12px;
+    background: linear-gradient(135deg,#122c70,#071638);
+    border: 1px solid var(--border);
+    box-shadow: 0 0 12px rgba(0,100,255,.15);
+    font-weight: bold;
+}
+
+.quick-buttons button:hover {
+    filter: brightness(1.3);
+}
+
+/* TOAST */
+
+.toast {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    background: #0a1d49;
+    border: 1px solid #37cfff;
+    padding: 14px 18px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px #006aff;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: .25s;
+    z-index: 999;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1100px) {
+    .stats {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .bottom-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media(max-width:750px) {
+    .login-wrapper {
+        grid-template-columns: 1fr;
+        padding: 10px;
+    }
+
+    .login-hero {
+        min-height: 280px;
+    }
+
+    .hero-logo .logo {
+        width: 65px;
+        height: 65px;
+    }
+
+    .hero-logo h1 {
+        font-size: 25px;
+    }
+
+    .layout {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .sidebar {
+        position: static;
+        height: auto;
+        min-height: 0;
+        display: grid;
+        grid-template-columns: repeat(4,1fr);
+    }
+
+    .side-brand {
+        grid-column: 1/-1;
+    }
+
+    .side-brand .logo {
+        width: 45px;
+        height: 45px;
+    }
+
+    .nav-button {
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        padding: 8px 4px;
+        font-size: 11px;
+    }
+
+    .logout {
+        margin-top: 0;
+    }
+
+    .topbar {
+        flex-wrap: wrap;
+    }
+
+    .search-box {
+        flex-basis: 100%;
+    }
+
+    .content-grid,
+    .bottom-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .quick-buttons {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+</style>
+</head>
+<body>
+
+<!-- صفحة الدخول -->
+
+<div id="loginScreen" class="screen active">
+
+    <div class="login-wrapper">
+
+        <section class="login-hero">
+
+            <div class="hero-logo">
+
+                <img src="MISK_logo.png" class="logo"
+                     alt="MISK Logo">
+
+                <div>
+                    <h1>MISK Technology</h1>
+                    <p>Together for a smarter future</p>
+                </div>
+
+            </div>
+
+            <div class="hero-center"></div>
+
+        </section>
+
+        <section class="login-card glass">
+
+            <div style="text-align:center">
+
+                <img src="MISK_logo.png"
+                     class="logo"
+                     alt="MISK">
+
+                <h2>تسجيل الدخول</h2>
+
+                <p class="subtitle">
+                    مرحبًا بك في نظام MISK Technology
+                </p>
+
+            </div>
+
+            <div class="field">
+
+                <label>اسم المستخدم</label>
+
+                <input id="username"
+                       type="text"
+                       placeholder="أدخل اسم المستخدم">
+
+            </div>
+
+            <div class="field">
+
+                <label>كلمة المرور</label>
+
+                <input id="password"
+                       type="password"
+                       placeholder="أدخل كلمة المرور">
+
+            </div>
+
+            <button class="login-button"
+                    onclick="showDashboard()">
+
+                دخول النظام　↪
+
+            </button>
+
+            <div class="preview-buttons">
+
+                <button onclick="showDashboard()">
+                    معاينة الصفحة الداخلية
+                </button>
+
+                <button onclick="showLogin()">
+                    صفحة الدخول
+                </button>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</div>
+
+
+<!-- الصفحة الداخلية -->
+
+<div id="dashboardScreen" class="screen">
+
+    <!-- الشريط العلوي -->
+
+    <header class="topbar glass">
+
+        <div class="user-box">
+
+            <div class="avatar">م</div>
+
+            <div>
+                <strong>أحمد محمد</strong>
+
+                <div style="font-size:11px;color:#9db5d9">
+                    مدير النظام
+                </div>
+            </div>
+
+        </div>
+
+        <div class="search-box">
+
+            <input type="text"
+                   id="searchOrders"
+                   placeholder="البحث في النظام..."
+                   oninput="filterOrders(this.value)">
+
+        </div>
+
+        <button class="top-btn"
+                onclick="toast('الإشعارات سيتم إضافتها لاحقًا')">
+
+            ♧
+
+        </button>
+
+        <button class="top-btn"
+                onclick="toast('التقويم سيتم إضافته لاحقًا')">
+
+            ▦
+
+        </button>
+
+        <div style="font-size:12px;color:#9db5d9">
+            السبت، 22 نوفمبر 2025
+        </div>
+
+    </header>
+
+
+    <div class="layout">
+
+        <!-- محتوى الصفحة -->
+
+        <main class="main">
+
+
+            <!-- الإحصائيات -->
+
+            <section class="stats">
+
+                <article class="stat-card glass purple">
+
+                    <div class="stat-icon">▥</div>
+
+                    <div>
+                        <div class="stat-label">
+                            إجمالي الأوردرات
+                        </div>
+
+                        <div class="stat-number">
+                            248
+                        </div>
+
+                        <div class="stat-change">
+                            ↑ 12%
+                        </div>
+                    </div>
+
+                </article>
+
+
+                <article class="stat-card glass green">
+
+                    <div class="stat-icon">✓</div>
+
+                    <div>
+                        <div class="stat-label">
+                            تم التسليم
+                        </div>
+
+                        <div class="stat-number">
+                            201
+                        </div>
+
+                        <div class="stat-change">
+                            ↑ 8%
+                        </div>
+                    </div>
+
+                </article>
+
+
+                <article class="stat-card glass orange">
+
+                    <div class="stat-icon">◷</div>
+
+                    <div>
+                        <div class="stat-label">
+                            قيد التنفيذ
+                        </div>
+
+                        <div class="stat-number">
+                            32
+                        </div>
+
+                        <div class="stat-change">
+                            ↑ 5%
+                        </div>
+                    </div>
+
+                </article>
+
+
+                <article class="stat-card glass blue">
+
+                    <div class="stat-icon">⬡</div>
+
+                    <div>
+                        <div class="stat-label">
+                            المخزون المتبقي
+                        </div>
+
+                        <div class="stat-number">
+                            12,500
+                        </div>
+
+                        <div class="stat-change">
+                            ↑ 3%
+                        </div>
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <!-- الرسم البياني والأوردرات -->
+
+            <section class="content-grid">
+
+
+                <!-- الرسم البياني -->
+
+                <article class="panel glass">
+
+                    <div class="panel-title">
+
+                        <span>
+                            حركة الأوردرات خلال الأسبوع
+                        </span>
+
+                        <small>أسبوع　⌄</small>
+
+                    </div>
+
+                    <svg class="chart"
+                         viewBox="0 0 600 240"
+                         preserveAspectRatio="none">
+
+                        <defs>
+
+                            <linearGradient id="chartFill"
+                                x1="0" y1="0"
+                                x2="0" y2="1">
+
+                                <stop offset="0%"
+                                      stop-color="#00cfff"
+                                      stop-opacity=".4"/>
+
+                                <stop offset="100%"
+                                      stop-color="#007aff"
+                                      stop-opacity=".02"/>
+
+                            </linearGradient>
+
+                        </defs>
+
+                        <g stroke="#24477d"
+                           stroke-width="1">
+
+                            <path d="M40 35H580"/>
+                            <path d="M40 80H580"/>
+                            <path d="M40 125H580"/>
+                            <path d="M40 170H580"/>
+                            <path d="M40 215H580"/>
+
+                        </g>
+
+                        <path d="
+                            M40 190
+                            L115 158
+                            L190 120
+                            L265 152
+                            L340 105
+                            L415 75
+                            L490 48
+                            L565 88
+                            L565 215
+                            L40 215 Z"
+                            fill="url(#chartFill)"/>
+
+                        <path d="
+                            M40 190
+                            L115 158
+                            L190 120
+                            L265 152
+                            L340 105
+                            L415 75
+                            L490 48
+                            L565 88"
+                            fill="none"
+                            stroke="#00cfff"
+                            stroke-width="4"/>
+
+                        <g fill="#fff"
+                           stroke="#00cfff"
+                           stroke-width="3">
+
+                            <circle cx="40" cy="190" r="5"/>
+                            <circle cx="115" cy="158" r="5"/>
+                            <circle cx="190" cy="120" r="5"/>
+                            <circle cx="265" cy="152" r="5"/>
+                            <circle cx="340" cy="105" r="5"/>
+                            <circle cx="415" cy="75" r="5"/>
+                            <circle cx="490" cy="48" r="5"/>
+                            <circle cx="565" cy="88" r="5"/>
+
+                        </g>
+
+                        <g fill="#b7d5ff"
+                           font-size="12">
+
+                            <text x="40" y="235">السبت</text>
+                            <text x="115" y="235">الأحد</text>
+                            <text x="190" y="235">الإثنين</text>
+                            <text x="265" y="235">الثلاثاء</text>
+                            <text x="340" y="235">الأربعاء</text>
+                            <text x="415" y="235">الخميس</text>
+                            <text x="490" y="235">الجمعة</text>
+
+                        </g>
+
+                    </svg>
+
+                </article>
+
+
+                <!-- أحدث الأوردرات -->
+
+                <article class="panel glass">
+
+                    <div class="panel-title">
+
+                        <span>أحدث الأوردرات</span>
+
+                        <button class="nav-button"
+                                style="width:auto;padding:6px 10px"
+                                onclick="toast('صفحة الأوردرات سيتم بناؤها لاحقًا')">
+
+                            عرض الكل ←
+
+                        </button>
+
+                    </div>
+
+                    <table class="orders-table"
+                           id="ordersTable">
+
+                        <thead>
+
+                            <tr>
+                                <th>رقم</th>
+                                <th>العميل</th>
+                                <th>الحالة</th>
+                                <th>الوقت</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td>#1048</td>
+                                <td>شركة النيل</td>
+                                <td>
+                                    <span class="status status-blue">
+                                        قيد التنفيذ
+                                    </span>
+                                </td>
+                                <td>10:30</td>
+                            </tr>
+
+                            <tr>
+                                <td>#1047</td>
+                                <td>مؤسسة المستقبل</td>
+                                <td>
+                                    <span class="status status-green">
+                                        تم التسليم
+                                    </span>
+                                </td>
+                                <td>09:45</td>
+                            </tr>
+
+                            <tr>
+                                <td>#1046</td>
+                                <td>عميل خاص</td>
+                                <td>
+                                    <span class="status status-orange">
+                                        معلق
+                                    </span>
+                                </td>
+                                <td>08:26</td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </article>
+
+            </section>
+
+
+            <!-- الفنيين والمخزن والتنبيهات -->
+
+            <section class="bottom-grid">
+
+
+                <!-- الفنيين -->
+
+                <article class="panel glass">
+
+                    <div class="panel-title">
+
+                        <span>أداء الفنيين</span>
+
+                        <button class="nav-button"
+                                style="width:auto;padding:6px"
+                                onclick="toast('صفحة الفنيين سيتم بناؤها لاحقًا')">
+
+                            عرض الكل
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="tech-row">
+
+                        <div class="tech-avatar">أ م</div>
+
+                        <div class="tech-details">
+
+                            أحمد محمد
+
+                            <strong style="float:left">
+                                95%
+                            </strong>
+
+                            <div class="progress">
+                                <span style="width:95%"></span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="tech-row">
+
+                        <div class="tech-avatar">م ع</div>
+
+                        <div class="tech-details">
+
+                            محمد علي
+
+                            <strong style="float:left">
+                                88%
+                            </strong>
+
+                            <div class="progress">
+                                <span style="width:88%"></span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="tech-row">
+
+                        <div class="tech-avatar">ع م</div>
+
+                        <div class="tech-details">
+
+                            علي محمود
+
+                            <strong style="float:left">
+                                82%
+                            </strong>
+
+                            <div class="progress">
+                                <span style="width:82%"></span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- المخزن -->
+
+                <article class="panel glass">
+
+                    <div class="panel-title">
+                        حالة المخزن
+                    </div>
+
+                    <div class="inventory-ring">
+
+                        <strong>78%</strong>
+
+                    </div>
+
+                    <div style="text-align:center;color:#9db5d9;font-size:12px">
+
+                        المخزون المتوفر
+
+                    </div>
+
+                    <div style="text-align:center;margin-top:12px">
+
+                        <span style="color:#4dffac">● متوفر</span>
+
+                        <span style="color:#ffbd65;margin-right:10px">
+                            ● مستنفذ
+                        </span>
+
+                    </div>
+
+                </article>
+
+
+                <!-- التنبيهات -->
+
+                <article class="panel glass">
+
+                    <div class="panel-title">
+                        تنبيهات النظام
+                    </div>
+
+                    <div class="alert alert-red">
+                        !　أوردر متأخر عن موعد التسليم #1042
+                    </div>
+
+                    <div class="alert alert-yellow">
+                        ⚠　نقص في مخزون بعض الأصناف
+                    </div>
+
+                    <div class="alert alert-blue">
+                        ℹ　طلب جديد قيد المراجعة #1049
+                    </div>
+
+                    <button class="nav-button"
+                            style="margin-top:10px;justify-content:center"
+                            onclick="toast('مركز التنبيهات سيتم تفعيله لاحقًا')">
+
+                        عرض الكل ←
+
+                    </button>
+
+                </article>
+
+            </section>
+
+
+            <!-- الاختصارات -->
+
+            <section class="quick-buttons">
+
+                <button onclick="navMock('الأوردرات')">
+                    📋　الأوردرات
+                </button>
+
+                <button onclick="navMock('المخزن')">
+                    📦　المخزن
+                </button>
+
+                <button onclick="navMock('الأرشيف')">
+                    🗂　الأرشيف
+                </button>
+
+                <button onclick="navMock('التقارير')">
+                    📊　التقارير
+                </button>
+
+            </section>
+
+        </main>
+                <!-- القائمة الجانبية -->
+
+        <aside class="sidebar glass">
+
+            <div class="side-brand">
+
+                <img src="MISK_logo.png"
+                     class="logo"
+                     alt="MISK">
+
+                <h2>MISK</h2>
+
+                <small>Technology</small>
+
+            </div>
+
+
+            <button class="nav-button active"
+                    onclick="navMock('الرئيسية',this)">
+
+                <span class="nav-icon">⌂</span>
+                الرئيسية
+
+            </button>
+
+
+            <button class="nav-button"
+                    onclick="navMock('الأوردرات',this)">
+
+                <span class="nav-icon">▤</span>
+                الأوردرات
+
+            </button>
+
+
+            <button class="nav-button"
+                    onclick="navMock('المخزن',this)">
+
+                <span class="nav-icon">⬡</span>
+                المخزن
+
+            </button>
+
+
+            <button class="nav-button"
+                    onclick="navMock('الفنيين',this)">
+
+                <span class="nav-icon">♙</span>
+                الفنيين
+
+            </button>
+
+
+            <button class="nav-button"
+                    onclick="navMock('الأرشيف',this)">
+
+                <span class="nav-icon">▣</span>
+                الأرشيف
+
+            </button>
+
+
+            <button class="nav-button"
+                    onclick="navMock('التقارير',this)">
+
+                <span class="nav-icon">▥</span>
+                التقارير
+
+            </button>
+
+
+            <button class="nav-button"
+                    onclick="navMock('الإعدادات',this)">
+
+                <span class="nav-icon">⚙</span>
+                الإعدادات
+
+            </button>
+
+
+            <button class="nav-button logout"
+                    onclick="showLogin()">
+
+                <span class="nav-icon">⇥</span>
+                تسجيل الخروج
+
+            </button>
+
+        </aside>
+
+    </div>
+
+</div>
+
+
+<!-- رسالة التنبيه -->
+
+<div id="toast" class="toast"></div>
+
+
+<!-- JavaScript -->
+
+<script>
+
+function showLogin() {
+
+    document.getElementById("dashboardScreen")
+        .classList.remove("active");
+
+    document.getElementById("loginScreen")
+        .classList.add("active");
+
+}
+
+
+function showDashboard() {
+
+    document.getElementById("loginScreen")
+        .classList.remove("active");
+
+    document.getElementById("dashboardScreen")
+        .classList.add("active");
+
+    toast("معاينة التصميم فقط — الوظائف سيتم إضافتها لاحقًا");
+
+}
+
+
+function toast(message) {
+
+    const box = document.getElementById("toast");
+
+    box.textContent = message;
+
+    box.classList.add("show");
+
+    clearTimeout(window.toastTimer);
+
+    window.toastTimer = setTimeout(function() {
+
+        box.classList.remove("show");
+
+    }, 2500);
+
+}
+
+
+function navMock(name, button) {
+
+    document.querySelectorAll(".nav-button")
+        .forEach(function(btn) {
+
+            btn.classList.remove("active");
+
+        });
+
+    if(button) {
+
+        button.classList.add("active");
+
+    }
+
+    toast("قسم " + name + " — سيتم إضافة الوظيفة لاحقًا");
+
+}
+
+
+function filterOrders(search) {
+
+    const rows = document.querySelectorAll(
+        "#ordersTable tbody tr"
+    );
+
+    rows.forEach(function(row) {
+
+        const text = row.innerText.toLowerCase();
+
+        row.style.display =
+            text.includes(search.toLowerCase())
+            ? ""
+            : "none";
+
+    });
+
+}
+
 </script>
-</body></html>
+
+</body>
+</html>
