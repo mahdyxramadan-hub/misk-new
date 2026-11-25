@@ -1,295 +1,234 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#00a651">
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Misk - WE</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://unpkg.com/@zxing/library@0.20.0/umd/index.min.js"></script>
-<script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MISK | Misk Information Technology</title>
 <style>
-*{box-sizing:border-box;font-family:Tahoma}
-body{margin:0;background:#f4f0fa;color:#111;padding-bottom:85px}
-button{cursor:pointer}
-.hidden{display:none}
-input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:50px;font-size:15px}
-.top-img{height:170px;background:linear-gradient(180deg,#1a1a2e,#4A0E68);color:#fff;padding:16px;position:relative;overflow:hidden}
-.we-bar{background:#4A0E68;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:12px 16px}
-.we-bar .logo{font-size:24px;font-weight:900}.we-bar .logo span{color:#ff2a8a}
-.stats{display:flex;gap:10px;padding:12px}
-.stat{flex:1;background:#fff;border-radius:16px;padding:12px 6px;text-align:center;box-shadow:0 2px 8px #0001;cursor:pointer}
-.stat.active{border:2px solid #4A0E68}
-.circle{width:58px;height:58px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px}
-.c-green{background:#1aa34a}.c-yellow{background:#ff7a00}.c-red{background:#d32f2f}.c-purple{background:#7b2fbf}.c-blue{background:#0b7ed1}
-.job{background:#fff;margin:0 12px 12px;border:2px solid #1aa34a;border-radius:16px;padding:14px}
-.job h3{margin:0;font-size:17px;word-break:break-word;line-height:1.8}.job .meta{font-size:13px;line-height:2;color:#444;margin:8px 0;word-break:break-word;white-space:normal;overflow:hidden}
-.btn{width:100%;background:#4A0E68;color:#fff;border:0;padding:13px;border-radius:50px;font-weight:800;font-size:16px}
-.btn2{width:100%;background:#E6007E;color:#fff;border:0;padding:12px;border-radius:50px;font-weight:800;margin-top:8px}
-.badge{display:inline-block;background:#eef;border-radius:20px;padding:3px 8px;font-size:11px;font-weight:800}
-.serial{width:100%;padding:13px;border:2px solid #4A0E68;border-radius:50px;text-align:center;font-size:16px;font-weight:800}
-.row{display:flex;gap:8px;margin-top:8px}.row button{flex:1;padding:13px;border-radius:50px;font-weight:800;border:0}
-.saveBtn{background:#1aa34a!important;color:#fff!important}
-.blueBtn{background:#0b7ed1!important;color:#fff!important}
-.whiteBtn{background:#fff!important;color:#1aa34a!important;border:2px solid #1aa34a!important}
-.orangeBtn{background:#ff7a00!important;color:#fff!important}
-.bigSave{width:100%;background:#1aa34a;color:#fff;border:0;padding:17px;border-radius:50px;font-weight:900;font-size:18px;margin-top:12px}
-.tabs{position:fixed;bottom:0;right:0;left:0;background:#fff;display:flex;border-top:1px solid #eee;padding:10px 0;z-index:10}
-.tabs div{flex:1;text-align:center;font-size:12px;color:#777}.tabs div.active{color:#4A0E68;font-weight:800}
-#details{display:none;position:fixed;inset:0;background:#f4f0fa;z-index:50;overflow-y:auto;padding-bottom:90px}
-.d-head{background:#4A0E68;color:#fff;padding:14px;display:flex;gap:12px;align-items:center;position:sticky;top:0}
-.back{background:#fff;color:#4A0E68;border:0;padding:10px 16px;border-radius:50px;font-weight:800;font-size:18px}
-.d-box{background:#fff;margin:12px;border-radius:16px;padding:14px}
-.imgs{display:flex;gap:8px;margin-top:8px}.imgbox{flex:1;background:#eee;border:2px dashed #aaa;border-radius:12px;height:110px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:12px}
-.photoThumb{width:100%;height:90px;object-fit:contain;background:#f0f0f0;border-radius:8px;border:2px solid #1aa34a}
-#upDownModal,#recipientModal,#statusModal,#photoCamModal,#sendLockModal,#photoModal,#azkarModal,#passModal{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:none;align-items:center;justify-content:center;padding:14px}
-.box{background:#fff;color:#111;border-radius:18px;padding:18px;width:100%;max-width:380px;text-align:center}
-.box button{width:100%;padding:14px;border-radius:50px;font-weight:800;border:0;margin:6px 0}
-#loginPage{max-width:430px;margin:12px auto;background:#fff;border-radius:18px;padding:16px}
-#loginPage input{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:50px;text-align:center}
-.admin-layout{display:flex;gap:12px;align-items:flex-start}
-.admin-main{flex:1;min-width:0}
-.admin-side{width:320px;flex-shrink:0;position:sticky;top:10px;background:#fff;border-radius:16px;padding:12px;box-shadow:0 2px 10px #0002}
-.admin-box{border:1px solid #eee;border-radius:12px;margin-bottom:10px;overflow:hidden}
-.admin-box-head{padding:12px;font-weight:900;cursor:pointer;display:flex;justify-content:space-between;background:#f8f5ff}
-.admin-box-body{display:none;padding:12px}
-.admin-box.open .admin-box-body{display:block}
-.admin-box.open .admin-box-head{background:#4A0E68;color:#fff}
-@media(max-width:800px){.admin-layout{display:block}.admin-side{width:auto;position:static;margin:0 12px 12px}}
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
+  body{min-height:100vh;overflow:hidden;background:#020617;color:#fff;display:flex;flex-direction:column}
+  .bg{position:fixed;inset:0;background:radial-gradient(600px at 20% 20%,#00f0ff33,transparent),radial-gradient(600px at 80% 20%,#a855f733,transparent),radial-gradient(800px at 50% 100%,#22d3ee33,transparent),#020617;z-index:0}
+  .bg::after{content:"";position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1534796636912-3b95b45a82d8?w=1600') center/cover;opacity:.25;mix-blend-mode:screen}
+  .nav{position:relative;z-index:3;display:flex;justify-content:space-between;align-items:center;padding:20px 30px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:2px;font-size:22px;color:#67e8f9}
+  .logo span{background:linear-gradient(90deg,#22d3ee,#a855f7);width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px}
+  .pill{border:1px solid #ffffff33;background:#ffffff14;padding:8px 16px;border-radius:30px;backdrop-filter:blur(10px)}
+
+  .wrap{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;perspective:1200px}
+
+  /* الكورة */
+  .orb{width:130px;height:130px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff,#67e8f9,#0ea5e9,#7c3aed);box-shadow:0 0 60px #22d3ee, inset 0 0 30px #fff;position:relative;z-index:3;animation:float 4s ease-in-out infinite}
+  .orb::after{content:"M";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:60px;font-weight:900;color:#0f172a}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+  /* الكارت - هنا الحركة اللي طلبتها */
+  .card{
+    margin-top:-20px;width:100%;max-width:580px;
+    background:rgba(255,255,255,.08);backdrop-filter:blur(25px);
+    border:1px solid rgba(255,255,255,.35);border-radius:28px;padding:35px;
+    box-shadow:0 30px 80px rgba(0,0,0,.5);
+    /* يبدأ مايل */
+    transform: rotateX(18deg) rotateY(-18deg) rotateZ(-6deg) translateY(40px);
+    opacity:0;
+    /* وبعدين يتعدل لوحده */
+    animation: straighten 1.6s ease forwards .3s;
+    transition: transform .2s ease;
+  }
+  @keyframes straighten{
+    0%{transform: rotateX(18deg) rotateY(-18deg) rotateZ(-6deg) translateY(40px);opacity:0}
+    60%{transform: rotateX(4deg) rotateY(-4deg) rotateZ(-1deg) translateY(5px);opacity:1}
+    100%{transform: rotateX(0) rotateY(0) rotateZ(0) translateY(0);opacity:1}
+  }
+  h1{text-align:center;font-size:34px}
+  p.sub{text-align:center;color:#bae6fd;margin:8px 0 25px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  label{display:block;margin-bottom:6px;color:#a5f3fc;font-size:14px}
+  input{width:100%;padding:14px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);border-radius:50px;color:#fff;outline:none}
+  input::placeholder{color:#cbd5e1}
+  input:focus{border-color:#22d3ee;box-shadow:0 0 0 3px #22d3ee33}
+  .row{display:flex;justify-content:space-between;margin:18px 0;color:#cbd5e1}
+  .btn{width:100%;padding:15px;border:none;border-radius:50px;background:linear-gradient(90deg,#22d3ee,#a855f7,#ec4899);color:#fff;font-size:21px;font-weight:900;cursor:pointer;box-shadow:0 15px 30px #a855f766}
+  .passkey{width:100%;margin-top:12px;padding:13px;background:transparent;border:1px solid #ffffff44;color:#fff;border-radius:50px;cursor:pointer;font-size:16px}
+  .ai{margin-top:20px;display:flex;gap:12px;align-items:center;background:#ffffff10;border:1px solid #ffffff22;padding:12px;border-radius:16px}
+  .ai .avatar{width:45px;height:45px;border-radius:50%;background:#22d3ee;display:flex;align-items:center;justify-content:center;font-size:24px}
+  .ai small{color:#67e8f9}
+  .foot{text-align:center;margin-top:15px;color:#94a3b8;font-size:13px}
+  @media(max-width:600px){.grid{grid-template-columns:1fr} body{overflow:auto}}
 </style>
 </head>
 <body>
-<div id="loginPage">
-<div style="text-align:center;background:#4A0E68;color:#fff;padding:18px;border-radius:16px"><div style="font-size:32px;font-weight:900">MISK<span style="color:#ff2a8a">.</span></div><small>SERVER • CCTV • ELECTRONICS</small></div>
-<h2 style="text-align:center">تسجيل دخول</h2>
-<input id="user" placeholder="اسم المستخدم"><input id="pass" type="password" placeholder="الباسورد">
-<button class="btn" onclick="login()">تسجيل الدخول</button><p id="loginMsg" style="color:red;text-align:center"></p>
-<div class="stats" style="padding:0;margin-top:10px">
-<div class="stat" onclick="showAzkar()"><div class="circle c-purple">📖</div><b style="font-size:11px">اذكار الصباح والمساء</b><br><small id="azkarText">سبحان الله وبحمده</small></div>
-<div class="stat"><div class="circle c-blue"><span id="loginClock">--:--</span></div><b style="font-size:11px">الساعة وحالة الجو</b><br><small id="loginDate">--</small><br><small id="loginWeather">☀️ جاري...</small></div>
-<div class="stat" onclick="doAttendance()"><div class="circle c-green">🕐</div><b style="font-size:11px">الحضور والانصراف</b><br><small id="attendTime">--:--:--</small></div>
-</div>
-<div class="row"><button class="blueBtn" onclick="getLiveLocation()">📍 لايف لوكيشن</button></div>
-<p id="mapLocText" style="font-size:12px;color:#666;text-align:center"></p>
-</div>
+<div class="bg"></div>
+<div class="nav"><div class="logo"><span>M</span> MISK</div><div class="pill">🛡️ Misk Information Technology</div></div>
 
-<div id="appPage" class="hidden">
-<div class="top-img"><small>☰</small><br><br><b id="welcome" style="font-size:22px"></b><br><small id="techInfo"></small><div style="position:absolute;left:14px;top:14px">🔔</div><button onclick="localStorage.clear();location.reload()" style="margin-top:12px;width:100%;padding:10px;border:0;border-radius:50px;background:#ff4757;color:#fff;font-weight:800">🚪 خروج</button></div>
-<div class="we-bar"><div class="logo">WE<span>.</span></div><div>🔔</div></div>
-<div style="position:relative"><img id="serverRotator" src="server1.jpg" style="width:100%;height:140px;object-fit:cover;display:block"></div>
+<div class="wrap">
+  <div class="orb"></div>
+  <div class="card" id="card">
+    <h1>Welcome Back</h1>
+    <p class="sub">سجل دخول عشان تكمل في Misk Information Technology</p>
 
-<div class="admin-layout">
-<div class="admin-main">
-<div id="followerCard" style="background:#fff;margin:12px;border:2px solid #0b7ed1;border-radius:16px;padding:14px">
-<h3 style="margin:0">👤 رقم المتابع بتاع النهاردة - اجباري</h3>
-<input id="followerPhone" placeholder="010xxxxxxxxx" inputmode="numeric" oninput="saveFollowerPhone()" style="border:2px solid #0b7ed1;text-align:center">
-<p id="followerMsg" style="font-size:13px;color:red"></p>
-<button onclick="clearFollowerPhone()" style="background:#dc3545;color:#fff;border:0;padding:10px;border-radius:50px;width:100%">🗑️ مسح رقم المتابع</button>
-</div>
-<div class="stats">
-<div class="stat" id="statDone" onclick="filterByCircle('done')"><div class="circle c-green" id="cDone">0</div><b>تم التسليم</b><br><small>دوس لعرض المتسلمين</small></div>
-<div class="stat" id="statPending" onclick="filterByCircle('pending')"><div class="circle c-yellow" id="cPending">0</div><b>قيد الانتظار</b><br><small>باقي الشغل اللي لسه متقفلش</small></div>
-<div class="stat" id="statProblem" onclick="filterByCircle('problem')"><div class="circle c-red" id="cProblem">0</div><b>تأجيل</b><br><small>تأجيل / لم يتم الرد / رفض</small></div>
-</div>
-<div id="archiveFilter" class="hidden" style="background:#fff;margin:0 12px 12px;border-radius:16px;padding:14px">
-<b>📦 فلتر الأرشيف - كل يوم لوحده:</b><select id="archiveDate" onchange="renderJobs()"><option value="">كل الأيام</option></select>
-<div id="archiveSheetsList" style="margin-top:12px"></div>
-<div class="stats" style="padding:10px 0 0"><div class="stat"><div class="circle c-green" id="aDone">0</div><b>تم التسليم</b></div><div class="stat"><div class="circle c-blue" id="aUpdated">0</div><b>عليه ابديت</b></div><div class="stat"><div class="circle c-purple" id="aEmpty">0</div><b>فاضي</b></div></div>
-<p id="archiveSummary" style="font-size:13px;color:#666;text-align:center"></p>
-<button onclick="exportArchive()" style="background:#00a651;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">⬇️ تحميل اليوم المختار اكسيل</button>
-</div>
-<div style="padding:0 12px"><input id="searchInput" placeholder="بحث عن مهمة / رقم تسلسلي ..." oninput="onSearch()" style="background:#fff"></div>
-<div id="uploadingBanner" style="display:none;background:#ff7b00;color:#fff;padding:10px;border-radius:12px;font-size:14px;font-weight:bold;text-align:center;margin:0 12px 10px">⏳ جاري رفع الصورة...</div>
-<div style="background:#fff;margin:0 12px 12px;border-radius:12px;padding:10px;font-size:13px;line-height:1.7">صور الـ 3 صور الاول: وش الجهاز + ضهر الجهاز + الايصال والبطاقة. وبعدين سيريال + Up / Down + المستلم. لو العميل مش موجود، دوس <b>حالة الزيارة</b> واختار تأجيل / لم يتم الرد / رفض الزيارة + كومنت.</div>
-<div id="jobsList"></div>
-<div id="loadMoreWrap" style="padding:0 12px"></div>
-</div>
+    <div class="grid">
+      <div><label>Username</label><input id="user" placeholder="اكتب اليوزر نيم"></div>
+      <div><label>Password</label><input id="pass" type="password" placeholder="••••••••"></div>
+    </div>
 
-<div id="adminAdd" class="hidden">
-<div class="admin-side">
-<div style="background:#071126;color:#fff;padding:12px;border-radius:12px;text-align:center;margin-bottom:10px"><b>👷 الفنيين</b><div id="techCount" style="font-size:28px;font-weight:900;color:#00c6ff">...</div><div id="techList" style="font-size:12px;line-height:1.8"></div><button onclick="loadTechCount()" style="background:#00c6ff;border:0;padding:8px;border-radius:50px;width:100%">🔄 تحديث</button></div>
-<div class="admin-box open"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">➕ اضافة شغل <span>▼</span></div><div class="admin-box-body"><input id="a_customer" placeholder="اسم العميل"><input id="a_address" placeholder="العنوان"><input id="a_order" placeholder="رقم الاوردر - Tel"><input id="a_landline" placeholder="رقم الارضي / موبايل العميل"><select id="a_device"><option value="">اختر الجهاز - ONU أو ONT</option><option value="ONU">ONU</option><option value="ONT">ONT</option></select><select id="a_tech"><option value="">اختر اسم الفني</option></select><button class="btn" onclick="addJob()">اضافة</button></div></div>
-<div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📂 رفع الشيت <span>▼</span></div><div class="admin-box-body"><input type="file" id="sheetInput" accept=".xlsx,.xls,.csv" multiple><button class="orangeBtn" onclick="uploadSheetFast()" style="width:100%;padding:13px;border-radius:50px;border:0">🚀 رفع الشيتات</button><div id="prog" style="height:18px;background:#eee;border-radius:10px;overflow:hidden;margin:8px 0;display:none"><div id="progBar" style="height:100%;width:0%;background:#1aa34a"></div></div><p id="uploadMsg"></p></div></div>
-<div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📦 أرشفة - كل يوم لوحده <span>▼</span></div><div class="admin-box-body"><input type="text" id="manualArchiveDate" placeholder="مثال: 22-10-2026 - سيبه فاضي وهياخد تاريخ الشيت"><button onclick="archiveOldJobs()" style="background:#9333ea;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">📦 أرشفة اليوم ده</button><p style="font-size:12px;color:#666">الأرشيف بيتقسم لوحده، كل شيت بتاريخه.</p></div></div>
-<div class="admin-box"><div class="admin-box-head" style="background:#fff0f0" onclick="this.parentElement.classList.toggle('open')">🗑️ مسح شغل اليوم القديم 🔒 <span>▼</span></div><div class="admin-box-body"><button onclick="askAdminPass('clearOldJobs')" style="background:#dc3545;color:#fff;width:100%;padding:13px;border-radius:50px;border:0">🗑️ مسح - هيطلب الباسورد</button></div></div>
-<div class="admin-box"><div class="admin-box-head" style="background:#000;color:#fff" onclick="this.parentElement.classList.toggle('open')">⚠️ مسح كل حاجة 🔒 <span>▼</span></div><div class="admin-box-body"><button onclick="askAdminPass('wipeAllSystem')" style="background:#000;color:#fff;width:100%;padding:13px;border-radius:50px;border:2px solid #dc3545">🗑️ بداية جديدة - هيطلب الباسورد</button></div></div>
-</div>
-</div>
+    <div class="row"><label><input type="checkbox"> تذكرني</label><a href="#" style="color:#67e8f9">نسيت كلمة المرور؟</a></div>
 
-</div>
-</div>
+    <button class="btn" onclick="login()">Sign In →</button>
+    <button class="passkey" onclick="alert('Passkey - بصمة / Face ID')">🔑 Sign in with Passkey</button>
 
-<div class="tabs" id="bottomNav">
-<div class="active" onclick="showTab('all',this)"><span style="font-size:20px;display:block">🏠</span>الرئيسية</div>
-<div onclick="showTab('pending',this)"><span style="font-size:20px;display:block">📋</span>المهام</div>
-<div onclick="showTab('problem',this)"><span style="font-size:20px;display:block">🔔</span>التنبيهات</div>
-<div id="archiveNav" onclick="showTab('archive',this)" style="display:none"><span style="font-size:20px;display:block">📦</span>الأرشيف</div>
-<div onclick="logout()"><span style="font-size:20px;display:block">👤</span>الحساب</div>
+    <div class="ai">
+      <div class="avatar">🤖</div>
+      <div><b>MISK • AI Assistant</b><br><small>● Online • جاهز أساعدك لو نسيت الباسورد</small></div>
+    </div>
+  </div>
+  <div class="foot">© 2027 Misk Information Technology • Privacy • Terms</div>
 </div>
-
-<div id="details">
-<div class="d-head"><button class="back" onclick="closeDetails()">← رجوع</button><b id="dTitle" style="font-size:18px">تفاصيل المهمة</b></div>
-<div class="d-box"><h3 id="dCustomer" style="margin:0"></h3><p id="dMeta" style="font-size:13px;color:#555;line-height:1.8"></p><p id="dComment" style="font-size:13px"></p></div>
-<div class="d-box"><b>📷 الصور الاجبارية - 3 صور</b><div class="imgs" id="dPhotos"></div><p style="font-size:12px;color:#777">دوس على أي صورة عشان تصورها أو تشوفها</p></div>
-<div class="d-box"><b>🔢 السيريال</b><input id="dSerial" class="serial" placeholder="اضافة سيريال - الزق هنا من Manatee"><div class="row"><button class="whiteBtn" onclick="openManatee(currentDetailId)">📲 افتح Manatee - انسخ والزق</button></div><div class="row"><button class="blueBtn" onclick="openUpDownOnly(currentDetailId, document.getElementById('dCustomer').innerText)" id="dUpDownBtn">⬆️ Up / ⬇️ Down *</button><button class="blueBtn" onclick="openRecipientOnly(currentDetailId, document.getElementById('dCustomer').innerText)" id="dRecipientBtn">👤 المستلم *</button></div><button class="btn2" onclick="openStatusModal(currentDetailId, document.getElementById('dCustomer').innerText)" id="dStatusBtn">📋 حالة الزيارة - تأجيل / لم يتم الرد / رفض</button><button class="bigSave" onclick="saveSerial(currentDetailId)">💾 حفظ وارسال للمتابع</button><p style="font-size:12px;color:#777;text-align:center">هيتأكد من الصور والـ Up/Down والمستلم قبل الحفظ</p></div>
-</div>
-
-<div id="upDownModal"><div class="box"><h3>📶 حالة الخط ايه؟</h3><p id="upDownCustomer"></p><button style="background:#1aa34a;color:#fff" onclick="chooseUpDown('Up')">⬆️ Up</button><button style="background:#fff;color:#1aa34a;border:2px solid #1aa34a" onclick="chooseUpDown('Down')">⬇️ Down</button><button style="background:#333;color:#fff" onclick="closeUpDown()">↩️ الرجوع - من غير تسجيل</button></div></div>
-<div id="recipientModal"><div class="box"><h3>👤 مين اللي استلم؟</h3><p id="recipientCustomer"></p><button style="background:#1aa34a;color:#fff" onclick="chooseRecipient('الزوج')">👨 الزوج</button><button style="background:#1aa34a;color:#fff" onclick="chooseRecipient('الزوجة')">👩 الزوجة</button><button style="background:#1aa34a;color:#fff" onclick="chooseRecipient('نجله')">🧒 نجله</button><button style="background:#1aa34a;color:#fff" onclick="chooseRecipient('مستأجر')">🏠 مستأجر</button><button style="background:#dc3545;color:#fff" onclick="clearRecipientChoice()">🗑️ مسح الاختيار</button><button style="background:#333;color:#fff" onclick="chooseRecipient('الرجوع')">↩️ الرجوع - من غير تسجيل</button></div></div>
-<div id="statusModal"><div class="box"><h3>📋 حالة الزيارة</h3><p id="statusCustomer"></p><button style="background:#fff;color:#1aa34a;border:2px solid #1aa34a" onclick="selectStatusOption('تأجيل')">⏰ تأجيل</button><button style="background:#fff;color:#1aa34a;border:2px solid #1aa34a" onclick="selectStatusOption('لم يتم الرد')">📞 لم يتم الرد</button><button style="background:#fff;color:#1aa34a;border:2px solid #1aa34a" onclick="selectStatusOption('رفض الزيارة')">🚫 رفض الزيارة</button><p id="selectedStatusLabel" style="font-weight:bold;color:#dc3545"></p><textarea id="statusComment" placeholder="اكتب كومنت - مثال: العميل مش موجود، التليفون مقفول..." rows="3" style="border-radius:12px;text-align:right"></textarea><button style="background:#00a651;color:#fff" onclick="confirmStatus()">✅ حفظ الحالة وارسال للمتابع أوتوماتيك</button><button style="background:#333;color:#fff" onclick="closeStatusModal()">✖️ اقفل من غير حفظ</button></div></div>
-<input type="file" id="photoInput" accept="image/*" capture="environment" class="hidden">
-<input type="file" id="photoGalleryInput" accept="image/*" class="hidden">
-<input type="file" id="serialCamInput" accept="image/*" capture="environment" class="hidden">
-<div id="photoModal" style="position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:10001;display:none;align-items:center;justify-content:center;padding:12px" onclick="this.style.display='none'"><div style="text-align:center"><img id="photoModalImg" style="max-width:100%;max-height:80vh;border-radius:12px"><br><button onclick="event.stopPropagation();rotatePhotoModal()" style="background:#ff7a00;color:#fff;width:auto;padding:12px 20px;margin-top:10px;border:0;border-radius:50px">↻ تدوير الصورة</button></div></div>
-<div id="photoCamModal"><div class="box"><h3 id="photoCamTitle">📷 صور وش الجهاز</h3><p id="photoCamMsg" style="font-weight:bold">هتصور ازاي؟ اختار:</p><button style="background:#007bff;color:#fff" onclick="capturePhoto()">📷 صوّر بالكاميرا - كاميرا التليفون</button><button style="background:#ff7a00;color:#fff" onclick="openPhotoFile()">🖼️ اختار من الاستوديو</button><button style="background:#333;color:#fff" onclick="closePhotoCam()">✖️ اقفل من غير حفظ</button></div></div>
-<div id="sendLockModal"><div class="box" style="max-width:420px"><h2 style="margin:0">🔒 مطلوب منك عشان تكمل</h2><p id="lockCustomer" style="font-weight:bold"></p><div id="lockNetWarn" style="background:#ffe6e6;border:1px solid #dc3545;color:#dc3545;padding:10px;border-radius:12px;font-size:14px;font-weight:bold;margin:8px 0;display:none">⚠️ مفيش نت عندك - الرسالة متحفظة - اول ما النت يرجع ابعتها</div><p id="lockStatus" style="font-size:14px;line-height:1.8"></p><button id="btnSendBoth" style="background:#25D366;color:#fff" onclick="sendToFollowerOnly()">👤 ارسال للمتابع - واتساب ماسنجر + الصور</button><p style="font-size:12px;color:#666">هيفتح مشاركة فيها النص + الـ 3 صور جاهزين - اختار واتساب ماسنجر ودوس ارسال</p><div id="lockConfirmBox" style="display:none;background:#fff7e6;border:1px solid #ff7b00;border-radius:12px;padding:12px;margin-top:8px"><p id="lockConfirmText" style="font-weight:bold;margin:0 0 8px"></p><div class="row"><button onclick="confirmSendYes()" style="background:#00a651;color:#fff">✅ ايوه بعت للمتابع</button><button onclick="confirmSendNo()" style="background:#dc3545;color:#fff">❌ لا لسه</button></div></div><button onclick="closeLockBack()" style="background:#333;color:#fff;margin-top:14px">⬅️ رجوع - هبعت بعدين</button></div></div>
-<div id="istighfarOverlay" style="position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:30000;display:none;align-items:center;justify-content:center;text-align:center;padding:20px"><div style="background:#071126;border:2px solid #22c55e;border-radius:20px;padding:24px;max-width:420px;width:100%"><div style="font-size:42px">🤲</div><h2 id="istTitle" style="color:#fff;margin:8px 0">أستغفر الله العظيم</h2><p id="istText" style="color:#cfe3ff;line-height:1.8">أستغفر الله العظيم الذي لا إله إلا هو الحي القيوم وأتوب إليه<br><span id="istCount" style="font-size:28px;font-weight:900;color:#22c55e">10</span></p><p style="color:#8aa3c7;font-size:12px">ثواني ونكمل...</p></div></div>
-<div id="azkarModal"><div class="box" style="text-align:right;max-height:88vh;overflow-y:auto"><h3 style="margin:0 0 10px">📖 الأذكار وحصن المسلم</h3><div id="azkarFull" style="line-height:2;font-size:15px"></div><button onclick="closeAzkar()" style="background:#333;color:#fff">✖️ اقفل</button></div></div>
-<div id="passModal"><div class="box"><h3 style="margin:0 0 8px">🔐 تريد تغيير الباسورد؟</h3><p style="font-size:14px;line-height:1.7">لو حابب تغير الباسورد بتاعك، اكتب الجديد هنا. لو مش حابب دوس تخطي.</p><input id="newPassInput" type="password" placeholder="الباسورد الجديد"><button onclick="doChangePass()" style="background:#00a651;color:#fff">✅ تغيير الباسورد</button><button onclick="closePassModal()" style="background:#333;color:#fff">⏭️ تخطي - مش عايز أغير</button></div></div>
 
 <script>
-let azkarList=['سبحان الله وبحمده','لا إله إلا الله وحده لا شريك له','أستغفر الله العظيم','اللهم صل على محمد','أعوذ بكلمات الله التامات','سبحان الله العظيم','الحمد لله رب العالمين','لا حول ولا قوة إلا بالله'];
-let azkarIdx=0;
-function showAzkar(){ let full=document.getElementById('azkarFull'); if(full){ full.innerHTML='<b>🌅 أذكار الصباح والمساء:</b><br>• آية الكرسي<br>• قل هو الله أحد (3 مرات)<br>• قل أعوذ برب الفلق (3 مرات)<br>• قل أعوذ برب الناس (3 مرات)<br>• سبحان الله وبحمده (100 مرة)<br>• لا إله إلا الله وحده لا شريك له (10 مرات)<br>• أستغفر الله العظيم وأتوب إليه<br><br><b>🛡️ حصن المسلم:</b><br>• بسم الله الذي لا يضر مع اسمه شيء (3 مرات)<br>• أعوذ بكلمات الله التامات (3 مرات)<br>• حسبي الله لا إله إلا هو عليه توكلت (7 مرات)'; } document.getElementById('azkarModal').style.display='flex'; azkarIdx=(azkarIdx+1)%azkarList.length; let el=document.getElementById('azkarText'); if(el) el.innerText=azkarList[azkarIdx]; }
-function closeAzkar(){ document.getElementById('azkarModal').style.display='none'; }
-setInterval(function(){ azkarIdx=(azkarIdx+1)%azkarList.length; let el=document.getElementById('azkarText'); if(el) el.innerText=azkarList[azkarIdx]; },4000);
-let istighfarList=[{t:'أستغفر الله العظيم',d:'أستغفر الله العظيم الذي لا إله إلا هو الحي القيوم وأتوب إليه'},{t:'أستغفر الله',d:'أستغفر الله وأتوب إليه'},{t:'اللهم اغفر لي',d:'اللهم اغفر لي ذنبي كله، دقه وجله، أوله وآخره'},{t:'رب اغفر لي وتب علي',d:'رب اغفر لي وتب علي إنك أنت التواب الرحيم'},{t:'سبحان الله وبحمده',d:'سبحان الله وبحمده، أستغفر الله وأتوب إليه'}];
-function showIstighfar(){ let idx=0; try{ idx=parseInt(localStorage.getItem('misk_ist_idx'))||0; }catch(e){} if(idx>=istighfarList.length) idx=0; let item=istighfarList[idx]; try{ localStorage.setItem('misk_ist_idx', String((idx+1)%istighfarList.length)); }catch(e){} let ov=document.getElementById('istighfarOverlay'); if(ov){ ov.innerHTML='<div style="background:#fff;color:#111;padding:24px;border-radius:16px;max-width:90%;text-align:center"><h2 style="margin:0 0 10px">'+item.t+'</h2><p style="margin:0;font-size:18px">'+item.d+'</p></div>'; ov.style.display='flex'; setTimeout(function(){ ov.style.display='none'; },10000); } }
-  function askChangePass(){ if(!currentUser||currentUser.role==='admin') return; document.getElementById('passModal').style.display='flex'; }
-function closePassModal(){ document.getElementById('passModal').style.display='none'; }
-async function doChangePass(){ let np=document.getElementById('newPassInput').value.trim(); if(!np||np.length<3){ alert('اكتب باسورد جديد 3 حروف على الأقل'); return; } let r=await supabaseClient.from('technicians').update({password:np}).eq('id',currentUser.id); if(r.error){ alert(r.error.message); return; } currentUser.password=np; try{ localStorage.setItem('misk_user',JSON.stringify(currentUser)); }catch(e){} alert('✅ تم تغيير الباسورد'); closePassModal(); }
-function tickLoginClock(){ let d=new Date(); let h=String(d.getHours()).padStart(2,'0'); let m=String(d.getMinutes()).padStart(2,'0'); let s=String(d.getSeconds()).padStart(2,'0'); let c=document.getElementById('loginClock'); if(c) c.innerText=h+':'+m; let a=document.getElementById('attendTime'); if(a) a.innerText=h+':'+m+':'+s; let dt=document.getElementById('loginDate'); if(dt) dt.innerText=d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear(); }
-setInterval(tickLoginClock,1000); tickLoginClock();
-async function loadWeather(lat,lon){ try{ let r=await fetch('https://api.open-meteo.com/v1/forecast?latitude='+(lat||30.0444)+'&longitude='+(lon||31.2357)+'&current=temperature_2m,weather_code&timezone=auto'); let j=await r.json(); let el=document.getElementById('loginWeather'); if(el) el.innerText='☀️ '+Math.round(j.current.temperature_2m)+'°'; }catch(e){} }
-loadWeather();
-function getLiveLocation(){ let el=document.getElementById('mapLocText'); if(el) el.innerText='📍 جاري تحديد موقعك...'; if(!navigator.geolocation){ alert('المتصفح مش بيدعم تحديد الموقع'); return; } navigator.geolocation.getCurrentPosition(function(pos){ let lat=pos.coords.latitude.toFixed(5); let lon=pos.coords.longitude.toFixed(5); if(el) el.innerText='📍 موقعك الحالي: '+lat+' , '+lon+' - لايف ✅'; loadWeather(lat,lon); },function(){ if(el) el.innerText='📍 مش قادر احدد موقعك - افتح الـ GPS'; },{enableHighAccuracy:true}); }
-function doAttendance(){ let now=new Date(); let t=now.toLocaleTimeString('ar-EG'); let k='misk_attend_'+now.toDateString(); let prev=localStorage.getItem(k); if(!prev){ localStorage.setItem(k,'in:'+t); alert('✅ تم تسجيل الحضور: '+t); } else if(prev.indexOf('out:')===-1){ localStorage.setItem(k,prev+' | out:'+t); alert('✅ تم تسجيل الانصراف: '+t); } else { alert('انت سجلت حضور وانصراف النهاردة خلاص\n'+localStorage.getItem(k)); } }
-const SUPABASE_URL="https://wpbjdxjozibqcoyrmxlc.supabase.co";
-const SUPABASE_KEY="sb_publishable_EpBDoKSZQ6OMZA3wHKd8vg_9_ocCNnm";
-const supabaseClient=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-let currentUser=null, currentJobId=null, pendingUpDownId=null, pendingSerialValue=null, pendingRecipientId=null, pendingRecipientFromSave=false, allJobs=[], archiveJobs=[], currentFilter='all', visibleCount=50, filteredJobs=[];
-let currentPhotoJobId=null, currentPhotoType=null, photoBlob=null, lockJobId=null, lockPendingType=null, suppressLockCheck=false, isUploadingPhoto=false, pendingPhotoSnapshot=null, pendingStatusId=null, pendingStatusValue='', autoRefreshOn=true, isSilentRefreshing=false, lastUpdateTime=null, photoModalRotate=0, currentDetailId=null;
-function askAdminPass(action){ let p=prompt('🔒 اكتب باسورد الأدمن عشان تكمل:'); if(!p) return; if(currentUser && String(p).trim()===String(currentUser.password).trim()){ if(action==='clearOldJobs') clearOldJobs(); if(action==='wipeAllSystem') wipeAllSystem(); } else { alert('⛔ الباسورد غلط - مش هينفع تمسح'); } }
-function isLockedJob(j){ if(!j) return false; if(!currentUser||currentUser.role==='admin') return false; if(!isFullyDone(j)) return false; let st=getSendState(j.id); return !!st.follower; }
-function isAnyModalOpen(){ let ids=['upDownModal','recipientModal','statusModal','photoCamModal','sendLockModal','photoModal','azkarModal','passModal']; for(let id of ids){ let el=document.getElementById(id); if(el&&el.style.display==='flex') return true; } return false; }
-function isUserTyping(){ let a=document.activeElement; if(!a) return false; return ['INPUT','TEXTAREA','SELECT'].includes(a.tagName); }
-async function silentRefresh(){ if(!currentUser||!autoRefreshOn||isSilentRefreshing||isUploadingPhoto||isAnyModalOpen()||isUserTyping()||lockJobId||currentFilter==='archive') return; let scrollY=window.scrollY; isSilentRefreshing=true; try{ let data=await fetchAll('jobs'); if(currentUser.role!=='admin'){ const myName=String(currentUser.name||'').trim().toLowerCase(); const myPhone=normPhone(currentUser.phone||''); data=data.filter(j=>String(j.tech_name||'').trim().toLowerCase()===myName||(myPhone&&normPhone(j.tech_phone||'')===myPhone)); } let oldStr=JSON.stringify(allJobs.map(j=>j.id+'|'+j.serial+'|'+j.up_down+'|'+j.recipient+'|'+j.status+'|'+j.photo_front+'|'+j.photo_back+'|'+j.photo_receipt)); let newStr=JSON.stringify(data.map(j=>j.id+'|'+j.serial+'|'+j.up_down+'|'+j.recipient+'|'+j.status+'|'+j.photo_front+'|'+j.photo_back+'|'+j.photo_receipt)); if(oldStr!==newStr){ allJobs=data; renderJobs(); if(currentDetailId) openDetails(currentDetailId,true); } window.scrollTo(0,scrollY); }catch(e){} finally{ isSilentRefreshing=false; } }
-setInterval(silentRefresh,5000);
-document.getElementById('user').addEventListener('keydown',e=>{ if(e.key==='Enter') login(); });
-document.getElementById('pass').addEventListener('keydown',e=>{ if(e.key==='Enter') login(); });
-function todayStr(){ let d=new Date(); return d.getDate()+'-'+(d.getMonth()+1)+'-'+d.getFullYear(); }
-function getSheetDate(j){ if(j.date&&String(j.date).trim()) return String(j.date).trim(); if(j.archive_date) return String(j.archive_date).trim(); return todayStr(); }
-function getArchiveDisplayDate(j){ return getSheetDate(j); }
-function goHome(){ currentFilter='all'; visibleCount=50; document.getElementById('archiveFilter').classList.add('hidden'); document.querySelectorAll('.tabs div').forEach(d=>d.classList.remove('active')); let hb=document.querySelector('.tabs div'); if(hb) hb.classList.add('active'); }
-function fixTel(t){ let s=String(t||'').trim(); if(!s) return ''; if(s.indexOf('-')>-1&&s.startsWith('3-')) s='0'+s.replace('-',''); s=s.replace(/\D/g,''); if(s.length===8) s='0'+s; if(s.length===9&&s.startsWith('3')) s='0'+s; return s; }
-function fixMobile(m){ let s=String(m||'').replace(/\D/g,'').trim(); if(!s) return ''; if(s.length===10&&s.startsWith('1')) s='0'+s; return s; }
-function isProblemJob(j){ let s=String(j.status||''); return ['تأجيل','تاجيل','لم يتم الرد','رفض الزيارة'].includes(s); }
-function isDoneJob(j){ return isFullyDone(j); }
-function isPendingJob(j){ return !isDoneJob(j)&&!isProblemJob(j); }
-function isUpdated(j){ if(j.serial) return false; if(j.up_down||j.recipient||isProblemJob(j)) return true; if(j.status&&j.status!=='جديد'&&j.status!=='') return true; if(j.comment&&String(j.comment).trim()) return true; return false; }
-function isEmptyJob(j){ if(j.serial) return false; return !isUpdated(j); }
-function photoLabels(){ return {photo_front:'وش الجهاز',photo_back:'ضهر الجهاز',photo_receipt:'الايصال + البطاقة'}; }
-function missingPhotos(j){ let m=[]; if(!j.photo_front) m.push('وش الجهاز'); if(!j.photo_back) m.push('ضهر الجهاز'); if(!j.photo_receipt) m.push('الايصال + البطاقة'); return m; }
-function hasAllPhotos(j){ return !!(j.photo_front&&j.photo_back&&j.photo_receipt); }
-function isFullyDone(j){ return !!(j.serial&&String(j.serial).trim()&&j.up_down&&j.recipient&&hasAllPhotos(j)); }
-function clearProblemForSerial(j,serialVal,upVal,recVal){ let hasSerial=!!(serialVal&&String(serialVal).trim()); if(!hasSerial) return {status:j.status,comment:j.comment}; if(!isProblemJob(j)) return {status:'تم التسليم',comment:j.comment}; let willBeFull=!!(hasSerial&&(upVal||j.up_down)&&(recVal||j.recipient)&&hasAllPhotos(j)); return {status:willBeFull?'تم التسليم':'جديد',comment:''}; }
-function getFollowerPhone(){ return String(document.getElementById('followerPhone')?document.getElementById('followerPhone').value:'').replace(/\D/g,'').trim(); }
-function saveFollowerPhone(){ let v=getFollowerPhone(); try{ localStorage.setItem('misk_follower',v); }catch(e){} let m=document.getElementById('followerMsg'); if(m) m.innerText=v?'تم حفظ رقم المتابع: '+v:''; }
-function clearFollowerPhone(){ document.getElementById('followerPhone').value=''; try{ localStorage.removeItem('misk_follower'); }catch(e){} document.getElementById('followerMsg').innerText='تم مسح رقم المتابع'; }
-function restoreFollower(){ try{ let f=localStorage.getItem('misk_follower'); if(f) document.getElementById('followerPhone').value=f; }catch(e){} }
-function getSendState(id){ try{ return JSON.parse(localStorage.getItem('misk_sent_'+id)||'{"follower":false}'); }catch(e){ return {follower:false}; } }
-function setSendState(id,st){ try{ localStorage.setItem('misk_sent_'+id,JSON.stringify(st)); }catch(e){} }
-function buildReportText(j){ let tel=String(j.landline||j.order_no||'').trim(); let mob=String(j.mobile||'').trim(); let name=String(j.customer_name||'').trim(); let serial=String(j.serial||'').trim(); let updown=String(j.up_down||'').trim(); let rec=String(j.recipient||'').trim(); return [tel,mob,name,serial,updown,rec?'المستلم: '+rec:''].filter(s=>String(s||'').trim()!=='').join('\n'); }
-function buildProblemText(j){ let tel=String(j.landline||j.order_no||'').trim(); let mob=String(j.mobile||'').trim(); let name=String(j.customer_name||'').trim(); let addr=String(j.address||'').trim(); let st=String(j.status||'').trim(); let cmt=String(j.comment||'').trim(); return [tel,mob,name,addr?'العنوان: '+addr:'',st,cmt?'كومنت: '+cmt:''].filter(s=>String(s||'').trim()!=='').join('\n'); }
-function updateLockUI(){ let st=getSendState(lockJobId); let j=allJobs.find(x=>x.id==lockJobId); document.getElementById('lockCustomer').innerText=j?(j.customer_name||'')+' - '+(j.serial||j.status||''):''; document.getElementById('lockStatus').innerHTML='المتابع: '+getFollowerPhone()+' - '+(st.follower?'✅ تم':'❌ لسه متبعتش'); let b=document.getElementById('btnSendBoth'); let done=st.follower; b.innerText=done?'✅ تم - بعت للمتابع':'👤 ارسال للمتابع - واتساب ماسنجر + الصور'; b.disabled=done; let net=document.getElementById('lockNetWarn'); net.style.display=navigator.onLine?'none':'block'; if(done){ setTimeout(function(){ document.getElementById('sendLockModal').style.display='none'; lockJobId=null; loadJobs(); },600); } }
-function showLockForJob(id){ lockJobId=id; lockPendingType=null; document.getElementById('lockConfirmBox').style.display='none'; document.getElementById('sendLockModal').style.display='flex'; updateLockUI(); }
-function checkLockAfterLoad(){ if(suppressLockCheck) return; try{ let last=localStorage.getItem('misk_locked_job'); if(last){ let id=Number(last); let j=allJobs.find(x=>x.id==id); if(j&&isFullyDone(j)){ let st=getSendState(id); if(!st.follower) showLockForJob(id); } } }catch(e){} }
-function closeLockBack(){ document.getElementById('sendLockModal').style.display='none'; document.getElementById('lockConfirmBox').style.display='none'; lockPendingType=null; lockJobId=null; renderJobs(); }
-async function sendToFollowerOnly(){ let j=allJobs.find(x=>x.id==lockJobId); if(!j) return; let ph=getFollowerPhone(); if(!ph){ alert('⛔ ادخل رقم المتابع الاول'); document.getElementById('followerPhone').focus(); return; } if(!navigator.onLine){ document.getElementById('lockNetWarn').style.display='block'; alert('مفيش نت - الرسالة متحفظة'); return; } let text=isProblemJob(j)&&!j.serial?buildProblemText(j):buildReportText(j); try{ await navigator.clipboard.writeText(text); }catch(e){} let intl=ph; if(intl.startsWith('0')) intl='20'+intl.slice(1); try{ let files=[]; if(j.serial){ let urls=[{u:j.photo_front,n:'wesh.jpg'},{u:j.photo_back,n:'dahr.jpg'},{u:j.photo_receipt,n:'esal.jpg'}]; for(let it of urls){ if(!it.u) continue; try{ let r=await fetch(it.u); let b=await r.blob(); files.push(new File([b],it.n,{type:'image/jpeg'})); }catch(e){} } } if(files.length&&navigator.share&&navigator.canShare&&navigator.canShare({files:files})){ await navigator.share({title:'MISK - '+j.customer_name,text:text,files:files}); lockPendingType='follower'; document.getElementById('lockConfirmText').innerText='بعت للمتابع - '+ph+' ؟'; document.getElementById('lockConfirmBox').style.display='block'; return; } if(!files.length&&navigator.share){ try{ await navigator.share({title:'MISK - '+j.customer_name,text:text}); lockPendingType='follower'; document.getElementById('lockConfirmText').innerText='بعت للمتابع - '+ph+' ؟'; document.getElementById('lockConfirmBox').style.display='block'; return; }catch(e){} } }catch(e){ if(e&&e.name==='AbortError'){ lockPendingType='follower'; document.getElementById('lockConfirmText').innerText='بعت للمتابع - '+ph+' ؟'; document.getElementById('lockConfirmBox').style.display='block'; return; } } window.location.href='whatsapp://send?phone='+intl+'&text='+encodeURIComponent(text); lockPendingType='follower'; document.getElementById('lockConfirmText').innerText='بعت للمتابع - '+ph+' ؟'; document.getElementById('lockConfirmBox').style.display='block'; }
-function confirmSendYes(){ if(!lockPendingType) return; let st=getSendState(lockJobId); st.follower=true; setSendState(lockJobId,st); document.getElementById('lockConfirmBox').style.display='none'; lockPendingType=null; try{ localStorage.removeItem('misk_locked_job'); }catch(e){} updateLockUI(); }
-function confirmSendNo(){ document.getElementById('lockConfirmBox').style.display='none'; lockPendingType=null; alert('تمام - الاوردر لسه مقفول - لازم تبعت للمتابع'); updateLockUI(); }
-window.addEventListener('DOMContentLoaded',()=>{ try{ let saved=localStorage.getItem('misk_user'); if(saved){ currentUser=JSON.parse(saved); document.getElementById('loginPage').classList.add('hidden'); document.getElementById('appPage').classList.remove('hidden'); document.getElementById('welcome').innerText='اهلا '+currentUser.name; document.getElementById('techInfo').innerText=currentUser.role==='admin'?'انت الادمن - شايف كل الشغل':'تليفونك: '+(currentUser.phone||''); applyRoleUI(); restoreFollower(); loadJobs(); } }catch(e){} });
-function normPhone(p){ let s=String(p||'').replace(/\D/g,''); if(!s) return ''; if(s.length===10&&s.startsWith('1')) s='0'+s; if(s.length===9) s='0'+s; return s; }
-function cleanUsername(s){ let x=String(s||'').toLowerCase().trim(); x=x.replace(/[\s_\-\.]+/g,''); x=x.replace(/^3/,'a'); if(x.includes('basr')||x.includes('abas')||x.includes('elbas')) x='mohamedelbasry'; if(x.includes('afif')||x.includes('afy')) x='afify'; return x; }
-function applyRoleUI(){ if(!currentUser) return; let isAdmin=currentUser.role==='admin'; document.getElementById('adminAdd').classList.toggle('hidden',!isAdmin); document.getElementById('archiveNav').style.display=isAdmin?'block':'none'; document.getElementById('followerCard').style.display=isAdmin?'none':'block'; }
-async function login(){ const u=document.getElementById('user').value.trim(); const p=document.getElementById('pass').value.trim(); const res=await supabaseClient.from('technicians').select('*'); if(res.error||!res.data){ document.getElementById('loginMsg').innerText='اسم او باسورد غلط'; return; } const cleanInput=cleanUsername(u); const found=res.data.find(t=>cleanUsername(t.username)===cleanInput&&String(t.password).trim()===p); if(!found){ document.getElementById('loginMsg').innerText='اسم او باسورد غلط'; return; } currentUser=found; localStorage.setItem('misk_user',JSON.stringify(found)); document.getElementById('loginPage').classList.add('hidden'); document.getElementById('appPage').classList.remove('hidden'); document.getElementById('welcome').innerText='اهلا '+found.name; document.getElementById('techInfo').innerText=found.role==='admin'?'انت الادمن - شايف كل الشغل':'تليفونك: '+(found.phone||''); applyRoleUI(); restoreFollower(); loadJobs(); showIstighfar(); setTimeout(function(){ askChangePass(); },10500); }
-async function logout(){ try{ await supabaseClient.auth.signOut(); }catch(e){} localStorage.clear(); sessionStorage.clear(); window.location.href="/"; }
-function esc(v){ return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function filterByCircle(kind){ document.querySelectorAll('.stats .stat').forEach(s=>s.classList.remove('active')); if(kind==='done'){ currentFilter='done'; document.getElementById('statDone').classList.add('active'); } if(kind==='pending'){ currentFilter='pending'; document.getElementById('statPending').classList.add('active'); } if(kind==='problem'){ currentFilter='problem'; document.getElementById('statProblem').classList.add('active'); } visibleCount=50; renderJobs(); document.getElementById('jobsList').scrollIntoView({behavior:'smooth'}); }
-function showTab(f,el){ if(lockJobId){ alert('لازم تخلص الارسال الاول - الشاشة مقفولة'); return; } currentFilter=f; visibleCount=50; document.querySelectorAll('.tabs div').forEach(d=>d.classList.remove('active')); if(el) el.classList.add('active'); if(f==='archive'){ document.getElementById('archiveFilter').classList.remove('hidden'); loadArchive(); } else { document.getElementById('archiveFilter').classList.add('hidden'); renderJobs(); } }
-function onSearch(){ visibleCount=50; renderJobs(); }
-async function fetchAll(table){ let data=[]; let from=0; while(true){ let res=await supabaseClient.from(table).select('*').order('created_at',{ascending:false}).range(from,from+999); if(res.error) throw res.error; let chunk=res.data; if(!chunk||!chunk.length) break; data=data.concat(chunk); if(chunk.length<1000) break; from+=1000; if(from>20000) break; } return data; }
-async function loadTechCount(){ try{ const res=await supabaseClient.from('technicians').select('*'); if(res.error) return; const techs=res.data||[]; let el=document.getElementById('techCount'); if(el) el.innerText=techs.length; let list=document.getElementById('techList'); if(list) list.innerHTML=techs.map((t,i)=>(i+1)+'. '+(t.name||t.username)+' - '+(t.role||'')).join('<br>'); let sel=document.getElementById('a_tech'); if(sel){ let cur=sel.value; sel.innerHTML='<option value="">اختر اسم الفني</option>'+techs.map(t=>'<option value="'+esc(t.name||t.username)+'">'+esc(t.name||t.username)+' - '+esc(t.phone||'')+'</option>').join(''); if(cur) sel.value=cur; } }catch(e){} }
-async function loadJobs(skipLock){ if(skipLock) suppressLockCheck=true; let data=[]; try{ data=await fetchAll('jobs'); }catch(e){ alert(e.message); } if(currentUser.role!=='admin'){ const myName=String(currentUser.name||'').trim().toLowerCase(); const myPhone=normPhone(currentUser.phone||''); data=data.filter(j=>String(j.tech_name||'').trim().toLowerCase()===myName||(myPhone&&normPhone(j.tech_phone||'')===myPhone)); } allJobs=data; visibleCount=50; renderJobs(); checkLockAfterLoad(); suppressLockCheck=false; if(currentUser.role==='admin') loadTechCount(); }
-async function loadArchive(){ if(currentUser.role!=='admin'){ alert('الأرشيف للادمن بس'); return; } document.getElementById('jobsList').innerHTML='<div class="job">جاري تحميل الأرشيف...</div>'; try{ archiveJobs=await fetchAll('jobs_archive'); }catch(e){ document.getElementById('jobsList').innerHTML='<div class="job">لسه معملتش جدول الأرشيف - نفذ الـ SQL بتاع jobs_archive في Supabase الأول</div>'; return; } let dates=[]; archiveJobs.forEach(j=>{ let d=getArchiveDisplayDate(j); if(d&&dates.indexOf(d)===-1) dates.push(d); }); dates.sort().reverse(); let sel=document.getElementById('archiveDate'); let opts='<option value="">كل الأيام - '+archiveJobs.length+' اوردر</option>'; dates.forEach(d=>{ let dayJobs=archiveJobs.filter(x=>getArchiveDisplayDate(x)===d); opts+='<option value="'+d+'">'+d+' - '+dayJobs.length+' اوردر</option>'; }); sel.innerHTML=opts; renderArchiveSheets(); renderJobs(); }
-function renderArchiveSheets(){ let wrap=document.getElementById('archiveSheetsList'); if(!wrap) return; let dates=[]; archiveJobs.forEach(j=>{ let d=getArchiveDisplayDate(j); if(d&&dates.indexOf(d)===-1) dates.push(d); }); dates.sort().reverse(); if(!dates.length){ wrap.innerHTML=''; return; } let html='<b style="font-size:13px">📂 شيتات الارشيف - دوس على اي شيت:</b><br>'; dates.forEach(d=>{ html+='<span class="badge" style="cursor:pointer;margin:4px" onclick="openArchiveDay(\''+esc(d)+'\')">📄 شيت '+esc(d)+'</span>'; }); wrap.innerHTML=html; }
-function openArchiveDay(d){ document.getElementById('archiveDate').value=d; renderJobs(); document.getElementById('jobsList').scrollIntoView({behavior:'smooth'}); }
-function exportArchive(){ let d=document.getElementById('archiveDate').value; let base=d?archiveJobs.filter(j=>getArchiveDisplayDate(j)===d):archiveJobs; let data=base.filter(j=>j.serial&&String(j.serial).trim()!==''); if(!data.length){ alert('مفيش شغل تم التسليم وعليه سيريال في اليوم ده'); return; } let headers=['Date','Tel','Mobile','Name','Device type','Offer name','Returned Rent CPE serial','Paper Code','Exchange Name','Compound Name','Address','Senior Support','Senior Mobile','Serial','Comment','Status','Tech','Tech Phone']; let aoa=[headers]; data.forEach(j=>{ let upRaw=String(j.up_down||'').trim().toUpperCase(); let upDown=(upRaw==='DOWN'||upRaw==='DAWN'||upRaw==='DOWEN')?'DOWN':'UP'; aoa.push([getArchiveDisplayDate(j),fixTel(j.landline||j.order_no),fixMobile(j.mobile),j.customer_name||'',j.device_type||'',j.offer_name||'',j.returned_serial||'',j.paper_code||'',j.exchange_name||'',j.compound_name||'',j.address||'',j.senior_support||'',fixMobile(j.senior_mobile),String(j.serial||'').trim(),'تم التسليم',upDown,j.tech_name||'',fixMobile(j.tech_phone)]); }); let ws=XLSX.utils.aoa_to_sheet(aoa); let wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,'ورقة1'); XLSX.writeFile(wb,'misk_'+(d||'all')+'_تم_التسليم.xlsx'); alert('✅ تم تصدير '+data.length+' عميل - تم التسليم بس'); }
-function renderJobs(){ let isArch=currentFilter==='archive'; let base=isArch?archiveJobs:allJobs; let data=base.slice(); let qtxt=(document.getElementById('searchInput')?document.getElementById('searchInput').value:'').trim().toLowerCase(); if(qtxt){ data=data.filter(j=>String(j.customer_name||'').toLowerCase().includes(qtxt)||String(j.serial||'').toLowerCase().includes(qtxt)||String(j.landline||'').includes(qtxt)||String(j.order_no||'').includes(qtxt)); } if(isArch){ let d=document.getElementById('archiveDate').value; if(d) data=data.filter(j=>getArchiveDisplayDate(j)===d); } else { if(currentFilter==='done') data=data.filter(j=>isDoneJob(j)); if(currentFilter==='pending') data=data.filter(j=>isPendingJob(j)); if(currentFilter==='problem') data=data.filter(j=>isProblemJob(j)); } let done=allJobs.filter(j=>isDoneJob(j)).length; let pending=allJobs.filter(j=>isPendingJob(j)).length; let problem=allJobs.filter(j=>isProblemJob(j)).length; document.getElementById('cDone').innerText=done; document.getElementById('cPending').innerText=pending; document.getElementById('cProblem').innerText=problem; if(isArch){ let aDone=data.filter(j=>!!j.serial).length; let aUpd=data.filter(j=>isUpdated(j)).length; let aEmpty=data.filter(j=>isEmptyJob(j)).length; document.getElementById('aDone').innerText=aDone; document.getElementById('aUpdated').innerText=aUpd; document.getElementById('aEmpty').innerText=aEmpty; document.getElementById('archiveSummary').innerText='اليوم: '+(document.getElementById('archiveDate').value||'كل الأيام')+' - الاجمالي: '+data.length+' - تم: '+aDone+' - ابديت: '+aUpd+' - فاضي: '+aEmpty; } filteredJobs=data; const list=document.getElementById('jobsList'); if(!data.length){ list.innerHTML='<div class="job" style="text-align:center">مفيش شغل هنا - جرب بحث تاني أو دوس على دايرة تانية</div>'; document.getElementById('loadMoreWrap').innerHTML=''; return; } let show=data.slice(0,visibleCount); let html='<p style="font-size:13px;color:#666;padding:0 12px">عدد الاوردرات: '+data.length+' - ظاهر منهم '+show.length+'</p>'; show.forEach(j=>{ const locked=isLockedJob(j); let photosBadge=hasAllPhotos(j)?'<span class="badge">📷 3/3</span>':'<span class="badge">📷 '+(3-missingPhotos(j).length)+'/3</span>'; let upBadge=j.up_down?'<span class="badge">'+esc(j.up_down)+'</span>':'<span class="badge">⚠️ ناقص Up/Down</span>'; let recBadge=j.recipient?'<span class="badge">👤 '+esc(j.recipient)+'</span>':'<span class="badge">⚠️ ناقص المستلم</span>'; let statusBadge=isProblemJob(j)?'<span class="badge">⚠️ '+esc(j.status||'تأجيل')+'</span>':''; html+='<div class="job"><h3>'+esc(j.customer_name||'بدون اسم')+' '+(isDoneJob(j)?'<span class="badge">✅ تم</span>':'')+' '+photosBadge+' '+upBadge+' '+recBadge+' '+statusBadge+'</h3><div class="meta"><b>العنوان:</b> '+esc(j.address||'')+'<br><b>رقم الطلب:</b> <span dir="ltr">'+esc(j.landline||j.order_no||'')+'</span> • <b>الجهاز:</b> '+esc(j.device_type||'')+'<br><b>الحالة:</b> '+esc(j.status||'جديد')+' • <b>السيريال:</b> <span dir="ltr">'+esc(j.serial||'لسه')+'</span>'+(j.comment?'<br><b>كومنت:</b> '+esc(j.comment):'')+'</div>'; if(isArch){ html+='<div style="font-size:12px;color:#666">📦 أرشيف - '+esc(getArchiveDisplayDate(j))+'</div>'; } else if(locked){ html+='<button class="btn" style="background:#eee;color:#888" disabled>🔒 مقفول - تم الارسال للمتابع</button>'; } else { html+='<button class="btn" onclick="openDetails('+j.id+')">▶️ بدء المهمة</button>'; } html+='</div>'; }); list.innerHTML=html; if(data.length>visibleCount){ document.getElementById('loadMoreWrap').innerHTML='<button class="btn" onclick="showMore()" style="background:#00a651">عرض المزيد - باقي '+(data.length-visibleCount)+' اوردر</button>'; } else { document.getElementById('loadMoreWrap').innerHTML=''; } }
-function showMore(){ visibleCount+=50; renderJobs(); }
-function openDetails(id,silent){ let j=allJobs.find(x=>x.id==id); if(!j){ let aj=archiveJobs.find(x=>x.id==id); if(aj) j=aj; } if(!j) return; currentDetailId=id; document.getElementById('dTitle').innerText='تفاصيل - '+(j.customer_name||''); document.getElementById('dCustomer').innerText=j.customer_name||''; document.getElementById('dMeta').innerHTML='<b>العنوان:</b> '+esc(j.address||'')+'<br><b>رقم الطلب:</b> <span dir="ltr">'+esc(j.landline||j.order_no||'')+'</span> • <b>موبايل:</b> <span dir="ltr">'+esc(j.mobile||'')+'</span><br><b>الجهاز:</b> '+esc(j.device_type||'')+' • <b>العرض:</b> '+esc(j.offer_name||'')+'<br><b>الجروب:</b> '+esc(j.report_group||'')+' • <b>تاريخ الشيت:</b> '+esc(getSheetDate(j))+'<br><b>الحالة:</b> '+esc(j.status||'جديد')+' • <b>الخط:</b> '+(j.up_down?esc(j.up_down):'لسه')+' • <b>المستلم:</b> '+(j.recipient?esc(j.recipient):'لسه'); document.getElementById('dComment').innerHTML=j.comment?'<b>كومنت:</b> '+esc(j.comment):''; document.getElementById('dSerial').value=j.serial||''; let upBtn=document.getElementById('dUpDownBtn'); if(upBtn) upBtn.innerText=j.up_down?'تغيير: '+j.up_down:'⬆️ Up / ⬇️ Down *'; let recBtn=document.getElementById('dRecipientBtn'); if(recBtn) recBtn.innerText=j.recipient?'تغيير: '+j.recipient:'👤 المستلم *'; let stBtn=document.getElementById('dStatusBtn'); if(stBtn) stBtn.innerText=isProblemJob(j)?'تغيير الحالة: '+j.status:'📋 حالة الزيارة - تأجيل / لم يتم الرد / رفض'; let wrap=document.getElementById('dPhotos'); let html=''; [['photo_front','وش الجهاز'],['photo_back','ضهر الجهاز'],['photo_receipt','الايصال + البطاقة']].forEach(function(p){ let url=j[p[0]]||''; if(url){ html+='<div class="imgbox" style="height:auto;flex-direction:column;padding:6px"><img class="photoThumb" src="'+esc(url)+'" onclick="viewPhoto(\''+esc(url)+'\')"><small>✅ '+p[1]+'</small><button onclick="deletePhoto('+j.id+',\''+p[0]+'\')" style="background:#fff;color:#dc3545;border:1px solid #dc3545;border-radius:50px;padding:4px;margin-top:4px;width:100%">🗑️ مسح</button></div>'; } else { html+='<div class="imgbox" onclick="openPhoto('+j.id+',\''+p[0]+'\')">📷 '+p[1]+'<br>دوس للتصوير</div>'; } }); wrap.innerHTML=html; if(!silent) document.getElementById('details').style.display='block'; }
-function closeDetails(){ document.getElementById('details').style.display='none'; currentDetailId=null; renderJobs(); }
-function viewPhoto(url){ photoModalRotate=0; document.getElementById('photoModalImg').src=url; document.getElementById('photoModalImg').style.transform='rotate(0deg)'; document.getElementById('photoModal').style.display='flex'; }
-function rotatePhotoModal(){ photoModalRotate=(photoModalRotate+90)%360; document.getElementById('photoModalImg').style.transform='rotate('+photoModalRotate+'deg)'; }
-async function openPhoto(jobId,type){ if(isLockedJob(allJobs.find(x=>x.id==jobId))){ alert('🔒 الأوردر ده مقفول - تم الارسال للمتابع - التعديل للأدمن بس'); return; } if(isUploadingPhoto){ alert('⏳ استنى - في صورة لسه بترفع'); return; } currentPhotoJobId=jobId; currentPhotoType=type; photoBlob=null; pendingPhotoSnapshot={jobId:jobId,type:type}; let label=photoLabels()[type]||type; document.getElementById('photoCamTitle').innerText='📷 '+label; document.getElementById('photoCamMsg').innerText='هتصور '+label+' ازاي؟ اختار:'; document.getElementById('photoCamModal').style.display='flex'; }
-function closePhotoCam(){ if(isUploadingPhoto) return; document.getElementById('photoCamModal').style.display='none'; photoBlob=null; }
-function capturePhoto(){ document.getElementById('photoCamModal').style.display='none'; let inp=document.getElementById('photoInput'); inp.value=''; inp.click(); }
-function openPhotoFile(){ document.getElementById('photoCamModal').style.display='none'; let inp=document.getElementById('photoGalleryInput'); inp.value=''; inp.click(); }
-async function compressImage(file,type){ try{ if(!file.type||file.type.indexOf('image/')!==0) return file; let bmp=await createImageBitmap(file); let max=1200; let w=bmp.width; let h=bmp.height; let needPortrait=(type==='photo_receipt'); let rotate90=needPortrait&&w>h; let scale=Math.min(1,max/Math.max(w,h)); let cw,ch; if(rotate90){ cw=Math.round(h*scale); ch=Math.round(w*scale); } else { cw=Math.round(w*scale); ch=Math.round(h*scale); } if(!rotate90&&file.size<800000&&w<=max&&h<=max) return file; let canvas=document.createElement('canvas'); canvas.width=cw; canvas.height=ch; let ctx=canvas.getContext('2d'); ctx.fillStyle='#fff'; ctx.fillRect(0,0,cw,ch); if(rotate90){ ctx.translate(cw/2,ch/2); ctx.rotate(Math.PI/2); ctx.drawImage(bmp,-w*scale/2,-h*scale/2,w*scale,h*scale); } else { ctx.drawImage(bmp,0,0,cw,ch); } let blob=await new Promise(res=>canvas.toBlob(res,'image/jpeg',0.70)); return blob||file; }catch(e){ return file; } }
-async function uploadPhotoBlob(blob,snap){ let useSnap=snap||pendingPhotoSnapshot||{jobId:currentPhotoJobId,type:currentPhotoType}; isUploadingPhoto=true; let banner=document.getElementById('uploadingBanner'); banner.style.display='block'; banner.innerText='⏳ جاري رفع صورة '+photoLabels()[useSnap.type]+'... استنى'; try{ let cleanBlob=await compressImage(blob,useSnap.type); let path='job_'+useSnap.jobId+'/'+useSnap.type+'_'+Date.now()+'.jpg'; let up=null; for(let a=0;a<3;a++){ up=await supabaseClient.storage.from('job_photos').upload(path,cleanBlob,{contentType:'image/jpeg',upsert:true}); if(!up.error) break; await new Promise(r=>setTimeout(r,1000)); } if(up.error) throw up.error; let pub=supabaseClient.storage.from('job_photos').getPublicUrl(path); let url=pub.data.publicUrl; let upd={}; upd[useSnap.type]=url; let res=await supabaseClient.from('jobs').update(upd).eq('id',useSnap.jobId); if(res.error) throw res.error; let f=allJobs.find(x=>x.id==useSnap.jobId); if(f) f[useSnap.type]=url; } finally { isUploadingPhoto=false; pendingPhotoSnapshot=null; currentPhotoJobId=null; currentPhotoType=null; banner.style.display='none'; document.getElementById('photoCamModal').style.display='none'; if(currentDetailId) openDetails(currentDetailId,true); renderJobs(); } }
-async function deletePhoto(jobId,type){ if(isLockedJob(allJobs.find(x=>x.id==jobId))){ alert('🔒 مقفول - الأدمن بس'); return; } if(!confirm('هتمسح صورة '+photoLabels()[type]+' ؟ هتصورها تاني')) return; let upd={}; upd[type]=null; let res=await supabaseClient.from('jobs').update(upd).eq('id',jobId); if(res.error){ alert(res.error.message); return; } let f=allJobs.find(x=>x.id==jobId); if(f) f[type]=null; if(currentDetailId) openDetails(currentDetailId,true); renderJobs(); }
-async function handlePhotoFile(file){ if(!file) return; let snap=pendingPhotoSnapshot?{jobId:pendingPhotoSnapshot.jobId,type:pendingPhotoSnapshot.type}:{jobId:currentPhotoJobId,type:currentPhotoType}; if(!snap.jobId||!snap.type) return; try{ await uploadPhotoBlob(file,snap); }catch(err){ alert('غلط في حفظ الصورة: '+err.message+' - جرب تاني'); } }
-document.getElementById('photoInput').addEventListener('change',async function(e){ let file=e.target.files[0]; e.target.value=''; await handlePhotoFile(file); });
-document.getElementById('photoGalleryInput').addEventListener('change',async function(e){ let file=e.target.files[0]; e.target.value=''; await handlePhotoFile(file); });
-function openStatusModal(id,customerName){ let j=allJobs.find(x=>x.id==id); if(isLockedJob(j)){ alert('🔒 مقفول - تم الارسال - الأدمن بس'); return; } if(j&&j.serial&&String(j.serial).trim()){ alert('⛔ مينفعش - الأوردر ده عليه سيريال خلاص'); return; } pendingStatusId=id; pendingStatusValue=''; document.getElementById('statusCustomer').innerText=customerName?('العميل: '+customerName):''; document.getElementById('statusComment').value=''; document.getElementById('selectedStatusLabel').innerText=''; document.getElementById('statusModal').style.display='flex'; }
-function closeStatusModal(){ document.getElementById('statusModal').style.display='none'; pendingStatusId=null; pendingStatusValue=''; }
-function selectStatusOption(v){ pendingStatusValue=v; document.getElementById('selectedStatusLabel').innerText='اخترت: '+v; }
-async function confirmStatus(){ if(!pendingStatusId) return; if(!pendingStatusValue){ alert('اختار الحالة الاول: تأجيل / لم يتم الرد / رفض الزيارة'); return; } let jCheck=allJobs.find(x=>x.id==pendingStatusId); if(isLockedJob(jCheck)){ alert('🔒 مقفول'); return; } if(jCheck&&jCheck.serial&&String(jCheck.serial).trim()){ alert('⛔ مينفعش - الأوردر عليه سيريال'); document.getElementById('statusModal').style.display='none'; pendingStatusId=null; pendingStatusValue=''; return; } if(currentUser&&currentUser.role!=='admin'&&!getFollowerPhone()){ alert('سجل رقم المتابع الاول'); document.getElementById('followerPhone').focus(); return; } let comment=document.getElementById('statusComment').value.trim(); let id=pendingStatusId; let res=await supabaseClient.from('jobs').update({status:pendingStatusValue,comment:comment}).eq('id',id); if(res.error){ alert(res.error.message); return; } document.getElementById('statusModal').style.display='none'; pendingStatusId=null; pendingStatusValue=''; await loadJobs(true); let j=allJobs.find(x=>x.id==id); if(!j) return; try{ let text=buildProblemText(j); try{ await navigator.clipboard.writeText(text); }catch(e){} let ph=getFollowerPhone(); if(ph){ let intl=ph; if(intl.startsWith('0')) intl='20'+intl.slice(1); let sent=false; try{ if(navigator.share){ await navigator.share({title:'MISK - '+j.customer_name,text:text}); sent=true; } }catch(e){ if(e&&e.name==='AbortError') sent=true; } if(!sent){ window.location.href='whatsapp://send?phone='+intl+'&text='+encodeURIComponent(text); } setSendState(id,{follower:true}); } }catch(e){} alert('✅ تم حفظ الحالة: '+j.status+'\nواتبعت للمتابع أوتوماتيك'); if(currentDetailId) openDetails(currentDetailId,true); renderJobs(); }
-async function archiveOldJobs(){ if(currentUser.role!=='admin'){ alert('الارشيف للادمن بس'); return; } let count=allJobs.length; if(!count){ alert('مفيش شغل يتعملو ارشيف'); return; } let manual=document.getElementById('manualArchiveDate').value.trim(); let sheetDate=manual; if(!sheetDate){ let counts={}; allJobs.forEach(j=>{ let d=String(j.date||'').trim(); if(d) counts[d]=(counts[d]||0)+1; }); let best=''; let bestN=0; for(let k in counts){ if(counts[k]>bestN){ bestN=counts[k]; best=k; } } sheetDate=best||todayStr(); } if(!confirm('هتنقل '+count+' اوردر للأرشيف بتاريخ الشيت: '+sheetDate+' ؟')) return; document.getElementById('uploadMsg').innerText='جاري الأرشفة بتاريخ '+sheetDate+'...'; try{ let toArch=allJobs.map(j=>({archive_date:sheetDate,date:sheetDate,customer_name:j.customer_name,address:j.address,order_no:j.order_no,landline:j.landline,mobile:j.mobile,device_type:j.device_type,offer_name:j.offer_name,returned_serial:j.returned_serial,paper_code:j.paper_code,exchange_name:j.exchange_name,compound_name:j.compound_name,senior_support:j.senior_support,senior_mobile:j.senior_mobile,serial:j.serial,comment:j.comment,status:j.status,tech_name:j.tech_name,tech_phone:j.tech_phone,up_down:j.up_down,recipient:j.recipient||null,report_group:j.report_group||null,photo_front:j.photo_front||null,photo_back:j.photo_back||null,photo_receipt:j.photo_receipt||null})); for(let i=0;i<toArch.length;i+=500){ let chunk=toArch.slice(i,i+500); let r=await supabaseClient.from('jobs_archive').insert(chunk); if(r.error) throw r.error; } let del=await supabaseClient.from('jobs').delete().neq('id',0); if(del.error) throw del.error; alert('✅ تم أرشفة '+count+' اوردر بتاريخ '+sheetDate); document.getElementById('manualArchiveDate').value=''; goHome(); loadJobs(); }catch(e){ alert('غلط في الأرشيف: '+e.message); } }
-function openManatee(jobId){ currentJobId=jobId; try{ let a=document.createElement('a'); a.href='intent://#Intent;package=com.manateeworks.barcodescanners;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;end'; document.body.appendChild(a); a.click(); a.remove(); }catch(e){} setTimeout(function(){ try{ let b=document.createElement('a'); b.href='intent://#Intent;package=com.cognex.barcodescanners;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;end'; document.body.appendChild(b); b.click(); b.remove(); }catch(e){} },700); }
-function openCamera(jobId){ currentJobId=jobId; let inp=document.getElementById('serialCamInput'); inp.value=''; inp.click(); }
-async function decodeSerialFromPhoto(file,jobId){ try{ let bmp=await createImageBitmap(file); let hints=new Map(); hints.set(ZXing.DecodeHintType.TRY_HARDER,true); let reader=new ZXing.BrowserMultiFormatReader(hints); let attempts=[]; function makeAttempt(sxR,syR,swR,shR,bw,scale){ let sw=bmp.width*swR,sh=bmp.height*shR,sx=bmp.width*sxR,sy=bmp.height*syR; let c=document.createElement('canvas'); c.width=sw*scale; c.height=sh*scale; let ctx=c.getContext('2d'); ctx.drawImage(bmp,sx,sy,sw,sh,0,0,c.width,c.height); if(bw){ let img=ctx.getImageData(0,0,c.width,c.height),d=img.data; for(let i=0;i<d.length;i+=4){ let g=(d[i]+d[i+1]+d[i+2])/3; let v=g>140?255:0; d[i]=d[i+1]=d[i+2]=v; } ctx.putImageData(img,0,0); } attempts.push(c.toDataURL('image/jpeg',1)); } makeAttempt(0,0,1,1,false,1); makeAttempt(0,0,1,1,true,1); makeAttempt(0.05,0.3,0.9,0.4,true,2); makeAttempt(0,0.2,1,0.6,true,1.5); for(let url of attempts){ try{ let res=await reader.decodeFromImageUrl(url); let clean=String(res.text||'').replace(/[^A-Z0-9]/gi,'').toUpperCase(); if(clean.length>16) clean=clean.slice(-16); if(clean.length===16&&/^[0-9]/.test(clean)){ let inp2=document.getElementById('dSerial'); if(inp2) inp2.value=clean; alert('تم قراءة: '+clean+'\nدوس حفظ'); return; } }catch(e){} } alert('الصورة مش واضحة - صوّر الباركود تاني من قريب'); }catch(e){ alert('معرفش أقرا الصورة - صوّر تاني'); } }
-document.getElementById('serialCamInput').addEventListener('change',async function(e){ let file=e.target.files[0]; e.target.value=''; if(!file||!currentJobId) return; await decodeSerialFromPhoto(file,currentJobId); });
-async function saveSerial(id){ let f=allJobs.find(x=>x.id==id); if(f&&isLockedJob(f)){ alert('🔒 الأوردر ده مقفول - تم الارسال للمتابع - التعديل للأدمن بس'); return; } if(currentUser&&currentUser.role!=='admin'){ if(!getFollowerPhone()){ alert('سجل رقم المتابع'); document.getElementById('followerMsg').innerText='سجل رقم المتابع الاول'; document.getElementById('followerPhone').focus(); return; } } if(f&&isFullyDone(f)){ try{ localStorage.setItem('misk_locked_job',String(id)); }catch(e){} showLockForJob(id); return; } const v=(document.getElementById('dSerial')?document.getElementById('dSerial').value.trim():''); if(!v){ alert('اكتب السيريال الاول او صوره'); return; } if(f){ let miss=missingPhotos(f); if(miss.length){ alert('⛔ لسه ناقص صور:\n- '+miss.join('\n- ')); return; } if(!f.up_down){ pendingSerialValue=v; openUpDown(id,f.customer_name||''); return; } if(!f.recipient){ pendingSerialValue=v; openRecipient(id,f.customer_name||'',true); return; } } let cleared=f?clearProblemForSerial(f,v,f.up_down,f.recipient):{status:'تم التسليم',comment:''}; const res=await supabaseClient.from('jobs').update({serial:v,status:cleared.status,comment:cleared.comment}).eq('id',id); if(res.error){ alert(res.error.message); return; } pendingSerialValue=null; await loadJobs(); let nf=allJobs.find(x=>x.id==id); if(nf&&isFullyDone(nf)&&currentUser&&currentUser.role!=='admin'){ try{ localStorage.setItem('misk_locked_job',String(id)); }catch(e){} showLockForJob(id); } }
-function openUpDown(id,customerName){ pendingUpDownId=id; document.getElementById('upDownCustomer').innerText=customerName?('العميل: '+customerName):''; document.getElementById('upDownModal').style.display='flex'; }
-function openUpDownOnly(id,customerName){ let j=allJobs.find(x=>x.id==id); if(isLockedJob(j)){ alert('🔒 مقفول - الأدمن بس'); return; } pendingSerialValue=null; pendingUpDownId=id; document.getElementById('upDownCustomer').innerText=customerName?('العميل: '+customerName):''; document.getElementById('upDownModal').style.display='flex'; }
-function closeUpDown(){ document.getElementById('upDownModal').style.display='none'; pendingUpDownId=null; pendingSerialValue=null; }
-async function chooseUpDown(value){ if(!pendingUpDownId){ document.getElementById('upDownModal').style.display='none'; return; } let isFromSave=!!pendingSerialValue; let upd={up_down:value}; if(pendingSerialValue){ let cur=allJobs.find(x=>x.id==pendingUpDownId); let cleared=cur?clearProblemForSerial(cur,pendingSerialValue,value,cur.recipient):{status:'تم التسليم',comment:''}; upd.serial=pendingSerialValue; upd.status=cleared.status; upd.comment=cleared.comment; } const res=await supabaseClient.from('jobs').update(upd).eq('id',pendingUpDownId); if(res.error){ alert(res.error.message); return; } let doneId=pendingUpDownId; document.getElementById('upDownModal').style.display='none'; pendingUpDownId=null; if(!isFromSave){ await loadJobs(true); if(currentDetailId) openDetails(currentDetailId,true); return; } let nf2=allJobs.find(x=>x.id==doneId); if(nf2&&!nf2.recipient){ openRecipient(doneId,nf2.customer_name||'',true); return; } pendingSerialValue=null; await loadJobs(); let nf=allJobs.find(x=>x.id==doneId); if(nf&&isFullyDone(nf)&&currentUser&&currentUser.role!=='admin'){ try{ localStorage.setItem('misk_locked_job',String(doneId)); }catch(e){} showLockForJob(doneId); } }
-function openRecipient(id,customerName,fromSave){ pendingRecipientId=id; pendingRecipientFromSave=!!fromSave; document.getElementById('recipientCustomer').innerText=customerName?('العميل: '+customerName):''; document.getElementById('recipientModal').style.display='flex'; }
-function openRecipientOnly(id,customerName){ let j=allJobs.find(x=>x.id==id); if(isLockedJob(j)){ alert('🔒 مقفول - الأدمن بس'); return; } pendingSerialValue=null; openRecipient(id,customerName,false); }
-async function clearRecipientChoice(){ if(!pendingRecipientId){ document.getElementById('recipientModal').style.display='none'; return; } let j=allJobs.find(x=>x.id==pendingRecipientId); if(j&&isLockedJob(j)){ alert('🔒 مقفول'); return; } if(pendingRecipientFromSave||pendingSerialValue){ pendingSerialValue=null; pendingRecipientFromSave=false; alert('تم مسح الاختيار - اختار المستلم من الأول'); document.getElementById('recipientModal').style.display='none'; pendingRecipientId=null; renderJobs(); return; } const res=await supabaseClient.from('jobs').update({recipient:null}).eq('id',pendingRecipientId); if(res.error){ alert(res.error.message); return; } let doneId=pendingRecipientId; document.getElementById('recipientModal').style.display='none'; pendingRecipientId=null; pendingRecipientFromSave=false; await loadJobs(true); alert('✅ تم مسح اختيار المستلم'); }
-async function chooseRecipient(value){ if(value==='الرجوع'){ document.getElementById('recipientModal').style.display='none'; pendingRecipientId=null; pendingRecipientFromSave=false; pendingSerialValue=null; return; } if(!pendingRecipientId){ document.getElementById('recipientModal').style.display='none'; return; } let isFromSave=pendingRecipientFromSave||!!pendingSerialValue; let upd={recipient:value}; if(pendingSerialValue){ let cur=allJobs.find(x=>x.id==pendingRecipientId); let cleared=cur?clearProblemForSerial(cur,pendingSerialValue,cur.up_down,value):{status:'تم التسليم',comment:''}; upd.serial=pendingSerialValue; upd.status=cleared.status; upd.comment=cleared.comment; } const res=await supabaseClient.from('jobs').update(upd).eq('id',pendingRecipientId); if(res.error){ alert(res.error.message); return; } let doneId=pendingRecipientId; document.getElementById('recipientModal').style.display='none'; pendingRecipientId=null; pendingRecipientFromSave=false; if(!isFromSave){ await loadJobs(true); if(currentDetailId) openDetails(currentDetailId,true); return; } pendingSerialValue=null; await loadJobs(); let nf=allJobs.find(x=>x.id==doneId); if(nf&&isFullyDone(nf)&&currentUser&&currentUser.role!=='admin'){ try{ localStorage.setItem('misk_locked_job',String(doneId)); }catch(e){} showLockForJob(doneId); } }
-async function addJob(){ let techVal=document.getElementById('a_tech').value||''; let devVal=document.getElementById('a_device').value||''; const res=await supabaseClient.from('jobs').insert({customer_name:document.getElementById('a_customer').value,address:document.getElementById('a_address').value,order_no:document.getElementById('a_order').value,landline:document.getElementById('a_landline').value,tech_name:techVal,device_type:devVal,status:'جديد'}); if(res.error) alert(res.error.message); else { alert('تم'); loadJobs(); } }
-async function clearOldJobs(){ if(!confirm('هتمسح كل الشغل القديم؟')) return; const res=await supabaseClient.from('jobs').delete().neq('id',0); if(res.error) alert(res.error.message); else { alert('تم المسح'); loadJobs(); } }
-async function wipeAllSystem(){ if(!currentUser||currentUser.role!=='admin'){ alert('⛔ الزرار ده للأدمن بس'); return; } if(!confirm('⚠️ هتمسح كل حاجة نهائي؟')) return; if(!confirm('تأكيد أخير - انت متأكد 100%؟')) return; document.getElementById('uploadMsg').innerText='جاري مسح كل حاجة...'; try{ let r1=await supabaseClient.from('jobs').delete().neq('id',0); if(r1.error) throw r1.error; let r2=await supabaseClient.from('jobs_archive').delete().neq('id',0); if(r2.error&&String(r2.error.message||'').indexOf('does not exist')===-1) throw r2.error; allJobs=[]; archiveJobs=[]; alert('✅ تم مسح كل حاجة - الرئيسية + الأرشيف'); goHome(); loadJobs(); }catch(e){ alert('غلط في المسح: '+e.message); } }
-function getGroupFromSheetRows(rows){ let candidates=[]; for(let r=1;r<=4;r++){ if(rows[r]&&rows[r][6]) candidates.push(String(rows[r][6])); } for(let r=0;r<5;r++){ if(!rows[r]) continue; for(let c=0;c<rows[r].length;c++){ candidates.push(String(rows[r][c]||'')); } } let all=candidates.join(' ').toLowerCase(); if(all.includes('alex')) return 'Alex'; if(all.includes('delta')) return 'Delta'; if(all.includes('upper')) return 'Upper'; if(all.includes('sina')||all.includes('sinai')) return 'Sina'; return null; }
-function getGroupFromFileName(name){ let n=String(name||'').toLowerCase(); if(n.includes('alex')) return 'Alex'; if(n.includes('delta')) return 'Delta'; if(n.includes('upper')) return 'Upper'; if(n.includes('sina')||n.includes('sinai')) return 'Sina'; return null; }
-async function uploadSheetFast(){ let files=document.getElementById('sheetInput').files; if(!files.length){ alert('اختار الشيت الاول'); return; } const start=Date.now(); document.getElementById('prog').style.display='block'; document.getElementById('progBar').style.width='0%'; let totalAll=0; for(let fi=0;fi<files.length;fi++){ let file=files[fi]; const buf=await file.arrayBuffer(); const wb=XLSX.read(buf,{type:'array'}); const ws=wb.Sheets[wb.SheetNames[0]]; const rowsArr=XLSX.utils.sheet_to_json(ws,{header:1,defval:'',raw:false}); let group=getGroupFromSheetRows(rowsArr)||getGroupFromFileName(file.name); if(!group){ alert('مش لاقي اسم الجروب في G2 ولا G3 ولا G4 في ملف: '+file.name); continue; } let all=[]; for(let ri=1;ri<rowsArr.length;ri++){ const r=rowsArr[ri]; if(!r) continue; const get=(i)=>String(r[i]==null?'':r[i]).trim(); const date=get(0),tel=get(1),mobile=get(2),cust=get(3),device=get(4),offer=get(5),returnedRaw=get(6),paper=get(7),exch=get(8),compound=get(9),address=get(10),senior=get(11),seniorMob=get(12),serial=get(13),comment=get(14),statusRaw=get(15),tech=get(16),techPhoneRaw=get(17); if(!tel&&!cust) continue; let returned=returnedRaw; if(returned.toLowerCase().includes('operation sheet')||returned.toLowerCase().includes('daily operation')) returned='Rent'; let cleanTech=String(tech||'').trim(); if(cleanTech.toLowerCase()==='mahdy') cleanTech=''; let upFromSheet=null,statusFinal='جديد'; let pLow=String(statusRaw||'').trim().toLowerCase(); if(pLow==='up') upFromSheet='Up'; if(pLow==='down'||pLow==='dawn'||pLow==='dowen') upFromSheet='Down'; if(serial&&String(serial).trim()){ statusFinal='تم التسليم'; comment=''; } else if(pLow==='تأجيل'||pLow==='تاجيل') statusFinal='تأجيل'; else if(statusRaw) statusFinal=statusRaw; else statusFinal='جديد'; all.push({date:date,customer_name:cust,address:address,order_no:tel,landline:tel,mobile:mobile,device_type:device,offer_name:offer,returned_serial:returned,paper_code:paper,exchange_name:exch,compound_name:compound,senior_support:senior,senior_mobile:seniorMob,serial:serial||null,comment:comment,status:statusFinal,tech_name:cleanTech,tech_phone:normPhone(techPhoneRaw),up_down:upFromSheet,report_group:group}); } const CHUNK=500; for(let i=0;i<all.length;i+=CHUNK){ let chunk=all.slice(i,i+CHUNK); let rr=await supabaseClient.from('jobs').insert(chunk); if(rr.error){ alert('غلط في رفع '+file.name+': '+rr.error.message); } } totalAll+=all.length; document.getElementById('uploadMsg').innerText='تم رفع '+file.name+' - '+all.length+' اوردر - الجروب: '+group; } document.getElementById('progBar').style.width='100%'; document.getElementById('uploadMsg').innerText='✅ تم رفع '+files.length+' شيتات - اجمالي '+totalAll+' اوردر'; alert('✅ تم رفع '+files.length+' شيتات - اجمالي '+totalAll+' اوردر'); document.getElementById('sheetInput').value=''; goHome(); loadJobs(); }
-let serverImages=['server1.jpg','server2.jpg','server3.jpg']; let serverIndex=0;
-setInterval(()=>{ serverIndex=(serverIndex+1)%serverImages.length; let el=document.getElementById('serverRotator'); if(el) el.src=serverImages[serverIndex]; },5000);
-// --- زرار تثبيت التطبيق ---
-let deferredPrompt = null;
-let installBtn = document.createElement('button');
-installBtn.id = 'installBtn';
-installBtn.innerText = '📲 ثبت التطبيق على موبايلك - دوس هنا';
-installBtn.style.cssText = 'display:none;background:#00a651;color:#fff;width:100%;padding:14px;border-radius:50px;border:0;font-weight:900;font-size:16px;margin-top:10px;position:fixed;bottom:15px;left:10px;right:10px;z-index:9999;box-shadow:0 4px 15px rgba(0,0,0,0.3)';
-installBtn.onclick = installApp;
-document.body.appendChild(installBtn);
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  installBtn.style.display = 'block';
-});
-async function installApp(){
-  if(deferredPrompt){
-    deferredPrompt.prompt();
-    let r = await deferredPrompt.userChoice;
-    if(r.outcome === 'accepted') alert('✅ اتثبت خلاص - هتلاقي أيقونة MISK على الشاشة');
-    deferredPrompt = null;
-    installBtn.style.display = 'none';
-  } else {
-    alert('افتح من جوجل كروم، ودوس على الـ 3 نقط فوق واختار "إضافة إلى الشاشة الرئيسية"');
-  }
+function login(){
+  let u=document.getElementById('user').value;
+  let p=document.getElementById('pass').value;
+  if(!u||!p) return alert('اكتب اليوزر والباسورد');
+  alert('أهلا بيك في MISK يا '+u+' 🚀');
 }
-</script></body></html>
+
+// الكارت يميل مع الماوس وبعدين يرجع معدول - ستايل 2027
+let card=document.getElementById('card');
+document.addEventListener('mousemove',e=>{
+  let x=(e.clientX/window.innerWidth-0.5)*12;
+  let y=(e.clientY/window.innerHeight-0.5)*12;
+  // بس بعد ما يخلص انيميشن التعديل
+  setTimeout(()=>{
+    card.style.transform=`rotateY(${x}deg) rotateX(${-y}deg)`;
+  },1900);
+});
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MISK 2027 | Dashboard - Numbered</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
+  body{background:#020617;color:#fff;display:flex;min-height:100vh}
+  .bg{position:fixed;inset:0;background:radial-gradient(600px at 20% 20%,#00f0ff22,transparent),radial-gradient(600px at 80% 20%,#a855f722,transparent),#020617;z-index:0}
+  .num{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;padding:0 6px;border-radius:50%;background:#ef4444;color:#fff;font-size:13px;font-weight:900;margin-left:8px;flex-shrink:0}
+  .num2{position:absolute;top:10px;left:10px}
+  /* Sidebar */
+  .sidebar{position:relative;z-index:2;width:280px;background:rgba(255,255,255,.06);backdrop-filter:blur(25px);border-left:1px solid #ffffff22;padding:25px;display:flex;flex-direction:column}
+  .logo{display:flex;gap:10px;align-items:center;font-weight:900;font-size:24px;color:#67e8f9}
+  .logo span{width:42px;height:42px;border-radius:12px;background:linear-gradient(90deg,#22d3ee,#a855f7);display:flex;align-items:center;justify-content:center;color:#fff}
+  .logo small{display:block;font-size:11px;color:#94a3b8}
+  .menu{margin-top:30px;display:flex;flex-direction:column;gap:8px}
+  .menu button{width:100%;padding:13px 15px;border-radius:12px;background:transparent;border:1px solid transparent;color:#cbd5e1;text-align:right;font-size:16px;cursor:pointer;display:flex;align-items:center}
+  .menu button:hover,.menu button.active{background:linear-gradient(90deg,#22d3ee33,#a855f733);border-color:#ffffff33;color:#fff}
+  .profile{margin-top:auto;display:flex;gap:10px;align-items:center;background:#ffffff10;padding:12px;border-radius:14px}
+  .profile .av{width:45px;height:45px;border-radius:50%;background:#22d3ee;display:flex;align-items:center;justify-content:center;font-size:20px}
+  /* Main */
+  .main{position:relative;z-index:2;flex:1;padding:25px}
+  .top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+  .search{display:flex;align-items:center;gap:8px;background:#ffffff10;border:1px solid #ffffff22;padding:10px 16px;border-radius:30px;width:340px}
+  .search input{flex:1;background:transparent;border:none;outline:none;color:#fff}
+  .icon-btn{width:44px;height:44px;border-radius:50%;background:#ffffff10;border:1px solid #ffffff22;color:#fff;cursor:pointer;font-size:18px;position:relative}
+  .btn-main{padding:12px 20px;border:none;border-radius:30px;background:linear-gradient(90deg,#22d3ee,#a855f7);color:#fff;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:6px}
+  /* Cards */
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:25px 0}
+  .card{position:relative;background:rgba(255,255,255,.07);backdrop-filter:blur(20px);border:1px solid #ffffff33;border-radius:20px;padding:22px;text-align:center;transform:rotateX(15deg) rotateY(-10deg);opacity:0;animation:straighten 1s ease forwards}
+  .card:nth-child(2){animation-delay:.15s}.card:nth-child(3){animation-delay:.3s}.card:nth-child(4){animation-delay:.45s}
+  @keyframes straighten{to{transform:rotateX(0) rotateY(0);opacity:1}}
+  .card h3{font-size:32px;margin:8px 0}.card p{color:#94a3b8}
+  .grid2{display:grid;grid-template-columns:1.5fr 1fr;gap:16px}
+  .box{position:relative;background:rgba(255,255,255,.06);backdrop-filter:blur(20px);border:1px solid #ffffff22;border-radius:20px;padding:22px}
+  .box h2{margin-bottom:15px;display:flex;align-items:center}
+  .bar{height:10px;background:#ffffff22;border-radius:20px;margin:10px 0 18px;overflow:hidden}
+  .bar div{height:100%;background:linear-gradient(90deg,#22d3ee,#a855f7)}
+  .row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #ffffff11}
+  .tag{padding:5px 12px;border-radius:20px;font-size:13px;background:#22c55e33;color:#4ade80}
+  @media(max-width:900px){.sidebar{display:none}.cards{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<!-- ============ SIDEBAR ============ -->
+<div class="sidebar">
+  <div class="logo"><span>M</span><div>MISK<small>INFORMATION TECHNOLOGY</small></div></div>
+  <div class="menu">
+    <button class="active" onclick="show(1)"><span class="num">1</span> Dashboard</button>
+    <button onclick="show(2)"><span class="num">2</span> Analytics</button>
+    <button onclick="show(3)"><span class="num">3</span> Instances</button>
+    <button onclick="show(4)"><span class="num">4</span> Security</button>
+    <button onclick="show(5)"><span class="num">5</span> Deployments</button>
+    <button onclick="show(6)"><span class="num">6</span> Logs</button>
+    <button onclick="show(7)"><span class="num">7</span> Team</button>
+    <button onclick="show(8)"><span class="num">8</span> Integrations</button>
+    <button onclick="show(9)"><span class="num">9</span> Settings</button>
+  </div>
+  <!-- 22 -->
+  <div class="profile" onclick="show(22)" style="cursor:pointer">
+    <div class="av">👤</div>
+    <div><b>Mahdy</b><br><small style="color:#4ade80">● Online • Admin</small></div>
+    <span class="num">22</span>
+  </div>
+</div>
+
+<!-- ============ MAIN ============ -->
+<div class="main">
+  <div class="top">
+    <div><h1>أهلاً بيك في MISK 👋</h1><p style="color:#94a3b8">Misk Information Technology • 2027</p></div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <!-- 10 -->
+      <div class="search"><span class="num">10</span><input id="searchInput" placeholder="Search..." oninput="searchNow()"><span>🔍</span></div>
+      <!-- 11 -->
+      <button class="icon-btn" onclick="show(11)"><span class="num num2" style="position:absolute;top:-5px;left:-5px">11</span>🔔</button>
+      <!-- 12 -->
+      <button class="icon-btn" onclick="show(12)"><span class="num" style="position:absolute;top:-5px;left:-5px">12</span>⚙️</button>
+      <!-- 13 -->
+      <button class="btn-main" onclick="show(13)"><span class="num" style="background:#fff;color:#ef4444">13</span> + New Deployment</button>
+    </div>
+  </div>
+
+  <!-- 14 - 17 CARDS -->
+  <div class="cards">
+    <div class="card" onclick="show(14)"><span class="num num2">14</span>🖥️<p>Active Servers</p><h3>128</h3><span style="color:#4ade80">+12 هذا الأسبوع</span></div>
+    <div class="card" onclick="show(15)"><span class="num num2">15</span>✅<p>Uptime</p><h3>99.98%</h3><span style="color:#4ade80">ممتاز</span></div>
+    <div class="card" onclick="show(16)"><span class="num num2">16</span>🛡️<p>Threats Blocked</p><h3>1.2K</h3><span style="color:#4ade80">آمن 100%</span></div>
+    <div class="card" onclick="show(17)"><span class="num num2">17</span>💾<p>Data Processed</p><h3>4.7 TB</h3><span style="color:#4ade80">+0.8 TB اليوم</span></div>
+  </div>
+
+  <div class="grid2">
+    <!-- 18 + 20 -->
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="box" onclick="show(18)"><span class="num num2">18</span><h2>📈 <span style="margin-right:8px">Traffic Over Time</span></h2><p style="color:#94a3b8">📊 الرسم البياني هنا - 1.2M Requests • +8.4%</p><div style="height:90px;background:linear-gradient(180deg,#22d3ee33,transparent);border-radius:12px;display:flex;align-items:flex-end;gap:6px;padding:10px"><div style="width:30px;height:40%;background:#22d3ee;border-radius:6px"></div><div style="width:30px;height:70%;background:#22d3ee;border-radius:6px"></div><div style="width:30px;height:55%;background:#a855f7;border-radius:6px"></div><div style="width:30px;height:90%;background:#22d3ee;border-radius:6px"></div><div style="width:30px;height:65%;background:#a855f7;border-radius:6px"></div></div></div>
+      <div class="box" onclick="show(20)"><span class="num num2">20</span><h2>📋 Recent Activity</h2><div class="row"><span>🚀 Deployment v2027.10.4 تم</span><span class="tag">Success</span></div><div class="row"><span>👤 مستخدم جديد: sarah@misk.sa</span><span class="tag">User</span></div><div class="row"><span>🛡️ فحص أمان - مفيش تهديدات</span><span class="tag">Secured</span></div></div>
+    </div>
+    <!-- 19 + 21 -->
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="box" onclick="show(19)"><span class="num num2">19</span><h2>💚 Service Health</h2><h3 style="font-size:36px;text-align:center">98.6%</h3><p style="text-align:center;color:#4ade80">All Systems Operational</p></div>
+      <div class="box" onclick="show(21)"><span class="num num2">21</span><h2>⚡ Resource Utilization</h2><p>CPU - 68%</p><div class="bar"><div style="width:68%"></div></div><p>Memory - 52%</p><div class="bar"><div style="width:52%"></div></div><p>Storage - 74%</p><div class="bar"><div style="width:74%"></div></div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(n){
+  alert('انت دوست على رقم ' + n + ' - قولي عايز فيه ايه وانا هظبطهولك');
+}
+function searchNow(){
+  let q=document.getElementById('searchInput').value;
+  console.log('بحث في رقم 10: ' + q);
+}
+// الكروت تميل مع الماوس
+document.addEventListener('mousemove',e=>{
+  document.querySelectorAll('.card').forEach(c=>{
+    let r=c.getBoundingClientRect();
+    let x=(e.clientX-r.left)/r.width-0.5;
+    let y=(e.clientY-r.top)/r.height-0.5;
+    if(Math.abs(x)<0.6 && Math.abs(y)<0.6){
+      c.style.transform=`rotateY(${x*10}deg) rotateX(${-y*10}deg)`;
+    }
+  });
+});
+</script>
+</body>
+</html>
