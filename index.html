@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MISK Technology — UI Prototype</title>
+<title>MISK Technology </title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://unpkg.com/@zxing/library@0.20.0/umd/index.min.js"></script>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#020719;--panel:#071943;--panel2:#091d4b;--line:#2266d9;--cyan:#26d9ff;--purple:#9c38ff;--white:#f6f8ff;--muted:#a9c3e8;--green:#00e98a;--orange:#ff9c12}
@@ -137,11 +141,30 @@ body:before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradi
 <div id="toast" class="toast"></div>
 <script>
 function showLogin(){document.getElementById('dashboardScreen').classList.remove('active');document.getElementById('loginScreen').classList.add('active')}
-function showDashboard(){document.getElementById('loginScreen').classList.remove('active');document.getElementById('dashboardScreen').classList.add('active');toast('معاينة التصميم — البيانات تجريبية')}
-function toast(msg){let t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove('show'),2400)}
+ const SUPABASE_URL = "هاتها من السيستم_الداخلي.txt";
+const SUPABASE_KEY = "هاتها من السيستم_الداخلي.txt";
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+let userObj = null, allJobs = [], allWarehouse = [];
+async function login(){
+  let u = document.getElementById('username').value.trim().toLowerCase();
+  let p = document.getElementById('password').value.trim();
+  if(!u || !p) return toast('اكتب اليوزر والباسورد');
+  let res = await supabaseClient.from('technicians').select('*');
+  let found = res.data.find(t => String(t.username||'').toLowerCase() === u && String(t.password||'') === p);
+  if(!found) return toast('اليوزر أو الباسورد غلط');
+  userObj = found;
+  localStorage.setItem('misk_user', JSON.stringify(found));
+  showDashboard();
+}
+function showDashboard(){
+  document.getElementById('loginScreen').classList.remove('active');
+  document.getElementById('dashboardScreen').classList.add('active');
+  toast('أهلا بيك يا ' + (userObj.name || userObj.username));
+}
+  function toast(msg){let t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove('show'),2400)}
 function navMock(name,btn){document.querySelectorAll('.nav').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');toast('قسم '+name+' — الوظيفة ستضاف لاحقًا')}
 function filterOrders(q){document.querySelectorAll('#ordersTable tbody tr').forEach(r=>r.style.display=r.innerText.toLowerCase().includes(q.toLowerCase())?'':'none')}
-document.getElementById('password').addEventListener('keydown',e=>{if(e.key==='Enter')showDashboard()});
+document.getElementById('password').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
 </script>
 </body>
 </html>
