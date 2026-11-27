@@ -156,4 +156,137 @@
 <div id="passModal"><div class="box"><h3 style="margin:0 0 8px">🔐 تريد تغيير الباسورد؟</h3><p style="font-size:14px;line-height:1.7">لو حابب تغير الباسورد بتاعك، اكتب الجديد هنا. لو مش حابب دوس تخطي.</p><input id="newPassInput" type="password" placeholder="الباسورد الجديد"><button onclick="doChangePass()" style="background:#00a651;color:#fff">✅ تغيير الباسورد</button><button onclick="closePassModal()" style="background:#333;color:#fff">⏭️ تخطي - مش عايز أغير</button></div></div>
 
 
-<script src="assets/vendor/supabase.js"></script><script src="assets/vendor/zxing.js"></script><script src="assets/vendor/xlsx.js"></script><script src="assets/vendor/jszip.js"></script><script src="assets/operations.js"></script><script src="assets/domain.js"></script><script src="assets/workspaces.js"></script><script src="assets/dashboard.js"></script></body></html>
+<script src="assets/vendor/supabase.js"></script><script src="assets/vendor/zxing.js"></script><script src="assets/vendor/xlsx.js"></script><script src="assets/vendor/jszip.js"></script><script src="assets/operations.js"></script><script src="assets/domain.js"></script><script src="assets/workspaces.js"></script><script src="assets/dashboard.js">
+
+  // دالة رفع شيت SAP - بتشتغل مع الزرار اللي عندك
+async function uploadSheetFast() {
+  const input = document.getElementById('sheetInput');
+  const msg = document.getElementById('uploadMsg');
+  const prog = document.getElementById('prog');
+  const progBar = document.getElementById('progBar');
+
+  if (!input || !input.files || input.files.length === 0) {
+    msg.textContent = 'اختار ملف الشيت الأول';
+    msg.style.color = 'red';
+    return;
+  }
+
+  msg.textContent = 'جاري القراءة...';
+  msg.style.color = '#333';
+  prog.style.display = 'block';
+  progBar.style.width = '10%';
+
+  let totalInserted = 0;
+
+  for (let f = 0; f < input.files.length; f++) {
+    const file = input.files[f];
+    const data = await file.arrayBuffer();
+    const wb = XLSX.read(new Uint8Array(data), { type: 'array' });
+
+    let allRows = [];
+    wb.SheetNames.forEach(sheetName => {
+      const ws = wb.Sheets[sheetName];
+      const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
+      if (rows.length < 2) return;
+      allRows.push(...rows);
+    });
+
+    // 1. نلاقي سطر العناوين
+    let headerRowIndex = -1;
+    let headers = [];
+    for (let i = 0; i < Math.min(10, allRows.length); i++) {
+      const row = allRows[i].map(c => String(c || '').toLowerCase().trim());
+      const joined = row.join(' ');
+      if (joined.includes('tech') || joined.includes('senior') || joined.includes('serial') || joined.includes('comment')) {
+        headerRowIndex = i;
+        headers = allRows[i].map(c => String(c || '').trim());
+        break;
+      }
+    }
+    if (headerRowIndex === -1) {
+      headerRowIndex = 0;
+      headers = allRows[0].map(c => String(c || '').trim());
+    }
+
+    // 2. نحدد مكان كل عمود بالاسم - مش بالترتيب
+    function findCol(...names) {
+      for (let i = 0; i < headers.length; i++) {
+        const h = headers[i].toLowerCase();
+        for (const n of names) {
+          if (h.includes(n)) return i;
+        }
+      }
+      return -1;
+    }
+
+    const colSerial = findCol('serial', 'order');
+    const colTech = findCol('tech', 'technician');
+    const colSenior = findCol('senior', 'support');
+    const colComment = findCol('comment', 'note');
+    const colStatus = findCol('status');
+
+    // 3. نحول كل سطر لأوردر
+    let jobsToInsert = [];
+    for (let r = headerRowIndex + 1; r < allRows.length; r++) {
+      const row = allRows[r];
+      if (!row || row.every(c => !String(c || '').trim())) continue;
+
+      let serial = colSerial >= 0 ? String(row[colSerial] || '').trim() : '';
+      let tech = colTech >= 0 ? String(row[colTech] || '').trim() : '';
+      let senior = colSenior >= 0 ? String(row[colSenior] || '').trim() : '';
+      let comment = colComment >= 0 ? String(row[colComment] || '').trim() : '';
+      let status = colStatus >= 0 ? String(row[colStatus] || '').trim() : '';
+
+      // إصلاح الترحيل بتاع شيت SAP
+      // لو Tech فاضي و Comment فيه اسم زي Abdin fawaz
+      if (!tech && comment && !/^\d+$/.test(comment) && comment.length > 2) {
+        tech = comment;
+        comment = '';
+      }
+      // لو Tech فيه رقم تليفون زي 1222527494 والاسم في Senior
+      if (tech && /^\d{8,}$/.test(tech.replace(/\s/g, ''))) {
+        if (senior && !/^\d+$/.test(senior)) {
+          let temp = tech;
+          tech = senior;
+          senior = temp;
+        } else if (comment && !/^\d+$/.test(comment)) {
+          tech = comment;
+          comment = '';
+        }
+      }
+
+      if (!serial && !tech) continue;
+
+      jobsToInsert.push({
+        serial: serial || null,
+        tech_name: tech || 'غير محدد',
+        senior_support: senior || null,
+        comment: comment || null,
+        status: status || 'pending',
+        created_at: new Date().toISOString()
+      });
+    }
+
+    // 4. نبعت لـ Supabase على دفعات
+    for (let i = 0; i < jobsToInsert.length; i += 100) {
+      const batch = jobsToInsert.slice(i, i + 100);
+      const { error } = await supabase.from('jobs').insert(batch);
+      if (error) {
+        msg.textContent = 'حصل خطأ: ' + error.message;
+        msg.style.color = 'red';
+        prog.style.display = 'none';
+        return;
+      }
+      totalInserted += batch.length;
+      progBar.style.width = Math.min(90, 10 + (totalInserted / 1000) * 80) + '%';
+    }
+  }
+
+  progBar.style.width = '100%';
+  msg.textContent = `تم رفع ${totalInserted} أوردر بنجاح - كل أوردر راح للفني بتاعه ✅`;
+  msg.style.color = 'green';
+  input.value = '';
+  if (typeof loadJobs === 'function') loadJobs();
+  if (typeof renderDashboard === 'function') renderDashboard();
+}
+</script></body></html>
