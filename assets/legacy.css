@@ -1,0 +1,86 @@
+
+*{box-sizing:border-box;font-family:Tahoma}
+body{margin:0;background:#f4f0fa;color:#111;padding-bottom:85px}
+button{cursor:pointer}
+.hidden{display:none}
+input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:50px;font-size:15px}
+.hero-banner{width:100%;height:260px;overflow:hidden;position:relative;background:#111}
+.hero-banner img{width:100%;height:100%;object-fit:cover;display:block}
+.hero-banner .hero-label{position:absolute;bottom:8px;right:10px;background:rgba(0,0,0,.55);color:#fff;font-size:11px;padding:4px 10px;border-radius:20px}
+.top-img{height:130px;background:linear-gradient(180deg,#1a1a2e,#4A0E68);color:#fff;padding:14px;position:relative;overflow:hidden}
+.we-bar{background:#4A0E68;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:12px 16px}
+.we-bar .logo{font-size:24px;font-weight:900}.we-bar .logo span{color:#ff2a8a}
+.stats{display:flex;gap:10px;padding:12px}
+.stat{flex:1;background:#fff;border-radius:16px;padding:12px 6px;text-align:center;box-shadow:0 2px 8px #0001;cursor:pointer}
+.stat.active{border:2px solid #4A0E68}
+.circle{width:58px;height:58px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px}
+.c-green{background:#1aa34a}.c-yellow{background:#ff7a00}.c-red{background:#d32f2f}.c-purple{background:#7b2fbf}.c-blue{background:#0b7ed1}
+.job{background:#fff;margin:0 12px 12px;border:2px solid #1aa34a;border-radius:16px;padding:14px}
+.job h3{margin:0;font-size:17px;word-break:break-word;line-height:1.8}.job .meta{font-size:13px;line-height:2;color:#444;margin:8px 0;word-break:break-word;white-space:normal;overflow:hidden}
+.btn{width:100%;background:#4A0E68;color:#fff;border:0;padding:13px;border-radius:50px;font-weight:800;font-size:16px}
+.btn2{width:100%;background:#E6007E;color:#fff;border:0;padding:12px;border-radius:50px;font-weight:800;margin-top:8px}
+.badge{display:inline-block;background:#eef;border-radius:20px;padding:3px 8px;font-size:11px;font-weight:800}
+.serial{width:100%;padding:13px;border:2px solid #4A0E68;border-radius:50px;text-align:center;font-size:16px;font-weight:800}
+.row{display:flex;gap:8px;margin-top:8px}.row button{flex:1;padding:13px;border-radius:50px;font-weight:800;border:0}
+.saveBtn{background:#1aa34a!important;color:#fff!important}
+.blueBtn{background:#0b7ed1!important;color:#fff!important}
+.whiteBtn{background:#fff!important;color:#1aa34a!important;border:2px solid #1aa34a!important}
+.orangeBtn{background:#ff7a00!important;color:#fff!important}
+.bigSave{width:100%;background:#1aa34a;color:#fff;border:0;padding:17px;border-radius:50px;font-weight:900;font-size:18px;margin-top:12px}
+.tabs{position:fixed;bottom:0;right:0;left:0;background:#fff;display:flex;border-top:1px solid #eee;padding:10px 0;z-index:10}
+.tabs div{flex:1;text-align:center;font-size:12px;color:#777}.tabs div.active{color:#4A0E68;font-weight:800}
+#details{display:none;position:fixed;inset:0;background:#f4f0fa;z-index:50;overflow-y:auto;padding-bottom:90px}
+.d-head{background:#4A0E68;color:#fff;padding:14px;display:flex;gap:12px;align-items:center;position:sticky;top:0}
+.back{background:#fff;color:#4A0E68;border:0;padding:10px 16px;border-radius:50px;font-weight:800;font-size:18px}
+.d-box{background:#fff;margin:12px;border-radius:16px;padding:14px}
+.imgs{display:flex;gap:8px;margin-top:8px}.imgbox{flex:1;background:#eee;border:2px dashed #aaa;border-radius:12px;height:110px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:12px}
+.photoThumb{width:100%;height:90px;object-fit:contain;background:#f0f0f0;border-radius:8px;border:2px solid #1aa34a}
+#upDownModal,#recipientModal,#statusModal,#photoCamModal,#sendLockModal,#photoModal,#azkarModal,#passModal{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:none;align-items:center;justify-content:center;padding:14px}
+.box{background:#fff;color:#111;border-radius:18px;padding:18px;width:100%;max-width:380px;text-align:center}
+.box button{width:100%;padding:14px;border-radius:50px;font-weight:800;border:0;margin:6px 0}
+
+.admin-layout{display:flex;gap:12px;align-items:flex-start}
+.admin-main{flex:1;min-width:0}
+.admin-side{width:320px;flex-shrink:0;position:sticky;top:10px;background:#fff;border-radius:16px;padding:12px;box-shadow:0 2px 10px #0002}
+.admin-box{border:1px solid #eee;border-radius:12px;margin-bottom:10px;overflow:hidden}
+.admin-box-head{padding:12px;font-weight:900;cursor:pointer;display:flex;justify-content:space-between;background:#f8f5ff}
+.admin-box-body{display:none;padding:12px}
+.admin-box.open .admin-box-body{display:block}
+.admin-box.open .admin-box-head{background:#4A0E68;color:#fff}
+.warehouseCard{background:#fff;margin:0 12px 12px;border:2px solid #ff7a00;border-radius:16px;padding:14px}
+#techList{max-height:170px;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:8px;text-align:right}
+.tech-chip{background:#fff;border:1px solid #dbe4ff;border-radius:10px;padding:6px 7px;font-size:11px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#111!important}
+.tech-chip b{font-size:11px;color:#111!important}
+.logout-small{background:#ff4757!important;color:#fff!important;border:0!important;padding:3px 9px!important;border-radius:12px!important;font-size:11px!important;width:auto!important;margin:0!important}
+@media(max-width:800px){.admin-layout{display:block}.admin-side{width:auto;position:static;margin:0 12px 12px}.hero-banner{height:210px}}
+ /* لاب 4 أوردرات جنب بعض / موبايل 1 تحت بعض */
+#jobsList, #jobsContainer, #techJobsList, #jobsGrid, .jobs-list, .jobs-container, #jobs {
+  display: grid !important;
+  gap: 12px !important;
+}
+@media (min-width: 1024px){
+  #jobsList, #jobsContainer, #techJobsList, #jobsGrid, .jobs-list, .jobs-container, #jobs {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+  #jobsList > *, #jobsContainer > *, #techJobsList > *, #jobsGrid > *, .jobs-list > *, .jobs-container > *, #jobs > * {
+    width: auto !important;
+    margin: 0 !important;
+    max-width: none !important;
+  }
+}
+@media (min-width: 600px) and (max-width: 1023px){
+  #jobsList, #jobsContainer, #techJobsList, #jobsGrid, .jobs-list, .jobs-container, #jobs {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  #jobsList > *, #jobsContainer > *, #techJobsList > *, #jobsGrid > *, .jobs-list > *, .jobs-container > *, #jobs > * {
+    width: auto !important;
+    margin: 0 !important;
+    max-width: none !important;
+  }
+}
+@media (max-width: 599px){
+  #jobsList, #jobsContainer, #techJobsList, #jobsGrid, .jobs-list, .jobs-container, #jobs {
+    grid-template-columns: 1fr !important;
+  }
+}  
+
