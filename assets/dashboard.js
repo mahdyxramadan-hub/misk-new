@@ -103,17 +103,6 @@
     $('pageTitle').textContent=overview?'نظرة عامة '+new Date().getFullYear():id==='create'?'إضافة مهمة جديدة':nav.find(n=>n[0]===id)?.[2]||'المهام';
     $('breadcrumbLabel').textContent=({overview:'Overview',analytics:'Analytics',problem:'Alerts',pending:'Task queue',all:'Tasks',warehouse:'Inventory',team:'Team',archive:'Archive',create:'New task',settings:'Settings'})[id]||id;
     $('pageSubtitle').textContent=overview?'متابعة أداء العمليات والمهام والفنيين في مكان واحد':'مساحة عمل موحدة لإدارة عمليات MISK IT';
-    // === التعديل الوحيد: زرار مهمة جديدة يظهر في المهام بس ===
-    // نفس الزرار الأصلي، مش زرار جديد
-    // id = 'all' هو صفحة المهام، أي id تاني = اخفيه
-    var newTaskBtn = $('newTask');
-    if(newTaskBtn){
-      if(preview){
-        newTaskBtn.hidden = (id !== 'all');
-      } else {
-        newTaskBtn.hidden = (id !== 'all') || !userObj?.isAdmin;
-      }
-    }
     if(managed){$('pageSubtitle').textContent=({analytics:'تحليل حجم العمل، مقارنة الفترات، وقياس أداء الفنيين',problem:'مركز متابعة المشكلات والأولويات وجودة البيانات',pending:'قائمة التنفيذ اليومية · تصفية المهام وترتيبها حسب عمرها'})[id];return;}
     if(preview && !overview && id!=='settings'){
       const items=id==='pending'?demoJobs.filter(j=>j.status==='جديد'):id==='problem'?demoJobs.filter(isProblem):demoJobs;
@@ -142,5 +131,6 @@
   tick();setInterval(tick,30000);
   window.MiskDashboard={refresh(source){if(source){loadState[source]=true;delete loadErrors[source];}refresh();},error(message,source){loadErrors[source]=message;refresh();},show(){shell.classList.remove('hidden');if(!preview){$('profileName').textContent=userObj?.name||userObj?.username||'MISK';$('profileRole').textContent=userObj?.isAdmin?'مسؤول النظام':'فني عمليات';$('newTask').hidden=!userObj?.isAdmin;['team','archive'].forEach(id=>shell.querySelector(`[data-route="${id}"]`).hidden=!userObj?.isAdmin);}route('overview');refresh();}};
   if(preview)window.MiskDashboard.show();
+  // Observe the existing warehouse renderer without adding another network poll.
   if(!preview && $('warehouseList'))new MutationObserver(()=>refresh()).observe($('warehouseList'),{childList:true});
 })();
