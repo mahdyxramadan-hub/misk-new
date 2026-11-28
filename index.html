@@ -4,16 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080b13">
-<meta name="description" content="MISK IT — منصة إدارة العمليات والمهام والفنيين">
 <title>MISK IT | لوحة التحكم</title>
 <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/legacy.css">
 <link rel="stylesheet" href="assets/dashboard.css">
 <link rel="stylesheet" href="assets/workspaces.css">
+<style>
+  .new-task-btn{background:linear-gradient(90deg,#6a5cff,#a855f7);color:#fff;border:0;padding:12px 18px;border-radius:12px;font-weight:900;cursor:pointer}
+</style>
 </head>
 <body>
 
-<!-- ============ 1 - صفحة الدخول - من الملف الأصلي بالظبط ============ -->
+<!-- صفحة الدخول زي ما هي -->
 <section id="loginPage" class="login-scene">
 <div class="login-card glass">
 <a class="brand" href="index.html"><img src="assets/logo.svg" alt=""><span>MISK IT<small>INFORMATION TECHNOLOGY</small></span></a>
@@ -33,40 +35,38 @@
 </div>
 </section>
 
-<!-- ============ 2 - الداشبورد / لوحة التحكم - من الملف الأصلي ============ -->
 <div id="appPage" class="hidden">
-
 <div class="top-img legacy-heading">
 <small>☰</small><br><br>
 <b id="welcome" style="font-size:22px">لوحة التحكم</b><br>
 <small id="techInfo">أهلا بيك في MISK IT</small>
 <div style="position:absolute;left:14px;top:14px">🔔</div>
 </div>
-
 <div class="we-bar"><div class="logo">WE<span>.</span></div><div>🔔</div></div>
 
-<!-- ده المكان اللي dashboard.js بيرسم فيه الخانات الأربعة بتوع لوحة التحكم -->
-<!-- إجمالي المهام - نسبة الإنجاز - قيد الانتظار - الأرشيف -->
-<!-- + نشاط المهام + حالة العمليات -->
+<!-- ===== لوحة التحكم - مفيهاش زرار مهمة جديدة خالص ===== -->
 <div id="dashboardOverview"></div>
 
-<!-- البحث والقايمة - بتوع الداشبورد -->
-<div style="padding:0 12px 10px">
-<input id="searchInput" type="search" placeholder="بحث عن مهمة / رقم تسلسلي ..." oninput="onSearch()" style="background:#fff;width:100%;padding:12px;border-radius:12px;border:1px solid #eee">
+<!-- ===== المهام - هنا بس فيه زرار مهمة جديدة ===== -->
+<div id="tasksPage" style="padding:12px">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+    <b style="font-size:18px">📋 المهام</b>
+    <!-- الزرار الوحيد اللي اتساب - جوه المهام بس -->
+    <button class="new-task-btn" onclick="openNewTask()">+ مهمة جديدة</button>
+  </div>
+  <input id="searchInput" type="search" placeholder="بحث عن مهمة / رقم تسلسلي ..." oninput="onSearch()" style="background:#fff;width:100%;padding:12px;border-radius:12px;border:1px solid #eee;margin-bottom:10px">
+  <div id="jobsList"></div>
+  <div id="warehouseList" class="hidden"></div>
+  <div id="loadMoreWrap" style="padding:0 12px"></div>
 </div>
-<div id="jobsList"></div>
-<div id="warehouseList" class="hidden"></div>
-<div id="loadMoreWrap" style="padding:0 12px"></div>
 
-<!-- القايمة اللي تحت - فيها لوحة التحكم بس -->
 <div class="tabs" id="bottomNav">
 <div class="active" onclick="showTab('all',this)"><span style="font-size:20px;display:block">🏠</span>لوحة التحكم</div>
+<div onclick="showTab('pending',this)"><span style="font-size:20px;display:block">📋</span>المهام</div>
 <div onclick="logout()"><span style="font-size:20px;display:block">👤</span>الحساب</div>
 </div>
-
 </div>
 
-<!-- سكربتات الداشبورد الأصلية - عشان الدخول والخانات تشتغل -->
 <script src="assets/vendor/supabase.js"></script>
 <script src="assets/vendor/zxing.js"></script>
 <script src="assets/vendor/xlsx.js"></script>
@@ -75,5 +75,23 @@
 <script src="assets/domain.js"></script>
 <script src="assets/workspaces.js"></script>
 <script src="assets/dashboard.js"></script>
+<script>
+// لو dashboard.js بيرسم زرار مهمة جديدة لوحده في لوحة التحكم، السطر ده بيشيله من لوحة التحكم وبيسيبه في المهام بس
+document.addEventListener('DOMContentLoaded', function(){
+  setTimeout(function(){
+    var over = document.getElementById('dashboardOverview');
+    if(over){
+      over.querySelectorAll('button').forEach(function(b){
+        if(b.textContent.includes('مهمة جديدة')) b.remove();
+      });
+    }
+  }, 500);
+});
+function openNewTask(){
+  if(typeof showTab === 'function') showTab('pending');
+  var el = document.getElementById('jobsList');
+  if(el) el.scrollIntoView({behavior:'smooth'});
+}
+</script>
 </body>
 </html>
