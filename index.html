@@ -10,14 +10,10 @@
 <link rel="stylesheet" href="assets/legacy.css">
 <link rel="stylesheet" href="assets/dashboard.css">
 <link rel="stylesheet" href="assets/workspaces.css">
-<style>
-  .new-task-btn{background:linear-gradient(90deg,#6a5cff,#a855f7);color:#fff;border:0;padding:12px 18px;border-radius:12px;font-weight:900;cursor:pointer;font-size:14px}
-  .tasks-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-</style>
 </head>
 <body>
 
-<!-- ============ صفحة الدخول ============ -->
+<!-- صفحة الدخول -->
 <section id="loginPage" class="login-scene">
 <div class="login-card glass">
 <a class="brand" href="index.html"><img src="assets/logo.svg" alt=""><span>MISK IT<small>INFORMATION TECHNOLOGY</small></span></a>
@@ -37,44 +33,29 @@
 </div>
 </section>
 
-<!-- ============ الداشبورد ============ -->
+<!-- الداشبورد -->
 <div id="appPage" class="hidden">
-
 <div class="top-img legacy-heading">
 <small>☰</small><br><br>
 <b id="welcome" style="font-size:22px">لوحة التحكم</b><br>
 <small id="techInfo">أهلا بيك في MISK IT</small>
 <div style="position:absolute;left:14px;top:14px">🔔</div>
 </div>
-
 <div class="we-bar"><div class="logo">WE<span>.</span></div><div>🔔</div></div>
-
-<!-- لوحة التحكم - الخانات الأربعة + نشاط المهام + حالة العمليات -->
-<!-- مفيش هنا زرار مهمة جديدة -->
 <div id="dashboardOverview"></div>
-
-<!-- المهام - هنا بس فيه زرار مهمة جديدة -->
-<div id="tasksPage" style="padding:12px">
-  <div class="tasks-head">
-    <b style="font-size:18px">📋 المهام</b>
-    <button id="onlyNewTaskBtn" class="new-task-btn" onclick="openNewTask()">+ مهمة جديدة</button>
-  </div>
-  <input id="searchInput" type="search" placeholder="بحث عن مهمة / رقم تسلسلي ..." oninput="onSearch()" style="background:#fff;width:100%;padding:12px;border-radius:12px;border:1px solid #eee;margin-bottom:10px">
-  <div id="jobsList"></div>
-  <div id="warehouseList" class="hidden"></div>
-  <div id="loadMoreWrap" style="padding:0 12px"></div>
+<div style="padding:0 12px 10px">
+<input id="searchInput" type="search" placeholder="بحث عن مهمة / رقم تسلسلي ..." oninput="onSearch()" style="background:#fff;width:100%;padding:12px;border-radius:12px;border:1px solid #eee">
 </div>
-
-<!-- القايمة اللي تحت -->
+<div id="jobsList"></div>
+<div id="warehouseList" class="hidden"></div>
+<div id="loadMoreWrap" style="padding:0 12px"></div>
 <div class="tabs" id="bottomNav">
 <div class="active" onclick="showTab('all',this)"><span style="font-size:20px;display:block">🏠</span>لوحة التحكم</div>
 <div onclick="showTab('pending',this)"><span style="font-size:20px;display:block">📋</span>المهام</div>
 <div onclick="logout()"><span style="font-size:20px;display:block">👤</span>الحساب</div>
 </div>
-
 </div>
 
-<!-- سكربتات الأصلية -->
 <script src="assets/vendor/supabase.js"></script>
 <script src="assets/vendor/zxing.js"></script>
 <script src="assets/vendor/xlsx.js"></script>
@@ -83,26 +64,5 @@
 <script src="assets/domain.js"></script>
 <script src="assets/workspaces.js"></script>
 <script src="assets/dashboard.js"></script>
-
-<script>
-function openNewTask(){
-  if(typeof showTab === 'function'){ showTab('pending'); }
-  var el = document.getElementById('jobsList');
-  if(el) el.scrollIntoView({behavior:'smooth'});
-}
-// لو dashboard.js رسم زرار مهمة جديدة جوه لوحة التحكم، اخفيه من لوحة التحكم بس
-// وسيب الزرار الأصلي بتاع المهام اللي id بتاعه onlyNewTaskBtn
-setInterval(function(){
-  var over = document.getElementById('dashboardOverview');
-  if(!over) return;
-  var btns = over.querySelectorAll('button, a');
-  for(var i=0;i<btns.length;i++){
-    if(btns[i].id === 'onlyNewTaskBtn') continue;
-    if(btns[i].textContent.indexOf('مهمة جديدة') !== -1){
-      btns[i].style.display = 'none';
-    }
-  }
-}, 500);
-</script>
 </body>
 </html>
