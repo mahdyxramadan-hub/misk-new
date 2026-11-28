@@ -1,35 +1,108 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080b13">
+<meta name="description" content="MISK IT — منصة إدارة العمليات والمهام والفنيين">
+<title>MISK IT | لوحة التحكم</title>
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/legacy.css">
+<link rel="stylesheet" href="assets/dashboard.css">
+<link rel="stylesheet" href="assets/workspaces.css">
 <style>
-  /* اخفي أي زرار مهمة جديدة بره المهام */
-  body:not(.on-tasks) button[data-new-task] { display:none !important; }
+  .new-task-btn{background:linear-gradient(90deg,#6a5cff,#a855f7);color:#fff;border:0;padding:12px 18px;border-radius:12px;font-weight:900;cursor:pointer;font-size:14px}
+  .tasks-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 </style>
+</head>
+<body>
+
+<!-- ============ صفحة الدخول ============ -->
+<section id="loginPage" class="login-scene">
+<div class="login-card glass">
+<a class="brand" href="index.html"><img src="assets/logo.svg" alt=""><span>MISK IT<small>INFORMATION TECHNOLOGY</small></span></a>
+<span class="eyebrow">YOUR WORKSPACE, CONNECTED</span>
+<h1>مرحبًا بعودتك</h1>
+<p>سجّل دخولك لإدارة عملياتك من مكان واحد</p>
+<form onsubmit="event.preventDefault();login(event)">
+<label for="user">اسم المستخدم</label>
+<input id="user" autocomplete="username" required placeholder="اسم المستخدم أو رقم الهاتف">
+<label for="pass">كلمة المرور</label>
+<input id="pass" type="password" autocomplete="current-password" required placeholder="أدخل كلمة المرور">
+<button class="primary" type="submit">تسجيل الدخول <span>←</span></button>
+<p id="loginMsg" role="alert"></p>
+</form>
+<a class="preview-link" href="preview.html">استكشف معاينة التصميم ←</a>
+<footer>منصة MISK IT لإدارة العمليات</footer>
+</div>
+</section>
+
+<!-- ============ الداشبورد ============ -->
+<div id="appPage" class="hidden">
+
+<div class="top-img legacy-heading">
+<small>☰</small><br><br>
+<b id="welcome" style="font-size:22px">لوحة التحكم</b><br>
+<small id="techInfo">أهلا بيك في MISK IT</small>
+<div style="position:absolute;left:14px;top:14px">🔔</div>
+</div>
+
+<div class="we-bar"><div class="logo">WE<span>.</span></div><div>🔔</div></div>
+
+<!-- لوحة التحكم - الخانات الأربعة + نشاط المهام + حالة العمليات -->
+<!-- مفيش هنا زرار مهمة جديدة -->
+<div id="dashboardOverview"></div>
+
+<!-- المهام - هنا بس فيه زرار مهمة جديدة -->
+<div id="tasksPage" style="padding:12px">
+  <div class="tasks-head">
+    <b style="font-size:18px">📋 المهام</b>
+    <button id="onlyNewTaskBtn" class="new-task-btn" onclick="openNewTask()">+ مهمة جديدة</button>
+  </div>
+  <input id="searchInput" type="search" placeholder="بحث عن مهمة / رقم تسلسلي ..." oninput="onSearch()" style="background:#fff;width:100%;padding:12px;border-radius:12px;border:1px solid #eee;margin-bottom:10px">
+  <div id="jobsList"></div>
+  <div id="warehouseList" class="hidden"></div>
+  <div id="loadMoreWrap" style="padding:0 12px"></div>
+</div>
+
+<!-- القايمة اللي تحت -->
+<div class="tabs" id="bottomNav">
+<div class="active" onclick="showTab('all',this)"><span style="font-size:20px;display:block">🏠</span>لوحة التحكم</div>
+<div onclick="showTab('pending',this)"><span style="font-size:20px;display:block">📋</span>المهام</div>
+<div onclick="logout()"><span style="font-size:20px;display:block">👤</span>الحساب</div>
+</div>
+
+</div>
+
+<!-- سكربتات الأصلية -->
+<script src="assets/vendor/supabase.js"></script>
+<script src="assets/vendor/zxing.js"></script>
+<script src="assets/vendor/xlsx.js"></script>
+<script src="assets/vendor/jszip.js"></script>
+<script src="assets/operations.js"></script>
+<script src="assets/domain.js"></script>
+<script src="assets/workspaces.js"></script>
+<script src="assets/dashboard.js"></script>
 
 <script>
-/* شيل زرار مهمة جديدة من كل حتة وسيبه في المهام بس */
-function fixNewTaskBtn(){
-  document.querySelectorAll('button, a, div').forEach(function(el){
-    if(el.textContent.trim() === '+ مهمة جديدة' || el.textContent.trim() === 'مهمة جديدة'){
-      // لو الزرار جوه صفحة المهام سيبه، لو بره امسحه
-      var inTasks = el.closest('#tasksPage, #jobsList, [data-tab="pending"], #pendingTab');
-      // وكمان لو احنا واقفين على تاب المهام سيبه
-      var isTasksTab = document.body.classList.contains('on-tasks');
-      if(!inTasks && !isTasksTab){
-        // لو ده الزرار الأصلي بتاعنا اللي في المهام، متلمسوش
-        if(el.id === 'onlyNewTaskBtn') return;
-        el.style.display = 'none';
-        el.remove();
-      }
-    }
-  });
+function openNewTask(){
+  if(typeof showTab === 'function'){ showTab('pending'); }
+  var el = document.getElementById('jobsList');
+  if(el) el.scrollIntoView({behavior:'smooth'});
 }
-// راقبه كل شوية لأن dashboard.js بيرسمه بعد التحميل
-setInterval(fixNewTaskBtn, 300);
-
-// لما تدوس على المهام، علّم الجسم اننا في المهام عشان الزرار يظهر
-var oldShowTab = window.showTab;
-window.showTab = function(tab, el){
-  if(tab === 'pending') document.body.classList.add('on-tasks');
-  else document.body.classList.remove('on-tasks');
-  if(oldShowTab) return oldShowTab(tab, el);
-};
+// لو dashboard.js رسم زرار مهمة جديدة جوه لوحة التحكم، اخفيه من لوحة التحكم بس
+// وسيب الزرار الأصلي بتاع المهام اللي id بتاعه onlyNewTaskBtn
+setInterval(function(){
+  var over = document.getElementById('dashboardOverview');
+  if(!over) return;
+  var btns = over.querySelectorAll('button, a');
+  for(var i=0;i<btns.length;i++){
+    if(btns[i].id === 'onlyNewTaskBtn') continue;
+    if(btns[i].textContent.indexOf('مهمة جديدة') !== -1){
+      btns[i].style.display = 'none';
+    }
+  }
+}, 500);
 </script>
 </body>
+</html>
