@@ -10,13 +10,14 @@
 <link rel="stylesheet" href="assets/dashboard.css">
 <link rel="stylesheet" href="assets/workspaces.css">
 <style>
-  .only-btn { background:#7c3aed; color:#fff; border:0; padding:14px 22px; border-radius:14px; font-size:18px; font-weight:900; cursor:pointer; width:100%; margin-top:16px; }
-  .empty-box { background:#fff; border-radius:16px; padding:24px; min-height:280px; text-align:center; color:#666; margin-top:16px; }
+  .tabs { display:flex; justify-content:center; gap:8px; padding:12px; background:#fff; border-top:1px solid #eee; position:fixed; bottom:0; left:0; right:0; }
+  .tabs div { padding:10px 18px; border-radius:12px; background:#7c3aed; color:#fff; font-weight:900; font-size:15px; cursor:pointer; text-align:center; }
+  .empty-box { background:#fff; border-radius:16px; padding:24px; min-height:280px; text-align:center; color:#666; margin:12px; }
 </style>
 </head>
 <body>
 
-<!-- صفحة الدخول زي ما هي بالظبط - بنفس الصور والاستايل -->
+<!-- صفحة الدخول زي ما هي بالظبط -->
 <section id="loginPage" class="login-scene">
   <div class="login-card glass">
     <a class="brand" href="index.html"><img src="assets/logo.svg" alt=""><span>MISK IT<small>INFORMATION TECHNOLOGY</small></span></a>
@@ -36,7 +37,7 @@
   </div>
 </section>
 
-<!-- الداشبورد بنفس الاستايل والصور - بس زرار واحد -->
+<!-- الداشبورد بنفس الاستايل -->
 <div id="appPage" class="hidden">
   <div class="top-img legacy-heading">
     <small>☰</small><br><br>
@@ -47,23 +48,23 @@
 
   <div class="we-bar"><div class="logo">WE<span>.</span></div><div>🔔</div></div>
 
-  <div style="padding:12px">
-    <!-- الزرار الوحيد -->
-    <button class="only-btn" onclick="showEmpty()">لوحة التحكم</button>
+  <!-- المحتوى فاضي -->
+  <div id="emptyPage" class="empty-box">
+    <p>الصفحة فاضية</p>
+  </div>
 
-    <!-- الصفحة الفاضية اللي هتتفتح لما تدوس عليه -->
-    <div id="emptyPage" class="empty-box">
-      <!-- فاضي خالص - هنضيف هنا حاجة حاجة مع بعض -->
-      <p>الصفحة فاضية</p>
-    </div>
+  <!-- الزرار رجع لمكانه الأصلي تحت زي ما كان -->
+  <div class="tabs" id="bottomNav">
+    <div onclick="showEmpty()"><span style="font-size:20px;display:block">🏠</span>لوحة التحكم</div>
   </div>
 </div>
 
 <script>
 function doLogin(){
   document.getElementById('loginPage').style.display='none';
-  document.getElementById('appPage').classList.remove('hidden');
-  document.getElementById('appPage').style.display='block';
+  var app = document.getElementById('appPage');
+  app.classList.remove('hidden');
+  app.style.display='block';
   var u = document.getElementById('user').value || 'أهلا بيك';
   document.getElementById('welcome').textContent = 'لوحة التحكم - ' + u;
 }
