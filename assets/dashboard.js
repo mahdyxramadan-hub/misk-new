@@ -1,275 +1,136 @@
-// MISK IT - dashboard.js - أدوار + شيت يومي + أرشيف كامل
-// الفني: مهامه بس | الليدر: كل الفنيين + رفع شيت + مسح أوردر | السوبر: + إضافة فني + امسح كل حاجة
-(function(){
-const $=id=>document.getElementById(id);
-const preview=new URLSearchParams(location.search).get('preview')==='1';
-let userObj=null, jobs=[], devices=[], techList=[], pendingSheet=null;
-let loadState={jobs:false,warehouse:false}, loadErrors={};
-
-// ===== 1. الأدوار - من Supabase باليوزر والموبايل =====
-function getRole(){
-  if(preview) return 'super_leader';
-  const raw=(userObj?.role||userObj?.user_type||userObj?.type||userObj?.userType||'').toString().trim().toLowerCase();
-  if(['super_leader','superleader','super','سوبر ليدر','سوبر','super_admin','superadmin'].includes(raw)) return 'super_leader';
-  if(['leader','ليدر','lead','admin','مسؤول','مدير'].includes(raw)) return 'leader';
-  if(userObj?.isSuper===true||userObj?.is_super===true) return 'super_leader';
-  if(userObj?.isAdmin===true) return 'leader'; // توافق قديم: isAdmin كان = ليدر
-  if(['tech','technician','فني','fanny'].includes(raw)) return 'tech';
-  return 'tech'; // الافتراضي فني - أمان
-}
-const isSuper=()=>getRole()==='super_leader';
-const isLeader=()=>getRole()==='leader'||isSuper();
-const isTech=()=>getRole()==='tech';
-const canSeeAll=()=>isLeader();
-const canUploadSheet=()=>isLeader();
-const canAddSingleOrder=()=>isLeader();
-const canDeleteJob=()=>isLeader(); // مسح أوردر واحد: ليدر + سوبر
-const canAddTech=()=>isSuper(); // إضافة فني: سوبر بس
-const canWipeAll=()=>isSuper(); // امسح كل حاجة: سوبر بس
-const canArchive=()=>isLeader();
-const canExportReport=()=>isLeader();
-
-// اسم الفني الحالي للمطابقة مع عمود Tech في الشيت
-function myTechName(){
-  return (userObj?.name||userObj?.username||userObj?.full_name||'').toString().trim();
-}
-function myPhone(){
-  return (userObj?.phone||userObj?.mobile||userObj?.tech_phone||'').toString().replace(/\D/g,'').slice(-10);
-}
-function isMyJob(j){
-  if(!isTech()) return true;
-  const t=(j.tech||j.technician||j.tech_name||'').toString().trim();
-  const n=myTechName();
-  const p=(j.tech_phone||j.techPhone||'').toString().replace(/\D/g,'').slice(-10);
-  if(n && t===n) return true;
-  if(myPhone() && p && p===myPhone()) return true;
-  if(n && t && (t.includes(n)||n.includes(t))) return true;
-  return false;
-}
-function visibleJobs(){ return isTech()? jobs.filter(isMyJob) : jobs; }
-
-// ===== 2. تحميل البيانات =====
-async function loadAll(){
-  try{
-    if(window.MiskOps?.listJobs){ jobs=await window.MiskOps.listJobs(); loadState.jobs=true; }
-    if(window.MiskOps?.listWarehouse){ devices=await window.MiskOps.listWarehouse(); loadState.warehouse=true; }
-    if(window.MiskOps?.listTechs){ techList=await window.MiskOps.listTechs(); }
-    if(window.MiskOps?.getUser){ userObj=await window.MiskOps.getUser(); }
-  }catch(e){ loadErrors.jobs=e.message||'تعذر التحميل'; }
-  render();
-}
-
-// ===== 3. رسم الواجهة حسب الدور =====
-function render(){
-  const shell=$('app'); if(!shell) return;
-  const vJobs=visibleJobs();
-  const done=vJobs.filter(j=>j.status==='تم التسليم'||j.comment==='تم التسليم').length;
-  const roleLabel=isSuper()?'سوبر ليدر':isLeader()?'ليدر':'فني';
-
-  shell.innerHTML=`
-  <header class="topbar"><b>MISK IT</b><span>${userObj?.name||'مستخدم'} - ${roleLabel}</span><button onclick="logout()">خروج</button></header>
-  <nav class="tabs">
-    <button onclick="showTab('jobs')">📋 ${isTech()?'مهامي':'المهام'} (${vJobs.length})</button>
-    ${canSeeAll()?`<button onclick="showTab('team')">👷 الفنيين (${techList.length})</button>`:''}
-    ${canUploadSheet()?`<button onclick="openUploadSheet()">📤 رفع شيت اليوم</button>`:''}
-    ${canAddSingleOrder()?`<button onclick="openAddOrder()">➕ أوردر واحد</button>`:''}
-    <button onclick="showTab('archive')">🗄️ الأرشيف</button>
-    ${canExportReport()?`<button onclick="exportTodayReport()">📥 سحب تقرير اليوم</button>`:''}
-    ${canArchive()?`<button onclick="archiveToday()" style="background:#7c3aed;color:#fff">🗄️ أرشفة اليوم</button>`:''}
-    ${canWipeAll()?`<button onclick="wipeAll()" style="background:#dc2626;color:#fff">🚨 امسح كل حاجة</button>`:''}
-  </nav>
-  <div id="teamPage" style="display:none"></div>
-  <div id="jobsPage"></div>
-  <div id="archivePage" style="display:none"></div>
-  <div id="toast"></div>`;
-  renderJobs(); renderTeam(); renderArchive();
-  // إخفاء فعلي مش CSS بس
-  if(!canAddTech()){ const m=$('addTechModal'); if(m) m.remove(); }
-}
-
-function renderJobs(){
-  const el=$('jobsPage'); if(!el) return;
-  const vJobs=visibleJobs();
-  el.innerHTML=`<h2>${isTech()?'مهامي اليوم':'مهام اليوم - كل الفنيين'}</h2>
-  <p style="font-size:13px;color:#666">${isTech()?'بتشوف مهامك انت بس':`إجمالي: ${vJobs.length} | تم: ${vJobs.filter(j=>j.comment==='تم التسليم').length} | متبقي: ${vJobs.filter(j=>j.comment!=='تم التسليم').length}`}</p>
-  <input id="searchInput" placeholder="ابحث بالاسم / الأرضي / الفني" oninput="filterJobs(this.value)" style="width:100%;padding:10px;margin:10px 0">
-  <div id="jobsList">${vJobs.map(jobCard).join('')||'<p>لا توجد مهام - المهام فاضية، ارفع شيت اليوم</p>'}</div>`;
-}
-function jobCard(j){
-  return `<div class="job-card" data-job="${j.id}">
-    <b>${j.customer_name||j.name||''}</b> - <span>${j.tel||j.landline||''}</span><br>
-    <small>${j.address||''} | ${j.device||'ONT'} | الفني: ${j.tech||''}</small><br>
-    <small>سيريال: <b>${j.serial||'-'}</b> | UP/DOWN: <b>${j.status||'-'}</b> | الحالة: <b>${j.comment||'-'}</b></small><br>
-    <button onclick="openJob('${j.id}')">فتح / تعديل</button>
-    ${canDeleteJob()?`<button onclick="deleteJob('${j.id}')" style="background:#dc2626;color:#fff">مسح أوردر</button>`:''}
-  </div>`;
-}
-function filterJobs(q){
-  q=(q||'').trim();
-  document.querySelectorAll('.job-card').forEach(c=>{
-    c.style.display=!q||c.textContent.includes(q)?'':'none';
-  });
-}
-
-// ===== 4. صفحة الفنيين - المكان الوحيد للفنيين =====
-function renderTeam(){
-  const el=$('teamPage'); if(!el||!canSeeAll()) return;
-  el.innerHTML=`<h2>👷 الفنيين</h2>
-  ${canAddTech()?`<button onclick="openAddTech()" style="background:#00a651;color:#fff;padding:10px 16px">➕ إضافة فني</button>
-  <p style="font-size:12px;color:#666">إضافة الفني مع السوبر ليدر بس</p>`:''}
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:12px">
-  ${techList.map(t=>{
-    const tj=jobs.filter(j=>(j.tech||'')===t.name);
-    const done=tj.filter(j=>j.comment==='تم التسليم').length;
-    const roleAr=t.role==='super_leader'?'سوبر ليدر':t.role==='leader'?'ليدر':'فني';
-    return `<div class="tech-card"><b>${t.name}</b> - <span>${roleAr}</span><br><small>${t.phone||''} | ${t.line||''}</small><br><small>أوردرات اليوم: ${tj.length} | تم: ${done} | لسه: ${tj.length-done}</small><br><button onclick="filterByTech('${t.name}')">عرض أوردراته</button></div>`;
-  }).join('')||'<p>لا يوجد فنيين</p>'}</div>`;
-}
-function filterByTech(name){
-  showTab('jobs');
-  setTimeout(()=>{ const inp=$('searchInput'); if(inp){ inp.value=name; filterJobs(name); } },50);
-}
-
-// ===== 5. رفع شيت اليوم - ليدر + سوبر بس =====
-function openUploadSheet(){
-  if(!canUploadSheet()) return alert('رفع الشيت مع الليدر والسوبر ليدر بس');
-  $('uploadSheetModal').style.display='flex';
-  $('sheetFile').onchange=e=>{
-    const f=e.target.files[0]; if(!f) return;
-    const rd=new FileReader();
-    rd.onload=ev=>{
-      const wb=XLSX.read(ev.target.result,{type:'array'});
-      const ws=wb.Sheets[wb.SheetNames[0]];
-      const rows=XLSX.utils.sheet_to_json(ws,{defval:''});
-      pendingSheet=rows;
-      const techs=[...new Set(rows.map(r=>r.Tech||r.tech||'').filter(Boolean))];
-      const missing=techs.filter(n=>!techList.some(t=>t.name===n));
-      $('sheetPreview').innerHTML=`<b>معاينة:</b> ${rows.length} أوردر | ${techs.length} فني<br>الفنيين: ${techs.join(' ، ')}<br>${missing.length?`<span style="color:#f87171">⚠️ فنيين مش موجودين: ${missing.join(' ، ')} - هيتضافوا كفنيين جدد أو اختار بديل قبل الاستيراد</span>`:'<span style="color:#22c55e">✅ كل الفنيين موجودين</span>'}`;
-      $('importSheetBtn').style.display='block';
-    };
-    rd.readAsArrayBuffer(f);
+/* MISK dashboard. Presentation is isolated from the existing operations layer. */
+(() => {
+  'use strict';
+  const preview = document.body.dataset.preview === 'true';
+  const $ = id => document.getElementById(id);
+  const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const paths = {
+    grid:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+    chart:'<path d="M4 20V10m5 10V4m6 16v-7m5 7V7"/>',
+    server:'<rect x="3" y="3" width="18" height="7" rx="2"/><rect x="3" y="14" width="18" height="7" rx="2"/><path d="M7 6.5h3M7 17.5h3"/>',
+    shield:'<path d="m12 2 9 4v6c0 5-5 8-9 10-4-2-9-5-9-10V6Z"/><path d="m8 12 3 3 5-6"/>',
+    box:'<path d="m12 2 9 5v10l-9 5-9-5V7Z M3 7l9 5 9-5M12 12v10M7 4.8l9 5"/>',
+    clock:'<circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/>',
+    users:'<circle cx="9" cy="8" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3ZM16 4a4 4 0 0 1 0 8m2 3a5 5 0 0 1 3 5"/>',
+    archive:'<rect x="3" y="3" width="18" height="5" rx="1"/><path d="M5 8v13h14V8M9 12h6"/>',
+    settings:'<path d="m9 3-1 3-3 1-2 4 2 2v4l4 3 3-1 3 1 4-3v-4l2-2-2-4-3-1-1-3Z"/><circle cx="12" cy="12" r="3"/>',
+    search:'<circle cx="10.5" cy="10.5" r="7"/><path d="m16 16 5 5"/>',
+    bell:'<path d="M5 16h14l-2-3V8a5 5 0 0 0-10 0v5ZM10 20h4"/>',
+    plus:'<path d="M12 4v16M4 12h16"/>',
+    logout:'<path d="M10 4H4v16h6M10 12h11m-4-4 4 4-4 4"/>',
+    menu:'<path d="M4 6h16M4 12h16M4 18h16"/>',
+    arrow:'<path d="m10 5 7 7-7 7M17 12H3"/>',
+    check:'<path d="m5 12 4 4L19 6"/>',
   };
-}
-function closeUploadSheet(){ $('uploadSheetModal').style.display='none'; pendingSheet=null; }
-async function confirmImportSheet(){
-  if(!pendingSheet?.length) return alert('ارفع الشيت الأول');
-  if(!confirm(`هتستورد ${pendingSheet.length} أوردر؟`)) return;
-  // تحويل أعمدة الشيت لنفس حقول السيستم - Serial / Comment / Status فاضيين في الرفع
-  const mapped=pendingSheet.map(r=>({
-    date:r.Date||r.date||new Date(),
-    tel:String(r.Tel||r.tel||''),
-    mobile:String(r.Mobile||r.mobile||''),
-    customer_name:r.Name||r.name||'',
-    device:r['Device type']||r.device||'ONT',
-    offer:r['Offer name']||r.offer||'',
-    paper_code:r['Paper Code']||'',
-    exchange:r['Exchange Name']||'',
-    compound:r['Compound Name']||'',
-    address:r.Address||r.address||'',
-    serial:r.Serial||'', // فاضي - الفني بيملى
-    comment:r.Comment||'', // فاضي - الفني بيملى تم التسليم
-    status:r.Status||'', // فاضي - الفني بيملى UP / DOWN
-    tech:r.Tech||r.tech||'',
-    tech_phone:String(r['Tech Phone']||r.tech_phone||''),
-    created_at:new Date().toISOString()
-  }));
-  try{
-    for(const j of mapped){ await window.MiskOps.addJob(j); }
-    alert('✅ تم استيراد الشيت كله');
-    closeUploadSheet(); await loadAll();
-  }catch(e){ alert('خطأ في الاستيراد: '+e.message); }
-}
-
-// ===== 6. أوردر واحد / إضافة فني =====
-function openAddOrder(){
-  if(!canAddSingleOrder()) return alert('مع الليدر والسوبر بس');
-  $('addOrderModal').style.display='flex';
-  $('a_tech').innerHTML=techList.map(t=>`<option value="${t.name}">${t.name} - ${t.role==='super_leader'?'سوبر':t.role==='leader'?'ليدر':'فني'}</option>`).join('');
-}
-function closeAddOrder(){ $('addOrderModal').style.display='none'; }
-async function saveSingleOrder(){
-  const j={tel:$('a_tel').value.trim(),mobile:$('a_mobile').value.trim(),customer_name:$('a_customer').value.trim(),device:$('a_device').value.trim()||'ONT',address:$('a_address').value.trim(),tech:$('a_tech').value,serial:'',comment:'',status:'',created_at:new Date().toISOString()};
-  if(!j.tel||!j.customer_name) return alert('اكتب الأرضي واسم العميل');
-  await window.MiskOps.addJob(j); closeAddOrder(); await loadAll(); alert('✅ تم إضافة الأوردر');
-}
-function openAddTech(){
-  if(!canAddTech()) return alert('إضافة الفني مع السوبر ليدر بس');
-  $('addTechModal').style.display='flex';
-}
-function closeAddTech(){ $('addTechModal').style.display='none'; }
-async function saveNewTech(){
-  if(!canAddTech()) return alert('مع السوبر بس');
-  const t={name:$('tech_name').value.trim(),phone:$('tech_phone').value.trim(),username:$('tech_user').value.trim(),password:$('tech_pass').value,line:$('tech_line').value.trim(),role:$('tech_role').value};
-  if(!t.name||!t.phone) return alert('اكتب الاسم والموبايل');
-  await window.MiskOps.addTech(t); closeAddTech(); await loadAll(); alert('✅ تم إضافة الفني');
-}
-
-// ===== 7. تقرير اليوم + أرشفة الشيت كله =====
-async function exportTodayReport(){
-  if(!canExportReport()) return alert('مع الليدر والسوبر بس');
-  // بنفس أعمدة الشيت الأصلي بالظبط
-  const rows=jobs.map(j=>({Date:j.date||new Date(),Tel:j.tel,Mobile:j.mobile,Name:j.customer_name,'Device type':j.device,'Offer name':j.offer,'Returned Rent CPE serial':j.offer,'Paper Code':j.paper_code,'Exchange Name':j.exchange,'Compound Name':j.compound,Address:j.address,'Senior Support':'','Senior Mobile':'',Serial:j.serial||'',Comment:j.comment||'',Status:j.status||'',Tech:j.tech,'Tech Phone':j.tech_phone}));
-  const ws=XLSX.utils.json_to_sheet(rows);
-  const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,'Report');
-  const d=new Date(); const name=`report_${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()}.xlsx`;
-  XLSX.writeFile(wb,name);
-  alert('✅ اتسحب تقرير اليوم - دلوقتي تقدر تأرشف');
-}
-async function archiveToday(){
-  if(!canArchive()) return alert('مع الليدر والسوبر بس');
-  const d=new Date(); const label=`${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()}`;
-  if(!confirm(`هتأرشف الشيت كله بتاريخ ${label}؟\nاللي اتركب واللي اتأجل كله هيروح الأرشيف، والمهام هتفضى لليوم اللي بعده.`)) return;
-  try{
-    if(window.MiskOps?.archiveAll) await window.MiskOps.archiveAll({date:label,jobs});
-    else { for(const j of jobs) await window.MiskOps.archiveJob(j); }
-    if(window.MiskOps?.clearJobs) await window.MiskOps.clearJobs();
-    jobs=[]; render(); alert('✅ اتأرشف الشيت كله بتاريخ '+label+' - المهام فاضية لليوم اللي بعده');
-  }catch(e){ alert('خطأ في الأرشفة: '+e.message); }
-}
-function renderArchive(){
-  const el=$('archivePage'); if(!el) return;
-  el.innerHTML=`<h2>🗄️ الأرشيف</h2><p>كل شيت بيروح الأرشيف بتاريخ يومه - اللي اتركب واللي اتأجل</p><div id="archiveList"></div>`;
-  if(window.MiskOps?.listArchive) window.MiskOps.listArchive().then(list=>{
-    $('archiveList').innerHTML=list.map(a=>`<div>📁 ${a.date} - ${a.count} أوردر <button onclick="downloadArchive('${a.date}')">تحميل</button></div>`).join('')||'<p>لا يوجد أرشيف بعد</p>';
+  const icon = (name, cls='') => `<svg class="icon ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || paths.grid}</svg>`;
+  const nav = [['overview','grid','لوحة التحكم'],['analytics','chart','التحليلات'],['all','server','المهام'],['problem','shield','التنبيهات'],['pending','clock','قيد الانتظار'],['warehouse','box','المخزن'],['team','users','الفريق'],['archive','archive','الأرشيف'],['settings','settings','الإعدادات']];
+  const shell = document.createElement('div');
+  shell.id = 'dashboardShell'; shell.className = 'hidden'; shell.dataset.view = 'overview';
+  shell.innerHTML = `<aside class="sidebar glass" aria-label="القائمة الرئيسية"><a class="brand" href="${preview?'preview':'index'}.html"><img src="assets/logo.svg" alt="شعار مسك"><span>MISK IT<small>INFORMATION TECHNOLOGY</small></span></a><nav>${nav.map(([id,i,label])=>`<button data-route="${id}" class="nav-item ${id==='overview'?'active':''}" ${id==='overview'?'aria-current="page"':''}>${icon(i)}<span>${label}</span>${id==='problem'?'<span id="alertCount" class="nav-count">0</span>':''}</button>`).join('')}</nav><div class="sidebar-bottom"><div class="workspace-label">Workspace <span>●</span></div><p class="connection"><i></i><span id="connectionText">${preview?'بيانات تجريبية للمعاينة':'بانتظار تحميل البيانات'}</span></p><div class="profile"><div class="avatar">M</div><div><strong id="profileName">MISK Admin</strong><small id="profileRole">إدارة العمليات</small></div><button class="icon-button" data-action="logout" aria-label="تسجيل الخروج">${icon('logout')}</button></div></div></aside><div class="main-shell"><header class="topbar glass"><div class="breadcrumb"><button class="icon-button mobile-menu" data-action="menu" aria-label="فتح القائمة" aria-expanded="false">${icon('menu')}</button><span>Dashboard</span><b>/</b><strong id="breadcrumbLabel">Overview</strong></div><div class="topbar-tools"><time id="dashboardClock"></time><button class="icon-button" data-action="search" aria-label="البحث في المهام">${icon('search')}</button><button class="icon-button notification-button" data-route="problem" aria-label="عرض التنبيهات">${icon('bell')}<i id="notificationDot"></i></button><button class="icon-button" data-route="settings" aria-label="الإعدادات">${icon('settings')}</button></div></header><main class="main-panel"><div class="page-heading"><div><p class="eyebrow">MISK IT · OPERATIONS CENTER</p><h1 id="pageTitle">نظرة عامة <span>${new Date().getFullYear()}</span></h1><p id="pageSubtitle">متابعة أداء العمليات والمهام والفنيين في مكان واحد</p></div><button class="primary" id="newTask" data-route="create">${icon('plus')} مهمة جديدة</button></div>${preview?'<div class="demo-notice">وضع المعاينة · بيانات تجريبية، ولا يوجد اتصال بقاعدة البيانات <a href="index.html">تسجيل الدخول ←</a></div>':''}<section id="overview"><div class="metrics">${[['total','server','إجمالي المهام','كل المهام المسندة'],['done','shield','نسبة الإنجاز','من إجمالي المهام'],['pending','clock','قيد الانتظار','مهام بانتظار التنفيذ'],['devices','box','الأجهزة بالمخزن','إجمالي العهد المسجلة']].map(([id,i,label,note])=>`<button class="metric glass" data-metric="${id}"><span class="metric-icon">${icon(i)}</span><span class="metric-label">${label}</span><strong id="metric-${id}">—</strong><small id="note-${id}">${note}</small></button>`).join('')}</div><div class="dashboard-grid"><section class="panel traffic glass"><div class="panel-heading"><div><h2>نشاط المهام</h2><p>آخر 14 يومًا · الوارد مقابل التسليم</p></div><span class="panel-tag">14 يومًا</span></div><div id="trafficChart" class="chart-wrap"></div><div class="chart-legend"><span><i class="dot cyan"></i>الوارد <b id="incomingTotal">—</b></span><span><i class="dot purple"></i>تم التسليم <b id="deliveredTotal">—</b></span></div></section><section class="panel health"><div class="panel-heading"><div><h2>حالة العمليات</h2><p>توزيع حالات المهام الحالية</p></div><span class="live-label"><i></i>ملخص</span></div><div class="health-body"><div class="donut" id="healthDonut"><div>${icon('shield')}</div></div><div class="health-value"><strong id="healthPercent">—</strong> <span>مكتمل</span></div><ul class="status-list" id="statusList"></ul></div></section><section class="panel activity"><div class="panel-heading"><div><h2>أحدث المهام</h2><p>آخر المهام المضافة إلى النظام</p></div><button class="text-button" data-route="all">عرض الكل ${icon('arrow')}</button></div><div id="recentActivity"></div></section><section class="panel resources"><div class="panel-heading"><div><h2>توزيع الأجهزة</h2><p>المخزن · أنواع الأجهزة المسجلة</p></div>${icon('server')}</div><div id="deviceDistribution"></div><div class="resource-summary">${icon('shield')}<span>مؤشرات محسوبة من بيانات المخزن</span></div></section></div></section><section id="workspaceContent" class="hidden" aria-label="مساحة إدارة العمليات"></section><section id="settingsPanel" class="panel hidden"><h2>إعدادات مساحة العمل</h2><p>إدارة الحساب وتحديث بيانات لوحة التحكم</p><div class="settings-row"><div><strong>تحديث البيانات</strong><p>جلب أحدث المهام والمخزن من النظام</p></div><button class="primary" data-action="refresh">تحديث الآن</button></div><div class="settings-row"><div><strong>كلمة المرور</strong><p>تغيير كلمة مرور حسابك الحالي</p></div><button class="secondary" data-action="password">تغيير كلمة المرور</button></div><div class="settings-row"><div><strong>الجلسة الحالية</strong><p>الخروج من مساحة العمل على هذا الجهاز</p></div><button class="secondary" data-action="logout">تسجيل الخروج</button></div></section><footer class="page-footer"><span><i class="dot cyan"></i> MISK IT Platform</span><span>${preview?'Design preview':'Operations dashboard'} · v2.0</span></footer></main></div><div id="toast" role="status"></div>`;
+  document.body.append(shell);
+  shell.querySelector('.page-footer span:last-child').textContent=(preview?'Design preview':'Operations dashboard')+' · v3.0';
+  const dedicated=document.createElement('section');dedicated.id='dedicatedView';dedicated.className='hidden';
+  $('workspaceContent').before(dedicated);
+  $('overview').insertAdjacentHTML('beforeend',`<section class="quick-actions panel"><div><p class="section-kicker">NEXT ACTIONS</p><h2>خطوتك التالية</h2><p>انتقل مباشرة إلى العمل الذي يحتاج انتباهك</p></div><button class="secondary" data-route="problem">${icon('bell')} مراجعة التنبيهات <b id="overviewAlerts">0</b></button><button class="secondary" data-route="pending">${icon('clock')} بدء قائمة التنفيذ</button><button class="secondary" data-route="analytics">${icon('chart')} تقرير الأداء</button></section>`);
+  const app = $('appPage');
+  if (app) $('workspaceContent').append(app);
+  const loadState = {jobs:preview, warehouse:preview};
+  const loadErrors = {};
+  let demoJobs = [];
+  if(preview){
+    const names=['أحمد محمد','محمود إبراهيم','سارة خالد','عمر حسن','محمد عبد الله'];
+    for(let day=41;day>=0;day--) for(let j=0;j<([7,11,8,17,12,15,10,16,22,18,14,20,17,19][(41-day)%14]-(day>=28?5:day>=14?3:0));j++){
+      const date=new Date(); date.setDate(date.getDate()-day); date.setHours(12,0,0,0);
+      demoJobs.push({id:`demo-${day}-${j}`,customer_name:names[j%5],order:`MK-${2100+demoJobs.length}`,status:j%7===0?['تأجيل','لم يتم الرد','رفض الزيارة'][day%3]:j%4===0?'جديد':'تم التسليم',created_at:date.toISOString(),device:j%2?'ONT':'ONU',tech:j%13===0?'':['أحمد علي','محمد حسن','محمود سعد','كريم عادل'][(day+j)%4],serial:j%11===0?'':`MK${day}${j}`,address:'منطقة تجريبية — بيانات توضيحية',comment:j%7===0?'يحتاج التواصل مع العميل قبل الزيارة التالية':''});
+    }
+    demoJobs.reverse();
+  }
+  const getJobs = () => preview ? demoJobs : (typeof myJobsBase==='function' ? myJobsBase():[]);
+  const getDevices = () => preview ? Array.from({length:128},(_,i)=>({id:`device-${i}`,serial:`MSK-${1000+i}`,device:i<74?'ONT':i<111?'ONU':'Router',date_received:new Date(Date.now()-(i<4?65:8)*86400000).toISOString(),tech:'أحمد علي'})) : (typeof myWarehouse==='function' ? myWarehouse():[]);
+  const toast = message => { $('toast').textContent=message; $('toast').classList.add('visible'); clearTimeout(toast.timer); toast.timer=setTimeout(()=>$('toast').classList.remove('visible'),3500); };
+  const isProblem = j => ['تأجيل','لم يتم الرد','رفض الزيارة'].includes(j.status);
+  function openJob(id){
+    if(!preview){openDetails(id);return;}
+    const j=getJobs().find(row=>String(row.id)===id);if(!j)return;
+    let dialog=$('demoDetail');if(!dialog){dialog=document.createElement('dialog');dialog.id='demoDetail';dialog.className='detail-dialog';document.body.append(dialog);dialog.addEventListener('click',e=>{if(e.target===dialog||e.target.closest('[data-close-dialog]'))dialog.close();});}
+    dialog.innerHTML=`<div class="panel-heading"><span class="section-kicker">TASK DETAILS</span><button class="icon-button" data-close-dialog aria-label="إغلاق">×</button></div><h2>${escape(j.customer_name)}</h2><p class="method-note">عرض تجريبي؛ تعديل بيانات المهمة متاح في التطبيق بعد تسجيل الدخول.</p><dl>${[['الطلب',j.order],['الحالة',j.status],['الفني',window.MiskDomain.tech(j)],['الجهاز',j.device],['السيريال',j.serial||'غير مسجل'],['العنوان',j.address],['ملاحظة',j.comment||'لا توجد ملاحظات']].map(([k,v])=>`<div><dt>${k}</dt><dd>${escape(v)}</dd></div>`).join('')}</dl>`;dialog.showModal();
+  }
+  const views=window.MiskViews.create({host:dedicated,getJobs,getDevices,openJob,navigate:route,icon,identity:()=>preview?'preview':String(userObj?.id||userObj?.username||'session'),getLoadState:()=>({jobs:loadState.jobs,warehouse:loadState.warehouse,error:Object.values(loadErrors)[0]||''})});
+  function chart(jobs){
+    const days=Array.from({length:14},(_,i)=>{const d=new Date(); d.setDate(d.getDate()-13+i);return d;});
+    const key=d=>`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+    const incoming=days.map(d=>jobs.filter(j=>key(new Date(j.created_at))===key(d)).length);
+    const done=days.map(d=>jobs.filter(j=>j.status==='تم التسليم'&&key(new Date(j.created_at))===key(d)).length);
+    const max=Math.max(4,...incoming,...done); const coords=a=>a.map((n,i)=>[44+i*35.6,160-n/max*128]);
+    const line=a=>coords(a).map(p=>p.join(',')).join(' ');
+    $('trafficChart').innerHTML=`<svg viewBox="0 0 530 198" role="img" aria-label="عدد المهام المضافة وحالتها الحالية خلال آخر أربعة عشر يومًا"><defs><linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#55e7ea" stop-opacity=".18"/><stop offset="1" stop-color="#a25beb" stop-opacity=".02"/></linearGradient></defs>${[0,1,2,3,4].map(n=>`<line x1="44" x2="508" y1="${32+n*32}" y2="${32+n*32}" class="grid-line"/><text x="30" y="${36+n*32}" text-anchor="end">${Math.round(max*(1-n/4))}</text>`).join('')}${days.map((d,i)=>`<line x1="${44+i*35.6}" x2="${44+i*35.6}" y1="24" y2="160" class="grid-line vertical"/>`).join('')}<polygon points="44,160 ${line(incoming)} 507,160" fill="url(#chartFill)"/><polyline points="${line(done)}" class="chart-line outgoing"/><polyline points="${line(incoming)}" class="chart-line incoming"/>${[incoming,done].map((a,k)=>coords(a).map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="3" fill="${k?'#b477ed':'#66eeeb'}"><title>${days[i].toLocaleDateString('ar-EG')}: ${a[i]} ${k?'تم التسليم':'مهام واردة'}</title></circle>`).join('')).join('')}${[0,4,8,13].map(i=>`<text x="${44+i*35.6}" y="188" text-anchor="middle">${days[i].toLocaleDateString('en-GB',{month:'short',day:'2-digit'})}</text>`).join('')}</svg>`;
+    $('incomingTotal').textContent=incoming.reduce((a,b)=>a+b,0); $('deliveredTotal').textContent=done.reduce((a,b)=>a+b,0);
+  }
+  function refresh(){
+    const jobs=getJobs(), devices=getDevices(), total=jobs.length;
+    const done=jobs.filter(j=>j.status==='تم التسليم').length, problem=jobs.filter(isProblem).length, pending=total-done-problem;
+    const percent=total?Math.round(done/total*100):0;
+    $('metric-total').textContent=total.toLocaleString('en-US'); $('metric-done').textContent=`${percent}%`; $('metric-pending').textContent=pending; $('metric-devices').textContent=devices.length;
+    $('note-done').textContent=`${done} مهمة تم تسليمها`; $('note-total').textContent=preview?'بيانات تجريبية للعرض':`${problem} مهمة تحتاج متابعة`;
+    const alertTotal=views.countAlerts();$('alertCount').textContent=alertTotal; $('notificationDot').hidden=!alertTotal;$('overviewAlerts').textContent=alertTotal;
+    $('healthPercent').textContent=total?`${percent}%`:'—';
+    $('healthDonut').style.setProperty('--progress',`${percent}%`);
+    $('statusList').innerHTML=[['green','تم التسليم',done],['cyan','قيد الانتظار',pending],['yellow','تحتاج متابعة',problem]].map(([color,label,n])=>`<li><i class="dot ${color}"></i><span>${label}</span><b>${n}</b></li>`).join('');
+    chart(jobs);
+    const recent=[...jobs].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,5);
+    $('recentActivity').innerHTML=recent.length?recent.map(j=>`<button class="activity-row" data-job="${escape(j.id)}"><span class="activity-icon ${isProblem(j)?'warning':''}">${icon(j.status==='تم التسليم'?'shield':isProblem(j)?'bell':'server')}</span><span class="activity-copy"><strong>${escape(j.customer_name || 'مهمة جديدة')}</strong><small>${escape(j.order||'—')} · ${escape(new Date(j.created_at).toLocaleDateString('ar-EG'))}</small></span><span class="status-badge ${j.status==='تم التسليم'?'success':isProblem(j)?'warn':''}">${escape(j.status||'جديد')}</span></button>`).join(''):'<div class="empty-state">لا توجد مهام لعرضها بعد</div>';
+    const groups=new Map();
+    devices.forEach(d=>{const type=String(d.model||d.device||d.device_type||d.type||'غير محدد').trim()||'غير محدد';groups.set(type,(groups.get(type)||0)+1);});
+    const sorted=[...groups].sort((a,b)=>b[1]-a[1]);
+    const distribution=sorted.length>3?[...sorted.slice(0,2),['أجهزة أخرى',sorted.slice(2).reduce((sum,row)=>sum+row[1],0)]]:sorted;
+    $('deviceDistribution').innerHTML=distribution.length?distribution.map(([type,n])=>{const p=devices.length?Math.round(n/devices.length*100):0;return `<div class="resource"><div><span>${escape(type)}</span><strong>${p}%</strong></div><div class="progress-track" role="progressbar" aria-label="${escape(type)}" aria-valuenow="${p}" aria-valuemin="0" aria-valuemax="100"><span style="width:${p}%"></span></div><small>${n} / ${devices.length} جهاز</small></div>`;}).join(''):'<div class="empty-state">لا توجد أجهزة مسجلة لعرضها</div>';
+    if(!preview){
+      $('connectionText').textContent=Object.values(loadErrors)[0] || (loadState.jobs&&loadState.warehouse?'تم تحديث بيانات مساحة العمل':'جارٍ تحميل بيانات مساحة العمل');
+      if(!loadState.jobs){['total','done','pending'].forEach(id=>$('metric-'+id).textContent='—');$('healthPercent').textContent='—';$('recentActivity').innerHTML='<div class="empty-state">'+(loadErrors.jobs?'تعذر تحميل المهام. أعد المحاولة من الإعدادات.':'جارٍ تحميل المهام…')+'</div>';}
+      if(!loadState.warehouse)$('metric-devices').textContent='—';
+    }
+    views.refresh();
+  }
+  function route(id){
+    if(!preview && ['team','create','archive'].includes(id) && !userObj?.isAdmin){toast('هذا القسم متاح للمسؤول فقط');return;}
+    shell.dataset.view=id; shell.classList.remove('menu-open');
+    document.querySelector('.mobile-menu').setAttribute('aria-expanded','false');
+    shell.querySelectorAll('[data-route].nav-item').forEach(el=>{const active=el.dataset.route===id; el.classList.toggle('active',active);if(active)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');});
+    const overview=id==='overview',managed=['analytics','problem','pending'].includes(id);
+    dedicated.classList.toggle('hidden',!managed);
+    if(managed)views.show(id);else views.hide();
+    $('overview').classList.toggle('hidden',!overview); $('settingsPanel').classList.toggle('hidden',id!=='settings'); $('workspaceContent').classList.toggle('hidden',overview||id==='settings'||managed);
+    $('pageTitle').textContent=overview?'نظرة عامة '+new Date().getFullYear():id==='create'?'إضافة مهمة جديدة':nav.find(n=>n[0]===id)?.[2]||'المهام';
+    $('breadcrumbLabel').textContent=({overview:'Overview',analytics:'Analytics',problem:'Alerts',pending:'Task queue',all:'Tasks',warehouse:'Inventory',team:'Team',archive:'Archive',create:'New task',settings:'Settings'})[id]||id;
+    $('pageSubtitle').textContent=overview?'متابعة أداء العمليات والمهام والفنيين في مكان واحد':'مساحة عمل موحدة لإدارة عمليات MISK IT';
+    if(managed){$('pageSubtitle').textContent=({analytics:'تحليل حجم العمل، مقارنة الفترات، وقياس أداء الفنيين',problem:'مركز متابعة المشكلات والأولويات وجودة البيانات',pending:'قائمة التنفيذ اليومية · تصفية المهام وترتيبها حسب عمرها'})[id];return;}
+    if(preview && !overview && id!=='settings'){
+      const items=id==='pending'?demoJobs.filter(j=>j.status==='جديد'):id==='problem'?demoJobs.filter(isProblem):demoJobs;
+      $('workspaceContent').innerHTML=`<div class="panel"><h2>${escape($('pageTitle').textContent)}</h2><p>معاينة التصميم فقط. سجّل الدخول لاستخدام وظائف النظام الفعلية.</p>${['all','pending','problem'].includes(id)?'<label for="demoSearch">بحث في المهام</label><input id="demoSearch" placeholder="ابحث باسم العميل أو رقم الطلب"><div id="demoRows"></div>':'<a class="primary inline-button" href="index.html">الانتقال إلى تسجيل الدخول</a>'}</div>`;
+      if($('demoRows')){const render=()=>{$('demoRows').innerHTML=items.filter(j=>(j.customer_name+j.order).includes($('demoSearch').value)).slice(0,20).map(j=>`<div class="demo-job"><strong>${escape(j.customer_name)}</strong><span>${j.order}</span><span class="status-badge">${j.status}</span></div>`).join('')||'<p>لا توجد نتائج</p>';};$('demoSearch').addEventListener('input',render);render();}
+    } else if(!preview && !overview && id!=='settings'){
+      app.classList.remove('hidden');
+      app.dataset.section=['team','create'].includes(id)?'admin':'jobs';
+      if(!['team','create'].includes(id)) showTab(id, null);
+      if(id==='create') {const boxes=app.querySelectorAll('.admin-box'); boxes.forEach(b=>b.classList.remove('open'));boxes[0]?.classList.add('open');$('a_customer')?.focus();}
+    }
+  }
+  shell.addEventListener('click',event=>{
+    const routeButton=event.target.closest('[data-route]'); if(routeButton){route(routeButton.dataset.route);return;}
+    const metric=event.target.closest('[data-metric]'); if(metric){route(({total:'all',done:'all',pending:'pending',devices:'warehouse'})[metric.dataset.metric]);if(!preview&&metric.dataset.metric==='done')filterByCircle('done');return;}
+    const job=event.target.closest('[data-job]');if(job){openJob(job.dataset.job);return;}
+    const action=event.target.closest('[data-action]')?.dataset.action;
+    if(action==='menu'){shell.classList.toggle('menu-open');event.target.closest('button').setAttribute('aria-expanded',shell.classList.contains('menu-open'));}
+    if(action==='search'){route('all');(preview?$('demoSearch'):$('searchInput'))?.focus();}
+    if(action==='logout'){if(preview)location.href='index.html';else logout();}
+    if(action==='password'){if(preview)toast('تغيير كلمة المرور متاح بعد تسجيل الدخول');else $('passModal').style.display='flex';}
+    if(action==='refresh'){if(preview){refresh();toast('تم تحديث بيانات المعاينة');}else{silentRefreshNow();toast('جارٍ طلب تحديث البيانات');}}
   });
-}
-async function downloadArchive(date){
-  const list=await window.MiskOps.listArchive(); const a=list.find(x=>x.date===date); if(!a) return;
-  const ws=XLSX.utils.json_to_sheet(a.jobs); const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,'Archive'); XLSX.writeFile(wb,`archive_${date}.xlsx`);
-}
-
-// ===== 8. مسح =====
-async function deleteJob(id){
-  if(!canDeleteJob()) return alert('مسح الأوردر مع الليدر والسوبر بس');
-  if(!confirm('هتمسح الأوردر ده؟')) return;
-  await window.MiskOps.deleteJob(id); await loadAll();
-}
-async function wipeAll(){
-  if(!canWipeAll()) return alert('امسح كل حاجة مع السوبر ليدر بس');
-  if(!confirm('⚠️ هتمسح كل حاجة؟ المهام + المخزن + الفنيين؟')) return;
-  if(!confirm('تأكيد أخير - متأكد 100%؟')) return;
-  await window.MiskOps.wipeAll(); jobs=[]; techList=[]; render(); alert('تم مسح كل حاجة');
-}
-
-// ===== 9. تبويبات + فتح مهمة =====
-function showTab(tab){
-  ['jobsPage','teamPage','archivePage'].forEach(id=>{ const el=$(id); if(el) el.style.display='none'; });
-  if(tab==='team'){ $('teamPage').style.display='block'; renderTeam(); }
-  else if(tab==='archive'){ $('archivePage').style.display='block'; renderArchive(); }
-  else { $('jobsPage').style.display='block'; renderJobs(); }
-}
-function openJob(id){
-  const j=jobs.find(x=>String(x.id)===String(id)); if(!j) return;
-  // الفني بيضيف Serial + UP/DOWN + تم التسليم عند العميل
-  const serial=prompt('السيريال:',j.serial||''); if(serial===null) return;
-  const status=prompt('UP / DOWN / تأجيل:',j.status||''); if(status===null) return;
-  const comment=prompt('تم التسليم / لم يتم التسليم / تأجيل:',j.comment||''); if(comment===null) return;
-  window.MiskOps.updateJob(id,{serial,status,comment}).then(()=>loadAll());
-}
-function logout(){ if(window.MiskOps?.logout) window.MiskOps.logout(); else location.href='index.html'; }
-
-// تصدير للدوال اللي الـ HTML بيناديها
-Object.assign(window,{getRole,isSuper,isLeader,isTech,canAddTech,canWipeAll,canDeleteJob,showTab,openUploadSheet,closeUploadSheet,confirmImportSheet,openAddOrder,closeAddOrder,saveSingleOrder,openAddTech,closeAddTech,saveNewTech,exportTodayReport,archiveToday,deleteJob,wipeAll,filterJobs,filterByTech,openJob,logout});
-window.MiskDashboard={show(u){ userObj=u||window.MiskOps?.currentUser||null; loadAll(); }};
-if(preview) window.MiskDashboard.show({name:'معاينة',role:'super_leader'});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){shell.classList.remove('menu-open');document.querySelector('.mobile-menu').setAttribute('aria-expanded','false');}});
+  function tick(){ $('dashboardClock').textContent=new Date().toLocaleString('en-GB',{weekday:'short',month:'short',day:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
+  tick();setInterval(tick,30000);
+  window.MiskDashboard={refresh(source){if(source){loadState[source]=true;delete loadErrors[source];}refresh();},error(message,source){loadErrors[source]=message;refresh();},show(){shell.classList.remove('hidden');if(!preview){$('profileName').textContent=userObj?.name||userObj?.username||'MISK';$('profileRole').textContent=userObj?.isAdmin?'مسؤول النظام':'فني عمليات';$('newTask').hidden=!userObj?.isAdmin;['team','archive'].forEach(id=>shell.querySelector(`[data-route="${id}"]`).hidden=!userObj?.isAdmin);}route('overview');refresh();}};
+  if(preview)window.MiskDashboard.show();
+  // Observe the existing warehouse renderer without adding another network poll.
+  if(!preview && $('warehouseList'))new MutationObserver(()=>refresh()).observe($('warehouseList'),{childList:true});
 })();
