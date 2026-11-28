@@ -1,67 +1,75 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080b13"><meta name="description" content="MISK IT — منصة إدارة العمليات والمهام والفنيين"><title>MISK IT | لوحة التحكم</title><link rel="icon" href="assets/logo.svg" type="image/svg+xml"><link rel="stylesheet" href="assets/legacy.css"><link rel="stylesheet" href="assets/dashboard.css"><link rel="stylesheet" href="assets/workspaces.css"></head><body><section id="loginPage" class="login-scene"><div class="login-card glass"><a class="brand" href="index.html"><img src="assets/logo.svg" alt=""><span>MISK IT<small>INFORMATION TECHNOLOGY</small></span></a><span class="eyebrow">YOUR WORKSPACE, CONNECTED</span><h1>مرحبًا بعودتك</h1><p>سجّل دخولك لإدارة عملياتك من مكان واحد</p><form onsubmit="event.preventDefault();login(event)"><label for="user">اسم المستخدم</label><input id="user" autocomplete="username" required placeholder="اسم المستخدم أو رقم الهاتف"><label for="pass">كلمة المرور</label><input id="pass" type="password" autocomplete="current-password" required placeholder="أدخل كلمة المرور"><button class="primary" type="submit">تسجيل الدخول <span>←</span></button><p id="loginMsg" role="alert"></p></form><a class="preview-link" href="preview.html">استكشف معاينة التصميم ←</a><footer>منصة MISK IT لإدارة العمليات</footer></div></section><div id="appPage" class="hidden">
-<div style="display:flex;justify-content:flex-end;margin-bottom:6px">
-<div style="display:flex;align-items:center;gap:6px;background:#fff;border:1px solid #e5e7eb;padding:4px 8px;border-radius:20px;font-size:12px;box-shadow:0 2px 8px rgba(0,0,0,.08)">
-<span style="width:8px;height:8px;background:#22c55e;border-radius:50%;display:inline-block"></span>
-<span>تحديث بعد <b id="silentCount">10</b></span>
-<button onclick="silentRefreshNow()" style="background:#7c3aed;border:0;color:#fff;padding:3px 8px;border-radius:12px;font-size:11px;cursor:pointer">حدث</button>
-<button id="autoBtn" onclick="toggleAuto()" style="background:#fee2e2;border:0;color:#dc2626;padding:3px 8px;border-radius:12px;font-size:11px;cursor:pointer">إيقاف</button>
-<button class="logout-small" onclick="logout()">🚪 خروج</button>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080b13">
+<title>MISK IT | لوحة التحكم</title>
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/legacy.css">
+<link rel="stylesheet" href="assets/dashboard.css">
+<link rel="stylesheet" href="assets/workspaces.css">
+<style>
+  .only-btn { background:#7c3aed; color:#fff; border:0; padding:14px 22px; border-radius:14px; font-size:18px; font-weight:900; cursor:pointer; width:100%; margin-top:16px; }
+  .empty-box { background:#fff; border-radius:16px; padding:24px; min-height:280px; text-align:center; color:#666; margin-top:16px; }
+</style>
+</head>
+<body>
+
+<!-- صفحة الدخول زي ما هي بالظبط - بنفس الصور والاستايل -->
+<section id="loginPage" class="login-scene">
+  <div class="login-card glass">
+    <a class="brand" href="index.html"><img src="assets/logo.svg" alt=""><span>MISK IT<small>INFORMATION TECHNOLOGY</small></span></a>
+    <span class="eyebrow">YOUR WORKSPACE, CONNECTED</span>
+    <h1>مرحبًا بعودتك</h1>
+    <p>سجّل دخولك لإدارة عملياتك من مكان واحد</p>
+    <form onsubmit="event.preventDefault();doLogin()">
+      <label for="user">اسم المستخدم</label>
+      <input id="user" autocomplete="username" required placeholder="اسم المستخدم أو رقم الهاتف">
+      <label for="pass">كلمة المرور</label>
+      <input id="pass" type="password" autocomplete="current-password" required placeholder="أدخل كلمة المرور">
+      <button class="primary" type="submit">تسجيل الدخول <span>←</span></button>
+      <p id="loginMsg" role="alert"></p>
+    </form>
+    <a class="preview-link" href="preview.html">استكشف معاينة التصميم ←</a>
+    <footer>منصة MISK IT لإدارة العمليات</footer>
+  </div>
+</section>
+
+<!-- الداشبورد بنفس الاستايل والصور - بس زرار واحد -->
+<div id="appPage" class="hidden">
+  <div class="top-img legacy-heading">
+    <small>☰</small><br><br>
+    <b id="welcome" style="font-size:22px">لوحة التحكم</b><br>
+    <small id="techInfo">أهلا بيك في MISK IT</small>
+    <div style="position:absolute;left:14px;top:14px">🔔</div>
+  </div>
+
+  <div class="we-bar"><div class="logo">WE<span>.</span></div><div>🔔</div></div>
+
+  <div style="padding:12px">
+    <!-- الزرار الوحيد -->
+    <button class="only-btn" onclick="showEmpty()">لوحة التحكم</button>
+
+    <!-- الصفحة الفاضية اللي هتتفتح لما تدوس عليه -->
+    <div id="emptyPage" class="empty-box">
+      <!-- فاضي خالص - هنضيف هنا حاجة حاجة مع بعض -->
+      <p>الصفحة فاضية</p>
+    </div>
+  </div>
 </div>
-</div>
-<div class="top-img legacy-heading"><small>☰</small><br><br><b id="welcome" style="font-size:22px"></b><br><small id="techInfo"></small><div style="position:absolute;left:14px;top:14px">🔔</div></div>
-<div class="we-bar"><div class="logo">WE<span>.</span></div><div>🔔</div></div>
-<div class="admin-layout">
-<div class="admin-main">
-<!-- الصفحة الرئيسية - فاضية دلوقتي وهنبنيها مع بعض -->
-<div id="leftTechAlerts"></div>
-<div id="stockAlerts"></div>
-<div id="archiveFilter" class="hidden"></div>
-<div id="jobsList"></div>
-<div id="warehouseList" class="hidden"></div>
-<div id="loadMoreWrap" style="padding:0 12px"></div>
-</div>
-<div id="adminAdd" class="hidden">
-<div class="admin-side">
-<div style="background:#071126;color:#fff;padding:12px;border-radius:12px;text-align:center;margin-bottom:10px">
-<b>👷 الفنيين</b>
-<div id="techCount" style="font-size:28px;font-weight:900;color:#00c6ff">0</div>
-<div style="font-size:12px;opacity:.7">عدد الفنيين المسجلين</div>
-<div id="techList"></div>
-</div>
-<div class="admin-box open"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">➕ اضافة شغل <span>▼</span></div><div class="admin-box-body"><!-- فاضي - هنبنيه مع بعض --></div></div>
-<div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📦 المخزن <span>▼</span></div><div class="admin-box-body"><!-- فاضي - هنبنيه مع بعض --></div></div>
-<div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📂 رفع شيت الشغل <span>▼</span></div><div class="admin-box-body"><!-- فاضي - هنبنيه مع بعض --></div></div>
-<div class="admin-box"><div class="admin-box-head" onclick="this.parentElement.classList.toggle('open')">📦 أرشفة - إنهاء اليوم <span>▼</span></div><div class="admin-box-body"><!-- فاضي - هنبنيه مع بعض --></div></div>
-<div class="admin-box"><div class="admin-box-head" style="background:#fff0f0" onclick="this.parentElement.classList.toggle('open')">🗑️ مسح أوردر واحد / مسح أرضي <span>▼</span></div><div class="admin-box-body"><!-- فاضي - هنبنيه مع بعض --></div></div>
-<div id="superDeleteBox" class="admin-box" style="display:none"><div class="admin-box-head" style="background:#7f0000;color:#fff" onclick="this.parentElement.classList.toggle('open')">🚨 SUPER ADMIN - مسح الشغل والأرشيف <span>▼</span></div><div class="admin-box-body"><!-- فاضي --></div></div>
-</div>
-</div>
-</div>
-<div class="tabs" id="bottomNav">
-<div class="active" onclick="showTab('all',this)"><span style="font-size:20px;display:block">🏠</span>الرئيسية</div>
-<div onclick="showTab('pending',this)"><span style="font-size:20px;display:block">📋</span>المهام</div>
-<div onclick="showTab('problem',this)"><span style="font-size:20px;display:block">🔔</span>التنبيهات</div>
-<div onclick="showTab('warehouse',this)"><span style="font-size:20px;display:block">📦</span>المخزن</div>
-<div id="archiveNav" onclick="showTab('archive',this)" style="display:none"><span style="font-size:20px;display:block">📦</span>الأرشيف</div>
-<div onclick="logout()"><span style="font-size:20px;display:block">👤</span>الحساب</div>
-</div>
-<div id="details">
-<div class="d-head"><button class="back" onclick="closeDetails()">← رجوع</button><b id="dTitle" style="font-size:18px">تفاصيل المهمة</b></div>
-<div class="d-box"><h3 id="dCustomer" style="margin:0"></h3><p id="dMeta" style="font-size:13px;color:#555;line-height:1.8"></p><p id="dComment" style="font-size:13px"></p></div>
-</div>
-<div id="upDownModal"><div class="box"><h3>📶 حالة الخط ايه؟</h3><p id="upDownCustomer"></p></div></div>
-<div id="recipientModal"><div class="box"><h3>👤 مين اللي استلم؟</h3><p id="recipientCustomer"></p></div></div>
-<div id="statusModal"><div class="box"><h3>📋 حالة الزيارة</h3><p id="statusCustomer"></p></div></div>
-<input type="file" id="photoInput" accept="image/*" capture="environment" class="hidden">
-<input type="file" id="photoGalleryInput" accept="image/*" class="hidden">
-<input type="file" id="serialCamInput" accept="image/*" capture="environment" class="hidden">
-<div id="photoModal" style="position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:10001;display:none;align-items:center;justify-content:center;padding:12px" onclick="this.style.display='none'"></div>
-<div id="photoCamModal"><div class="box"><h3 id="photoCamTitle">📷 صور وش الجهاز</h3></div></div>
-<div id="sendLockModal"><div class="box" style="max-width:420px"><h2 style="margin:0">🔒 مطلوب منك عشان تكمل</h2><p id="lockCustomer" style="font-weight:bold"></p></div></div>
-<div id="istighfarOverlay" style="position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:30000;display:none;align-items:center;justify-content:center;text-align:center;padding:20px"></div>
-<div id="azkarModal"><div class="box" style="text-align:right;max-height:88vh;overflow-y:auto"><h3 style="margin:0 0 10px">📖 الأذكار وحصن المسلم</h3><div id="azkarFull" style="line-height:2;font-size:15px"></div></div></div>
-<div id="passModal"><div class="box"><h3 style="margin:0 0 8px">🔐 تريد تغيير الباسورد؟</h3></div></div>
-</div>
-<script src="assets/vendor/supabase.js"></script><script src="assets/vendor/zxing.js"></script><script src="assets/vendor/xlsx.js"></script><script src="assets/vendor/jszip.js"></script><script src="assets/operations.js"></script><script src="assets/domain.js"></script><script src="assets/workspaces.js"></script><script src="assets/dashboard.js">
-  
-</script></body></html>
+
+<script>
+function doLogin(){
+  document.getElementById('loginPage').style.display='none';
+  document.getElementById('appPage').classList.remove('hidden');
+  document.getElementById('appPage').style.display='block';
+  var u = document.getElementById('user').value || 'أهلا بيك';
+  document.getElementById('welcome').textContent = 'لوحة التحكم - ' + u;
+}
+function showEmpty(){
+  document.getElementById('emptyPage').innerHTML = '<p>الصفحة فاضية</p>';
+}
+</script>
+</body>
+</html>
